@@ -1,0 +1,47 @@
+src/feature/control/btrack.o: src/feature/control/btrack.c \
+ src/feature/control/btrack_circuit.h src/lib/pubsub/pubsub.h \
+ src/lib/pubsub/pub_binding_st.h src/lib/dispatch/msgtypes.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdint.h /usr/include/stdint.h \
+ /usr/include/machine/_default_types.h /usr/include/sys/features.h \
+ /usr/include/_newlib_version.h /usr/include/sys/_intsup.h \
+ /usr/include/sys/_stdint.h src/ext/tor_queue.h \
+ src/lib/pubsub/pubsub_connect.h src/lib/pubsub/pubsub_flags.h \
+ src/lib/pubsub/pubsub_macros.h src/lib/cc/compat_compiler.h orconfig.h \
+ /usr/include/inttypes.h /usr/include/newlib.h /usr/include/sys/config.h \
+ /usr/include/machine/ieeefp.h /usr/include/cygwin/config.h \
+ /usr/include/_ansi.h /usr/lib/gcc/x86_64-pc-cygwin/10/include/stddef.h \
+ /usr/include/sys/_locale.h src/lib/dispatch/dispatch_naming.h \
+ src/lib/pubsub/pubsub_publish.h src/feature/control/btrack_orconn.h \
+ src/feature/control/btrack_sys.h src/lib/subsys/subsys.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdbool.h
+src/feature/control/btrack_circuit.h:
+src/lib/pubsub/pubsub.h:
+src/lib/pubsub/pub_binding_st.h:
+src/lib/dispatch/msgtypes.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdint.h:
+/usr/include/stdint.h:
+/usr/include/machine/_default_types.h:
+/usr/include/sys/features.h:
+/usr/include/_newlib_version.h:
+/usr/include/sys/_intsup.h:
+/usr/include/sys/_stdint.h:
+src/ext/tor_queue.h:
+src/lib/pubsub/pubsub_connect.h:
+src/lib/pubsub/pubsub_flags.h:
+src/lib/pubsub/pubsub_macros.h:
+src/lib/cc/compat_compiler.h:
+orconfig.h:
+/usr/include/inttypes.h:
+/usr/include/newlib.h:
+/usr/include/sys/config.h:
+/usr/include/machine/ieeefp.h:
+/usr/include/cygwin/config.h:
+/usr/include/_ansi.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stddef.h:
+/usr/include/sys/_locale.h:
+src/lib/dispatch/dispatch_naming.h:
+src/lib/pubsub/pubsub_publish.h:
+src/feature/control/btrack_orconn.h:
+src/feature/control/btrack_sys.h:
+src/lib/subsys/subsys.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdbool.h:

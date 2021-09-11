@@ -1,0 +1,10 @@
+src/lib/process/winprocess_sys.o: src/lib/process/winprocess_sys.c \
+ orconfig.h src/lib/subsys/subsys.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdbool.h \
+ src/lib/process/winprocess_sys.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stddef.h
+orconfig.h:
+src/lib/subsys/subsys.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdbool.h:
+src/lib/process/winprocess_sys.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stddef.h:

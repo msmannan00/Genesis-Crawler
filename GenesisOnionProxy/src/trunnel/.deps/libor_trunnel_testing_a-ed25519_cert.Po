@@ -1,0 +1,132 @@
+src/trunnel/libor_trunnel_testing_a-ed25519_cert.o: \
+ src/trunnel/ed25519_cert.c /usr/include/stdlib.h \
+ /usr/include/machine/ieeefp.h /usr/include/_ansi.h /usr/include/newlib.h \
+ /usr/include/_newlib_version.h /usr/include/sys/config.h \
+ /usr/include/sys/features.h /usr/include/cygwin/config.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stddef.h \
+ /usr/include/sys/reent.h /usr/include/_ansi.h /usr/include/sys/_types.h \
+ /usr/include/machine/_types.h /usr/include/machine/_default_types.h \
+ /usr/include/sys/lock.h /usr/include/sys/cdefs.h \
+ /usr/include/machine/stdlib.h /usr/include/alloca.h \
+ /usr/include/cygwin/stdlib.h /usr/include/cygwin/wait.h \
+ /usr/include/ssp/stdlib.h /usr/include/ssp/ssp.h \
+ src/ext/trunnel/trunnel-impl.h src/trunnel/trunnel-local.h \
+ src/lib/crypt_ops/crypto_util.h src/lib/cc/torint.h orconfig.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdint.h /usr/include/stdint.h \
+ /usr/include/sys/_intsup.h /usr/include/sys/_stdint.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdbool.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/limits.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/syslimits.h \
+ /usr/include/limits.h /usr/include/features.h \
+ /usr/include/bits/wordsize.h /usr/include/cygwin/limits.h \
+ /usr/include/sys/types.h /usr/include/machine/endian.h \
+ /usr/include/machine/_endian.h /usr/include/bits/endian.h \
+ /usr/include/sys/select.h /usr/include/sys/_sigset.h \
+ /usr/include/sys/_timeval.h /usr/include/sys/timespec.h \
+ /usr/include/sys/_timespec.h /usr/include/sys/_pthreadtypes.h \
+ /usr/include/sys/cpuset.h /usr/include/machine/types.h \
+ /usr/include/endian.h /usr/include/bits/byteswap.h \
+ /usr/include/sys/sysmacros.h src/lib/malloc/malloc.h \
+ src/lib/cc/compat_compiler.h /usr/include/inttypes.h \
+ /usr/include/sys/_locale.h src/lib/log/util_bug.h src/lib/log/log.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdarg.h \
+ src/lib/defs/logging_types.h src/lib/testsupport/testsupport.h \
+ /usr/include/syslog.h /usr/include/sys/syslog.h \
+ src/ext/trunnel/trunnel.h /usr/include/assert.h /usr/include/string.h \
+ /usr/include/strings.h /usr/include/ssp/strings.h \
+ /usr/include/sys/string.h /usr/include/ssp/string.h \
+ /usr/include/arpa/inet.h /usr/include/netinet/in.h \
+ /usr/include/cygwin/in.h /usr/include/sys/socket.h \
+ /usr/include/cygwin/socket.h /usr/include/asm/socket.h \
+ /usr/include/cygwin/if.h /usr/include/cygwin/sockios.h \
+ /usr/include/sys/uio.h /usr/include/cygwin/_ucred.h \
+ /usr/include/cygwin/_socketflags.h /usr/include/ssp/socket.h \
+ /usr/include/asm/byteorder.h /usr/include/cygwin/in6.h \
+ src/trunnel/ed25519_cert.h src/ext/trunnel/trunnel.h
+/usr/include/stdlib.h:
+/usr/include/machine/ieeefp.h:
+/usr/include/_ansi.h:
+/usr/include/newlib.h:
+/usr/include/_newlib_version.h:
+/usr/include/sys/config.h:
+/usr/include/sys/features.h:
+/usr/include/cygwin/config.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stddef.h:
+/usr/include/sys/reent.h:
+/usr/include/_ansi.h:
+/usr/include/sys/_types.h:
+/usr/include/machine/_types.h:
+/usr/include/machine/_default_types.h:
+/usr/include/sys/lock.h:
+/usr/include/sys/cdefs.h:
+/usr/include/machine/stdlib.h:
+/usr/include/alloca.h:
+/usr/include/cygwin/stdlib.h:
+/usr/include/cygwin/wait.h:
+/usr/include/ssp/stdlib.h:
+/usr/include/ssp/ssp.h:
+src/ext/trunnel/trunnel-impl.h:
+src/trunnel/trunnel-local.h:
+src/lib/crypt_ops/crypto_util.h:
+src/lib/cc/torint.h:
+orconfig.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdint.h:
+/usr/include/stdint.h:
+/usr/include/sys/_intsup.h:
+/usr/include/sys/_stdint.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdbool.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/limits.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/syslimits.h:
+/usr/include/limits.h:
+/usr/include/features.h:
+/usr/include/bits/wordsize.h:
+/usr/include/cygwin/limits.h:
+/usr/include/sys/types.h:
+/usr/include/machine/endian.h:
+/usr/include/machine/_endian.h:
+/usr/include/bits/endian.h:
+/usr/include/sys/select.h:
+/usr/include/sys/_sigset.h:
+/usr/include/sys/_timeval.h:
+/usr/include/sys/timespec.h:
+/usr/include/sys/_timespec.h:
+/usr/include/sys/_pthreadtypes.h:
+/usr/include/sys/cpuset.h:
+/usr/include/machine/types.h:
+/usr/include/endian.h:
+/usr/include/bits/byteswap.h:
+/usr/include/sys/sysmacros.h:
+src/lib/malloc/malloc.h:
+src/lib/cc/compat_compiler.h:
+/usr/include/inttypes.h:
+/usr/include/sys/_locale.h:
+src/lib/log/util_bug.h:
+src/lib/log/log.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdarg.h:
+src/lib/defs/logging_types.h:
+src/lib/testsupport/testsupport.h:
+/usr/include/syslog.h:
+/usr/include/sys/syslog.h:
+src/ext/trunnel/trunnel.h:
+/usr/include/assert.h:
+/usr/include/string.h:
+/usr/include/strings.h:
+/usr/include/ssp/strings.h:
+/usr/include/sys/string.h:
+/usr/include/ssp/string.h:
+/usr/include/arpa/inet.h:
+/usr/include/netinet/in.h:
+/usr/include/cygwin/in.h:
+/usr/include/sys/socket.h:
+/usr/include/cygwin/socket.h:
+/usr/include/asm/socket.h:
+/usr/include/cygwin/if.h:
+/usr/include/cygwin/sockios.h:
+/usr/include/sys/uio.h:
+/usr/include/cygwin/_ucred.h:
+/usr/include/cygwin/_socketflags.h:
+/usr/include/ssp/socket.h:
+/usr/include/asm/byteorder.h:
+/usr/include/cygwin/in6.h:
+src/trunnel/ed25519_cert.h:
+src/ext/trunnel/trunnel.h:

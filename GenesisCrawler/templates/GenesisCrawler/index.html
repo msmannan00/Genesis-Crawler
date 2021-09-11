@@ -1,0 +1,23 @@
+{% load static %}
+
+<!--Local Imports-->
+{% include 'GenesisCrawler\imports_blade.html' %}
+
+<html lang="en">
+
+<body class="body" onload="onLoad()">
+
+<!-- Header -->
+{% include 'GenesisCrawler\header_blade.html' %}
+
+<!-- Body -->
+<div id="m_response_container">
+        {% include 'GenesisCrawler\welcome_blade.html' %}
+</div>
+
+<!-- Footer -->
+{% include 'GenesisCrawler\footer_blade.html' %}
+
+</body>
+
+</html>

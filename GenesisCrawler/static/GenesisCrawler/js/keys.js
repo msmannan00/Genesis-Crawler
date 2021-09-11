@@ -1,0 +1,27 @@
+/*Keys*/
+const keys = {
+    content_type : 'Content-Type',
+    post : 'POST',
+    response_container_key : "m_response_container",
+    thread_dropdown_item : "thread_dropdown",
+    thread_dropdown_container : "thread_dropdown_container",
+    thread_name_key : "m_thread_name",
+    m_error_label : "m_error_label",
+    catagories_defined : "catagories_defined",
+    m_max_crawling_depth : "m_max_crawling_depth",
+    m_thread_catagory : "m_thread_catagory",
+    m_thread_repeatable : "m_thread_repeatable",
+    m_thread_catagory_id : "f_catagory",
+    m_catagories_defined_label : "catagories_defined_label",
+    m_max_crawler_count : "m_max_crawler_count",
+    m_thread_name : "m_thread_name",
+    m_start_url : "m_start_url",
+    m_error_container : "on_error_container",
+    m_alert_header : "m_alert_title",
+    m_alert_message : "m_alert_message",
+    m_alert_confirm : "m_alert_confirm",
+    m_cancel_confirm : "m_cancel_confirm",
+    m_filter_token_type : "m_filter_token_type",
+    m_filter_catagory : "m_filter_catagory",
+    m_loading : "m_loading"
+}

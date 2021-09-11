@@ -1,0 +1,2 @@
+src/lib/trace/trace.o: src/lib/trace/trace.c src/lib/trace/trace.h
+src/lib/trace/trace.h:

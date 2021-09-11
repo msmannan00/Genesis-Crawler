@@ -1,0 +1,104 @@
+src/lib/tls/libtor_tls_a-x509.o: src/lib/tls/x509.c src/lib/tls/x509.h \
+ src/lib/crypt_ops/crypto_rsa.h orconfig.h \
+ src/lib/crypt_ops/crypto_digest.h src/lib/cc/torint.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdint.h /usr/include/stdint.h \
+ /usr/include/machine/_default_types.h /usr/include/sys/features.h \
+ /usr/include/_newlib_version.h /usr/include/sys/_intsup.h \
+ /usr/include/sys/_stdint.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdbool.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/limits.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/syslimits.h \
+ /usr/include/limits.h /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stddef.h \
+ /usr/include/bits/wordsize.h /usr/include/cygwin/limits.h \
+ /usr/include/sys/types.h /usr/include/_ansi.h /usr/include/newlib.h \
+ /usr/include/sys/config.h /usr/include/machine/ieeefp.h \
+ /usr/include/cygwin/config.h /usr/include/machine/_types.h \
+ /usr/include/sys/_types.h /usr/include/machine/endian.h \
+ /usr/include/machine/_endian.h /usr/include/bits/endian.h \
+ /usr/include/sys/select.h /usr/include/sys/_sigset.h \
+ /usr/include/sys/_timeval.h /usr/include/sys/timespec.h \
+ /usr/include/sys/_timespec.h /usr/include/sys/_pthreadtypes.h \
+ /usr/include/sys/cpuset.h /usr/include/machine/types.h \
+ /usr/include/endian.h /usr/include/bits/byteswap.h \
+ /usr/include/sys/sysmacros.h src/lib/defs/digest_sizes.h \
+ src/lib/malloc/malloc.h /usr/include/stdlib.h /usr/include/_ansi.h \
+ /usr/include/sys/reent.h /usr/include/sys/lock.h \
+ /usr/include/machine/stdlib.h /usr/include/alloca.h \
+ /usr/include/cygwin/stdlib.h /usr/include/cygwin/wait.h \
+ /usr/include/sys/_locale.h /usr/include/ssp/stdlib.h \
+ /usr/include/ssp/ssp.h src/lib/cc/compat_compiler.h \
+ /usr/include/inttypes.h src/lib/testsupport/testsupport.h \
+ src/lib/log/log.h /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdarg.h \
+ src/lib/defs/logging_types.h /usr/include/syslog.h \
+ /usr/include/sys/syslog.h src/lib/tls/x509_internal.h \
+ src/lib/log/util_bug.h src/lib/crypt_ops/crypto_rand.h \
+ src/lib/crypt_ops/crypto_util.h
+src/lib/tls/x509.h:
+src/lib/crypt_ops/crypto_rsa.h:
+orconfig.h:
+src/lib/crypt_ops/crypto_digest.h:
+src/lib/cc/torint.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdint.h:
+/usr/include/stdint.h:
+/usr/include/machine/_default_types.h:
+/usr/include/sys/features.h:
+/usr/include/_newlib_version.h:
+/usr/include/sys/_intsup.h:
+/usr/include/sys/_stdint.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdbool.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/limits.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/syslimits.h:
+/usr/include/limits.h:
+/usr/include/features.h:
+/usr/include/sys/cdefs.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stddef.h:
+/usr/include/bits/wordsize.h:
+/usr/include/cygwin/limits.h:
+/usr/include/sys/types.h:
+/usr/include/_ansi.h:
+/usr/include/newlib.h:
+/usr/include/sys/config.h:
+/usr/include/machine/ieeefp.h:
+/usr/include/cygwin/config.h:
+/usr/include/machine/_types.h:
+/usr/include/sys/_types.h:
+/usr/include/machine/endian.h:
+/usr/include/machine/_endian.h:
+/usr/include/bits/endian.h:
+/usr/include/sys/select.h:
+/usr/include/sys/_sigset.h:
+/usr/include/sys/_timeval.h:
+/usr/include/sys/timespec.h:
+/usr/include/sys/_timespec.h:
+/usr/include/sys/_pthreadtypes.h:
+/usr/include/sys/cpuset.h:
+/usr/include/machine/types.h:
+/usr/include/endian.h:
+/usr/include/bits/byteswap.h:
+/usr/include/sys/sysmacros.h:
+src/lib/defs/digest_sizes.h:
+src/lib/malloc/malloc.h:
+/usr/include/stdlib.h:
+/usr/include/_ansi.h:
+/usr/include/sys/reent.h:
+/usr/include/sys/lock.h:
+/usr/include/machine/stdlib.h:
+/usr/include/alloca.h:
+/usr/include/cygwin/stdlib.h:
+/usr/include/cygwin/wait.h:
+/usr/include/sys/_locale.h:
+/usr/include/ssp/stdlib.h:
+/usr/include/ssp/ssp.h:
+src/lib/cc/compat_compiler.h:
+/usr/include/inttypes.h:
+src/lib/testsupport/testsupport.h:
+src/lib/log/log.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdarg.h:
+src/lib/defs/logging_types.h:
+/usr/include/syslog.h:
+/usr/include/sys/syslog.h:
+src/lib/tls/x509_internal.h:
+src/lib/log/util_bug.h:
+src/lib/crypt_ops/crypto_rand.h:
+src/lib/crypt_ops/crypto_util.h:
