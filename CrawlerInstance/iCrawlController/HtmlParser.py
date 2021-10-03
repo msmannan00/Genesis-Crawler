@@ -227,31 +227,55 @@ class HtmlParser(HTMLParser, ABC):
         else:
             return False
 
-    def getTFIDFModel(self, p_correct_keyword, p_incorrect_keyword):
-        m_doc_collection = []
+    def getTFScore(self, p_correct_keyword, p_incorrect_keyword):
+        m_doc_collection = {}
         m_text = self.getText()
         for m_word in set(p_correct_keyword):
             m_count = m_text.count(m_word)
-            if m_count!=0:
-                mTFIDF = TFModel(m_word, format(m_count / self.m_total_keywords))
-                m_doc_collection.append(mTFIDF)
-
-                for m_bi_word in p_correct_keyword:
-                    m_bi_count = m_text.count(m_word + " " + m_bi_word)
-                    if m_bi_count!=0:
-                        mTFIDF.setBigram(float(m_bi_count / (m_count / 2)), m_bi_word)
-                        mTFIDF.m_bigram = json.loads(UrlObjectEncoder().encode(mTFIDF.m_bigram))
+            if m_count!=0 and m_word != 'language':
+                m_doc_collection[m_word] = format(m_count / self.m_total_keywords)
 
         for m_word in set(p_incorrect_keyword):
             m_count = m_text.count(m_word)
-            if m_count!=0:
-                mTFIDF = TFModel(m_word, format(m_count / self.m_total_keywords))
-                m_doc_collection.append(mTFIDF)
+            if m_count!=0 and m_word != 'language':
+                m_doc_collection[m_word] = format(m_count / self.m_total_keywords)
+
+        return m_doc_collection
+
+    def onClean(self, m_query):
+        m_query = re.sub('\W+', ' ', m_query)
+        m_query = m_query.lower().split()
+
+        m_range = 0
+        for m_count in range(len(m_query)):
+            if m_query[m_range] in strings.stop_words:
+                del m_query[m_range]
+            else:
+                m_range +=1
+
+        return ' '.join(m_query)
+
+    def getTFBinaryScore(self, p_correct_keyword, p_incorrect_keyword):
+        m_doc_collection = {}
+        m_text = self.onClean(self.getText())
+        for m_word in set(p_correct_keyword):
+            m_count = m_text.count(m_word)
+            if m_count!=0 and m_word != 'language':
+
                 for m_bi_word in p_correct_keyword:
                     m_bi_count = m_text.count(m_word + " " + m_bi_word)
-                    if m_bi_count!=0:
-                        mTFIDF.setBigram(float(m_bi_count / (m_count / 2)), m_bi_word)
-                        mTFIDF.m_bigram = json.loads(UrlObjectEncoder().encode(mTFIDF.m_bigram))
+                    if m_bi_count!=0 and m_bi_word!=m_word:
+                        m_doc_collection[m_word + " " + m_bi_word] = float(m_bi_count / (m_count / 2))
+
+
+        for m_word in set(p_incorrect_keyword):
+            m_count = m_text.count(m_word)
+            if m_count!=0 and m_word != 'language':
+
+                for m_bi_word in p_correct_keyword:
+                    m_bi_count = m_text.count(m_word + " " + m_bi_word)
+                    if m_bi_count!=0 and m_bi_word!=m_word:
+                        m_doc_collection[m_word + " " + m_bi_word] = float(m_bi_count / (m_count / 2))
 
         return m_doc_collection
 

@@ -76,11 +76,13 @@ class mongoDBController:
         myquery = {'m_url': {'$eq': p_data.m_url}}
         newvalues = {"$set": {'m_title': p_data.m_title,
                               'm_description': p_data.m_description,
+                              'm_keyword_count': len(p_data.m_scores),
                               'm_content_type': p_data.m_content_type[0],
                               'm_vid_url': p_data.m_vid_url,
                               'm_image_url': p_data.m_image_url,
                               'm_doc_url': p_data.m_doc_url,
-                              'm_score' : json.loads(UrlObjectEncoder().encode(p_data.getTFIDFModel())),
+                              'm_score' : json.loads(UrlObjectEncoder().encode(p_data.m_scores)),
+                              'm_binary_score' : json.loads(UrlObjectEncoder().encode(p_data.m_binary_scores)),
                               'm_date': HelperMethod.getMongoDBDate()}}
         m_collection.update_one(myquery, newvalues, upsert=True)
 

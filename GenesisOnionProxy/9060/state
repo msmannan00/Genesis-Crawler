@@ -1,0 +1,64 @@
+# Tor state file last generated on 2021-09-13 05:43:24 local time
+# Other times below are in UTC
+# You *do not* need to edit this file.
+
+CircuitBuildTimeBin 925 1
+CircuitBuildTimeBin 1025 3
+CircuitBuildTimeBin 1075 5
+CircuitBuildTimeBin 1125 6
+CircuitBuildTimeBin 1175 6
+CircuitBuildTimeBin 1225 7
+CircuitBuildTimeBin 1275 8
+CircuitBuildTimeBin 1325 2
+CircuitBuildTimeBin 1375 3
+CircuitBuildTimeBin 1425 4
+CircuitBuildTimeBin 1475 4
+CircuitBuildTimeBin 1525 1
+CircuitBuildTimeBin 1575 4
+CircuitBuildTimeBin 1625 5
+CircuitBuildTimeBin 1675 8
+CircuitBuildTimeBin 1725 4
+CircuitBuildTimeBin 1775 3
+CircuitBuildTimeBin 1825 5
+CircuitBuildTimeBin 1925 4
+CircuitBuildTimeBin 1975 2
+CircuitBuildTimeBin 2025 1
+CircuitBuildTimeBin 2075 2
+CircuitBuildTimeBin 2125 3
+CircuitBuildTimeBin 2175 2
+CircuitBuildTimeBin 2325 1
+CircuitBuildTimeBin 2625 1
+CircuitBuildTimeBin 2825 1
+CircuitBuildTimeBin 2925 2
+CircuitBuildTimeBin 3225 1
+CircuitBuildTimeBin 4425 1
+CircuitBuildTimeBin 5425 1
+CircuitBuildTimeBin 5925 1
+CircuitBuildTimeBin 6825 1
+CircuitBuildTimeBin 7175 1
+CircuitBuildTimeBin 15025 1
+Dormant 0
+Guard in=default rsa_id=C237392DC121DF50C64C707C3FB95055E68B00CA nickname=pacoCalienteRelay2 sampled_on=2021-09-06T10:14:45 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=5DA69B086B833FC1DFCF2D9C8B9C3B03137C7EFD nickname=prserver sampled_on=2021-09-05T20:11:20 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-09-03T12:53:09 confirmed_idx=0 pb_use_attempts=24.000000 pb_use_successes=24.000000 pb_circ_attempts=107.000000 pb_circ_successes=105.000000 pb_successful_circuits_closed=105.000000
+Guard in=default rsa_id=B25427A8F4A485E03EDA31757AB1C33DBE587428 nickname=DefinitelyNotTheFBI sampled_on=2021-09-09T15:07:58 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=7E22A9186F8ACAFC3203978748737CFAF7F1B4EC nickname=Unnamed sampled_on=2021-09-01T21:41:48 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=73AF5401EEA3E0AA6805D4317914A079AC2DCF5E nickname=MonkiRelay sampled_on=2021-09-06T09:10:49 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=58EED376E9E687A42B461ED485ADF765866C918E nickname=Unnamed sampled_on=2021-09-10T01:13:09 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=63540827C4832D214984EA47B7A68C593F9F862F nickname=Unnamed sampled_on=2021-09-07T07:16:24 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=874D84382C892F3F61CC9E106BF08843DE0B865A nickname=Spigen sampled_on=2021-09-12T17:02:23 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=29A39144AD141242436D07901F7A8B91F7516A66 nickname=BorrisvCorbyn sampled_on=2021-09-12T09:11:26 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=E4012D3B0DFB5CB743A21C2CA41231BBA29786BB nickname=ZeroMeaning sampled_on=2021-09-08T02:50:06 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=074F25138528415CF1B900CB3FAF062D3F0B3EFA nickname=Unnamed sampled_on=2021-09-09T16:40:56 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=D11217B44873FD7C879E541844B4C20B9A7E5CFB nickname=KienjochDE3 sampled_on=2021-09-04T16:53:41 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-09-02T03:18:15 confirmed_idx=1
+Guard in=default rsa_id=1AAD015F4D885413A2BCE0E58159116901236C49 nickname=Unnamed sampled_on=2021-09-12T15:35:59 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=563A38AF7177AB0E97599F61307F080F68C4C984 nickname=pfxhosting sampled_on=2021-09-09T22:03:19 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=224C3DD1DFF6F11219604870D48953249EE3C26F nickname=nasiOne sampled_on=2021-09-02T11:15:59 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=438F3EA4C9FB0DB63F5377A3271AB5435FAD7E04 nickname=dolemite sampled_on=2021-09-12T11:17:35 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=EA85899FE53C5D64EB12515FC276279E1152BE28 nickname=Unnamed sampled_on=2021-09-08T05:12:09 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=A22C59CA167119885AAAF30B39903901294D558E nickname=wayoutthere sampled_on=2021-09-11T08:01:09 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=94318CC2299A3826D81899EB23C25A2B7D6B1FFE nickname=byrdeman sampled_on=2021-09-03T21:29:16 sampled_by=0.4.3.4-rc listed=1
+Guard in=default rsa_id=BE9B12FAAB7429842D643E2308390ECD8961E0A1 nickname=fuckdaP0P0 sampled_on=2021-09-09T20:40:30 sampled_by=0.4.3.4-rc listed=1
+LastWritten 2021-09-13 12:43:24
+MinutesSinceUserActivity 30
+TorVersion Tor 0.4.3.4-rc
+TotalBuildTimes 105

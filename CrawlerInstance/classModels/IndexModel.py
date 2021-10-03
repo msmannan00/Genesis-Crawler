@@ -24,7 +24,8 @@ class IndexModel:
     m_validity_score = 0
     m_content_type = "General"
     m_thread_id = ""
-    m_tfidf_model = None
+    m_scores = None
+    m_binary_scores = None
 
     # Initializations
     def __init__(self):
@@ -57,10 +58,13 @@ class IndexModel:
         self.m_vid_url = p_vid_url
 
     def setTfIdfModel(self, p_tfidf_model):
-        self.m_tfidf_model = p_tfidf_model
+        self.m_scores = p_tfidf_model
+
+    def setTfIdfBinaryModel(self, p_tfidf_binary_model):
+        self.m_binary_scores = p_tfidf_binary_model
 
     def getTfIdfModel(self):
-        return self.m_tfidf_model
+        return self.m_scores
 
     def setContentType(self, p_content_type):
         self.m_content_type = p_content_type
@@ -82,7 +86,7 @@ class IndexModel:
         self.m_thread_id = p_thread_id
 
     def getTFIDFModel(self):
-        return self.m_tfidf_model
+        return self.m_scores
 
 # subclass JSONEncoder
 class UrlObjectEncoder(JSONEncoder):

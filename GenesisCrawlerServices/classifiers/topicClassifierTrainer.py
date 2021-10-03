@@ -6,16 +6,22 @@ import sklearn
 import shutil
 import pickle
 import pandas as pd
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.feature_selection import SelectKBest, chi2
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+from sklearn.linear_model import Perceptron, LogisticRegression
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.neural_network import MLPClassifier
+
 from GenesisCrawlerServices.constants import constants, strings
 from GenesisCrawlerServices.helperService.SpellCheckHandler import SpellCheckHandler
 from tkinter import Tcl
 from os import path
-
+import seaborn as sn
+import pandas as pd
+import matplotlib.pyplot as plt
 
 class topicClassifierTrainer:
     m_classifier = None
@@ -130,7 +136,7 @@ class topicClassifierTrainer:
     def train(self):
         # READ COMMENTS
         print("READING...")
-        train_data = pd.read_csv("C://Workspace//Genesis-Crawler-Python//GenesisCrawlerServices//classifiers//training_data.csv")
+        train_data = pd.read_csv("C://Workspace//Genesis-Crawler//GenesisCrawlerServices//classifiers//training_data.csv")
         # train_data = pd.read_csv(constants.m_project_path + constants.m_classifier_path + "training_data.csv")
         print("READING FINISHED... : " + str(train_data.shape))
 
@@ -147,17 +153,24 @@ class topicClassifierTrainer:
 
         # CREATE VECTORIZER
         print("VECTORIZING...")
-        count_vectorizer = CountVectorizer(analyzer='word', ngram_range=(1, 1), stop_words=None,token_pattern='[a-zA-Z]+')
-        transformed_vector = count_vectorizer.fit_transform(train_data["TEXT"].values.astype('U'))
-        dataframe = pd.DataFrame(transformed_vector.toarray(), columns=count_vectorizer.get_feature_names())
-        pickle.dump(count_vectorizer, open(constants.m_project_path + constants.m_vectorizer_pickle_path, "wb"))
+
+        ''' vectorizer = CountVectorizer(analyzer='word', ngram_range=(1, 1), stop_words=None,token_pattern='[a-zA-Z]+')
+        transformed_vector = vectorizer.fit_transform(train_data["TEXT"].values.astype('U'))
+        dataframe = pd.DataFrame(transformed_vector.toarray(), columns=vectorizer.get_feature_names())
+        pickle.dump(vectorizer, open(constants.m_project_path + constants.m_vectorizer_pickle_path, "wb")) '''
+
+        vectorizer = TfidfVectorizer()
+        X = vectorizer.fit_transform(train_data['TEXT'])
+        Y = vectorizer.get_feature_names()
+        dataframe = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names())
+
         print("VECTORIZING FINISHED...")
 
         # SELECT KBEST
         print("SELECTING...")
-        selector = SelectKBest(score_func=chi2, k=2000)
+        selector = SelectKBest(score_func=chi2, k=6000)
         selector.fit(dataframe, train_data["PREDICTION"])
-        extracted_feature = np.asarray(count_vectorizer.get_feature_names())[selector.get_support()]
+        extracted_feature = np.asarray(vectorizer.get_feature_names())[selector.get_support()]
         dataframe = dataframe[extracted_feature]
         pickle.dump(extracted_feature, open(constants.m_project_path + constants.m_features_pickle_path, 'wb'))
         self.m_last_log = "SELECTING FINISHED..."
@@ -180,9 +193,11 @@ class topicClassifierTrainer:
         print("CREATING MODEL...")
         # model = RandomForestClassifier(max_depth=150, random_state=10) # False
         # model = Perceptron(tol=1e-3, random_state=0) # False
-        model = MultinomialNB(alpha=1.0, fit_prior=True) # 0.91 - 0.87 - 0.87
+        # model = LogisticRegression(random_state=0)
+        # model = SVC(gamma='auto')
+        # model = MultinomialNB(alpha=1.0, fit_prior=True) # 0.91 - 0.87 - 0.87
         # model = MultinomialHMM(n_components=2, startprob_prior=1.0, transmat_prior=1.0) # False
-        # model = MLPClassifier(alpha=1e-05, hidden_layer_sizes=(2,), random_state=1, solver='lbfgs')
+        model =  MLPClassifier(random_state=1, max_iter=300)
         # model = LDA(5)
 
         print("CREATING MODEL FINISHED...")
@@ -190,6 +205,7 @@ class topicClassifierTrainer:
         # TRAIN MODEL
         print("TRAINING MODEL...")
         trainedModel = model.fit(train_features, train_labels)
+        # trainedModel = OneVsRestClassifier(model).fit(train_features, train_labels)
         print("TRAINING MODEL FINISHED...")
 
         # PREDICTION
@@ -203,12 +219,21 @@ class topicClassifierTrainer:
         print("SAVING MODEL FINISHED FINISHED...")
 
         # SHOW PREDICTIONS
+        scores = cross_val_score(model, train_features, train_labels, cv=5)
+        print("Cross Validation Score : " + str(scores))
+
         print("SHOWING PREDICTION...")
         print(sklearn.metrics.accuracy_score(test_labels, predictions))
         print('F1 Score - ', {f1_score(test_labels, predictions, average='macro')})
-        print(precision_score(test_labels, predictions, average='macro'))
-        print(recall_score(test_labels, predictions, average='macro'))
-        print("SHOWING PREDICTION FINISHED...")
+        print("Percision - " + str(precision_score(test_labels, predictions, average='macro')))
+        print("Recall Score - " + str(recall_score(test_labels, predictions, average='macro')))
+        x = confusion_matrix(test_labels, predictions)
+        print(x)
+        df_cm = pd.DataFrame(x, range(20), range(20))
+        sn.set(font_scale=1.4)
+        sn.heatmap(df_cm, annot=True, annot_kws={"size": 16})  # font size
+        plt.show()
+
 
         # SHOW ACCURACY
         print("ACCURACY...")

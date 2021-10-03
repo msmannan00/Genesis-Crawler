@@ -8,7 +8,7 @@ doc_types = [".pdf", ".msword", ".document", ".docx", "doc"]
 # ------- Local Paths --------- #
 
 # OS Directory
-m_project_path = "C:\\Workspace\\Genesis-Crawler-Python"
+m_project_path = "C:\\Workspace\\Genesis-Crawler"
 
 m_cigwin_path = "\\cygwin64\\bin\\bash.exe --login"
 m_tor_path = m_project_path + "\\GenesisOnionProxy"
@@ -44,7 +44,7 @@ m_crawling_url_intensity = 3
 m_max_crawling_depth = 3
 
 # Max URL Timeout
-m_url_timeout = 10
+m_url_timeout = 70
 m_header_timeout = 30
 
 # Max Host Queue Size

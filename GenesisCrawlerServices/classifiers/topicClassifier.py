@@ -21,8 +21,8 @@ class topicClassifier:
         self.m_classifier = topicClassifierModel()
 
     def generateClassifier(self):
-        # self.m_classifier_trainer.generateClassifier()
-        self.initialize()
+        self.m_classifier_trainer.generateClassifier()
+        # self.initialize()
         # print("FUCK : " + str(self.predictClassifier("hello how are you")))
 
     def initialize(self):

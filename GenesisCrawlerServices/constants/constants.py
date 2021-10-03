@@ -6,5 +6,5 @@ m_classifier_pickle_path = "\\\GenesisCrawlerServices\\raw\\classifier_output\\w
 m_vectorizer_pickle_path = "\\GenesisCrawlerServices\\raw\\classifier_output\\count_vectorizer.sav"
 m_features_pickle_path = "\\GenesisCrawlerServices\\raw\\classifier_output\\features.sav"
 m_web_classifier_dataset = "C:\\Workspace\\Datasets\\website_classifier"
-m_project_path = "C:\\Workspace\\Genesis-Crawler-Python"
+m_project_path = "C:\\Workspace\\Genesis-Crawler"
 

@@ -3,9 +3,7 @@ import json
 import os
 import sys
 
-from GenesisCrawlerServices.mongoDBService.mongoDBController import mongoDBController
-
-sys.path.append('C:\Workspace\Genesis-Crawler-Python')
+sys.path.append('C:\Workspace\Genesis-Crawler')
 from GenesisCrawlerServices.classifiers.topicClassifier import topicClassifier
 from CrawlerInstance.logManager.LogManager import log
 from GenesisCrawlerServices.constants import strings, keys
@@ -166,8 +164,7 @@ class ApplicationController:
 # ApplicationController.getInstance().pipeManagerRead()
 # topicClassifier.getInstance().generateClassifier()
 # mongoDBController.getInstance().onRequest(MongoDBCommands.mongoDB_clear_data_invoke, strings.empty)
-mongoDBController.getInstance().onRequest(MongoDBCommands.mongoDB_clear_data_invoke, strings.empty)
-ApplicationController.getInstance().invokeCrawler('{"m_data": {"m_max_crawling_depth": "3", "m_max_crawler_count": "30", "m_thread_repeatable": 0, "m_thread_catagory": "default", "m_thread_name": "c_default", "m_start_url": "http://p53lf57qovyuvwsc6xnrppyply3vtqm7l6pcobkmyqsiofyeznfu5uqd.onion/", "m_filter_token": "", "m_filter_catagory": "", "m_filter_type": "", "m_thread_id": "1"}, "m_command": "genesis : create-application"}')
+ApplicationController.getInstance().invokeCrawler('{"m_data": {"m_max_crawling_depth": "3", "m_max_crawler_count": "30", "m_thread_repeatable": 0, "m_thread_catagory": "default", "m_thread_name": "c_default", "m_start_url": "http://p53lf57qovyuvwsc6xnrppyply3vtqm7l6pcobkmyqsiofyeznfu5uqd.onion", "m_filter_token": "", "m_filter_catagory": "", "m_filter_type": "", "m_thread_id": "1"}, "m_command": "genesis : create-application"}')
 ApplicationController.getInstance().start()
 # time.sleep(5)
 # ApplicationController.getInstance().forceStop()

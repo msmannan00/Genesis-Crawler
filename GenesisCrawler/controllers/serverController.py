@@ -8,9 +8,13 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import Perceptron
 from sklearn.metrics import recall_score, precision_score, f1_score, accuracy_score
 from sklearn.model_selection import train_test_split
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.naive_bayes import MultinomialNB
+
 from CrawlerInstance.classModels.IndexModel import UrlObjectEncoder
 from CrawlerInstance.duplicationHandlerService.DuplicationHandlerManager import DuplicationHandlerManager
 from GenesisCrawler.controllers.crawlerSubprocess import crawlerSubprocess
+from GenesisCrawlerServices.classifiers.topicClassifier import topicClassifier
 from GenesisCrawlerServices.constants import keys, strings
 from GenesisCrawlerServices.constants.enums import CrawlerInterfaceCommands, ErrorMessages, ServerResponse, MongoDBCommands, ProcessStatus
 from GenesisCrawlerServices.helperService.HelperMethod import HelperMethod
@@ -120,7 +124,7 @@ class ServerController:
     def train(self):
         # READ COMMENTS
         print("READING...")
-        train_data = pd.read_csv("C://Workspace//Genesis-Crawler-Python//GenesisCrawlerServices//classifiers//training_data.csv")
+        train_data = pd.read_csv("C://Workspace//Genesis-Crawler//GenesisCrawlerServices//classifiers//training_data.csv")
         #train_data = pd.read_csv(constants.m_project_path + constants.m_classifier_path + "training_data.csv")
         print("READING FINISHED... : " + str(train_data.shape))
 
@@ -167,8 +171,8 @@ class ServerController:
         # CREATE MODEL
         print("CREATING MODEL...")
         # model = RandomForestClassifier(max_depth=50, random_state=10) # False
-        model = Perceptron(tol=1e-3, random_state=0) # False
-        # model = MultinomialNB(alpha=1.0, fit_prior=True) # 0.91 - 0.87 - 0.87
+        # model = Perceptron(tol=1e-3, random_state=0) # False
+        model = MultinomialNB(alpha=1.0, fit_prior=True) # 0.91 - 0.87 - 0.87
         # model = MultinomialHMM(n_components=2, startprob_prior=1.0, transmat_prior=1.0) # False
         # model = MLPClassifier(random_state=1, max_iter=300)
         # model = LinearDiscriminantAnalysis()
@@ -178,7 +182,8 @@ class ServerController:
 
         # TRAIN MODEL
         print("TRAINING MODEL...")
-        trainedModel = model.fit(train_features, train_labels)
+        # trainedModel = model.fit(train_features, train_labels)
+        trainedModel = OneVsRestClassifier(model).fit(train_features, train_labels)
         print("TRAINING MODEL FINISHED...")
 
         # PREDICTION
@@ -208,7 +213,7 @@ class ServerController:
 # ServerController.getInstance().train()
 # mongoDBController.getInstance().onRequest(MongoDBCommands.mongoDB_clear_data_invoke, strings.empty)
 # ServerController.getInstance().invokeServer(CrawlerInterfaceCommands.create_crawler_instance_command.value, '{"m_max_crawling_depth":"3","m_max_crawler_count":"15","m_filter_token":"none","m_filter_type":"none","m_filter_catagory":"none","m_thread_catagory":"general","m_thread_repeatable":"false","m_thread_name":"c_default","m_start_url":"http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion/search/?q=onion+links"}')
-# topicClassifier.getInstance().generateClassifier()
+topicClassifier.getInstance().generateClassifier()
 # m_content_type = topicClassifier.getInstance().predictClassifier("money grocery iphone milk eggs")
 # print(m_content_type)
 # topicClassifier.getInstance().generateClassifier()

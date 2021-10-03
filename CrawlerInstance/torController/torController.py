@@ -51,6 +51,7 @@ class TorController(object):
         return m_request_handler, proxies, headers
 
     def start_tor_subprocess(self, p_command):
+        print("fuck : " + p_command)
         status.tor_status = TorStatus.starting
         self.m_tor_shell = subprocess.Popen(p_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="/")
         print(p_command)
