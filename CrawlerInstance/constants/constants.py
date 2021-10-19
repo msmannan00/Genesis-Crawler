@@ -1,94 +1,64 @@
 # Local Imports
-import os
 
 # ------- Allowed Files --------- #
 
-doc_types = [".pdf", ".msword", ".document", ".docx", "doc"]
+S_DOC_TYPES = [".pdf", ".msword", ".document", ".docx", "doc"]
 
 # ------- Local Paths --------- #
 
 # OS Directory
-m_project_path = "C:\\Workspace\\Genesis-Crawler"
-
-m_cigwin_path = "\\cygwin64\\bin\\bash.exe --login"
-m_tor_path = m_project_path + "\\GenesisOnionProxy"
+S_PROJECT_PATH = "C:\\Workspace\\Genesis-Crawler"
+S_DATASET_PATH = "/GenesisCrawlerServices/raw/crawled_classifier_websites.csv"
+S_TOR_PATH = S_PROJECT_PATH + "\\GenesisOnionProxy"
+S_SIGWIN_PATH = "\\cygwin64\\bin\\bash.exe --login"
 
 # Local Directory
-m_shell_config_path = m_project_path+"\\GenesisCrawlerServices\\raw\\config_script.sh"
-m_raw_path = m_project_path+"\\"
-m_queue_state_path = m_project_path+"\\CrawlerInstance\\stateManager\\queues_state"
-m_duplication_filter_backup_path_1 = m_project_path + "\\CrawlerInstance\\stateManager\\duplication_fiilter_backup_1"
-m_duplication_filter_backup_path_2 = m_project_path + "\\CrawlerInstance\\stateManager\\duplication_fiilter_backup_2"
-m_prefs_state_path = m_project_path+"\\CrawlerInstance\\stateManager\\prefs_state"
-m_dict_path = m_project_path+"\\GenesisCrawlerServices\\raw\\dictionary"
-m_dict_small_path = m_project_path+"\\GenesisCrawlerServices\\raw\\dictionary_small"
-m_application_controller_path = m_project_path + "\\CrawlerInstance\\applicationController\\applicationController.py"
+S_SHELL_CONFIG_PATH = S_PROJECT_PATH + "\\GenesisCrawlerServices\\raw\\config_script.sh"
+S_RAW_PATH = S_PROJECT_PATH + "\\"
+S_QUEUE_STATE_PATH = S_PROJECT_PATH + "\\CrawlerInstance\\stateManager\\queues_state"
+S_DICTIONARY_PATH = S_PROJECT_PATH + "\\GenesisCrawlerServices\\raw\\dictionary"
+S_DICTIONARY_MINI_PATH = S_PROJECT_PATH + "\\GenesisCrawlerServices\\raw\\dictionary_small"
 
 # Local URL
-m_start_url = "http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion/search/?q=onion+links"
-m_ip_ping_url = r'http://jsonip.com'
+S_START_URL = "http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion/address/"
 
 # ------- Crawler Settings --------- #
 
 # Total Thread Instances Allowed
-m_max_crawler_count = 3
+S_MAX_THREAD_COUNT_PER_INSTANCE = 30
 
 # Time Delay to Invoke New Url Requests
-m_icrawler_invoke_delay = 5
-m_crawler_invoke_delay = 5
-
-# URL Intensity
-m_crawling_url_intensity = 3
+S_ICRAWL_INVOKE_DELAY = 2
+S_CRAWLER_INVOKE_DELAY = 2
 
 # Max Allowed Depth
-m_max_crawling_depth = 3
+S_MAX_ALLOWED_DEPTH = 1
 
 # Max URL Timeout
-m_url_timeout = 70
-m_header_timeout = 30
+S_URL_TIMEOUT = 70
+S_HEADER_TIMEOUT = 30
 
 # Max Host Queue Size
-m_max_host_queue_size = 50
-
-# Max Thread Life
-m_max_thread_life = 3600
-
-# Max Allowed Failed URL
-m_max_failed_url_allowed = 100
+S_MAX_HOST_QUEUE_SIZE = 100
+S_MAX_SUBHOST_QUEUE_SIZE = 100
 
 # Max URL Size
-m_max_url_size = 480
+S_MAX_URL_SIZE = 480
 
 # Backup Time
-m_backup_time_delay = 86400
-m_mongoDB_backup_url_fetch_limit = 50
-m_mongoDB_index_url_fetch_limit = 1000
-restart_crawler_delay = 300
+S_BACKUP_TIME_DELAY = 86400
+S_BACKUP_FETCH_LIMIT = 200
 
-# MongoDB Database
-m_mongoDB_database = 'genesis'
-m_mongoDB_port = 27017
-m_mongoDB_ip = 'localhost'
-
-# New Circuit Time Delay
-m_new_circuit_delay = 600
+# mongoDB Database
+S_DATABASE_NAME = 'genesis'
+S_DATABASE_PORT = 27017
+S_DATABASE_IP = 'localhost'
 
 # Min Image Content Size
-m_min_content_length = 10000
-
-# Logs
-m_max_log_queue_size = 500
+S_MIN_CONTENT_LENGTH = 50000
 
 # User Agent
-m_user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.143 Safari/537.36'
+S_USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.143 Safari/537.36'
 
 # Crawl Catagory
-m_thread_catagory = "general"
-
-# Repetition Mode
-m_thread_repeatable = False
-
-# Filter Mode
-m_filter_token = ""
-m_filter_type = "soft"
-m_filter_catagory = "General"
+S_THREAD_CATEGORY_GENERAL = "general"

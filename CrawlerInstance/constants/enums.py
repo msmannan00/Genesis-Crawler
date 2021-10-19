@@ -1,0 +1,25 @@
+import enum
+
+# HTML Parsing Manager
+from CrawlerInstance.constants import constants
+
+class APPICATION_COMMANDS(enum.Enum):
+    S_START_APPLICATION = 1
+    S_CRAWL_TOPIC_CLASSIFIER_DATASET = 2
+    S_INSTALL_TOPIC_CLASSIFIER = 3
+
+
+class CRAWL_CONTROLLER_COMMANDS(enum.Enum):
+    S_RUN_GENERAL_CRAWLER = 1
+    S_RUN_TOPIC_CLASSIFIER_CRAWLER = 2
+
+class CRAWL_MODEL_COMMANDS(enum.Enum):
+    S_SAVE_BACKUP_URL = 1
+    S_GET_HOST_URL = 2
+    S_INSERT_URL = 3
+    S_GET_SUB_URL = 4
+
+class ICRAWL_CONTROLLER_COMMANDS(enum.Enum):
+    S_START_CRAWLER_INSTANCE = 1
+    S_GET_CRAWLED_DATA = 2
+    S_INVOKE_THREAD = 3

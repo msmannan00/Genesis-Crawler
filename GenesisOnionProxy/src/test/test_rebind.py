@@ -43,7 +43,7 @@ def wait_for_log(s):
         # avoid busy-waiting
         if len(l) == 0:
             logging.debug('Tor has not logged anything, waiting for "{}"'.format(s))
-            time.sleep(LOG_WAIT)
+            # time.sleep(LOG_WAIT)
         else:
             logging.info('Tor logged: "{}", waiting for "{}"'.format(l.strip(), s))
     fail('Could not find "{}" in logs after {} seconds'.format(s, LOG_TIMEOUT))

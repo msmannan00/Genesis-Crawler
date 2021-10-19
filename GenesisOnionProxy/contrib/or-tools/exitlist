@@ -44,7 +44,7 @@ VERBOSE = False
 INVERSE = False
 
 #
-# Change this list to contain all of the target services you are interested
+# Change this list to contain all of the target crawlerServices you are interested
 # in.  It must contain one entry per line, each consisting of an IPv4 address,
 # a colon, and a port number. This default is only used if we don't learn
 # about any addresses from the command-line.

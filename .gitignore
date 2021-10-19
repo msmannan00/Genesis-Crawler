@@ -1,5 +1,5 @@
 CrawlerInstance/applicationController/predictions.csv
-GenesisCrawlerServices/raw/classifier_output/training_data.csv
+GenesisCrawlerServices/raw/classifierOutput/training_data.csv
 venv/Lib/site-packages/numpy/random/tests/data/mt19937-testset-1.csv
 venv/Lib/site-packages/numpy/random/tests/data/mt19937-testset-2.csv
 venv/Lib/site-packages/numpy/random/tests/data/pcg64-testset-1.csv

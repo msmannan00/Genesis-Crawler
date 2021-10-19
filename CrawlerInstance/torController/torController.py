@@ -9,109 +9,101 @@ import urllib3
 from requests.adapters import HTTPAdapter
 from stem import Signal
 from urllib3 import Retry
-from CrawlerInstance.constants import constants
-from CrawlerInstance.constants.status import *
-from CrawlerInstance.logManager.LogManager import log
-from GenesisCrawlerServices.constants import strings, keys
-from GenesisCrawlerServices.constants.enums import TorCommands, TorStatus, TorCommandsCMD
+
+from CrawlerInstance.sharedModel.requestHandler import requestHandler
+from GenesisCrawlerServices.constants import strings
+from GenesisCrawlerServices.constants.enums import TOR_COMMANDS, TOR_STATUS, TOR_CMD_COMMANDS
 from stem.control import Controller
-from CrawlerInstance.constants import status
+from CrawlerInstance.constants import application_status
 # ./configure --with-openssl-dir=/usr/local/openssl --enable-static-openssl
 
 # Tor Handler - Handle and manage tor request
-class TorController(object):
+class torController(requestHandler):
+
     __instance = None
-    m_tor_shell = None
-    m_tor_thread = None
+    __m_tor_shell = None
+    __m_tor_thread = None
 
     # Initializations
     @staticmethod
-    def getInstance():
-        if TorController.__instance is None:
-            TorController()
-        return TorController.__instance
+    def get_instance():
+        if torController.__instance is None:
+            torController()
+        return torController.__instance
 
     def __init__(self):
-        TorController.__instance = self
+        torController.__instance = self
         self.controller = None
         self.controller = None
 
-    def createSession(self):
+    def on_create_session(self):
         m_request_handler = requests.Session()
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         retries = Retry(total=1, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
-        m_request_handler.mount(strings.http_protocol_slashed, HTTPAdapter(max_retries=retries))
+        m_request_handler.mount(strings.S_HTTP_PROTOCOL_SLASHED, HTTPAdapter(max_retries=retries))
 
         proxies = {
-            keys.k_http: strings.sock_http_proxy + str(status.tor_connection_port), keys.k_https: strings.sock_https_proxy + str(status.tor_control_port)
+            # keys.k_http: strings.sock_http_proxy + str(application_status.S_TOR_CONNECTION_PORT), keys.k_https: strings.sock_https_proxy + str(application_status.S_TOR_CONTROL_PORT)
         }
         headers = {
-            keys.k_user_agent: constants.m_user_agent,
+            # keys.k_user_agent: constants.m_user_agent,
         }
         return m_request_handler, proxies, headers
 
-    def start_tor_subprocess(self, p_command):
-        print("fuck : " + p_command)
-        status.tor_status = TorStatus.starting
-        self.m_tor_shell = subprocess.Popen(p_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="/")
-        print(p_command)
-        self.connectTor()
+    def __on_start_subprocess(self, p_command):
+        application_status.S_TOR_STATUS = TOR_STATUS.S_START
+        self.__m_tor_shell = subprocess.Popen(p_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="/")
+        self.__on_connect_tor()
         while True:
-            nextline = self.m_tor_shell.stdout.readline()
+            nextline = self.__m_tor_shell.stdout.readline()
             m_log = nextline.decode("utf-8")
 
-            if nextline == strings.empty:
+            if nextline == strings.S_EMPTY:
                 break
 
-            if status.tor_status == TorStatus.starting:
+            if application_status.S_TOR_STATUS == TOR_STATUS.S_START:
                 sys.stdout.write(m_log)
                 sys.stdout.flush()
-                self.invokeLogResponse(m_log)
 
-            if strings.bootstrapped in m_log:
-                self.invokeLogResponse(m_log)
-                break
 
-    def connectTor(self):
-        self.controller = Controller.from_port(port=int(status.tor_control_port))
+    def __on_connect_tor(self):
+        self.controller = Controller.from_port(port=int(application_status.S_TOR_CONTROL_PORT))
         self.controller.authenticate()
 
-    def newCircuit(self):
+    def __on_new_circuit(self):
         try:
             self.controller.signal(Signal.NEWNYM)
-            log.g().i("[1] : " + strings.new_circuit_success)
-        except Exception as err:
-            log.g().i("[0] : " + strings.new_circuit_fail)
+        except Exception:
+            pass
 
 
-    def releasePorts(self):
-        os.system('for /f "tokens=5" %a in (\'netstat -aon ^| find "' + str(status.tor_connection_port) + '"\') do taskkill /f /pid %a')
+    def __on__release_ports(self):
+        os.system('for /f "tokens=5" %a in (\'netstat -aon ^| find "' + str(application_status.S_TOR_CONNECTION_PORT) + '"\') do taskkill /f /pid %a')
 
-    def startTor(self):
-        self.m_tor_thread = threading.Thread(target=self.start_tor_subprocess, args=[TorCommandsCMD.start_command.value + " " + str(status.tor_connection_port) + " " + str(status.tor_control_port)])
-        self.m_tor_thread.start()
+    def __on_start_tor(self):
+        self.__m_tor_thread = threading.Thread(target=self.__on_start_subprocess, args=[TOR_CMD_COMMANDS.S_START.value + " " + str(application_status.S_TOR_CONNECTION_PORT) + " " + str(application_status.S_TOR_CONTROL_PORT)])
+        self.__m_tor_thread.start()
 
-    def stopTor(self):
+    def __on_stop_tor(self):
         self.controller.signal(Signal.SHUTDOWN)
 
-    def restartTor(self):
+    def __on_restart_tor(self):
         self.controller.signal(Signal.RELOAD)
 
-    def invokeLogResponse(self, p_log):
-        if strings.bootstrapped in p_log:
-            status.tor_status = TorStatus.running
-        if strings.interrupt in p_log:
-            status.tor_status = TorStatus.ready
 
-    def invokeTor(self, m_TorCommand):
-        if m_TorCommand == TorStatus.stop:
-            self.stopTor()
-        elif m_TorCommand is TorCommands.start_command and status.tor_status == TorStatus.ready:
-            self.startTor()
-        elif m_TorCommand is TorCommands.generate_circuit_command and status.tor_status == TorStatus.running:
-            self.newCircuit()
-        elif m_TorCommand is TorCommands.restart_command and status.tor_status is TorStatus.running:
-            self.restartTor()
+    def invoke_trigger(self, p_command, p_data=None):
+        if p_command == TOR_STATUS.S_STOP:
+            self.__on_stop_tor()
+        elif p_command is TOR_COMMANDS.S_START and application_status.S_TOR_STATUS == TOR_STATUS.S_READY:
+            self.__on_start_tor()
+        elif p_command is TOR_COMMANDS.S_GENERATED_CIRCUIT and application_status.S_TOR_STATUS == TOR_STATUS.S_RUNNING:
+            self.__on_new_circuit()
+        elif p_command is TOR_COMMANDS.S_RESTART and application_status.S_TOR_STATUS is TOR_STATUS.S_RUNNING:
+            self.__on_restart_tor()
+        elif p_command is TOR_COMMANDS.S_RELEASE_SESSION:
+            self.__on__release_ports()
+        elif p_command is TOR_COMMANDS.S_CREATE_SESSION:
+            return self.on_create_session()
         else:
             pass
 

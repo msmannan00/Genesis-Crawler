@@ -6,8 +6,8 @@
 hs_ntor_ref.py
 
 This module is a reference implementation of the modified ntor protocol
-proposed for Tor hidden services in proposal 224 (Next Generation Hidden
-Services) in section [NTOR-WITH-EXTRA-DATA].
+proposed for Tor hidden crawlerServices in proposal 224 (Next Generation Hidden
+crawlerServices) in section [NTOR-WITH-EXTRA-DATA].
 
 The modified ntor protocol is a single-round protocol, with three steps in total:
 

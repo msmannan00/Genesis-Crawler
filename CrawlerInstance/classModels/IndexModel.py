@@ -4,16 +4,16 @@ import re
 
 from json import JSONEncoder
 
-from CrawlerInstance.classModels.TFIDFModel import TFIDFModel
-from CrawlerInstance.classModels.UrlModel import UrlModel
+from CrawlerInstance.classModels.tfidf_model import TFIDFModel
+from CrawlerInstance.classModels.urlModel import urlModel
 
 
-# model representing information of any particular url
-class IndexModel:
+# sharedModel representing information of any particular url
+class indexModel:
     # Local Variables
     m_title = ""
     m_description = ""
-    m_base_url_model = UrlModel(None, None)
+    m_base_url_model = urlModel(None, None, None)
     m_url = ""
     m_response = False
     m_innode_count = 0

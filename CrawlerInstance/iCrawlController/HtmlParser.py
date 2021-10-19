@@ -1,199 +1,135 @@
 # Local Imports
-import json
+
 from abc import ABC
 from html.parser import HTMLParser
-from bs4 import BeautifulSoup
 
-from CrawlerInstance.classModels.IndexModel import UrlObjectEncoder
-from CrawlerInstance.classModels.TFModel import TFModel
+import nltk
+from bs4 import BeautifulSoup
 from CrawlerInstance.constants import constants
-from CrawlerInstance.logManager.LogManager import log
 from GenesisCrawlerServices.constants import strings
-from GenesisCrawlerServices.constants.enums import ParserTags, CrawlURLIntensity
-from GenesisCrawlerServices.helperService.HelperMethod import HelperMethod
-from GenesisCrawlerServices.helperService.SpellCheckHandler import SpellCheckHandler
+from GenesisCrawlerServices.constants.enums import PARSE_TAGS
+from GenesisCrawlerServices.helperServices.helperMethod import helper_method
+from GenesisCrawlerServices.helperServices.spellCheckerHandler import spell_checker_handler
+
 import pathlib
 import requests
-import nltk as nltk
 import re
 import mimetypes
 import validators
 
 
 # class to parse html raw duplicationHandlerService
-class HtmlParser(HTMLParser, ABC):
+class htmlParser(HTMLParser, ABC):
 
     def __init__(self, m_base_url, m_html):
         super().__init__()
-        self.title = strings.empty
-        self.desc = strings.empty
-        self.keywords = strings.empty
+        self.m_title = strings.S_EMPTY
+        self.m_description = strings.S_EMPTY
+        self.m_keywords = strings.S_EMPTY
         self.m_html = m_html
         self.m_content_type = "General"
-        self.sub_url = []
-        self.image_URL = []
-        self.doc_URL = []
-        self.vid_URL = []
-        self.rec = ParserTags.none
+        self.m_sub_url = []
+        self.m_image_url = []
+        self.m_doc_url = []
+        self.m_video_url = []
         self.m_base_url = m_base_url
         self.m_total_keywords = 0
 
+        self.rec = PARSE_TAGS.S_NONE
+        self.m_paragraph_count = 0
+
     # find url type and populate the list respectively
-    def insertURL(self, p_url):
-        if p_url is not None and not str(p_url).__contains__("#"):
-            mime = mimetypes.MimeTypes().guess_type(p_url)[0]
-            if len(p_url) <= constants.m_max_url_size:
+    def __insert_external_url(self, p_url):
+        if  1==1: # HelperMethod.getHostURL(p_url).__contains__(".onion") and len(HelperMethod.getHostURL(p_url))>60)
+            if p_url is not None and not str(p_url).__contains__("#"):
+                mime = mimetypes.MimeTypes().guess_type(p_url)[0]
+                if len(p_url) <= constants.S_MAX_URL_SIZE:
 
-                # Joining Relative URL
-                if not p_url.startswith("https://") and not p_url.startswith("http://") and not p_url.startswith(
-                        "ftp://"):
-                    m_temp_base_url = self.m_base_url
-                    if not m_temp_base_url.endswith("/"):
-                        m_temp_base_url = m_temp_base_url + "/"
-                    p_url = requests.compat.urljoin(m_temp_base_url, p_url)
-                    p_url = p_url.replace(" ", "%20")
-                    p_url = HelperMethod.cleanURL(HelperMethod.normalize_slashes(p_url))
+                    # Joining Relative URL
+                    if not p_url.startswith("https://") and not p_url.startswith("http://") and not p_url.startswith(
+                            "ftp://"):
+                        m_temp_base_url = self.m_base_url
+                        if not m_temp_base_url.endswith("/"):
+                            m_temp_base_url = m_temp_base_url + "/"
+                        p_url = requests.compat.urljoin(m_temp_base_url, p_url)
+                        p_url = p_url.replace(" ", "%20")
+                        p_url = helper_method.on_clean_url(helper_method.normalize_slashes(p_url))
 
-                if validators.url(p_url):
-                    suffix = ''.join(pathlib.Path(p_url).suffixes)
-                    if mime is None or mime == "text/html":
-                        if suffix in constants.doc_types:
-                            self.doc_URL.append(p_url)
-                        elif str(mime).startswith("video"):
-                            self.vid_URL.append(p_url)
-                        else:
-                            self.sub_url.append(p_url)
-                        # elif str(mime).startswith("image"):
-                        #     self.image_URL.append(m_url)
+                    if validators.url(p_url):
+                        suffix = ''.join(pathlib.Path(p_url).suffixes)
+                        if mime is None or mime == "text/html":
+                            if suffix in constants.S_DOC_TYPES and len(self.m_image_url)<20:
+                                self.m_doc_url.append(p_url)
+                            elif str(mime).startswith("video") and len(self.m_video_url)<20:
+                                self.m_video_url.append(p_url)
+                            else:
+                                self.m_sub_url.append(p_url)
 
     # extract duplicationHandlerService by tags
     def handle_starttag(self, p_tag, p_attrs):
         if p_tag == "a":
             for name, value in p_attrs:
                 if name == "href":
-                    self.insertURL(value)
+                    self.__insert_external_url(value)
 
         if p_tag == 'img':
             for value in p_attrs:
-                if value[0] == 'src' and not HelperMethod.isURLBase64(value[1]):
+                if value[0] == 'src' and not helper_method.is_url_base_64(value[1]) and len(self.m_image_url)<20:
                     # Joining Relative URL
                     m_temp_base_url = self.m_base_url
                     if not m_temp_base_url.endswith("/"):
                         m_temp_base_url = m_temp_base_url + "/"
                     m_url = requests.compat.urljoin(m_temp_base_url, value[1])
-                    m_url = HelperMethod.cleanURL(HelperMethod.normalize_slashes(m_url))
-                    self.image_URL.append(m_url)
+                    m_url = helper_method.on_clean_url(helper_method.normalize_slashes(m_url))
+                    self.m_image_url.append(m_url)
 
         elif p_tag == 'title':
-            self.rec = ParserTags.title
+            self.rec = PARSE_TAGS.S_TITLE
 
         elif p_tag == 'h1':
-            self.rec = ParserTags.header
+            self.rec = PARSE_TAGS.S_HEADER
 
         elif p_tag == 'p':
-            self.rec = ParserTags.paragraph
+            self.rec = PARSE_TAGS.S_PARAGRAPH
 
         elif p_tag == 'meta':
-            if p_attrs[0][1] == 'description':
-                if len(p_attrs) > 1 and len(p_attrs[1]) > 0 and p_attrs[1][0] == 'content':
-                    self.desc = p_attrs[1][1]
-            elif p_attrs[0][1] == 'keywords':
-                if len(p_attrs) > 1 and len(p_attrs[1]) > 0 and p_attrs[1][0] == 'content':
-                    self.keywords = p_attrs[1][1].replace(",", " ")
+            try:
+                if p_attrs[0][1] == 'description':
+                    if len(p_attrs) > 1 and len(p_attrs[1]) > 0 and p_attrs[1][0] == 'content' and p_attrs[1][1] is not None:
+                        self.m_description = p_attrs[1][1]
+                elif p_attrs[0][1] == 'keywords':
+                    if len(p_attrs) > 1 and len(p_attrs[1]) > 0 and p_attrs[1][0] == 'content' and p_attrs[1][1] is not None:
+                        self.m_keywords = p_attrs[1][1].replace(",", " ")
+            except Exception:
+                pass
         else:
-            self.rec = ParserTags.none
-
-    # error printing while parsing html
-    def error(self, p_message):
-        log.g().e(p_message)
+            self.rec = PARSE_TAGS.S_NONE
 
     def handle_data(self, p_data):
-        if self.rec == ParserTags.title:
-            self.title = p_data
-        if self.rec == ParserTags.header:
-            self.desc = self.desc + " " + p_data
-        elif self.rec == ParserTags.meta and len(self.title)>0:
-            self.title = p_data
-        elif self.rec == ParserTags.paragraph:
-            self.desc = self.desc + " " + p_data
+        if self.rec == PARSE_TAGS.S_HEADER:
+            self.m_description = self.m_description + self.__get_validated_sentence(p_data)
+        if self.rec == PARSE_TAGS.S_TITLE:
+            self.m_title = p_data
+        elif self.rec == PARSE_TAGS.S_META and len(self.m_title)>0:
+            self.m_title = p_data
+        elif self.rec == PARSE_TAGS.S_PARAGRAPH: #  and self.m_paragraph_count <4:
+            self.m_description = self.m_description + self.__get_validated_sentence(p_data)
+            self.m_paragraph_count+=1
 
-    def handle_endtag(self, p_tag):
-        if p_tag == 'title' or p_tag == 'h1' or p_tag == 'p':
-            self.rec = ParserTags.none
+    def __get_validated_sentence(self, p_sentence):
+        sentences = nltk.sent_tokenize(self.__strip_special_character(p_sentence))
+        for sentence in sentences:
+            m_is_sentence_valid = spell_checker_handler.get_instance().sentence_validator(sentence)
+            if m_is_sentence_valid:
+                return " - " + sentence
+        return strings.S_EMPTY
 
-    # duplicationHandlerService Getters
-    def getTitle(self):
-        return ' '.join(self.title.split())
-
-    # creating keyword model for webpage representation
-    def setKeywordModel(self, p_valid_keywords, p_invalid_keywords):
+    # creating keyword sharedModel for webpage representation
+    def __set_keyword_model(self, p_valid_keywords, p_invalid_keywords):
         return p_valid_keywords, p_invalid_keywords
 
-    # extract relavent keywords from html for its representation
-    def getKeyword(self):
-
-        m_valid_keywords_model, m_invalid_keywords_model = self.text_preprocessing(self.keywords)
-        m_valid_keywords_model_filtered_1, m_invalid_keywords_model_filtered_1 = self.setKeywordModel(m_valid_keywords_model, m_invalid_keywords_model)
-
-        m_valid_keywords_model, m_invalid_keywords_model = self.text_preprocessing(self.title)
-        m_valid_keywords_model_filtered_2, m_invalid_keywords_model_filtered_2 = self.setKeywordModel(m_valid_keywords_model, m_invalid_keywords_model)
-
-        m_valid_keywords_model, m_invalid_keywords_model = self.text_preprocessing(self.desc)
-        m_valid_keywords_model_filtered_3, m_invalid_keywords_model_filtered_3 = self.setKeywordModel(m_valid_keywords_model, m_invalid_keywords_model)
-
-        m_valid_keywords_model, m_invalid_keywords_model = self.text_preprocessing(self.getText())
-        m_valid_keywords_model_filtered_4, m_invalid_keywords_model_filtered_4 = self.setKeywordModel(m_valid_keywords_model, m_invalid_keywords_model)
-
-        return (m_valid_keywords_model_filtered_1 + m_valid_keywords_model_filtered_2 +
-                m_valid_keywords_model_filtered_3 + m_valid_keywords_model_filtered_4), \
-                m_invalid_keywords_model_filtered_2
-
-    # extract local inbound and outbound url
-    def getSubURL(self, p_html):
-        m_allowed_tokens = constants.m_filter_token.split(",")
-
-        if constants.m_filter_catagory == "General" and ((constants.m_filter_catagory == "hard" and (any(x in self.title for x in m_allowed_tokens)) or (any(x in self.desc for x in m_allowed_tokens)) and (constants.m_filter_catagory == "soft" and (any(x in self.getText() for x in m_allowed_tokens))))) or self.m_content_type is constants.m_filter_catagory or ((constants.m_filter_catagory == "hard" and (any(x in self.title for x in m_allowed_tokens)) or (any(x in self.desc for x in m_allowed_tokens)) or (constants.m_filter_catagory == "soft" and (any(x in self.getText() for x in m_allowed_tokens))))):
-            if constants.m_crawling_url_intensity == CrawlURLIntensity.high.value:
-                sub_url = re.findall(r'(?:https?://)?(?:www)?\S*?\.onion\S*', p_html)
-                for m_url in sub_url:
-                    m_url = HelperMethod.appendProtocol(m_url)
-                    m_url = m_url.replace("/<br>", "")
-                    if validators.url(m_url):
-                        self.insertURL(m_url)
-        return self.sub_url
-
-    # extract website description from raw duplicationHandlerService
-    def getDescription(self):
-        sentences = nltk.sent_tokenize(self.getText())
-        sentences_joined = ""
-        for sentence in sentences[2:]:
-            m_is_sentence_valid = SpellCheckHandler.getInstance().sentenceValidator(sentence)
-            if m_is_sentence_valid:
-                sentences_joined = sentences_joined + " " + sentence
-
-        if len(self.desc) < 450 and len(sentences_joined) > 10:
-            if len(self.desc) > 5:
-                self.desc = self.desc + ". " + sentences_joined
-            else:
-                self.desc = sentences_joined
-
-        clean_description = self.clearDescription(self.desc)
-        return clean_description
-
-    # give validity score to identify if website is worth showing to user
-    def getValidityScore(self, p_keyword):
-        m_rank = (len(p_keyword) > 10) * 10 + (len(self.sub_url) > 0) * 5
-        return m_rank
-
-    # give illegal rank to website content in order to show warning to user
-    def getIllegalContentClassifier(self, p_illegal_content_classifier):
-        pass
-
-    def getContentType(self):
-        return  self.m_content_type
-
     # extract text from raw html
-    def getText(self):
+    def __get_html_text(self):
         m_soup = BeautifulSoup(self.m_html, "html.parser")
         m_text = m_soup.get_text(separator=u' ')
 
@@ -205,86 +141,43 @@ class HtmlParser(HTMLParser, ABC):
 
     # --------------- Text Preprocessing --------------- #
 
-    def clearDescription(self, p_desc):
-        p_desc = p_desc.lower().strip("_+\n\r!@#|$?^\'\"~ #$%&*(\>.< ")
-        return p_desc[0:500]
+    def __strip_special_character(self, p_desc):
+        p_desc = re.sub('[^A-Za-z0-9 @#_+-]+', '', p_desc)
+        p_desc = re.sub(' +', ' ', p_desc)
+        return p_desc
 
-    def incorrect_word_cleaner(self, p_words):
+    def __word_cleaner(self, p_words):
         p_words = re.sub('[^A-Za-z0-9]+', ' ', p_words)
         m_word_list = p_words.split()
 
-        return SpellCheckHandler.getInstance().invalidValidationHandler(m_word_list)
+        return spell_checker_handler.get_instance().invalid_validation_handler(m_word_list)
 
-    def is_incorrect_word_validity_checker(self, p_word):
+    def __word_validity_checker(self, p_word):
 
         non_alpha_character = len(re.findall(r'[^a-zA-Z ]', p_word))
         alpha_character = len(p_word) - non_alpha_character
 
-        if len(p_word) > 3 and len(p_word) < 20 and bool(re.search(r'[a-zA-Z].*', p_word)) is True and \
+        if 3 < len(p_word) < 20 and bool(re.search(r'[a-zA-Z].*', p_word)) is True and \
                 '.onion' not in p_word and 'http' not in p_word and \
                 (alpha_character / (alpha_character + non_alpha_character)) > 0.7:
             return True
         else:
             return False
 
-    def getTFScore(self, p_correct_keyword, p_incorrect_keyword):
-        m_doc_collection = {}
-        m_text = self.getText()
-        for m_word in set(p_correct_keyword):
-            m_count = m_text.count(m_word)
-            if m_count!=0 and m_word != 'language':
-                m_doc_collection[m_word] = format(m_count / self.m_total_keywords)
-
-        for m_word in set(p_incorrect_keyword):
-            m_count = m_text.count(m_word)
-            if m_count!=0 and m_word != 'language':
-                m_doc_collection[m_word] = format(m_count / self.m_total_keywords)
-
-        return m_doc_collection
-
-    def onClean(self, m_query):
+    def __clean_html(self, m_query):
         m_query = re.sub('\W+', ' ', m_query)
         m_query = m_query.lower().split()
 
         m_range = 0
         for m_count in range(len(m_query)):
-            if m_query[m_range] in strings.stop_words:
+            if m_query[m_range] in strings.S_STOPWORDS:
                 del m_query[m_range]
             else:
                 m_range +=1
 
         return ' '.join(m_query)
 
-    def getTFBinaryScore(self, p_correct_keyword, p_incorrect_keyword):
-        m_doc_collection = {}
-        m_text = self.onClean(self.getText())
-        for m_word in set(p_correct_keyword):
-            m_count = m_text.count(m_word)
-            if m_count!=0 and m_word != 'language':
-
-                for m_bi_word in p_correct_keyword:
-                    m_bi_count = m_text.count(m_word + " " + m_bi_word)
-                    if m_bi_count!=0 and m_bi_word!=m_word:
-                        m_doc_collection[m_word + " " + m_bi_word] = float(m_bi_count / (m_count / 2))
-
-
-        for m_word in set(p_incorrect_keyword):
-            m_count = m_text.count(m_word)
-            if m_count!=0 and m_word != 'language':
-
-                for m_bi_word in p_correct_keyword:
-                    m_bi_count = m_text.count(m_word + " " + m_bi_word)
-                    if m_bi_count!=0 and m_bi_word!=m_word:
-                        m_doc_collection[m_word + " " + m_bi_word] = float(m_bi_count / (m_count / 2))
-
-        return m_doc_collection
-
-    def getBigram(self, mWord):
-        mBigramList = []
-
-        return []
-
-    def text_preprocessing(self, p_text):
+    def __text_preprocessing(self, p_text):
 
         # New Line and Tab Remover
         p_text = ' '.join(p_text.split())
@@ -300,15 +193,15 @@ class HtmlParser(HTMLParser, ABC):
 
         # Word Checking
         self.m_total_keywords = len(word_list)
-        incorrect_word, correct_word = SpellCheckHandler.getInstance().validationHandler(word_list)
+        incorrect_word, correct_word = spell_checker_handler.get_instance().validation_handler(word_list)
 
         # Cleaning Incorrect Words
         incorrect_word_cleaned = []
         for inc_word in incorrect_word:
-            incorrect_word_filter, correct_word_filter, m_is_stop_word = self.incorrect_word_cleaner(inc_word)
+            incorrect_word_filter, correct_word_filter, m_is_stop_word = self.__word_cleaner(inc_word)
             if len(correct_word_filter) > 0 and len(correct_word_filter) + 1 >= len(incorrect_word_filter):
                 correct_word = correct_word + correct_word_filter
-            elif self.is_incorrect_word_validity_checker(inc_word) and not (m_is_stop_word is True and len(incorrect_word_filter) <= 1):
+            elif self.__word_validity_checker(inc_word) and not (m_is_stop_word is True and len(incorrect_word_filter) <= 1):
                 incorrect_word_cleaned.append(inc_word)
 
         # Remove Special Character
@@ -316,7 +209,88 @@ class HtmlParser(HTMLParser, ABC):
         incorrect_word_cleaned = list(filter(None, word_list))
 
         # if len(correct_word)>0:
-        #     self.m_content_type = topicClassifier.getInstance().predictClassifier(" ".join(correct_word))
+        #     self.m_content_type = topic_classifier.get_instance().predict_classifier(" ".join(correct_word))
         correct_word = list(set(correct_word))
 
         return correct_word, incorrect_word_cleaned
+
+    # ----------------- Data Recievers -----------------
+
+    # duplicationHandlerService Getters
+    def get_title(self):
+        return self.__strip_special_character(self.m_title).strip()
+
+    # extract relavent keywords from html for its representation
+    def get_keyword(self):
+
+        m_valid_keywords_model, m_invalid_keywords_model = self.__text_preprocessing(self.m_keywords)
+        m_valid_keywords_model_filtered_1, m_invalid_keywords_model_filtered_1 = self.__set_keyword_model(m_valid_keywords_model, m_invalid_keywords_model)
+
+        m_valid_keywords_model, m_invalid_keywords_model = self.__text_preprocessing(self.m_title)
+        m_valid_keywords_model_filtered_2, m_invalid_keywords_model_filtered_2 = self.__set_keyword_model(m_valid_keywords_model, m_invalid_keywords_model)
+
+        m_valid_keywords_model, m_invalid_keywords_model = self.__text_preprocessing(self.m_description)
+        m_valid_keywords_model_filtered_3, m_invalid_keywords_model_filtered_3 = self.__set_keyword_model(m_valid_keywords_model, m_invalid_keywords_model)
+
+        m_valid_keywords_model, m_invalid_keywords_model = self.__text_preprocessing(self.__get_html_text())
+        m_valid_keywords_model_filtered_4, m_invalid_keywords_model_filtered_4 = self.__set_keyword_model(m_valid_keywords_model, m_invalid_keywords_model)
+
+        return (m_valid_keywords_model_filtered_1 + m_valid_keywords_model_filtered_2 +
+                m_valid_keywords_model_filtered_3 + m_valid_keywords_model_filtered_4), \
+                m_invalid_keywords_model_filtered_2
+
+    # extract local inbound and outbound url
+    def get_sub_url(self):
+        return self.m_sub_url
+
+    # extract website description from raw duplicationHandlerService
+    def get_description(self):
+        clean_description = self.__strip_special_character(self.m_description)
+        return clean_description
+
+    # give validity score to identify if website is worth showing to user
+    def get_validity_score(self, p_keyword):
+        m_rank = (len(p_keyword) > 10) * 10 + (len(self.m_sub_url) > 0) * 5
+        return m_rank
+
+    def get_content_type(self):
+        return  self.m_content_type
+
+    def get_tfidf_score(self, p_correct_keyword, p_incorrect_keyword):
+        m_doc_collection = {}
+        m_text = self.__get_html_text()
+        for m_word in set(p_correct_keyword):
+            m_count = m_text.count(m_word)
+            if m_count!=0 and m_word != 'language':
+                m_doc_collection[m_word] = format(round(m_count / self.m_total_keywords, 3))
+
+        for m_word in set(p_incorrect_keyword):
+            m_count = m_text.count(m_word)
+            if m_count!=0 and m_word != 'language':
+                m_doc_collection[m_word] = format(round(m_count / self.m_total_keywords, 3))
+
+        return m_doc_collection
+
+    def get_tfidf_binary_score(self, p_correct_keyword, p_incorrect_keyword):
+        m_doc_collection = {}
+        m_text = self.__clean_html(self.__get_html_text())
+        for m_word in set(p_correct_keyword):
+            m_count = m_text.count(m_word)
+            if m_count!=0 and m_word != 'language':
+
+                for m_bi_word in p_correct_keyword:
+                    m_bi_count = m_text.count(m_word + " " + m_bi_word)
+                    if m_bi_count!=0 and m_bi_word!=m_word:
+                        m_doc_collection[m_word + " " + m_bi_word] = float(round(m_bi_count / (m_count / 2), 3))
+
+
+        for m_word in set(p_incorrect_keyword):
+            m_count = m_text.count(m_word)
+            if m_count!=0 and m_word != 'language':
+
+                for m_bi_word in p_correct_keyword:
+                    m_bi_count = m_text.count(m_word + " " + m_bi_word)
+                    if m_bi_count!=0 and m_bi_word!=m_word:
+                        m_doc_collection[m_word + " " + m_bi_word] = float(round(m_bi_count / (m_count / 2), 3))
+
+        return m_doc_collection

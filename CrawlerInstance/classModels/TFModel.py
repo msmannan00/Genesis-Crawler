@@ -1,4 +1,4 @@
-class TFModel:
+class tfModel:
 
     # Variables
     m_score = None
