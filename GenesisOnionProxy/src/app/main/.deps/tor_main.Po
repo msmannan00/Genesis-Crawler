@@ -1,2 +1,0 @@
-src/app/main/tor_main.o: src/app/main/tor_main.c orconfig.h
-orconfig.h:

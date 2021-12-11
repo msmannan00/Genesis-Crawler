@@ -1,0 +1,6 @@
+src/lib/version/libtor_version_testing_a-git_revision.o: \
+ src/lib/version/git_revision.c orconfig.h src/lib/version/git_revision.h \
+ micro-revision.i
+orconfig.h:
+src/lib/version/git_revision.h:
+micro-revision.i:

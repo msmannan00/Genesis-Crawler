@@ -1,0 +1,101 @@
+src/app/main/core_libtor_app_testing_a-subsystem_list.o: \
+ src/app/main/subsystem_list.c orconfig.h src/app/main/subsysmgr.h \
+ src/lib/subsys/subsys.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdbool.h \
+ src/lib/cc/compat_compiler.h /usr/include/inttypes.h \
+ /usr/include/newlib.h /usr/include/_newlib_version.h \
+ /usr/include/sys/config.h /usr/include/machine/ieeefp.h \
+ /usr/include/sys/features.h /usr/include/cygwin/config.h \
+ /usr/include/sys/_intsup.h /usr/include/_ansi.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stdint.h /usr/include/stdint.h \
+ /usr/include/machine/_default_types.h /usr/include/sys/_stdint.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/stddef.h \
+ /usr/include/sys/_locale.h src/lib/cc/torint.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/limits.h \
+ /usr/lib/gcc/x86_64-pc-cygwin/10/include/syslimits.h \
+ /usr/include/limits.h /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/wordsize.h /usr/include/cygwin/limits.h \
+ /usr/include/sys/types.h /usr/include/_ansi.h \
+ /usr/include/machine/_types.h /usr/include/sys/_types.h \
+ /usr/include/machine/endian.h /usr/include/machine/_endian.h \
+ /usr/include/bits/endian.h /usr/include/sys/select.h \
+ /usr/include/sys/_sigset.h /usr/include/sys/_timeval.h \
+ /usr/include/sys/timespec.h /usr/include/sys/_timespec.h \
+ /usr/include/sys/_pthreadtypes.h /usr/include/sys/cpuset.h \
+ /usr/include/machine/types.h /usr/include/endian.h \
+ /usr/include/bits/byteswap.h /usr/include/sys/sysmacros.h \
+ src/core/mainloop/mainloop_sys.h src/core/or/ocirc_event_sys.h \
+ src/core/or/or_sys.h src/core/or/orconn_event_sys.h \
+ src/feature/control/btrack_sys.h src/lib/compress/compress_sys.h \
+ src/lib/crypt_ops/crypto_sys.h src/lib/err/torerr_sys.h \
+ src/lib/log/log_sys.h src/lib/net/network_sys.h \
+ src/lib/process/process_sys.h src/lib/process/winprocess_sys.h \
+ src/lib/thread/thread_sys.h src/lib/time/time_sys.h \
+ src/lib/tls/tortls_sys.h src/lib/wallclock/wallclock_sys.h \
+ src/lib/evloop/evloop_sys.h src/feature/dirauth/dirauth_sys.h \
+ src/feature/relay/relay_sys.h
+orconfig.h:
+src/app/main/subsysmgr.h:
+src/lib/subsys/subsys.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdbool.h:
+src/lib/cc/compat_compiler.h:
+/usr/include/inttypes.h:
+/usr/include/newlib.h:
+/usr/include/_newlib_version.h:
+/usr/include/sys/config.h:
+/usr/include/machine/ieeefp.h:
+/usr/include/sys/features.h:
+/usr/include/cygwin/config.h:
+/usr/include/sys/_intsup.h:
+/usr/include/_ansi.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stdint.h:
+/usr/include/stdint.h:
+/usr/include/machine/_default_types.h:
+/usr/include/sys/_stdint.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/stddef.h:
+/usr/include/sys/_locale.h:
+src/lib/cc/torint.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/limits.h:
+/usr/lib/gcc/x86_64-pc-cygwin/10/include/syslimits.h:
+/usr/include/limits.h:
+/usr/include/features.h:
+/usr/include/sys/cdefs.h:
+/usr/include/bits/wordsize.h:
+/usr/include/cygwin/limits.h:
+/usr/include/sys/types.h:
+/usr/include/_ansi.h:
+/usr/include/machine/_types.h:
+/usr/include/sys/_types.h:
+/usr/include/machine/endian.h:
+/usr/include/machine/_endian.h:
+/usr/include/bits/endian.h:
+/usr/include/sys/select.h:
+/usr/include/sys/_sigset.h:
+/usr/include/sys/_timeval.h:
+/usr/include/sys/timespec.h:
+/usr/include/sys/_timespec.h:
+/usr/include/sys/_pthreadtypes.h:
+/usr/include/sys/cpuset.h:
+/usr/include/machine/types.h:
+/usr/include/endian.h:
+/usr/include/bits/byteswap.h:
+/usr/include/sys/sysmacros.h:
+src/core/mainloop/mainloop_sys.h:
+src/core/or/ocirc_event_sys.h:
+src/core/or/or_sys.h:
+src/core/or/orconn_event_sys.h:
+src/feature/control/btrack_sys.h:
+src/lib/compress/compress_sys.h:
+src/lib/crypt_ops/crypto_sys.h:
+src/lib/err/torerr_sys.h:
+src/lib/log/log_sys.h:
+src/lib/net/network_sys.h:
+src/lib/process/process_sys.h:
+src/lib/process/winprocess_sys.h:
+src/lib/thread/thread_sys.h:
+src/lib/time/time_sys.h:
+src/lib/tls/tortls_sys.h:
+src/lib/wallclock/wallclock_sys.h:
+src/lib/evloop/evloop_sys.h:
+src/feature/dirauth/dirauth_sys.h:
+src/feature/relay/relay_sys.h:

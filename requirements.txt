@@ -1,0 +1,25 @@
+###### Requirements without Version Specifiers ######
+beautifulsoup4
+bs4
+gensim
+pandas
+eventlet
+pymongo
+nltk
+pyprobables
+numpy
+nudenet
+validators
+raven
+urllib3
+stem
+socks
+requests[socks]
+requests
+Pillow
+
+
+###### Requirements with Version Specifiers ######
+simplejson==3.8.0
+scikit-learn==0.24.2
+

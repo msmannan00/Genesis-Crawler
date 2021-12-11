@@ -1,0 +1,25 @@
+import enum
+
+class MONGODB_COMMANDS(enum.Enum):
+    S_RESET = -1
+    S_CLEAR_DATA_INVOKE = 0
+    S_SAVE_BACKUP = 1
+    S_SAVE_PARSE_URL = 2
+    S_BACKUP_URL = 3
+    S_GET_PARSE_URL = 4
+    S_FETCH_UNIQUE_HOST = 6
+    S_ADD_UNIQUE_HOST = 7
+    S_CLEAR_DATA = 8
+    S_INSTALL_CRAWLABLE_URL = 9
+    S_CLEAR_CRAWLABLE_URL_DATA = 10
+    S_GET_CRAWLABLE_URL_DATA = 11
+    S_UPDATE_CRAWLABLE_URL_DATA = 12
+    S_CLEAR_CACHE = 13
+    S_RESET_CRAWLABLE_URL = 14
+
+class MONGODB_COLLECTIONS:
+    S_INDEX_MODEL = 'index_model'
+    S_BACKUP_MODEL = 'backup_model'
+    S_UNIQUE_HOST_MODEL = 'unique_host'
+    S_TFIDF_MODEL = 'tfidf_model'
+    S_CRAWLABLE_URL_MODEL = 'crawlable_url_model'

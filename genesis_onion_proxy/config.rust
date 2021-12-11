@@ -1,0 +1,24 @@
+# Used by our cargo build.rs script to get variables from autoconf.
+#
+# The "configure" script will generate "config.rust" from "config.rust.in",
+# and then build.rs will read "config.rust".
+
+BUILDDIR=/cygdrive/c/temp/tor-0.4.6.6
+TOR_LDFLAGS_zlib=
+TOR_LDFLAGS_nss=@TOR_LDFLAGS_nss@
+TOR_LDFLAGS_openssl=-L/usr/local/lib
+TOR_LDFLAGS_libevent=
+TOR_ZLIB_LIBS=-lz
+TOR_LIB_MATH=
+TOR_LIBEVENT_LIBS=-levent
+TOR_OPENSSL_LIBS=-lssl -lcrypto
+TOR_LIB_WS32=
+TOR_LIB_GDI=
+TOR_LIB_USERENV=
+CURVE25519_LIBS=
+TOR_SYSTEMD_LIBS=
+TOR_LZMA_LIBS=
+TOR_ZSTD_LIBS=
+LIBS=
+LDFLAGS= -pie -rdynamic
+NSS_LIBS=

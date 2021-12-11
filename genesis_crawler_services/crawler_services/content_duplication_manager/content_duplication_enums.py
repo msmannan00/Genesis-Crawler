@@ -1,0 +1,6 @@
+import enum
+
+class CONTENT_DUPLICATION_MANAGER:
+    S_VALIDATE = 0
+    S_INSERT = 1
+    S_RESET = 2

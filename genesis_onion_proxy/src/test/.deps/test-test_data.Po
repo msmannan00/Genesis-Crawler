@@ -1,0 +1,5 @@
+src/test/test-test_data.o: src/test/test_data.c src/test/test.h \
+ src/ext/tinytest.h src/ext/tinytest_macros.h
+src/test/test.h:
+src/ext/tinytest.h:
+src/ext/tinytest_macros.h:

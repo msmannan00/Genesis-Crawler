@@ -1,0 +1,21 @@
+import enum
+
+
+class CRAWLER_STATUS(enum.Enum):
+    S_CLOSED = 0
+    S_RUNNING = 1
+    S_PAUSE = 2
+    S_STOP = 3
+    S_BACKUP = 4
+
+class CRAWL_CONTROLLER_COMMANDS(enum.Enum):
+    S_RUN_GENERAL_CRAWLER = 1
+    S_RUN_TOPIC_CLASSIFIER_CRAWLER = 2
+
+class CRAWL_MODEL_COMMANDS(enum.Enum):
+    S_SAVE_BACKUP_URL = 1
+    S_GET_HOST_URL = 2
+    S_INSERT_URL = 3
+    S_GET_SUB_URL = 4
+    S_INSERT_INIT = 5
+    S_CRAWL_FINISHED_STATUS = 6
