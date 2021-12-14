@@ -12,6 +12,7 @@ class PARSE_TAGS(enum.Enum):
     S_KEYWORD = 3
     S_HEADER = 4
     S_PARAGRAPH = 5
+    S_SPAN = 6
     S_NONE = -1
 
 class CRAWL_STATUS_TYPE:

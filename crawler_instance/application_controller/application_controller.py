@@ -1,5 +1,7 @@
 import sys
 
+from lxml.html.clean import unicode
+
 sys.path.append('C:\Workspace\Genesis-Crawler')
 from genesis_crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
 from genesis_crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
@@ -45,7 +47,6 @@ class application_controller(request_handler):
             return self.__on_start()
 
 # mongo_controller.get_instance().invoke_trigger(MONGODB_COMMANDS.S_CLEAR_CRAWLABLE_URL_DATA, None)
-mongo_controller.get_instance().invoke_trigger(MONGODB_COMMANDS.S_CLEAR_DATA, None)
-mongo_controller.get_instance().invoke_trigger(MONGODB_COMMANDS.S_RESET, None)
+# mongo_controller.get_instance().invoke_trigger(MONGODB_COMMANDS.S_CLEAR_DATA, None)
+# mongo_controller.get_instance().invoke_trigger(MONGODB_COMMANDS.S_RESET, None)
 application_controller.get_instance().invoke_trigger(APPICATION_COMMANDS.S_START_APPLICATION)
-

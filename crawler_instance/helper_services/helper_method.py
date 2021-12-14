@@ -18,9 +18,12 @@ class helper_method:
         return m_host_url
 
     @staticmethod
+    def clean_description(p_data):
+        return re.sub(r'[^a-zA-Z0-9. ,-]', '', p_data)
+
+    @staticmethod
     def strip_special_character(p_text):
-        m_text = re.sub('[^A-Za-z0-9 @#_+-]+', '', p_text)
-        m_text = re.sub(' +', ' ', m_text)
+        m_text = re.sub(r"^\W+", "", p_text)
         return m_text
 
     @staticmethod

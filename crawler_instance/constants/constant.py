@@ -20,7 +20,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_START_URL = "https://drive.google.com/uc?export=download&id=1ZG7D2NsI-NrVyp3SDq9q4zcrgFi3jhaG"
 
     # Total Thread Instances Allowed
-    S_MAX_THREAD_COUNT_PER_INSTANCE = 30
+    S_MAX_THREAD_COUNT_PER_INSTANCE = 1
 
     # Time Delay to Invoke New Url Requests
     S_ICRAWL_INVOKE_DELAY = 2

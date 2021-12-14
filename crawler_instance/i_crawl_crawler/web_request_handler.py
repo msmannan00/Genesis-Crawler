@@ -1,4 +1,5 @@
 import eventlet
+from bs4 import BeautifulSoup
 
 from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler_instance.constants.strings import MESSAGE_STRINGS, GENERIC_STRINGS
@@ -21,12 +22,12 @@ class webRequestManager:
         try:
             with eventlet.Timeout(CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT):
                 page = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=proxies, allow_redirects=True, )
-                m_html = page.content.decode(GENERIC_STRINGS.S_ISO)
+                soup = BeautifulSoup(page.content.decode('utf-8', 'ignore'))
 
             if page == "" or page.status_code != 200:
                 return p_url, False, None
             else:
-                return page.url, True, m_html
+                return page.url, True, str(soup)
 
         except Exception as e:
             log.g().i(MESSAGE_STRINGS.S_URL_PROCESSING_ERROR + " : " + p_url + " : " + str(e))

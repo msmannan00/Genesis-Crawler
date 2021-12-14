@@ -27,7 +27,7 @@ class parse_controller:
 
             try:
                 return True, index_model(p_base_url_model = p_base_url_model, p_title = m_title, p_description = m_description, p_correct_keyword = m_correct_keyword, p_incorrect_keyword = m_incorrect_keyword, p_uniary_tfidf_score = m_uniary_tfidf_score, p_binary_tfidf_score = m_binary_tfidf_score, p_validity_score = m_validity_score,p_content_type = m_content_type,  p_sub_url = m_sub_url, p_images = m_images, p_documents = m_documents, p_videos = m_videos), m_url_status
-            except Exception:
+            except Exception as ex:
                 pass
         return False, None, m_url_status
 

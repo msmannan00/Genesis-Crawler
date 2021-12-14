@@ -7,7 +7,7 @@ class GENERIC_STRINGS:
     S_SEPERATOR = " : "
     S_UTF8_ENCODING = "utf-8"
     S_ONION_EXTENTION = ".onion"
-    S_ISO = "ISO-8859-1"
+    S_ISO = "unicode-escape"
 
 class TOR_STRINGS:
     S_SOCKS_HTTP_PROXY = "socks5h://127.0.0.1:"

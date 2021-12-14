@@ -58,12 +58,11 @@ class file_parse_manager:
 
                     if m_status:
                         key = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
-                        # print("FUCK1 : " + str(p_url) + " : " + m_url + " : " + key)
 
                         m_content_type = m_response.headers['Content-Type'].split('/')[0]
                         m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
 
-                        if m_content_type=="gif" or m_content_type != "image" or len(m_response.content) < 20000 or " html" in m_response.content:
+                        if m_content_type=="gif" or m_content_type != "image" or len(m_response.content) < 15000 or " html" in str(m_response.content):
                             continue
 
                         # LOAD_TRUNCATED_IMAGES = False line from /usr/lib/python3/dist-packages/PIL/ImageFile.py:40 to LOAD_TRUNCATED_IMAGES = True
@@ -79,12 +78,12 @@ class file_parse_manager:
                         log.g().i(MESSAGE_STRINGS.S_FILE_PARSED + GENERIC_STRINGS.S_SEPERATOR + m_url + " : " + str(threading.get_native_id()))
                         if m_classifier_response[m_url_path]['unsafe'] > 0.5:
                             m_porn_image_count += 1
-                            self.__m_images[m_url] = 0
-                            m_filtered_list.append(image_model(m_url, 1))
+                            self.__m_images[m_url] = 'a'
+                            m_filtered_list.append(image_model(m_url, 'a'))
 
                         else:
-                            self.__m_images[m_url] = 1
-                            m_filtered_list.append(image_model(m_url, 0))
+                            self.__m_images[m_url] = 'g'
+                            m_filtered_list.append(image_model(m_url, 'g'))
                         os.remove(m_url_path)
 
                         self.__m_duplication_url_handler.insert(m_url)

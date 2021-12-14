@@ -36,6 +36,11 @@ class html_parse_manager(HTMLParser, ABC):
         self.m_paragraph_count = 0
         self.rec = PARSE_TAGS.S_NONE
         self.m_base_host_url = helper_method.get_host_url(m_base_url.m_url)
+        self._meta_description = GENERIC_STRINGS.S_EMPTY
+        self.m_query_url = 0
+
+        # End Tag data redirection
+        self.m_para_count = 0
 
         # find url type and populate the list respectively
 
@@ -56,13 +61,16 @@ class html_parse_manager(HTMLParser, ABC):
 
                 if validators.url(p_url):
                     suffix = ''.join(pathlib.Path(p_url).suffixes)
+                    m_host_url = helper_method.get_host_url(p_url)
                     if mime is None or mime != "text/html":
-                        m_host_url = helper_method.get_host_url(p_url)
                         if suffix in CRAWL_SETTINGS_CONSTANTS.S_DOC_TYPES and len(self.m_doc_url) < 10:
                             self.m_doc_url.append(p_url)
                         elif str(mime).startswith("video") and len(self.m_video_url) < 10:
                             self.m_video_url.append(p_url)
-                        elif m_host_url.__contains__(".onion"):
+                    elif m_host_url.__contains__(".onion"):
+                        if m_host_url.__contains__("?"):
+                            self.m_query_url+=1
+                        if self.m_query_url < 5:
                             self.m_sub_url.append(p_url)
 
 
@@ -74,7 +82,7 @@ class html_parse_manager(HTMLParser, ABC):
 
         if p_tag == 'img':
             for value in p_attrs:
-                if value[0] == 'src' and not helper_method.is_url_base_64(value[1]) and len(self.m_image_url)<50:
+                if value[0] == 'src' and not helper_method.is_url_base_64(value[1]) and len(self.m_image_url)<35:
                     # Joining Relative URL
                     m_temp_base_url = self.m_base_url
                     if not m_temp_base_url.m_url.endswith("/"):
@@ -86,11 +94,18 @@ class html_parse_manager(HTMLParser, ABC):
         elif p_tag == 'title':
             self.rec = PARSE_TAGS.S_TITLE
 
-        elif p_tag == 'h1':
+        elif p_tag == 'h1' or p_tag == 'h2' or p_tag == 'h3' or p_tag == 'h4':
             self.rec = PARSE_TAGS.S_HEADER
+
+        elif p_tag == 'span' and self.m_para_count==0:
+            self.rec = PARSE_TAGS.S_SPAN
+
+        elif p_tag == 'li' or p_tag == 'br':
+            self.rec = PARSE_TAGS.S_PARAGRAPH
 
         elif p_tag == 'p':
             self.rec = PARSE_TAGS.S_PARAGRAPH
+            self.m_para_count+=1
 
         elif p_tag == 'meta':
             try:
@@ -98,6 +113,7 @@ class html_parse_manager(HTMLParser, ABC):
                     if len(p_attrs) > 1 and len(p_attrs[1]) > 0 and p_attrs[1][0] == 'content' and p_attrs[1][
                         1] is not None:
                         self.m_description = p_attrs[1][1]
+                        self._meta_description = p_attrs[1][1]
                 elif p_attrs[0][1] == 'keywords':
                     if len(p_attrs) > 1 and len(p_attrs[1]) > 0 and p_attrs[1][0] == 'content' and p_attrs[1][
                         1] is not None:
@@ -107,18 +123,39 @@ class html_parse_manager(HTMLParser, ABC):
         else:
             self.rec = PARSE_TAGS.S_NONE
 
+    def handle_endtag(self, p_tag):
+        if p_tag == 'p':
+            self.m_para_count -= 1
+        self.rec = PARSE_TAGS.S_NONE
+
     def handle_data(self, p_data):
         if self.rec == PARSE_TAGS.S_HEADER:
-            self.m_description = self.m_description + spell_checker_handler.get_instance().extract_valid_validator(p_data)
+            self.__add_to_description(p_data)
         if self.rec == PARSE_TAGS.S_TITLE:
             self.m_title = p_data
         elif self.rec == PARSE_TAGS.S_META and len(self.m_title) > 0:
             self.m_title = p_data
         elif self.rec == PARSE_TAGS.S_PARAGRAPH:
-            self.m_description = self.m_description + spell_checker_handler.get_instance().extract_valid_validator(p_data)
+            self.__add_to_description(p_data)
             self.m_paragraph_count += 1
-        self.rec = PARSE_TAGS.S_NONE
+        elif self.rec == PARSE_TAGS.S_SPAN and p_data.count(' ')>5:
+            self.__add_to_description(p_data)
+        elif self.rec == PARSE_TAGS.S_NONE:
+            if self.m_para_count > 0:
+                self.__add_to_description(p_data)
+
         # creating keyword shared_model for webpage representation
+
+    def __add_to_description(self, p_data):
+        if p_data.count(' ')>2 and p_data not in self.m_description:
+            p_data = re.sub('[^A-Za-z0-9 ,;"\]\[/.+-;!\'@#$%^&*_+=]', '', p_data)
+            p_data = re.sub(' +', ' ', p_data)
+            p_data = re.sub(r'^\W*', '', p_data)
+
+            if len(self.m_description)>2:
+                self.m_description = self.m_description + spell_checker_handler.get_instance().extract_valid_validator(p_data.lower())
+            else:
+                self.m_description = self.m_description + spell_checker_handler.get_instance().extract_valid_validator(p_data.capitalize())
 
     def __set_keyword_model(self, p_valid_keywords, p_invalid_keywords):
         return p_valid_keywords, p_invalid_keywords
@@ -138,6 +175,7 @@ class html_parse_manager(HTMLParser, ABC):
         # --------------- Text Preprocessing --------------- #
 
     def __clean_html(self, m_query):
+        m_query = m_query  + " " + self.m_title + " " + self._meta_description
         m_query = re.sub('\W+', ' ', m_query)
         m_query = m_query.lower().split()
 
@@ -186,13 +224,12 @@ class html_parse_manager(HTMLParser, ABC):
 
         # ----------------- Data Recievers -----------------
 
-
-
     def __get_title(self):
         return helper_method.strip_special_character(self.m_title).strip()
 
     def __get_description(self):
         clean_description = helper_method.strip_special_character(self.m_description)
+
         return clean_description
 
     def __get_keyword(self):
