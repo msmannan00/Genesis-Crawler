@@ -1,60 +1,41 @@
-# Tor state file last generated on 2021-12-14 18:21:27 local time
+# Tor state file last generated on 2021-12-18 12:50:37 local time
 # Other times below are in UTC
 # You *do not* need to edit this file.
 
-CircuitBuildTimeBin 525 6
-CircuitBuildTimeBin 575 31
-CircuitBuildTimeBin 625 41
-CircuitBuildTimeBin 675 73
-CircuitBuildTimeBin 725 70
-CircuitBuildTimeBin 775 87
-CircuitBuildTimeBin 825 99
-CircuitBuildTimeBin 875 84
-CircuitBuildTimeBin 925 80
-CircuitBuildTimeBin 975 64
-CircuitBuildTimeBin 1025 64
-CircuitBuildTimeBin 1075 45
-CircuitBuildTimeBin 1125 46
-CircuitBuildTimeBin 1175 38
-CircuitBuildTimeBin 1225 21
-CircuitBuildTimeBin 1275 21
-CircuitBuildTimeBin 1325 24
-CircuitBuildTimeBin 1375 20
-CircuitBuildTimeBin 1425 5
-CircuitBuildTimeBin 1475 8
-CircuitBuildTimeBin 1525 7
-CircuitBuildTimeBin 1575 6
-CircuitBuildTimeBin 1625 4
+CircuitBuildTimeBin 625 1
+CircuitBuildTimeBin 675 2
+CircuitBuildTimeBin 725 8
+CircuitBuildTimeBin 775 10
+CircuitBuildTimeBin 825 11
+CircuitBuildTimeBin 875 10
+CircuitBuildTimeBin 925 10
+CircuitBuildTimeBin 975 9
+CircuitBuildTimeBin 1025 21
+CircuitBuildTimeBin 1075 5
+CircuitBuildTimeBin 1125 8
+CircuitBuildTimeBin 1175 5
+CircuitBuildTimeBin 1225 6
+CircuitBuildTimeBin 1275 6
+CircuitBuildTimeBin 1325 3
+CircuitBuildTimeBin 1375 6
+CircuitBuildTimeBin 1425 3
+CircuitBuildTimeBin 1475 6
+CircuitBuildTimeBin 1525 1
+CircuitBuildTimeBin 1575 1
+CircuitBuildTimeBin 1625 3
 CircuitBuildTimeBin 1675 3
 CircuitBuildTimeBin 1725 2
-CircuitBuildTimeBin 1775 4
-CircuitBuildTimeBin 1825 2
-CircuitBuildTimeBin 1875 1
-CircuitBuildTimeBin 1925 1
-CircuitBuildTimeBin 1975 2
-CircuitBuildTimeBin 2125 1
-CircuitBuildTimeBin 2175 2
-CircuitBuildTimeBin 2225 2
-CircuitBuildTimeBin 2525 1
-CircuitBuildTimeBin 2625 1
-CircuitBuildTimeBin 2775 2
-CircuitBuildTimeBin 2825 1
-CircuitBuildTimeBin 3075 1
-CircuitBuildTimeBin 3175 2
-CircuitBuildTimeBin 3275 1
-CircuitBuildTimeBin 5225 1
-CircuitBuildTimeBin 8875 1
-CircuitBuildTimeBin 9775 1
-CircuitBuildTimeBin 10325 1
-CircuitBuildTimeBin 10875 1
-CircuitBuildTimeBin 11225 1
-CircuitBuildTimeBin 12875 1
-CircuitBuildTimeBin 14525 1
-CircuitBuildTimeBin 20975 1
-CircuitBuildTimeBin 38825 1
-CircuitBuildTimeBin 41075 1
-CircuitBuildTimeBin 47625 1
-CircuitBuildAbandonedCount 15
+CircuitBuildTimeBin 1775 1
+CircuitBuildTimeBin 1825 3
+CircuitBuildTimeBin 1875 3
+CircuitBuildTimeBin 2025 1
+CircuitBuildTimeBin 2175 1
+CircuitBuildTimeBin 2225 1
+CircuitBuildTimeBin 2275 2
+CircuitBuildTimeBin 2775 1
+CircuitBuildTimeBin 3725 1
+CircuitBuildTimeBin 9475 1
+CircuitBuildAbandonedCount 5
 Dormant 0
 Guard in=default rsa_id=7376A24FFD82EF36CF1894FC887A6EBD8E9752C8 nickname=6cloudnotes6 sampled_on=2021-11-23T12:08:14 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-30T17:48:31 confirmed_idx=17 pb_circ_attempts=63.000000 pb_circ_successes=59.000000 pb_successful_circuits_closed=47.000000 pb_collapsed_circuits=12.000000 pb_timeouts=50.000000
 Guard in=default rsa_id=844AE9CAD04325E955E2BE1521563B79FE7094B7 nickname=Smeerboel sampled_on=2021-11-25T08:08:16 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-02T07:49:50 confirmed_idx=39 pb_circ_attempts=4.000000 pb_circ_successes=4.000000 pb_successful_circuits_closed=2.000000 pb_collapsed_circuits=2.000000 pb_timeouts=4.000000
@@ -66,26 +47,26 @@ Guard in=default rsa_id=54DE63F4587058B79152A75A0238D7F7A0279215 nickname=uzieka
 Guard in=default rsa_id=C8DE26D2D119BE7F509E672EE1A3D5FB25DCBA97 nickname=pros1 sampled_on=2021-11-23T00:33:29 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-08T02:38:37 confirmed_idx=53 pb_circ_attempts=1.000000 pb_circ_successes=1.000000 pb_successful_circuits_closed=1.000000 pb_timeouts=1.000000
 Guard in=default rsa_id=26655E1DD93751B652AC8D534495ABB36415BEC7 nickname=Felicette sampled_on=2021-11-24T10:29:34 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-30T08:25:46 confirmed_idx=43 pb_circ_attempts=2.000000 pb_circ_successes=2.000000 pb_successful_circuits_closed=1.000000 pb_collapsed_circuits=1.000000 pb_timeouts=2.000000
 Guard in=default rsa_id=2F8B9500DC98C13FD28CC51E47D3416DE423ED78 nickname=rinderwahnRelay31L sampled_on=2021-11-27T12:06:19 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-06T22:18:08 confirmed_idx=15 pb_circ_attempts=80.000000 pb_circ_successes=79.000000 pb_successful_circuits_closed=60.000000 pb_collapsed_circuits=19.000000 pb_timeouts=64.000000
-Guard in=default rsa_id=23722976B04384E41AE71B45E040051AE6E398F2 nickname=TorZabehlice2 sampled_on=2021-11-23T23:24:11 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-03T11:06:01 confirmed_idx=1 pb_use_attempts=70.562541 pb_use_successes=70.562541 pb_circ_attempts=273.898092 pb_circ_successes=259.186545 pb_successful_circuits_closed=259.186517 pb_collapsed_circuits=0.000006 pb_unusable_circuits=0.000022 pb_timeouts=11.313768
-Guard in=default rsa_id=EAA823552F959DFD038E9AC8FA89345A738B6C00 nickname=Unnamed sampled_on=2021-11-28T09:42:29 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-25T07:24:48 confirmed_idx=0 pb_use_attempts=62.250000 pb_use_successes=62.250000 pb_circ_attempts=173.125000 pb_circ_successes=170.375000 pb_successful_circuits_closed=170.250000 pb_unusable_circuits=0.125000 pb_timeouts=5.000000
+Guard in=default rsa_id=23722976B04384E41AE71B45E040051AE6E398F2 nickname=TorZabehlice2 sampled_on=2021-11-23T23:24:11 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-03T11:06:01 confirmed_idx=1 pb_use_attempts=90.060791 pb_use_successes=90.060791 pb_circ_attempts=275.237261 pb_circ_successes=270.023318 pb_successful_circuits_closed=265.523314 pb_collapsed_circuits=4.500000 pb_unusable_circuits=0.000003 pb_timeouts=67.164221
+Guard in=default rsa_id=EAA823552F959DFD038E9AC8FA89345A738B6C00 nickname=Unnamed sampled_on=2021-11-28T09:42:29 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-25T07:24:48 confirmed_idx=0 pb_use_attempts=412.000870 pb_use_successes=411.000870 pb_circ_attempts=418.843804 pb_circ_successes=416.843804 pb_successful_circuits_closed=415.843804 pb_unusable_circuits=1.000000 pb_timeouts=34.593781
 Guard in=default rsa_id=675F05FDECF1DCF836ED274D65EBE919C4743B91 nickname=fiedlerRelay06 sampled_on=2021-11-27T08:40:01 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-08T13:38:36 confirmed_idx=9 pb_circ_attempts=131.000000 pb_circ_successes=123.000000 pb_successful_circuits_closed=100.000000 pb_collapsed_circuits=23.000000 pb_timeouts=97.000000
 Guard in=default rsa_id=42A955B09A4E327FBFB46A08F6E21705271CCA12 nickname=0xdeadbeef sampled_on=2021-11-25T00:24:36 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-29T19:13:44 confirmed_idx=10 pb_circ_attempts=144.000000 pb_circ_successes=140.000000 pb_successful_circuits_closed=114.000000 pb_collapsed_circuits=26.000000 pb_timeouts=114.000000
 Guard in=default rsa_id=172496BD9DB304AE0C242622599A45B1C83ECDBC nickname=ardvarkwhisperer sampled_on=2021-11-25T09:01:48 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-10T04:43:07 confirmed_idx=56 pb_circ_attempts=1.000000 pb_circ_successes=1.000000 pb_successful_circuits_closed=1.000000 pb_timeouts=1.000000
 Guard in=default rsa_id=12D552E8AF7AA2B71B218B5BBF6A5FEFA6F26BA0 nickname=TOR2DFNrelA sampled_on=2021-11-24T13:41:34 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-02T15:32:37 confirmed_idx=45 pb_circ_attempts=2.000000 pb_circ_successes=2.000000 pb_successful_circuits_closed=2.000000 pb_timeouts=2.000000
 Guard in=default rsa_id=EE18E891CD108E2A78438DD1DABC5B944C8305DB nickname=n1c3r3l4y sampled_on=2021-11-22T06:32:48 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-04T15:39:23 confirmed_idx=26 pb_circ_attempts=9.000000 pb_circ_successes=9.000000 pb_successful_circuits_closed=7.000000 pb_collapsed_circuits=2.000000 pb_timeouts=8.000000
 Guard in=default rsa_id=CEDB8AB22915097A3A14F63F28E1E43F86CBECC0 nickname=knight sampled_on=2021-11-23T20:00:05 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-02T18:39:26 confirmed_idx=48 pb_circ_attempts=1.000000 pb_circ_successes=1.000000 pb_successful_circuits_closed=1.000000 pb_timeouts=1.000000
-Guard in=default rsa_id=F4FB9A80308AE71CA8057F4158DD6B3C8EE375F9 nickname=Unnamed sampled_on=2021-12-01T08:59:55 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-22T21:22:03 confirmed_idx=2 pb_use_attempts=93.514160 pb_use_successes=30.006592 pb_circ_attempts=278.719068 pb_circ_successes=264.352894 pb_successful_circuits_closed=140.079456 pb_collapsed_circuits=1.269532 pb_unusable_circuits=123.003906 pb_timeouts=128.889522
+Guard in=default rsa_id=F4FB9A80308AE71CA8057F4158DD6B3C8EE375F9 nickname=Unnamed sampled_on=2021-12-01T08:59:55 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-22T21:22:03 confirmed_idx=2 pb_use_attempts=130.000000 pb_use_successes=130.000000 pb_circ_attempts=265.464883 pb_circ_successes=257.294112 pb_successful_circuits_closed=241.759932 pb_collapsed_circuits=0.158692 pb_unusable_circuits=15.375488 pb_timeouts=28.611190
 Guard in=default rsa_id=B3D398B386FAF2CB78B447FBA46BF2648C3F48CD nickname=punkpop sampled_on=2021-11-29T14:52:09 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-02T21:11:52 confirmed_idx=6 pb_use_attempts=37.000000 pb_use_successes=37.000000 pb_circ_attempts=176.000000 pb_circ_successes=163.000000 pb_successful_circuits_closed=150.000000 pb_collapsed_circuits=13.000000 pb_timeouts=105.000000
 Guard in=default rsa_id=3A51E32A303A0E0A3AB8AA1CCBE98FF8791E2341 nickname=40e62fcce23032 sampled_on=2021-12-04T09:38:21 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-01T20:24:39 confirmed_idx=51 pb_circ_attempts=2.000000 pb_circ_successes=2.000000 pb_successful_circuits_closed=2.000000 pb_timeouts=2.000000
 Guard in=default rsa_id=E130296683B896A117CE5DA531A5645644178734 nickname=legoman sampled_on=2021-11-30T02:22:56 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-28T21:01:36 confirmed_idx=27 pb_circ_attempts=11.000000 pb_circ_successes=11.000000 pb_successful_circuits_closed=8.000000 pb_collapsed_circuits=3.000000 pb_timeouts=10.000000
-Guard in=default rsa_id=CE6A9A13BB16F845C531F72923AB5D72C2C91848 nickname=morgana sampled_on=2021-12-01T19:50:31 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-03T12:43:56 confirmed_idx=38 pb_circ_attempts=3.000000 pb_circ_successes=3.000000 pb_collapsed_circuits=3.000000 pb_timeouts=3.000000
-Guard in=default rsa_id=8421AEB2D6F570F155BCF595070DC6C4657BD033 nickname=bauruine sampled_on=2021-11-25T23:30:53 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-28T00:29:28 confirmed_idx=4 pb_use_attempts=1.000000 pb_use_successes=1.000000 pb_circ_attempts=214.000000 pb_circ_successes=207.000000 pb_successful_circuits_closed=173.500000 pb_collapsed_circuits=33.500000 pb_timeouts=186.000000
+Guard in=default rsa_id=CE6A9A13BB16F845C531F72923AB5D72C2C91848 nickname=morgana sampled_on=2021-12-01T19:50:31 sampled_by=0.4.3.4-rc unlisted_since=2021-12-16T06:21:38 listed=0 confirmed_on=2021-12-03T12:43:56 confirmed_idx=38 pb_circ_attempts=3.000000 pb_circ_successes=3.000000 pb_collapsed_circuits=3.000000 pb_timeouts=3.000000
+Guard in=default rsa_id=8421AEB2D6F570F155BCF595070DC6C4657BD033 nickname=bauruine sampled_on=2021-11-25T23:30:53 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-28T00:29:28 confirmed_idx=4 pb_use_attempts=1.000000 pb_use_successes=1.000000 pb_circ_attempts=228.000000 pb_circ_successes=221.000000 pb_successful_circuits_closed=185.500000 pb_collapsed_circuits=35.500000 pb_timeouts=199.000000
 Guard in=default rsa_id=586803B7EDF9E28D99B54097724287FB7109771A nickname=guenthergraubein sampled_on=2021-12-02T16:09:18 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-05T03:29:41 confirmed_idx=21 pb_circ_attempts=31.000000 pb_circ_successes=29.000000 pb_successful_circuits_closed=23.000000 pb_collapsed_circuits=6.000000 pb_timeouts=27.000000
 Guard in=default rsa_id=ED861855C655E373547D4C4E86A35C5A313FA497 nickname=tutor sampled_on=2021-11-29T04:09:29 sampled_by=0.4.3.4-rc unlisted_since=2021-12-07T19:43:55 listed=0
-Guard in=default rsa_id=9835D50D56C7871A3C1BA1C8A86865D4810CDC70 nickname=LadyTremaine1 sampled_on=2021-11-30T11:08:33 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-09T08:46:29 confirmed_idx=28 pb_circ_attempts=8.000000 pb_circ_successes=6.000000 pb_successful_circuits_closed=5.000000 pb_collapsed_circuits=1.000000 pb_timeouts=7.000000
+Guard in=default rsa_id=9835D50D56C7871A3C1BA1C8A86865D4810CDC70 nickname=LadyTremaine1 sampled_on=2021-11-30T11:08:33 sampled_by=0.4.3.4-rc unlisted_since=2021-12-16T03:13:31 listed=0 confirmed_on=2021-12-09T08:46:29 confirmed_idx=28 pb_circ_attempts=8.000000 pb_circ_successes=6.000000 pb_successful_circuits_closed=5.000000 pb_collapsed_circuits=1.000000 pb_timeouts=7.000000
 Guard in=default rsa_id=355140498339A8FEBBA1453E93A3FAE8F7973968 nickname=holdspot sampled_on=2021-11-25T17:41:25 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-04T06:50:38 confirmed_idx=42 pb_circ_attempts=2.000000 pb_circ_successes=2.000000 pb_successful_circuits_closed=2.000000 pb_timeouts=2.000000
 Guard in=default rsa_id=FC4D03403ECD90463198B9F2F81E0B37ED7AFE1D nickname=Valsec sampled_on=2021-12-04T03:45:41 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-03T00:57:11 confirmed_idx=35 pb_circ_attempts=4.000000 pb_circ_successes=4.000000 pb_successful_circuits_closed=3.000000 pb_collapsed_circuits=1.000000 pb_timeouts=4.000000
-Guard in=default rsa_id=37DDF1906EE3DB96130A717EA54667C64DAC78DF nickname=pKD9jZ19N1LiTvsjOF3 sampled_on=2021-11-26T03:32:53 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-04T08:48:13 confirmed_idx=3 pb_use_attempts=79.500000 pb_use_successes=79.500000 pb_circ_attempts=272.000000 pb_circ_successes=259.000000 pb_successful_circuits_closed=243.000000 pb_collapsed_circuits=16.000000 pb_timeouts=102.000000
+Guard in=default rsa_id=37DDF1906EE3DB96130A717EA54667C64DAC78DF nickname=pKD9jZ19N1LiTvsjOF3 sampled_on=2021-11-26T03:32:53 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-04T08:48:13 confirmed_idx=3 pb_use_attempts=79.500000 pb_use_successes=79.500000 pb_circ_attempts=284.000000 pb_circ_successes=271.000000 pb_successful_circuits_closed=255.000000 pb_collapsed_circuits=16.000000 pb_timeouts=113.000000
 Guard in=default rsa_id=64CB2B32C10ADD4B93D725B7DED238CCCD6D6DBA nickname=permanentrecord sampled_on=2021-12-05T05:58:15 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-05T00:53:11 confirmed_idx=41 pb_circ_attempts=3.000000 pb_circ_successes=3.000000 pb_successful_circuits_closed=1.000000 pb_collapsed_circuits=2.000000 pb_timeouts=3.000000
 Guard in=default rsa_id=AAC9F9AD5CE7E065C4EE5FA7ACF511F6389FCFA3 nickname=zitar sampled_on=2021-12-04T16:13:42 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-05T01:00:10 confirmed_idx=29 pb_circ_attempts=12.000000 pb_circ_successes=10.000000 pb_successful_circuits_closed=8.000000 pb_collapsed_circuits=2.000000 pb_timeouts=9.000000
 Guard in=default rsa_id=9485CE6906065E50CEC3AB5833713E975EE52C2B nickname=Unnamed sampled_on=2021-12-04T16:00:50 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-04T10:06:39 confirmed_idx=23 pb_use_attempts=2.000000 pb_use_successes=2.000000 pb_circ_attempts=36.000000 pb_circ_successes=36.000000 pb_successful_circuits_closed=20.000000 pb_collapsed_circuits=16.000000 pb_timeouts=27.000000
@@ -116,7 +97,7 @@ Guard in=default rsa_id=D8A2D0080B0C73E1DC0EC9F33B497F64E5FB3F52 nickname=porthi
 Guard in=default rsa_id=783BEC4F07815D47307676C71D35FC3B7C7A84C8 nickname=sikrelay sampled_on=2021-11-30T12:27:49 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-09T19:15:08 confirmed_idx=30 pb_circ_attempts=6.000000 pb_circ_successes=6.000000 pb_successful_circuits_closed=6.000000 pb_timeouts=4.000000
 Guard in=default rsa_id=FC049C13A0FD45D3D7E454B7E72A57CEE15AFF69 nickname=HyNETRelay sampled_on=2021-12-04T19:44:10 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-01T02:21:08 confirmed_idx=58 pb_circ_attempts=1.000000 pb_circ_successes=1.000000 pb_successful_circuits_closed=1.000000 pb_timeouts=1.000000
 Guard in=default rsa_id=5B9086D4BFB9EA36C95897DAED72FC3973847B43 nickname=bauruine sampled_on=2021-12-02T15:40:09 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-04T08:52:16 confirmed_idx=31 pb_circ_attempts=7.000000 pb_circ_successes=7.000000 pb_successful_circuits_closed=3.000000 pb_collapsed_circuits=4.000000 pb_timeouts=7.000000
-LastWritten 2021-12-14 13:21:27
-MinutesSinceUserActivity 40
+LastWritten 2021-12-18 07:50:37
+MinutesSinceUserActivity 9
 TorVersion Tor 0.4.3.4-rc
-TotalBuildTimes 1000
+TotalBuildTimes 160
