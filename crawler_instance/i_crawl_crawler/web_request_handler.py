@@ -2,11 +2,11 @@ import eventlet
 from bs4 import BeautifulSoup
 
 from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from crawler_instance.constants.strings import MESSAGE_STRINGS, GENERIC_STRINGS
+from crawler_instance.constants.strings import MESSAGE_STRINGS, STRINGS
 from crawler_instance.log_manager.log_controller import log
 from crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
-from genesis_crawler_services.constants.keys import tor_keys
+from crawler_services.constants.keys import tor_keys
 
 
 class webRequestManager:
@@ -22,7 +22,7 @@ class webRequestManager:
         try:
             with eventlet.Timeout(CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT):
                 page = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=proxies, allow_redirects=True, )
-                soup = BeautifulSoup(page.content.decode('utf-8', 'ignore'))
+                soup = BeautifulSoup(page.content.decode('utf-8', 'ignore'),features="lxml")
 
             if page == "" or page.status_code != 200:
                 return p_url, False, None
@@ -30,7 +30,7 @@ class webRequestManager:
                 return page.url, True, str(soup)
 
         except Exception as e:
-            log.g().i(MESSAGE_STRINGS.S_URL_PROCESSING_ERROR + " : " + p_url + " : " + str(e))
+            log.g().e("E1 : " + MESSAGE_STRINGS.S_URL_PROCESSING_ERROR + " : " + p_url + " : " + str(e))
             return p_url, False, None
 
 
@@ -44,7 +44,7 @@ class webRequestManager:
                 return True, page.headers
 
         except Exception as e:
-            log.g().i(MESSAGE_STRINGS.S_URL_PROCESSING_ERROR + GENERIC_STRINGS.S_SEPERATOR + p_url + GENERIC_STRINGS.S_SEPERATOR + str(e))
+            log.g().e("E2 : " + MESSAGE_STRINGS.S_URL_PROCESSING_ERROR + STRINGS.S_SEPERATOR + p_url + STRINGS.S_SEPERATOR + str(e))
             return False, None
 
     # Load Header - used to get header without actually downloading the content
@@ -56,5 +56,5 @@ class webRequestManager:
                 response = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=proxies, allow_redirects=True, )
                 return True, response
         except Exception as e:
-            log.g().i(MESSAGE_STRINGS.S_URL_PROCESSING_ERROR + GENERIC_STRINGS.S_SEPERATOR + p_url + GENERIC_STRINGS.S_SEPERATOR + str(e))
+            log.g().e("E3 : " + MESSAGE_STRINGS.S_URL_PROCESSING_ERROR + STRINGS.S_SEPERATOR + p_url + STRINGS.S_SEPERATOR + str(e))
             return False, None

@@ -13,11 +13,11 @@ from urllib3 import Retry
 from crawler_instance.constants import app_status
 from crawler_instance.constants.app_status import TOR_STATUS
 from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from crawler_instance.constants.strings import GENERIC_STRINGS, TOR_STRINGS
+from crawler_instance.constants.strings import STRINGS, TOR_STRINGS
 from crawler_instance.shared_model.request_handler import request_handler
 from crawler_instance.tor_controller.tor_enums import TOR_COMMANDS, TOR_CMD_COMMANDS, TOR_STATUS
 from stem.control import Controller
-from genesis_crawler_services.constants.keys import tor_keys
+from crawler_services.constants.keys import tor_keys
 
 # Tor Handler - Handle and manage tor request
 
@@ -66,11 +66,11 @@ class tor_controller(request_handler):
 
         while True:
             nextline = self.__m_tor_shell.stdout.readline()
-            m_log = nextline.decode(GENERIC_STRINGS.S_UTF8_ENCODING)
+            m_log = nextline.decode(STRINGS.S_UTF8_ENCODING)
             if len(m_log)>5 and app_status.TOR_STATUS.S_TOR_STATUS != TOR_STATUS.S_RUNNING:
                 print(m_log)
 
-            if nextline == GENERIC_STRINGS.S_EMPTY:
+            if nextline == STRINGS.S_EMPTY:
                 break
 
             if m_log.__contains__("Bootstrapped 100% (done)"):
@@ -89,7 +89,7 @@ class tor_controller(request_handler):
         os.system(TOR_STRINGS.S_RELEASE_PORT)
 
     def __on_start_tor(self):
-        self.__m_tor_thread = threading.Thread(target=self.__on_start_subprocess, args=[TOR_CMD_COMMANDS.S_START.value + GENERIC_STRINGS.S_EMPTY_SPACE + str(app_status.TOR_STATUS.S_TOR_CONNECTION_PORT) + GENERIC_STRINGS.S_EMPTY_SPACE + str(app_status.TOR_STATUS.S_TOR_CONTROL_PORT)])
+        self.__m_tor_thread = threading.Thread(target=self.__on_start_subprocess, args=[TOR_CMD_COMMANDS.S_START.value + STRINGS.S_EMPTY_SPACE + str(app_status.TOR_STATUS.S_TOR_CONNECTION_PORT) + STRINGS.S_EMPTY_SPACE + str(app_status.TOR_STATUS.S_TOR_CONTROL_PORT)])
         self.__m_tor_thread.start()
 
     def __on_stop_tor(self):

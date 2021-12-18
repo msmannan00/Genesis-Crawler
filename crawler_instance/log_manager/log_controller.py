@@ -1,3 +1,5 @@
+from termcolor import colored
+
 
 class log:
 
@@ -14,9 +16,17 @@ class log:
         log.__instance = self
 
     # Info Logs
+    # Info Logs
     def i(self, p_log):
-        print(p_log)
+        print(colored(p_log, 'cyan'))
+
+    # Info Logs
+    def s(self, p_log):
+        print(colored(p_log, 'green'))
+
+    def w(self, p_log):
+        print(colored(p_log, 'yellow'))
 
     # Error Logs
     def e(self, p_log):
-        print(p_log)
+        print(colored(p_log, 'red'))

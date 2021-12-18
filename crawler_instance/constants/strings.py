@@ -1,7 +1,7 @@
 from crawler_instance.constants.app_status import TOR_STATUS
 
 
-class GENERIC_STRINGS:
+class STRINGS:
     S_EMPTY = ""
     S_EMPTY_SPACE = " "
     S_SEPERATOR = " : "
@@ -18,13 +18,21 @@ class PARSE_STRINGS:
     S_CONTENT_LENGTH_HEADER = 'content-length'
 
 class MESSAGE_STRINGS:
-    S_URL_PROCESSING_ERROR = "ERROR PROCESSING"
-    S_FILE_PARSED = "[1] Successfully Parsed File"
-    S_URL_PARSED = "[1] Successfully Parsed URL"
-    S_BACKUP_PARSED = "[1] Successfully Saved Backup URL"
-    S_PROCESS_FINISHED_FAILURE = "[1] Processing Finished Failure"
-    S_PROCESSING_URL = "Processing URL"
-    S_PROCESS_FINISHED_SUCCESS = "[2] Processing Finished Success"
+    S_URL_PROCESSING_ERROR = "[1] ERROR PROCESSING"
+    S_FILE_PARSED = "[2] Successfully Parsed File"
+    S_URL_PARSED = "[3] Successfully Parsed URL"
+    S_BACKUP_PARSED = "[4] Successfully Saved Backup URL"
+    S_PROCESS_FINISHED_FAILURE = "[5] Processing Finished Failure"
+    S_PROCESSING_URL = "[6] Processing URL"
+    S_PROCESS_FINISHED_SUCCESS = "[7] Processing Finished Success"
+    S_LOW_YIELD_URL = "[8] Low Yield URL"
+    S_REINITIALIZING_CRAWLABLE_URL = "[1] REINITIALIZING CRAWLABLE URLS"
+    S_LOADING_BACKUP_URL = "[2] Loading Backup URL"
+    S_BACKUP_QUEUE_EMPTY = "[3] Backup Queue Empty"
 
 class SPELL_CHECKER_STRINGS:
     S_STOPWORD_LANGUAGE = "english"
+
+class ERROR_MESSAGES:
+    S_SINGLETON_EXCEPTION = "This class is a singleton"
+    S_DATABASE_FETCH_ERROR = "Database Load Error : Database Empty"

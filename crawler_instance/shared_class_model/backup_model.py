@@ -1,13 +1,13 @@
 # Local Imports
 from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from crawler_instance.constants.strings import GENERIC_STRINGS
+from crawler_instance.constants.strings import STRINGS
 
 
 class backup_model:
 
     # Local Variables
     m_parsed = False
-    m_host = GENERIC_STRINGS.S_EMPTY
+    m_host = STRINGS.S_EMPTY
     m_category = CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
     m_url_data = []
 

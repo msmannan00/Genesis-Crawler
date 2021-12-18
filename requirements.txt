@@ -17,7 +17,9 @@ socks
 requests[socks]
 requests
 Pillow
-
+termcolor
+stopwords
+punkt
 
 ###### Requirements with Version Specifiers ######
 simplejson==3.8.0
