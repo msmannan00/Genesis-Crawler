@@ -184,7 +184,6 @@ class html_parse_manager(HTMLParser, ABC):
                 self.m_binary_tf_words[m_binary_stemmed_word] = m_tf_binary_score
             else:
                 self.m_binary_tf_words[m_binary_stemmed_word] = round(1 / p_length, 3)
-
         pass
 
     def __generate_score(self, p_text):
