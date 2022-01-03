@@ -27,11 +27,13 @@ class MONGODB_COMMANDS(enum.Enum):
     S_COUNT_CRAWLED_URL = 23
 
 class MONGODB_COLLECTIONS:
-    S_INDEX_MODEL = 'index_model'
     S_BACKUP_MODEL = 'backup_model'
-    S_UNIQUE_HOST_MODEL = 'unique_host'
-    S_TFIDF_MODEL = 'tfidf_model'
     S_CRAWLABLE_URL_MODEL = 'crawlable_url_model'
+
+class MONGO_CONNECTIONS:
+    S_DATABASE_NAME = 'genesis-search'
+    S_DATABASE_PORT = 27017
+    S_DATABASE_IP = 'localhost'
 
 class MONGO_CRUD(enum.Enum):
     S_CREATE = '1'
@@ -45,14 +47,3 @@ class MONGODB_KEYS:
     S_DOCUMENT = 'm_document'
     S_FILTER = 'm_filter'
     S_VALUE = 'm_value'
-
-class MANAGE_USER_MESSAGES:
-    S_INSERT_FAILURE = "[1] Something unexpected happened while inserting"
-    S_INSERT_SUCCESS = "[2] Document Created Successfully"
-    S_UPDATE_FAILURE = "[3] Something unexpected happened while updating"
-    S_UPDATE_SUCCESS = "[4] Data Updated Successfully"
-    S_DELETE_FAILURE = "[5] Something unexpected happened while deleting"
-    S_DELETE_SUCCESS = "[6] Data Deleted Successfully"
-    S_READ_FAILURE = "[5] Something unexpected happened while reading"
-    S_READ_SUCCESS = "[6] Data Read Successfully"
-    S_COUNT_FAILURE = "[1] Something unexpected happened while counting"

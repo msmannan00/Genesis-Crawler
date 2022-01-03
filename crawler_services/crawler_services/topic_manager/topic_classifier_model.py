@@ -6,7 +6,8 @@ from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler_services.constants.constant import shared_constants, classifier_constants
 from crawler_services.constants.strings import GENERIC_STRINGS
 from crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_MODEL, TOPIC_CLASSFIER_MESSAGES
-from crawler_services.shared_model.request_handler import request_handler
+from crawler_shared_directory.request_manager.request_handler import request_handler
+
 
 class topic_classifier_model(request_handler):
 

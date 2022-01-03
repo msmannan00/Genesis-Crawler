@@ -2,6 +2,9 @@
 import copy
 from json import JSONEncoder
 
+from crawler_instance.helper_services.helper_method import helper_method
+
+
 class url_model:
 
     # Initializations

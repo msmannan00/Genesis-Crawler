@@ -1,10 +1,8 @@
-class shared_constants:
-    S_PROJECT_PATH = "C:\\Workspace\\Genesis-Crawler"
+from pathlib import Path
 
-class mongo_constants:
-    S_DATABASE_NAME = 'genesis'
-    S_DATABASE_PORT = 27017
-    S_DATABASE_IP = 'localhost'
+
+class shared_constants:
+    S_PROJECT_PATH = str(Path(__file__).parent.parent.parent)
 
 class spell_check_constants:
     S_SPELL_CHECK_LANGUAGE = "english"

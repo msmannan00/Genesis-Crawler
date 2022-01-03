@@ -20,7 +20,7 @@ class backup_model:
         self.m_url_data.append(subHostModel(p_sub_host, p_depth))
 
 
-# child shared_model of backup-shared_model to represent list
+# child request_manager1 of backup-request_manager1 to represent list
 class subHostModel:
 
     # Local Variables

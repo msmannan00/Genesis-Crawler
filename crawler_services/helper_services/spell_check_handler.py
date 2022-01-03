@@ -1,8 +1,8 @@
 # Local Imports
+import re
 import nltk
 
 from nltk import PorterStemmer
-from nltk.corpus import stopwords
 from crawler_instance.constants.strings import STRINGS, ERROR_MESSAGES
 from crawler_services.constants.constant import spell_check_constants
 from crawler_services.helper_services.helper_method import helper_method
@@ -10,7 +10,6 @@ from crawler_services.helper_services.helper_method import helper_method
 class spell_checker_handler:
     __instance = None
     __spell_check = None
-    __nltk_stopwords = None
     __m_porter_stemmer = None
 
     # Initializations
@@ -26,7 +25,6 @@ class spell_checker_handler:
         else:
             spell_checker_handler.__instance = self
             self.__spell_check = set(open(spell_check_constants.S_DICTIONARY_PATH).read().split())
-            self.__nltk_stopwords = stopwords.words(spell_check_constants.S_SPELL_CHECK_LANGUAGE)
             self.__m_porter_stemmer = PorterStemmer()
 
     def init_dict(self):
@@ -36,10 +34,21 @@ class spell_checker_handler:
         return self.__m_porter_stemmer.stem(p_word)
 
     def validate_word(self, p_word):
-        if helper_method.is_stop_word(p_word) is False and p_word in self.__spell_check:
+        if p_word in self.__spell_check:
             return True
         else:
             return False
+
+    def clean_invalid_token(self, p_text):
+        m_text = re.sub('[^A-Za-z0-9]+', ' ', p_text)
+        m_token_list = nltk.sent_tokenize(m_text)
+        m_text_cleaned = STRINGS.S_EMPTY
+
+        for m_token in m_token_list:
+            if helper_method.is_stop_word(m_token) is False and m_token in self.__spell_check:
+                m_text_cleaned += " " + self.stem_word(m_token)
+
+        return m_text_cleaned
 
     def validate_sentence(self, p_sentence):
         sentences = nltk.sent_tokenize(p_sentence)

@@ -1,16 +1,13 @@
 # Local Imports
 import time
 
+from thefuzz import fuzz
 from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler_instance.constants.strings import MESSAGE_STRINGS
 from crawler_instance.crawl_controller.crawl_enums import CRAWLER_STATUS
 from crawler_instance.i_crawl_crawler.i_crawl_enums import ICRAWL_CONTROLLER_COMMANDS, CRAWL_STATUS_TYPE
-from crawler_instance.log_manager.log_controller import log
-from crawler_instance.shared_model.request_handler import request_handler
-from crawler_services.crawler_services.content_duplication_manager.content_duplication_controller_local import \
-    content_duplication_controller_local
-from crawler_services.crawler_services.content_duplication_manager.content_duplication_enums import \
-    CONTENT_DUPLICATION_MANAGER
+from crawler_shared_directory.log_manager.log_controller import log
+from crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler_services.helper_services.helper_method import helper_method
 from crawler_instance.i_crawl_crawler.parse_controller import parse_controller
@@ -21,7 +18,7 @@ class i_crawl_controller(request_handler):
 
     __m_web_request_handler = None
     __m_duplication_handler = None
-    __m_content_duplication_handler = None
+    __m_content_duplication_handler = []
     __m_request_model = None
 
     __m_parsed_model = None
@@ -31,7 +28,6 @@ class i_crawl_controller(request_handler):
 
     def __init__(self):
         self.__m_duplication_handler = duplication_handler()
-        self.__m_content_duplication_handler = content_duplication_controller_local()
         self.__m_web_request_handler = webRequestManager()
 
     def __clean_sub_url(self, p_parsed_model):
@@ -45,14 +41,21 @@ class i_crawl_controller(request_handler):
 
         return p_parsed_model
 
+    def __validate_duplicate_content(self, p_content, p_url):
+        for m_document in self.__m_content_duplication_handler:
+            if fuzz.ratio(m_document,p_content)>85:
+                return True
+
+        return False
+
     # Web Request To Get Physical URL HTML
     def __trigger_url_request(self, p_request_model):
         __m_save_to_mongodb = False
         m_html_parser = parse_controller()
+
         m_redirected_url, response, html = self.__m_web_request_handler.load_url(p_request_model.m_url)
         if response is True:
-            m_status, m_parsed_model, m_url_status = m_html_parser.on_parse_html(html, p_request_model)
-            self.__m_url_status = m_url_status
+            m_status, m_parsed_model = m_html_parser.on_parse_html(html, p_request_model)
             if m_status is False:
                 return None
 
@@ -61,12 +64,17 @@ class i_crawl_controller(request_handler):
             if m_redirected_url == m_redirected_requested_url or m_redirected_url != m_redirected_requested_url and self.__m_duplication_handler.validate_duplicate(m_redirected_url) is False:
                 self.__m_duplication_handler.insert(m_redirected_url)
 
-                m_status = self.__m_content_duplication_handler.invoke_trigger(CONTENT_DUPLICATION_MANAGER.S_VALIDATE, [m_parsed_model.m_title, m_parsed_model.m_description, m_parsed_model.m_content_type])
-                if m_status is False and m_parsed_model.m_validity_score >= 10 and (len(m_parsed_model.m_description) > 0) and response:
+                m_status = self.__validate_duplicate_content(m_parsed_model.m_content, p_request_model.m_url)
+                if m_status is True:
+                    self.__m_save_to_mongodb = False
+                    log.g().w(MESSAGE_STRINGS.S_LOCAL_DUPLICATE_URL + " : " + p_request_model.m_url)
+                elif m_status is False and m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and response:
+                    m_parsed_model = m_html_parser.on_parse_files(m_parsed_model)
                     self.__m_duplication_handler.insert(m_parsed_model.m_base_url_model.m_redirected_host)
                     self.__m_save_to_mongodb = True
-                    self.__m_content_duplication_handler.invoke_trigger(CONTENT_DUPLICATION_MANAGER.S_INSERT, [m_parsed_model.m_title, m_parsed_model.m_description, m_parsed_model.m_content_type])
+                    self.__m_content_duplication_handler.append(m_parsed_model.m_content)
                 else:
+                    self.__m_save_to_mongodb = False
                     log.g().w(MESSAGE_STRINGS.S_LOW_YIELD_URL + " : " + p_request_model.m_url)
                 self.__m_url_status = CRAWL_STATUS_TYPE.S_LOW_YIELD
 
@@ -82,13 +90,13 @@ class i_crawl_controller(request_handler):
         self.__invoke_thread(True, p_request_model)
         while self.__m_thread_status in [CRAWLER_STATUS.S_RUNNING, CRAWLER_STATUS.S_PAUSE]:
             time.sleep(CRAWL_SETTINGS_CONSTANTS.S_ICRAWL_INVOKE_DELAY)
-            # try:
+            #try:
             if self.__m_thread_status == CRAWLER_STATUS.S_RUNNING:
-                self.__m_parsed_model = self.__trigger_url_request(self.__m_request_model)
-                self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
-            # except Exception as ex:
-            #     self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
-            #     print(ex.__traceback__)
+                    self.__m_parsed_model = self.__trigger_url_request(self.__m_request_model)
+                    self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
+            #except Exception as ex:
+            #    self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
+            #    print(ex.__traceback__)
 
     # Crawl Manager Makes Request To Get Crawl duplicationHandlerService
     def __get_crawled_data(self):

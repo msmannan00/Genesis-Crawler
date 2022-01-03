@@ -8,6 +8,11 @@ class CRAWLER_STATUS(enum.Enum):
     S_STOP = 3
     S_BACKUP = 4
 
+class NETWORK_STATUS(enum.Enum):
+    S_ONLINE = 1
+    S_OUTAGE = 2
+    S_REACHABLE = 3
+
 class CRAWL_CONTROLLER_COMMANDS(enum.Enum):
     S_RUN_GENERAL_CRAWLER = 1
     S_RUN_TOPIC_CLASSIFIER_CRAWLER = 2

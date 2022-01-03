@@ -14,7 +14,7 @@ from crawler_instance.constants import app_status
 from crawler_instance.constants.app_status import TOR_STATUS
 from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler_instance.constants.strings import STRINGS, TOR_STRINGS
-from crawler_instance.shared_model.request_handler import request_handler
+from crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler_instance.tor_controller.tor_enums import TOR_COMMANDS, TOR_CMD_COMMANDS, TOR_STATUS
 from stem.control import Controller
 from crawler_services.constants.keys import tor_keys

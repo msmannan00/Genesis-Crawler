@@ -5,9 +5,24 @@ class GENERIC_STRINGS:
 class CLASSIFIER_STRINGS:
     S_SOCKS_HTTPS_PROXY = "socks5h://127.0.0.1:"
 
-class TOR_STRINGS:
-    S_URL_PARSED = "[1] Successfully Parsed URL"
-    S_BACKUP_PARSED = "[2] Successfully Saved Backup URL"
-    S_INSTALLED_URL = "[3] Successfully Installed URL"
-    S_UPDATE_URL_STATUS_URL = "[4] Successfully Updated URL status"
-    S_RESET_CRAWLABLE_URL = "[4] Successfully Reset Crawlable URL"
+class MANAGE_MONGO_MESSAGES:
+    S_INSERT_FAILURE = "[1] Something unexpected happened while inserting"
+    S_INSERT_SUCCESS = "[2] Document Created Successfully"
+    S_UPDATE_FAILURE = "[3] Something unexpected happened while updating"
+    S_UPDATE_SUCCESS = "[4] Data Updated Successfully"
+    S_DELETE_FAILURE = "[5] Something unexpected happened while deleting"
+    S_DELETE_SUCCESS = "[6] Data Deleted Successfully"
+    S_READ_FAILURE = "[5] Something unexpected happened while reading"
+    S_READ_SUCCESS = "[6] Data Read Successfully"
+    S_COUNT_FAILURE = "[1] Something unexpected happened while counting"
+
+class MANAGE_ELASTIC_MESSAGES:
+    S_INSERT_FAILURE = "[1] Something unexpected happened while inserting"
+    S_INSERT_SUCCESS = "[2] Document Created Successfully"
+    S_UPDATE_FAILURE = "[3] Something unexpected happened while updating"
+    S_UPDATE_SUCCESS = "[4] Data Updated Successfully"
+    S_DELETE_FAILURE = "[5] Something unexpected happened while deleting"
+    S_DELETE_SUCCESS = "[6] Data Deleted Successfully"
+    S_READ_FAILURE = "[5] Something unexpected happened while reading"
+    S_READ_SUCCESS = "[6] Data Read Successfully"
+    S_COUNT_FAILURE = "[1] Something unexpected happened while counting"

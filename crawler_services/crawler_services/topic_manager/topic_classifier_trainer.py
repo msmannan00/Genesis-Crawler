@@ -3,7 +3,7 @@ import re
 from crawler_services.constants.strings import GENERIC_STRINGS
 from crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_TRAINER
 from crawler_services.helper_services.spell_check_handler import spell_checker_handler
-from crawler_services.shared_model.request_handler import request_handler
+from crawler_shared_directory.request_manager.request_handler import request_handler
 
 
 class topic_classifier_trainer(request_handler):

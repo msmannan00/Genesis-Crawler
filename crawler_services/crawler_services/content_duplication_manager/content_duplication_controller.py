@@ -2,7 +2,7 @@
 from crawler_instance.constants.strings import STRINGS
 from crawler_services.crawler_services.content_duplication_manager.content_duplication_enums import CONTENT_DUPLICATION_MANAGER
 from crawler_services.helper_services.duplication_handler import duplication_handler
-from crawler_services.shared_model.request_handler import request_handler
+from crawler_shared_directory.request_manager.request_handler import request_handler
 
 
 class content_duplication_controller(request_handler):

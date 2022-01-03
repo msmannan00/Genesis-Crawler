@@ -1,17 +1,20 @@
 # Local Libraries
 import threading
 
+from thefuzz import fuzz
+
 from crawler_instance.constants import app_status
 from crawler_instance.constants.app_status import CRAWL_STATUS
 from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler_instance.constants.keys import CRAWL_MODEL_KEYS
 from crawler_instance.constants.strings import STRINGS, MESSAGE_STRINGS, ERROR_MESSAGES
 from crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
-from crawler_instance.log_manager.log_controller import log
-from crawler_instance.shared_model.request_handler import request_handler
-from crawler_instance.shared_class_model.backup_model import backup_model
-from crawler_instance.shared_class_model.url_model import url_model
-from crawler_services.crawler_services.content_duplication_manager.content_duplication_controller import content_duplication_controller
+from crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
+from crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
+from crawler_shared_directory.log_manager.log_controller import log
+from crawler_shared_directory.request_manager.request_handler import request_handler
+from crawler_instance.local_shared_model.backup_model import backup_model
+from crawler_instance.local_shared_model.url_model import url_model
 from crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS, MONGO_CRUD
 from crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler_services.helper_services.helper_method import helper_method
@@ -36,15 +39,10 @@ class crawl_model(request_handler):
         self.__init_duplication_handler()
 
     def __init_duplication_handler(self):
-        m_unique = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_FETCH_UNIQUE_HOST, None])
-        m_parsed_hosts = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_PARSE_URL, None])
+        m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_UNIQUE_HOST, [None], [None]])
 
-        for m_document in m_unique:
-            self.__m_duplication_host_handler.insert(m_document["m_host"])
-
-        for m_document in m_parsed_hosts:
-            m_duplicate_content_string = m_document["m_title"] + "-" + m_document["m_description"] + "-" + m_document["m_content_type"]
-            content_duplication_controller.get_instance().invoke_trigger(m_duplicate_content_string)
+        for m_document in m_json:
+            self.__m_duplication_host_handler.insert(m_document['_source']['script']["m_host"])
 
     def __calculate_depth(self, p_url, p_base_url_model):
         depth = 1
@@ -89,7 +87,7 @@ class crawl_model(request_handler):
                 m_data = backup_model(m_host, m_subhost, p_url_depth, p_category)
             else:
                 m_data = backup_model(m_host, m_subhost, p_url_depth, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)
-            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_SAVE_BACKUP, m_data])
+            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_SAVE_BACKUP, [m_data], [None]])
             log.g().s(MESSAGE_STRINGS.S_BACKUP_PARSED + " : " + str(p_url))
         else:
             self.__m_duplication_host_handler.insert(p_url)
@@ -119,14 +117,13 @@ class crawl_model(request_handler):
             self.__m_active_queue_keys.remove(m_url_host)
             self.__m_url_queue.pop(m_url_host, None)
 
-            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_CREATE_UNIQUE, [MONGODB_COMMANDS.S_ADD_UNIQUE_HOST, m_url_host])
-            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_REMOVE_BACKUP, m_url_host])
+            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_REMOVE_BACKUP, [m_url_host], [None]])
             return False, None
 
     def __load_backup_url(self):
         try:
             m_data = backup_model(STRINGS.S_EMPTY, STRINGS.S_EMPTY, STRINGS.S_EMPTY, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)
-            m_backup_model = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_UNPARSED_URL, CRAWL_SETTINGS_CONSTANTS.S_BACKUP_FETCH_LIMIT, m_data])
+            m_backup_model = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_UNPARSED_URL, [m_data], [CRAWL_SETTINGS_CONSTANTS.S_BACKUP_FETCH_LIMIT]])
 
             m_document_list = []
             m_document_list_id = []
@@ -134,11 +131,13 @@ class crawl_model(request_handler):
                 m_document_list.append(m_document)
                 m_document_list_id.append(m_document["_id"])
 
-            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_SET_BACKUP_URL, False, m_document_list_id])
+            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_SET_BACKUP_URL, [m_document_list_id], [False]])
             if len(m_document_list) > 0:
                 for data_item in m_document_list:
                     for m_url_model in data_item[CRAWL_MODEL_KEYS.S_URL_DATA]:
-                        p_url = data_item[CRAWL_MODEL_KEYS.S_HOST] + m_url_model[CRAWL_MODEL_KEYS.S_SUB_HOST]
+                        p_url = data_item[CRAWL_MODEL_KEYS.S_HOST]
+                        if m_url_model[CRAWL_MODEL_KEYS.S_SUB_HOST]!='/':
+                            p_url += m_url_model[CRAWL_MODEL_KEYS.S_SUB_HOST]
                         p_depth = int(m_url_model[CRAWL_MODEL_KEYS.S_DEPTH])
                         p_type = data_item['m_catagory'].lower()
                         m_url_host = helper_method.get_host_url(p_url)
@@ -150,6 +149,7 @@ class crawl_model(request_handler):
                             self.__m_url_queue[m_url_host].append(url_model(p_url, p_depth, p_type))
 
 
+
                 log.g().i(MESSAGE_STRINGS.S_LOADING_BACKUP_URL)
                 if len(m_document_list) < CRAWL_SETTINGS_CONSTANTS.S_BACKUP_FETCH_LIMIT:
                     log.g().w(MESSAGE_STRINGS.S_BACKUP_QUEUE_EMPTY)
@@ -158,7 +158,7 @@ class crawl_model(request_handler):
                 log.g().w("W1 : " + ERROR_MESSAGES.S_DATABASE_FETCH_ERROR)
                 app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = False
         except Exception as e:
-           log.g().e("E7 : " + str(e))
+           log.g().e("Crawl Model E1 : " + str(e))
 
     def on_reset(self):
         self.__m_url_queue = {}
@@ -168,7 +168,16 @@ class crawl_model(request_handler):
 
     def __on_save_url(self, p_index_model, p_save_to_mongodb):
         if p_save_to_mongodb is True:
-            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_SAVE_PARSE_URL, p_index_model])
+            m_host_url = helper_method.get_host_url(p_index_model.m_base_url_model.m_url)
+            if helper_method.normalize_slashes(p_index_model.m_base_url_model.m_url) == m_host_url:
+                m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_DUPLICATE, [p_index_model.m_content], [True]])
+                if len(m_json)>0:
+                    for m_document in m_json:
+                        m_json = m_document['_source']['script']
+                        if fuzz.ratio(m_json['m_title_hidden'],p_index_model.m_title_hidden)>85 and fuzz.ratio(m_json['m_important_content_hidden'],p_index_model.m_important_content_hidden)>85:
+                            return
+
+            elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_UPDATE, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [p_index_model], [True]])
             log.g().s(MESSAGE_STRINGS.S_URL_PARSED + STRINGS.S_SEPERATOR + p_index_model.m_base_url_model.m_url + " : " + str(threading.get_native_id()))
 
         for m_url in p_index_model.m_sub_url:

@@ -1,6 +1,9 @@
+from pathlib import Path
+
+
 class RAW_PATH_CONSTANTS:
 
-    S_PROJECT_PATH = "C:\\Workspace\\Genesis-Crawler"
+    S_PROJECT_PATH = str(Path(__file__).parent.parent.parent)
     S_RAW_PATH = S_PROJECT_PATH + "\\"
     S_DATASET_PATH = "/crawler_services/raw/crawled_classifier_websites.csv"
     S_SIGWIN_PATH = S_PROJECT_PATH + "/libs/cygwin64/bin/bash.exe --login"

@@ -11,9 +11,10 @@ from crawler_instance.helper_services.helper_method import helper_method
 from crawler_instance.i_crawl_crawler.static_parse_manager.image_model import image_model
 from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
 from crawler_instance.constants.strings import PARSE_STRINGS, MESSAGE_STRINGS, STRINGS
-from crawler_instance.log_manager.log_controller import log
 from crawler_instance.i_crawl_crawler.web_request_handler import webRequestManager
 from crawler_services.helper_services.duplication_handler import duplication_handler
+from crawler_shared_directory.log_manager.log_controller import log
+
 
 class file_parse_manager:
     __m_duplication_url_handler = None

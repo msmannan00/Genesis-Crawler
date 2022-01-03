@@ -32,7 +32,11 @@ class helper_method:
         m_host_url = '{uri.scheme}://{uri.netloc}/'.format(uri=m_parsed_uri)
         if m_host_url.endswith("/"):
             m_host_url = m_host_url[:-1]
-        return m_host_url, p_url[len(m_host_url):]
+
+        m_subhost = p_url[len(m_host_url):]
+        if len(m_subhost)==1:
+            m_subhost = "na"
+        return m_host_url, m_subhost
 
     @staticmethod
     def join_relative_url(p_url, p_base_url):

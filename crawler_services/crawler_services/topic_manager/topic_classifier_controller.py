@@ -2,7 +2,7 @@
 from crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_MODEL, TOPIC_CLASSFIER_TRAINER, TOPIC_CLASSFIER_COMMANDS
 from crawler_services.crawler_services.topic_manager.topic_classifier_model import topic_classifier_model
 from crawler_services.crawler_services.topic_manager.topic_classifier_trainer import topic_classifier_trainer
-from crawler_services.shared_model.request_handler import request_handler
+from crawler_shared_directory.request_manager.request_handler import request_handler
 
 
 class topic_classifier_controller(request_handler):
