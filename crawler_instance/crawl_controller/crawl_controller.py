@@ -9,6 +9,7 @@ from crawler_instance.constants.strings import MESSAGE_STRINGS
 from crawler_instance.crawl_controller.crawl_enums import CRAWLER_STATUS, CRAWL_MODEL_COMMANDS, CRAWL_CONTROLLER_COMMANDS, NETWORK_STATUS
 from crawler_instance.helper_services.helper_method import helper_method
 from crawler_instance.i_crawl_crawler.i_crawl_enums import ICRAWL_CONTROLLER_COMMANDS
+from crawler_instance.local_shared_model.url_model import url_model
 from crawler_services.helper_services.internet_monitor import network_monitor
 from crawler_shared_directory.log_manager.log_controller import log
 from crawler_shared_directory.request_manager.request_handler import request_handler
@@ -42,7 +43,7 @@ class crawl_controller(request_handler):
             for line in m_response.text.splitlines():
                 log.g().s(MESSAGE_STRINGS.S_INSTALLED_URL + " : " + line)
                 mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [line], [None]])
-        except Exception as ex:
+        except Exception:
             pass
 
     def __init_live_url(self):
@@ -53,12 +54,12 @@ class crawl_controller(request_handler):
         for m_document in m_response:
             m_url_list.append(m_document)
 
-        # for m_document in m_url_list:
-        #     self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_INSERT_INIT, [m_document['m_url'], url_model(CRAWL_SETTINGS_CONSTANTS.S_START_URL, 0, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)])
+        for m_document in m_url_list:
+            self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_INSERT_INIT, [m_document['m_url'], url_model(CRAWL_SETTINGS_CONSTANTS.S_START_URL, 0, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)])
 
     def __on_run_general(self):
-        #self.__install_live_url()
-        self.__init_live_url()
+        # self.__install_live_url()
+        # self.__init_live_url()
 
         helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
         self.__m_main_thread = threading.Thread(target=self.__init_thread_manager)

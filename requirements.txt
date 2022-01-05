@@ -21,6 +21,7 @@ termcolor
 stopwords
 punkt
 thefuzz
+python-Levenshtein
 
 ###### Requirements with Version Specifiers ######
 simplejson==3.8.0

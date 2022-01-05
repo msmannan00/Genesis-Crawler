@@ -1,6 +1,9 @@
 # Local Imports
+import math
 import os
 import re
+import time
+
 import requests
 
 from urllib.parse import urlparse
@@ -20,6 +23,10 @@ class helper_method:
     @staticmethod
     def clean_description(p_data):
         return re.sub(r'[^a-zA-Z0-9. ,-]', '', p_data)
+
+    @staticmethod
+    def get_time():
+        return math.ceil(time.time()/(60*60*24))
 
     @staticmethod
     def strip_special_character(p_text):

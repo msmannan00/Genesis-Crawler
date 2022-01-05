@@ -42,7 +42,7 @@ class crawl_model(request_handler):
         m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_UNIQUE_HOST, [None], [None]])
 
         for m_document in m_json:
-            self.__m_duplication_host_handler.insert(m_document['_source']['script']["m_host"])
+            self.__m_duplication_host_handler.insert(m_document['_source']["m_host"])
 
     def __calculate_depth(self, p_url, p_base_url_model):
         depth = 1
@@ -173,7 +173,7 @@ class crawl_model(request_handler):
                 m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_DUPLICATE, [p_index_model.m_content], [True]])
                 if len(m_json)>0:
                     for m_document in m_json:
-                        m_json = m_document['_source']['script']
+                        m_json = m_document['_source']
                         if fuzz.ratio(m_json['m_title_hidden'],p_index_model.m_title_hidden)>85 and fuzz.ratio(m_json['m_important_content_hidden'],p_index_model.m_important_content_hidden)>85:
                             return
 

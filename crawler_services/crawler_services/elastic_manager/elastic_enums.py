@@ -13,6 +13,7 @@ class ELASTIC_CONNECTIONS:
     S_DATABASE_IP = 'http://localhost'
 
 class ELASTIC_KEYS:
+    S_ID = 'm_id'
     S_DOCUMENT = 'm_document'
     S_FILTER = 'm_filter'
     S_VALUE = 'm_value'
