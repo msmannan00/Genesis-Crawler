@@ -239,7 +239,7 @@ class html_parse_manager(HTMLParser, ABC):
             self.__add_important_description(self.m_non_important_text)
             m_content+=self.m_important_content
         if len(m_content)<50 and len(self.m_sub_url)>=3:
-            m_content = "- No description Found but contains some urls. This website is most probably a search engine or only contain references of other websites " + self.m_title
+            m_content = "- No description found but contains some urls. This website is most probably a search engine or only contain references of other websites - " + self.m_title.lower()
 
 
         return helper_method.strip_special_character(m_content)[0:300]
