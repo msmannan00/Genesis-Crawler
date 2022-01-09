@@ -22,6 +22,7 @@ stopwords
 punkt
 thefuzz
 python-Levenshtein
+django
 
 ###### Requirements with Version Specifiers ######
 simplejson==3.8.0

@@ -31,66 +31,78 @@ class elastic_controller(request_handler):
 
     def __initialization(self):
         try:
-            self.__m_connection.indices.delete(index=ELASTIC_INDEX.S_WEB_INDEX, ignore=[400, 404])
+            # self.__m_connection.indices.delete(index=ELASTIC_INDEX.S_WEB_INDEX, ignore=[400, 404])
 
-            m_mapping = {
-                "settings": {
-                    "number_of_shards": 1,
-                    "number_of_replicas": 0,
-                    "max_result_window" : 1000000
-                },
-                "mappings": {
-                    "_source": {
-                        "enabled": True
+            if self.__m_connection.indices.exists(index=ELASTIC_INDEX.S_WEB_INDEX) is False:
+                m_mapping = {
+                    "settings": {
+                        "number_of_shards": 1,
+                        "number_of_replicas": 0,
+                        "max_result_window" : 1000000
                     },
-                    "dynamic":"strict" ,
-                    "properties": {
-                        'm_host': { 'type': 'keyword' },
-                        'm_sub_host': { 'type': 'keyword' },
-                        "m_doc_size": { 'type': 'integer', },
-                        "m_img_size": {'type': 'integer'},
-                        'm_title': {'type': 'text'},
-                        'm_title_hidden': {'type': 'text'},
-                        'm_meta_description': {'type': 'text'},
-                        'm_important_content': {'type': 'text'},
-                        'm_important_content_hidden': {'type': 'text'},
-                        'm_meta_keywords': {'type': 'text'},
-                        'm_content': {'type': 'text'},
-                        'm_content_type': {'type': 'keyword'},
-                        "m_images": { "type": "nested",
-                                "properties": {
-                                "m_url": {
-                                    "type": "keyword"
-                                },
-                                "m_type": {
-                                    "type": "keyword"
-                                }
-                            }
+                    "mappings": {
+                        "_source": {
+                            "enabled": True
                         },
-                        'm_doc_url': { "type" : "text" },
-                        'm_video': { "type" : "text" },
-                        'm_sub_url': { "type" : "text" },
-                        'm_daily_hits': {'type': 'integer'},
-                        'm_half_month_hits': {'type': 'integer'},
-                        'm_date': {'type': 'integer'},
-                        'm_monthly_hits': {'type': 'integer'}
+                        "dynamic":"strict" ,
+                        "properties": {
+                            'm_host': { 'type': 'keyword' },
+                            'm_sub_host': { 'type': 'keyword' },
+                            "m_doc_size": { 'type': 'integer', },
+                            "m_img_size": {'type': 'integer'},
+                            'm_title': {'type': 'text'},
+                            'm_title_hidden': {'type': 'text'},
+                            'm_meta_description': {'type': 'text'},
+                            'm_important_content': {'type': 'text'},
+                            'm_important_content_hidden': {'type': 'text'},
+                            'm_meta_keywords': {'type': 'text'},
+                            'm_content': {'type': 'text'},
+                            'm_user_generated': {'type': 'boolean'},
+                            'm_content_type': {'type': 'keyword'},
+                            "m_images": { "type": "nested",
+                                    "properties": {
+                                    "m_url": {
+                                        "type": "keyword"
+                                    },
+                                    "m"
+                                    "_type": {
+                                        "type": "keyword"
+                                    }
+                                }
+                            },
+                            'm_crawled_user_images': { "type" : "text" },
+                            'm_crawled_doc_url': { "type" : "text" },
+                            'm_crawled_video': { "type" : "text" },
+                            'm_doc_url': { "type" : "text" },
+                            'm_video': { "type" : "text" },
+                            'm_daily_hits': {'type': 'integer'},
+                            'm_half_month_hits': {'type': 'integer'},
+                            'm_date': {'type': 'integer'},
+                            'm_monthly_hits': {'type': 'integer'}
+                        }
                     }
                 }
-            }
-            self.__m_connection.indices.create(
-                index=ELASTIC_INDEX.S_WEB_INDEX,
-                body=m_mapping
-            )
+                self.__m_connection.indices.create(
+                    index=ELASTIC_INDEX.S_WEB_INDEX,
+                    body=m_mapping
+                )
 
         except Exception as ex:
             log.g().e("ELASTIC 1 : " + MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
 
 
-    def __update(self, p_data, p_upsert):
+    def __index(self, p_data):
         try:
             self.__m_connection.index(body=p_data[ELASTIC_KEYS.S_VALUE],id=p_data[ELASTIC_KEYS.S_ID], index=p_data[ELASTIC_KEYS.S_DOCUMENT])
         except Exception as ex:
             log.g().e("ELASTIC 2 : " + MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
+            return False, str(ex)
+
+    def __update(self, p_data, p_upsert):
+        try:
+            self.__m_connection.update(body=p_data[ELASTIC_KEYS.S_VALUE],id=p_data[ELASTIC_KEYS.S_ID], index=p_data[ELASTIC_KEYS.S_DOCUMENT])
+        except Exception as ex:
+            log.g().e("ELASTIC 2 : " + MANAGE_ELASTIC_MESSAGES.S_UPDATE_FAILURE + " : " + str(ex))
             return False, str(ex)
 
     def __read(self, p_data):
@@ -107,6 +119,8 @@ class elastic_controller(request_handler):
         m_param = p_data[2]
 
         m_request = self.__m_elastic_request_generator.invoke_trigger(m_request, m_data)
+        if p_commands == ELASTIC_CRUD_COMMANDS.S_INDEX:
+            return self.__index(m_request)
         if p_commands == ELASTIC_CRUD_COMMANDS.S_UPDATE:
             return self.__update(m_request, m_param[0])
         if p_commands == ELASTIC_CRUD_COMMANDS.S_READ:

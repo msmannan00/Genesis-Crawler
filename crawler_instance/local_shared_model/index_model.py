@@ -20,6 +20,7 @@ class index_model:
         self.m_document = p_document
         self.m_video = p_video
         self.m_validity_score = p_validity_score
+        self.m_user_crawled = False
 
 class UrlObjectEncoder(JSONEncoder):
     def default(self, o):

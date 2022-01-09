@@ -100,8 +100,12 @@ class file_parse_manager:
 
         return m_filtered_list, m_porn_image_count
 
-    def parse_static_files(self, p_images, p_documents, p_videos, p_content_type, p_url):
-        m_images, m_porn_image_count= self.__is_image_favourable(p_images, p_url)
+    def parse_static_files(self, p_images, p_documents, p_videos, p_content_type, p_url, p_local_parser):
+        if p_local_parser is True:
+            m_images = p_images
+            m_porn_image_count = 0
+        else:
+            m_images, m_porn_image_count= self.__is_image_favourable(p_images, p_url)
         m_documents = self.__is_static_url_valid(p_documents)
         m_videos = self.__is_static_url_valid(p_videos)
 

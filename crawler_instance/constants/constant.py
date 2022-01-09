@@ -3,6 +3,7 @@ from pathlib import Path
 
 class RAW_PATH_CONSTANTS:
 
+    S_LOCAL_FILE_PATH = str(Path(__file__).parent.parent.parent.parent) + "\\" + "ftp-directory"
     S_PROJECT_PATH = str(Path(__file__).parent.parent.parent)
     S_RAW_PATH = S_PROJECT_PATH + "\\"
     S_DATASET_PATH = "/crawler_services/raw/crawled_classifier_websites.csv"
@@ -30,6 +31,8 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_CRAWLER_INVOKE_DELAY = 2
     S_ICRAWL_IMAGE_INVOKE_DELAY = 2
     S_TOR_NEW_CIRCUIT_INVOKE_DELAY = 300
+    S_LOCAL_FILE_CRAWLER_INVOKE_DELAY = 1
+    S_LOCAL_FILE_CRAWLER_INVOKE_DELAY_LONG = 10
 
     # Max Allowed Depth
     S_MAX_ALLOWED_DEPTH = 2

@@ -177,7 +177,7 @@ class crawl_model(request_handler):
                         if fuzz.ratio(m_json['m_title_hidden'],p_index_model.m_title_hidden)>85 and fuzz.ratio(m_json['m_important_content_hidden'],p_index_model.m_important_content_hidden)>85:
                             return
 
-            elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_UPDATE, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [p_index_model], [True]])
+            elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [p_index_model], [True]])
             log.g().s(MESSAGE_STRINGS.S_URL_PARSED + STRINGS.S_SEPERATOR + p_index_model.m_base_url_model.m_url + " : " + str(threading.get_native_id()))
 
         for m_url in p_index_model.m_sub_url:

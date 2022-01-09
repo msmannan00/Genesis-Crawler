@@ -35,6 +35,8 @@ class MESSAGE_STRINGS:
     S_RESET_CRAWLABLE_URL = "[16] Successfully Reset Crawlable URL"
     S_LOCAL_DUPLICATE_URL = "[17] Duplicate Content URL Error"
     S_INTERNET_ERROR = "[18] Internet not running"
+    S_LOCAL_URL_PARSED = "[19] Successfully Parsed Local URL"
+    S_LOCAL_URL_EMPTY = "[20] Local URL Document Empty"
 
 class SPELL_CHECKER_STRINGS:
     S_STOPWORD_LANGUAGE = "english"
