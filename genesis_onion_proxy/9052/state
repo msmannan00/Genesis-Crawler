@@ -1,4 +1,4 @@
-# Tor state file last generated on 2022-01-10 13:43:16 local time
+# Tor state file last generated on 2022-01-10 14:24:46 local time
 # Other times below are in UTC
 # You *do not* need to edit this file.
 
@@ -20,15 +20,15 @@ CircuitBuildTimeBin 1275 20
 CircuitBuildTimeBin 1325 15
 CircuitBuildTimeBin 1375 13
 CircuitBuildTimeBin 1425 12
-CircuitBuildTimeBin 1475 5
+CircuitBuildTimeBin 1475 6
 CircuitBuildTimeBin 1525 13
 CircuitBuildTimeBin 1575 5
 CircuitBuildTimeBin 1625 8
 CircuitBuildTimeBin 1675 8
 CircuitBuildTimeBin 1725 10
 CircuitBuildTimeBin 1775 4
-CircuitBuildTimeBin 1825 7
-CircuitBuildTimeBin 1875 5
+CircuitBuildTimeBin 1825 8
+CircuitBuildTimeBin 1875 7
 CircuitBuildTimeBin 1925 8
 CircuitBuildTimeBin 1975 7
 CircuitBuildTimeBin 2025 15
@@ -37,7 +37,7 @@ CircuitBuildTimeBin 2125 8
 CircuitBuildTimeBin 2175 12
 CircuitBuildTimeBin 2225 18
 CircuitBuildTimeBin 2275 9
-CircuitBuildTimeBin 2325 6
+CircuitBuildTimeBin 2325 7
 CircuitBuildTimeBin 2375 5
 CircuitBuildTimeBin 2425 2
 CircuitBuildTimeBin 2475 3
@@ -165,7 +165,7 @@ Guard in=default rsa_id=C8DE26D2D119BE7F509E672EE1A3D5FB25DCBA97 nickname=pros1 
 Guard in=default rsa_id=26655E1DD93751B652AC8D534495ABB36415BEC7 nickname=Felicette sampled_on=2021-11-24T10:29:34 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-30T08:25:46 confirmed_idx=41 pb_circ_attempts=16.000000 pb_circ_successes=15.000000 pb_successful_circuits_closed=14.000000 pb_collapsed_circuits=1.000000 pb_timeouts=6.000000
 Guard in=default rsa_id=2F8B9500DC98C13FD28CC51E47D3416DE423ED78 nickname=rinderwahnRelay31L sampled_on=2021-11-27T12:06:19 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-06T22:18:08 confirmed_idx=15 pb_circ_attempts=112.000000 pb_circ_successes=108.000000 pb_successful_circuits_closed=80.000000 pb_collapsed_circuits=28.000000 pb_timeouts=90.000000
 Guard in=default rsa_id=23722976B04384E41AE71B45E040051AE6E398F2 nickname=TorZabehlice2 sampled_on=2021-11-23T23:24:11 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-03T11:06:01 confirmed_idx=1 pb_use_attempts=88.707100 pb_use_successes=88.707100 pb_circ_attempts=293.983367 pb_circ_successes=285.867167 pb_successful_circuits_closed=283.366061 pb_collapsed_circuits=2.501076 pb_unusable_circuits=0.000031 pb_timeouts=67.861188
-Guard in=default rsa_id=EAA823552F959DFD038E9AC8FA89345A738B6C00 nickname=Unnamed sampled_on=2021-11-28T09:42:29 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-25T07:24:48 confirmed_idx=0 pb_use_attempts=92.125042 pb_use_successes=92.125042 pb_circ_attempts=184.285313 pb_circ_successes=178.960195 pb_successful_circuits_closed=178.085195 pb_collapsed_circuits=0.875000 pb_timeouts=1.131490
+Guard in=default rsa_id=EAA823552F959DFD038E9AC8FA89345A738B6C00 nickname=Unnamed sampled_on=2021-11-28T09:42:29 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-25T07:24:48 confirmed_idx=0 pb_use_attempts=92.125042 pb_use_successes=92.125042 pb_circ_attempts=189.285313 pb_circ_successes=183.960195 pb_successful_circuits_closed=183.085195 pb_collapsed_circuits=0.875000 pb_timeouts=1.131490
 Guard in=default rsa_id=675F05FDECF1DCF836ED274D65EBE919C4743B91 nickname=fiedlerRelay06 sampled_on=2021-11-27T08:40:01 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-08T13:38:36 confirmed_idx=9 pb_circ_attempts=218.000000 pb_circ_successes=202.000000 pb_successful_circuits_closed=160.000000 pb_collapsed_circuits=42.000000 pb_timeouts=167.000000
 Guard in=default rsa_id=42A955B09A4E327FBFB46A08F6E21705271CCA12 nickname=0xdeadbeef sampled_on=2021-11-25T00:24:36 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-29T19:13:44 confirmed_idx=10 pb_circ_attempts=191.000000 pb_circ_successes=184.000000 pb_successful_circuits_closed=150.000000 pb_collapsed_circuits=34.000000 pb_timeouts=152.000000
 Guard in=default rsa_id=172496BD9DB304AE0C242622599A45B1C83ECDBC nickname=ardvarkwhisperer sampled_on=2021-11-25T09:01:48 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-10T04:43:07 confirmed_idx=54 pb_circ_attempts=1.000000 pb_circ_successes=1.000000 pb_successful_circuits_closed=1.000000 pb_timeouts=1.000000
@@ -212,7 +212,7 @@ Guard in=default rsa_id=69548D4F5123AB39808CC9E3B4E5C1C363353356 nickname=Unname
 Guard in=default rsa_id=647D05D2C1B2365DD0F7F2BD9E9AD29F28080887 nickname=ax05 sampled_on=2021-12-05T03:50:50 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-30T09:03:40 confirmed_idx=12 pb_circ_attempts=182.000000 pb_circ_successes=172.000000 pb_successful_circuits_closed=148.000000 pb_collapsed_circuits=24.000000 pb_timeouts=141.000000
 Guard in=default rsa_id=D8A2D0080B0C73E1DC0EC9F33B497F64E5FB3F52 nickname=porthill sampled_on=2021-12-04T03:10:42 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-05T03:32:02 confirmed_idx=38 pb_circ_attempts=4.000000 pb_circ_successes=4.000000 pb_successful_circuits_closed=4.000000 pb_timeouts=4.000000
 Guard in=default rsa_id=783BEC4F07815D47307676C71D35FC3B7C7A84C8 nickname=sikrelay sampled_on=2021-11-30T12:27:49 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-09T19:15:08 confirmed_idx=29 pb_circ_attempts=11.000000 pb_circ_successes=11.000000 pb_successful_circuits_closed=11.000000 pb_timeouts=9.000000
-LastWritten 2022-01-10 08:43:16
+LastWritten 2022-01-10 09:24:46
 MinutesSinceUserActivity 44
 TorVersion Tor 0.4.3.4-rc
-TotalBuildTimes 884
+TotalBuildTimes 889
