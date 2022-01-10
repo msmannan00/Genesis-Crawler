@@ -21,7 +21,7 @@ termcolor
 stopwords
 punkt
 thefuzz
-python-Levenshtein
+python-Levenshtein-wheels
 django
 
 ###### Requirements with Version Specifiers ######
