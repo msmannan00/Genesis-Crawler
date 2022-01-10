@@ -60,12 +60,12 @@ class crawl_controller(request_handler):
             self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_INSERT_INIT, [m_document['m_url'], url_model(CRAWL_SETTINGS_CONSTANTS.S_START_URL, 0, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)])
 
     def __on_run_general(self):
-        '''self.__install_live_url()
+        self.__install_live_url()
         self.__init_live_url()
 
         helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
         self.__m_main_thread = threading.Thread(target=self.__init_thread_manager)
-        self.__m_main_thread.start()'''
+        self.__m_main_thread.start()
 
         self.__m_main_thread_local = threading.Thread(target=self.__create_local_crawler_instance)
         self.__m_main_thread_local.start()
