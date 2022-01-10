@@ -21,8 +21,7 @@ class topic_classifier_model(request_handler):
     def __classifier_exists(self):
         if self.__m_classifier_trained is not True:
             if os.path.exists(shared_constants.S_PROJECT_PATH + classifier_constants.S_VECTORIZER_PATH) is True and \
-               os.path.exists(shared_constants.S_PROJECT_PATH + classifier_constants.S_SELECTKBEST_PATH) is True and \
-               os.path.exists(shared_constants.S_PROJECT_PATH + classifier_constants.S_TRAINING_DATA_PATH) is True:
+               os.path.exists(shared_constants.S_PROJECT_PATH + classifier_constants.S_SELECTKBEST_PATH) is True:
                 self.__m_classifier_trained = True
                 self.__load_classifier()
                 return True

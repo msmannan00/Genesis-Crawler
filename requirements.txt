@@ -19,6 +19,7 @@ termcolor
 stopwords
 thefuzz
 python-Levenshtein-wheels
+lxml
 
 ###### Requirements with Version Specifiers ######
 simplejson==3.8.0
