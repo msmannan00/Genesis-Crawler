@@ -1,39 +1,22 @@
 # -------------------------- constants ------------------------------------------------------------------------------------ #
 # Keys
-
 key_1='build'
-
 # Commands
-
 command_1='build-tor'
-
 command_2='rebuild-tor'
-
 command_3='build-torrc'
-
 command_4='start-tor'
-
 command_5='build-start-tor'
-
 # Messages
 message_1='gcrawl-shell: tor not built... building tor'
-
 message_2='gcrawl-shell: default file copied successfully. Running Configure'
-
 message_3='gcrawl-shell: updating torrc file'
-
 message_4='gcrawl-shell: checking tor configuration'
-
 message_5='gcrawl-shell: configuration finished starting Tor'
-
 message_6='gcrawl-shell: no executable command found'
-
 message_7='gcrawl-shell: tor already build'
-
 message_8='gcrawl-shell: tor not build'
-
 message_9='gcrawl-shell: tor build successfully'
-
 m_tor_directory="$1"         # - default C:/Workspace/Repository/TorBrowser
 m_crawl_command="$2"         # - Crawl Command | See reference of commands above
 m_tor_connection_port="$3"   # - Default Socks Connection Port | 905 +1
