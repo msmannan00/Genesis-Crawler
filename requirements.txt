@@ -4,7 +4,6 @@ bs4
 gensim
 pandas
 eventlet
-pymongo
 nltk
 pyprobables
 numpy
@@ -15,7 +14,6 @@ urllib3
 stem
 socks
 requests[socks]
-requests
 Pillow
 termcolor
 stopwords
@@ -27,4 +25,5 @@ simplejson==3.8.0
 scikit-learn==0.24.2
 elasticsearch==7.12.0
 django==3.2.11
+pymongo==3.12.1
 
