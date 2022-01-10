@@ -19,7 +19,6 @@ requests
 Pillow
 termcolor
 stopwords
-punkt
 thefuzz
 python-Levenshtein-wheels
 django
