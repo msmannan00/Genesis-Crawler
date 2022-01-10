@@ -35,7 +35,9 @@ m_build_file_default="$base_path/build_status_default"
 m_torrc_file_default="$base_path/torrc_default"
 # Data File Location
 m_data_directory="$m_tor_directory\data_files\\"
+
 invokeTorrcBuild(){
+
 	echo "$message_3"
   mkdir -p "$m_torrc_directory"
   mkdir -p "$m_data_directory"

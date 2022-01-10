@@ -68,7 +68,7 @@ class tor_controller(request_handler):
             nextline = self.__m_tor_shell.stdout.readline()
             m_log = nextline.decode(STRINGS.S_UTF8_ENCODING)
             if len(m_log)>5 and app_status.TOR_STATUS.S_TOR_STATUS != TOR_STATUS.S_RUNNING:
-                print(m_log)
+                print(m_log, flush=True)
 
             if nextline == STRINGS.S_EMPTY:
                 break
