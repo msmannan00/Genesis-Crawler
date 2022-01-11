@@ -178,7 +178,7 @@ class html_parse_manager(HTMLParser, ABC):
                     self.m_parsed_paragraph_count=9
 
                 if len(self.m_important_content)>550:
-                    self.m_parsed_paragraph_count = self.m_parsed_paragraph_count[0:550]
+                    self.m_important_content = self.m_important_content[0:550]
 
     def __clean_text(self, p_text):
         m_text = p_text

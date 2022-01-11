@@ -39,12 +39,15 @@ class webRequestManager:
 
         try:
             with eventlet.Timeout(CRAWL_SETTINGS_CONSTANTS.S_HEADER_TIMEOUT):
-                headers = {tor_keys.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT}
-                page = m_request_handler.head(p_url, headers=headers, timeout=(CRAWL_SETTINGS_CONSTANTS.S_HEADER_TIMEOUT, 27), proxies=proxies, allow_redirects=True, verify=False)
+                try:
+                    headers = {tor_keys.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT}
+                    page = m_request_handler.head(p_url, headers=headers, timeout=(CRAWL_SETTINGS_CONSTANTS.S_HEADER_TIMEOUT, 27), proxies=proxies, allow_redirects=True, verify=False)
+                except Exception as e:
+                    log.g().e( "WEB REQUEST E2 : " + MESSAGE_STRINGS.S_URL_PROCESSING_ERROR + STRINGS.S_SEPERATOR + p_url + STRINGS.S_SEPERATOR + str(e))
+                    return False, None
                 return True, page.headers
-
-        except Exception as e:
-            log.g().e("WEB REQUEST E2 : " + MESSAGE_STRINGS.S_URL_PROCESSING_ERROR + STRINGS.S_SEPERATOR + p_url + STRINGS.S_SEPERATOR + str(e))
+        except:
+            log.g().e("WEB REQUEST E3 : ")
             return False, None
 
     # Load Header - used to get header without actually downloading the content
