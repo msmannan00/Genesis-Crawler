@@ -27267,3 +27267,4 @@ crawler_services/helper_services/__pycache__/spell_check_handler.cpython-39.pyc
 crawler_shared_directory/log_manager/__pycache__/log_controller.cpython-39.pyc
 crawler_shared_directory/request_manager/__pycache__/request_handler.cpython-39.pyc
 >>>>>>> f854abda013f2fbe271f8b6b3528dae750ec280a
+*.pyc
