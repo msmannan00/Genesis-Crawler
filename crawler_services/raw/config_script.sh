@@ -37,13 +37,13 @@ m_torrc_file_default="$base_path/torrc_default"
 # Data File Location
 m_data_directory="$m_tor_directory\data_files\\"
 invokeTorrcBuild(){
-	echo "$message_3"
-  mkdir -p "$m_torrc_directory"
-  mkdir -p "$m_data_directory"
-	cp -fr "$m_torrc_file_default" "$m_torrc_directory""torrc_$m_tor_connection_port"
-	appendFile "ControlPort $m_tor_control_port" "$m_torrc_directory""torrc_$m_tor_connection_port"
-	appendFile "SOCKSPort $m_tor_connection_port" "$m_torrc_directory""torrc_$m_tor_connection_port"
-	appendFile "DataDirectory $m_tor_connection_port" "$m_torrc_directory""torrc_$m_tor_connection_port"
+echo "$message_3"
+mkdir -p "$m_torrc_directory"
+mkdir -p "$m_data_directory"
+cp -fr "$m_torrc_file_default" "$m_torrc_directory""torrc_$m_tor_connection_port"
+appendFile "ControlPort $m_tor_control_port" "$m_torrc_directory""torrc_$m_tor_connection_port"
+appendFile "SOCKSPort $m_tor_connection_port" "$m_torrc_directory""torrc_$m_tor_connection_port"
+appendFile "DataDirectory $m_tor_connection_port" "$m_torrc_directory""torrc_$m_tor_connection_port"
 }
 # Terminal Commands - Install Tor
 buildTor () {
