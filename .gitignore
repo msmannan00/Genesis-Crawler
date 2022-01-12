@@ -27223,4 +27223,5 @@ genesis_onion_proxy/9052/state
 crawler_services/raw/config_script.sh
 genesis_onion_proxy/9052/cached-microdesc-consensus
 genesis_onion_proxy/9052/state
-genesis_onion_proxy/9052/cached-microdesc-consensus
+*.pyc
+>>>>>>> ddef8aaa34474e43633ed403e4f08713d5e697f3
