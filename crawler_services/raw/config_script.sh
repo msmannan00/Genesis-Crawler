@@ -80,7 +80,9 @@ invokeStart() {
 	:
 }
 # Version Checker
-invokeTorBuild() {
+
+invokeTorBuild(){
+
   echo "$message_4"
   if [ "$1" == "false" ]; then
     updateBuildFile "$key_1" "false" "$m_build_file"
