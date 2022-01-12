@@ -1,4 +1,4 @@
-# Tor state file last generated on 2022-01-12 14:28:42 local time
+# Tor state file last generated on 2022-01-12 14:30:30 local time
 # Other times below are in UTC
 # You *do not* need to edit this file.
 
@@ -99,7 +99,7 @@ Guard in=default rsa_id=69548D4F5123AB39808CC9E3B4E5C1C363353356 nickname=Unname
 Guard in=default rsa_id=647D05D2C1B2365DD0F7F2BD9E9AD29F28080887 nickname=ax05 sampled_on=2021-12-05T03:50:50 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-11-30T09:03:40 confirmed_idx=12 pb_circ_attempts=182.000000 pb_circ_successes=172.000000 pb_successful_circuits_closed=148.000000 pb_collapsed_circuits=24.000000 pb_timeouts=141.000000
 Guard in=default rsa_id=D8A2D0080B0C73E1DC0EC9F33B497F64E5FB3F52 nickname=porthill sampled_on=2021-12-04T03:10:42 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-05T03:32:02 confirmed_idx=38 pb_circ_attempts=4.000000 pb_circ_successes=4.000000 pb_successful_circuits_closed=4.000000 pb_timeouts=4.000000
 Guard in=default rsa_id=783BEC4F07815D47307676C71D35FC3B7C7A84C8 nickname=sikrelay sampled_on=2021-11-30T12:27:49 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2021-12-09T19:15:08 confirmed_idx=29 pb_circ_attempts=11.000000 pb_circ_successes=11.000000 pb_successful_circuits_closed=11.000000 pb_timeouts=9.000000
-LastWritten 2022-01-12 09:28:42
+LastWritten 2022-01-12 09:30:30
 MinutesSinceUserActivity 18
 TorVersion Tor 0.4.3.4-rc
 TotalBuildTimes 100

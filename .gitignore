@@ -27228,3 +27228,5 @@ genesis_onion_proxy/9052/state
 *.pyc
 *.pyc
 genesis_onion_proxy/9052/state
+genesis_onion_proxy/9052/cached-microdescs.new
+genesis_onion_proxy/9052/state
