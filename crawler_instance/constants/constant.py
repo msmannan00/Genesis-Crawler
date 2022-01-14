@@ -3,17 +3,17 @@ from pathlib import Path
 
 class RAW_PATH_CONSTANTS:
 
-    S_LOCAL_FILE_PATH = str(Path(__file__).parent.parent.parent.parent) + "\\" + "ftp-directory"
+    S_LOCAL_FILE_PATH = str(Path(__file__).parent.parent.parent.parent) + "/" + "ftp-directory"
     S_PROJECT_PATH = str(Path(__file__).parent.parent.parent)
-    S_RAW_PATH = S_PROJECT_PATH + "\\"
+    S_RAW_PATH = S_PROJECT_PATH + "/"
     S_DATASET_PATH = "/crawler_services/raw/crawled_classifier_websites.csv"
     S_SIGWIN_PATH = str(Path(__file__).parent.parent.parent.parent) + "/cygwin64/bin/bash.exe --login"
-    S_CRAWLER_IMAGE_CACHE_PATH = S_PROJECT_PATH + "\\crawler_instance\\raw\\"
+    S_CRAWLER_IMAGE_CACHE_PATH = S_PROJECT_PATH + "/crawler_instance/raw/"
 
 class TOR_CONSTANTS:
 
-    S_SHELL_CONFIG_PATH = RAW_PATH_CONSTANTS.S_PROJECT_PATH + "\\crawler_services\\raw\\config_script.sh"
-    S_TOR_PATH = RAW_PATH_CONSTANTS.S_PROJECT_PATH + "\\genesis_onion_proxy"
+    S_SHELL_CONFIG_PATH = RAW_PATH_CONSTANTS.S_PROJECT_PATH + "/crawler_services/raw/config_script.sh"
+    S_TOR_PATH = RAW_PATH_CONSTANTS.S_PROJECT_PATH + "/genesis_onion_proxy"
 
 class CRAWL_SETTINGS_CONSTANTS:
 

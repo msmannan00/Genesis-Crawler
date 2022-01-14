@@ -1,6 +1,7 @@
 import sys
 import warnings
 
+from crawler_instance.constants.app_status import APP_STATUS
 from crawler_services.helper_services.internet_monitor import network_monitor
 
 sys.path.append('C:\Workspace\Genesis-Crawler')
@@ -44,10 +45,11 @@ class application_controller(request_handler):
     def __on_start(self):
         network_monitor.get_instance().init()
         topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_LOAD_CLASSIFIER)
-        tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_START, None)
-
         self.__on_reset_backup()
         self.__m_crawl_controller.invoke_trigger(CRAWL_CONTROLLER_COMMANDS.S_RUN_GENERAL_CRAWLER)
+
+        if APP_STATUS.S_USER_CRAWL_ONLY is False:
+            tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_START, None)
 
     # External Reuqest Manager
     def invoke_trigger(self, p_command, p_data=None):
