@@ -31,7 +31,7 @@ class elastic_controller(request_handler):
 
     def __initialization(self):
         try:
-            #####  VERY DANGEROUS DO IT VERY CAREFULLY  #####    self.__m_connection.indices.delete(index=ELASTIC_INDEX.S_WEB_INDEX, ignore=[400, 404])
+            #####  VERY DANGEROUS DO IT VERY CAREFULLY  ##### self.__m_connection.indices.delete(index=ELASTIC_INDEX.S_WEB_INDEX, ignore=[400, 404])
 
             if self.__m_connection.indices.exists(index=ELASTIC_INDEX.S_WEB_INDEX) is False:
                 m_mapping = {
@@ -95,6 +95,7 @@ class elastic_controller(request_handler):
     def __index(self, p_data):
         try:
             self.__m_connection.index(body=p_data[ELASTIC_KEYS.S_VALUE],id=p_data[ELASTIC_KEYS.S_ID], index=p_data[ELASTIC_KEYS.S_DOCUMENT])
+            return True, None
         except Exception as ex:
             log.g().e("ELASTIC 2 : " + MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
             return False, str(ex)
@@ -102,6 +103,7 @@ class elastic_controller(request_handler):
     def __update(self, p_data, p_upsert):
         try:
             self.__m_connection.update(body=p_data[ELASTIC_KEYS.S_VALUE],id=p_data[ELASTIC_KEYS.S_ID], index=p_data[ELASTIC_KEYS.S_DOCUMENT])
+            return True, None
         except Exception as ex:
             log.g().e("ELASTIC 2 : " + MANAGE_ELASTIC_MESSAGES.S_UPDATE_FAILURE + " : " + str(ex))
             return False, str(ex)
@@ -109,7 +111,7 @@ class elastic_controller(request_handler):
     def __read(self, p_data):
         try:
             m_json = self.__m_connection.search(index=p_data[ELASTIC_KEYS.S_DOCUMENT], body=p_data[ELASTIC_KEYS.S_FILTER])
-            return m_json['hits']['hits']
+            return True, m_json['hits']['hits']
         except Exception as ex:
             log.g().e("ELASTIC 3 : " + MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
             return False, str(ex)

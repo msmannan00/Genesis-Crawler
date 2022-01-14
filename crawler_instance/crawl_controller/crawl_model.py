@@ -39,7 +39,11 @@ class crawl_model(request_handler):
         self.__init_duplication_handler()
 
     def __init_duplication_handler(self):
-        m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_UNIQUE_HOST, [None], [None]])
+        m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_UNIQUE_HOST, [None], [None]])
+
+        if m_status is False:
+            log.g().e(m_json)
+            exit(0)
 
         for m_document in m_json:
             self.__m_duplication_host_handler.insert(m_document['_source']["m_host"])
@@ -170,7 +174,11 @@ class crawl_model(request_handler):
         if p_save_to_mongodb is True:
             m_host_url = helper_method.get_host_url(p_index_model.m_base_url_model.m_url)
             if helper_method.normalize_slashes(p_index_model.m_base_url_model.m_url) == m_host_url:
-                m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_DUPLICATE, [p_index_model.m_content], [True]])
+                m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_DUPLICATE, [p_index_model.m_content], [True]])
+                if m_status is False:
+                    log.g().e(m_json)
+                    return
+
                 if len(m_json)>0:
                     for m_document in m_json:
                         m_json = m_document['_source']
