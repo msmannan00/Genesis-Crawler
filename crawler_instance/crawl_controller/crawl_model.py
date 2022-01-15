@@ -4,7 +4,7 @@ import threading
 from thefuzz import fuzz
 
 from crawler_instance.constants import app_status
-from crawler_instance.constants.app_status import CRAWL_STATUS
+from crawler_instance.constants.app_status import CRAWL_STATUS, APP_STATUS
 from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler_instance.constants.keys import CRAWL_MODEL_KEYS
 from crawler_instance.constants.strings import STRINGS, MESSAGE_STRINGS, ERROR_MESSAGES
@@ -36,7 +36,9 @@ class crawl_model(request_handler):
     def __init__(self):
         self.__m_url_queue = dict()
         self.__m_duplication_host_handler = duplication_handler()
-        self.__init_duplication_handler()
+
+        if APP_STATUS.S_USER_CRAWL_ONLY is False:
+            self.__init_duplication_handler()
 
     def __init_duplication_handler(self):
         m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_UNIQUE_HOST, [None], [None]])
