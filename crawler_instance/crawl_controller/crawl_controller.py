@@ -1,15 +1,12 @@
 # Local Imports
 import threading
 from time import sleep
-
 from raven.transport import requests
 from crawler_instance.constants import app_status
-from crawler_instance.constants.app_status import APP_STATUS
 from crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
 from crawler_instance.constants.strings import MESSAGE_STRINGS
 from crawler_instance.crawl_controller.crawl_enums import CRAWLER_STATUS, CRAWL_MODEL_COMMANDS, CRAWL_CONTROLLER_COMMANDS, NETWORK_STATUS
 from crawler_instance.helper_services.helper_method import helper_method
-from crawler_instance.i_crawl_crawler.i_crawl_controller_local import i_crawl_controller_local
 from crawler_instance.i_crawl_crawler.i_crawl_enums import ICRAWL_CONTROLLER_COMMANDS
 from crawler_instance.local_shared_model.url_model import url_model
 from crawler_services.helper_services.internet_monitor import network_monitor
@@ -61,16 +58,13 @@ class crawl_controller(request_handler):
             self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_INSERT_INIT, [m_document['m_url'], url_model(CRAWL_SETTINGS_CONSTANTS.S_START_URL, 0, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)])
 
     def __on_run_general(self):
-        if APP_STATUS.S_USER_CRAWL_ONLY is False:
-            helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
-        self.__m_main_thread_local = threading.Thread(target=self.__create_local_crawler_instance)
+        helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
         self.__m_main_thread_local.start()
 
-        if APP_STATUS.S_USER_CRAWL_ONLY is False:
-            self.__install_live_url()
-            self.__init_live_url()
-            self.__m_main_thread = threading.Thread(target=self.__init_thread_manager)
-            self.__m_main_thread.start()
+        self.__install_live_url()
+        self.__init_live_url()
+        self.__m_main_thread = threading.Thread(target=self.__init_thread_manager)
+        self.__m_main_thread.start()
 
     # ICrawler Manager
     def __init_thread_manager(self):
@@ -128,17 +122,6 @@ class crawl_controller(request_handler):
 
         # Start Thread Instace
         m_crawler_instance.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url_model])
-
-    def __create_local_crawler_instance(self):
-
-        # Creating Thread Instace
-        m_local_crawler_instance = i_crawl_controller_local()
-
-        # Saving Thread Instace
-        log.g().i("THREAD CREATED : " + str(len(self.__m_crawler_instance_list)))
-
-        # Start Thread Instace
-        m_local_crawler_instance.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [None])
 
     # Try To Get Job For Crawler Instance
     def __crawler_instance_job_fetcher(self, p_index_model, p_save_to_mongodb, p_request_model):

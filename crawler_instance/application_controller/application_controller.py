@@ -50,9 +50,7 @@ class application_controller(request_handler):
         topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_LOAD_CLASSIFIER)
         self.__on_reset_backup()
         self.__m_crawl_controller.invoke_trigger(CRAWL_CONTROLLER_COMMANDS.S_RUN_GENERAL_CRAWLER)
-
-        if APP_STATUS.S_USER_CRAWL_ONLY is False:
-            tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_START, None)
+        tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_START, None)
 
     # External Reuqest Manager
     def invoke_trigger(self, p_command, p_data=None):

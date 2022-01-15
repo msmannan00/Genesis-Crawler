@@ -37,8 +37,7 @@ class crawl_model(request_handler):
         self.__m_url_queue = dict()
         self.__m_duplication_host_handler = duplication_handler()
 
-        if APP_STATUS.S_USER_CRAWL_ONLY is False:
-            self.__init_duplication_handler()
+        self.__init_duplication_handler()
 
     def __init_duplication_handler(self):
         m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_UNIQUE_HOST, [None], [None]])
