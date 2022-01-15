@@ -16,7 +16,10 @@ from crawler_instance.application_controller.application_enums import APPICATION
 from crawler_instance.crawl_controller.crawl_enums import CRAWL_CONTROLLER_COMMANDS
 from crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler_instance.crawl_controller.crawl_controller import crawl_controller
+import nltk
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+nltk.download("punkt")
 
 class application_controller(request_handler):
     __instance = None
