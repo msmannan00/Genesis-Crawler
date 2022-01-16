@@ -58,14 +58,13 @@ class crawl_controller(request_handler):
             self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_INSERT_INIT, [m_document['m_url'], url_model(CRAWL_SETTINGS_CONSTANTS.S_START_URL, 0, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)])
 
     def __on_run_general(self):
-        self.__install_live_url()
-        self.__init_live_url()
         helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
         self.__m_main_thread = threading.Thread(target=self.__init_thread_manager)
         self.__m_main_thread.start()
 
     # ICrawler Manager
     def __init_thread_manager(self):
+        sleep(5)
         while True:
 
             if network_monitor.get_instance().get_network_status() == NETWORK_STATUS.S_ONLINE:
@@ -93,10 +92,10 @@ class crawl_controller(request_handler):
             threading.Event().wait(CRAWL_SETTINGS_CONSTANTS.S_CRAWLER_INVOKE_DELAY)
             if app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS is False and len(self.__m_crawler_instance_list)<=0:
                 mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_CLEAR_BACKUP, [None],[None]])
-                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_CLEAR_UNIQUE_HOST, [None], [None]])
                 app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = True
                 self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_CRAWL_FINISHED_STATUS)
                 self.__m_crawl_model = crawl_model()
+                self.__install_live_url()
                 self.__init_live_url()
 
     # Awake Crawler From Sleep

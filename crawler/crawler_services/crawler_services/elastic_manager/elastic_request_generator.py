@@ -126,7 +126,7 @@ class elastic_request_generator(request_handler):
                 "match": {
                     "m_sub_host": 'na'
                 }
-            },"_source": ["script.m_host"]
+            },"_source": ["m_host"]
         }
 
         return {ELASTIC_KEYS.S_DOCUMENT: ELASTIC_INDEX.S_WEB_INDEX, ELASTIC_KEYS.S_FILTER:m_query}

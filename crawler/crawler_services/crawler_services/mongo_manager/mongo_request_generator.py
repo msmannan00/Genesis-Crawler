@@ -14,7 +14,7 @@ class mongo_request_generator(request_handler):
     def __on_set_backup_url(self, p_data):
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_BACKUP_MODEL, MONGODB_KEYS.S_VALUE:{"m_host": p_data.m_host, "m_parsing": False, "m_catagory": p_data.m_catagory}}
 
-    def __on_get_backup_url(self, p_document_list_id):
+    def __on_set_backup_parsable(self, p_document_list_id):
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_BACKUP_MODEL, MONGODB_KEYS.S_FILTER:{"_id": {"$in": p_document_list_id}}, MONGODB_KEYS.S_VALUE:{"$set":{"m_parsing":True}}}
 
     def __on_clear_backup(self):
@@ -58,7 +58,7 @@ class mongo_request_generator(request_handler):
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_BACKUP_MODEL, MONGODB_KEYS.S_FILTER:{'m_host': p_data}}
 
     def __on_get_crawl_count(self):
-        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_CRAWLABLE_URL_MODEL, MONGODB_KEYS.S_FILTER:{}}
+        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_BACKUP_MODEL, MONGODB_KEYS.S_FILTER:{}}
 
     def invoke_trigger(self, p_commands, p_data=None):
         if p_commands == MONGODB_COMMANDS.S_CLEAR_BACKUP:
@@ -82,7 +82,7 @@ class mongo_request_generator(request_handler):
         elif p_commands == MONGODB_COMMANDS.S_GET_UNPARSED_URL:
             return self.__on_get_unparsed_url()
         elif p_commands == MONGODB_COMMANDS.S_SET_BACKUP_URL:
-            return self.__on_get_backup_url(p_data[0])
+            return self.__on_set_backup_parsable(p_data[0])
         elif p_commands == MONGODB_COMMANDS.S_COUNT_CRAWLED_URL:
             return self.__on_get_crawl_count()
 

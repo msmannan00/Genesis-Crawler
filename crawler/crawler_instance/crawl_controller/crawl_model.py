@@ -136,8 +136,8 @@ class crawl_model(request_handler):
                 m_document_list.append(m_document)
                 m_document_list_id.append(m_document["_id"])
 
-            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_SET_BACKUP_URL, [m_document_list_id], [False]])
             if len(m_document_list) > 0:
+                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_SET_BACKUP_URL, [m_document_list_id], [False]])
                 for data_item in m_document_list:
                     for m_url_model in data_item[CRAWL_MODEL_KEYS.S_URL_DATA]:
                         p_url = data_item[CRAWL_MODEL_KEYS.S_HOST]
