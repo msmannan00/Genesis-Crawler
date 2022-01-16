@@ -1,14 +1,4 @@
 *.pyc
 crawler/crawler_services/raw/config_script.sh
 crawler/crawler_services/raw/classifier_output/training_data.csv
-genesis_onion_proxy/9052/unparseable-descs/unparseable-desc.DFC9C1468782EE857B218D8671558E2E1727668D297DD433D0A72DC8B4AC6ED9
-genesis_onion_proxy/9052/state
-genesis_onion_proxy/9052/cached-microdescs.new
-genesis_onion_proxy/9052/cached-microdescs
-genesis_onion_proxy/9052/cached-microdesc-consensus
-genesis_onion_proxy/9052/state
-genesis_onion_proxy/9052/cached-microdescs.new
-genesis_onion_proxy/9052/cached-microdescs
-genesis_onion_proxy/9052/cached-microdesc-consensus
-genesis_onion_proxy/9052/state
-genesis_onion_proxy/9052/state
+*.File
