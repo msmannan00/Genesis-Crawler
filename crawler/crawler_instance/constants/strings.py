@@ -25,6 +25,7 @@ class MESSAGE_STRINGS:
     S_PROCESSING_URL = "[6] Processing URL"
     S_PROCESS_FINISHED_SUCCESS = "[7] Processing Finished Success"
     S_LOW_YIELD_URL = "[8] Low Yield URL"
+    S_ALREADY_CRAWL_URL = "[8] already crawl URL"
     S_REINITIALIZING_CRAWLABLE_URL = "[9] Re-initializing Crawlable URL"
     S_LOADING_BACKUP_URL = "[10] Loading Backup URL"
     S_BACKUP_QUEUE_EMPTY = "[11] Backup Queue Empty"

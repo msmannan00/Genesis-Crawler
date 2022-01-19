@@ -48,7 +48,7 @@ class file_parse_manager:
 
         for m_url in p_list:
             try:
-                if len(m_filtered_list) > 10 or m_porn_image_count > 5:
+                if len(m_filtered_list) > 5 or m_porn_image_count > 5:
                     break
 
                 if self.__m_duplication_url_handler.validate_duplicate(m_url) is False:

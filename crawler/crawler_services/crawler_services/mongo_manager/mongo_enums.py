@@ -20,7 +20,7 @@ class MONGODB_COLLECTIONS:
     S_CRAWLABLE_URL_MODEL = 'crawlable_url_model'
 
 class MONGO_CONNECTIONS:
-    S_DATABASE_NAME = 'genesis-search'
+    S_DATABASE_NAME = 'genesis-crawler'
     S_DATABASE_PORT = 27017
     S_DATABASE_IP = 'localhost'
 

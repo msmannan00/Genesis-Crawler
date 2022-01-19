@@ -170,19 +170,6 @@ class crawl_model(request_handler):
 
     def __on_save_url(self, p_index_model, p_save_to_mongodb):
         if p_save_to_mongodb is True:
-            m_host_url = helper_method.get_host_url(p_index_model.m_base_url_model.m_url)
-            if helper_method.normalize_slashes(p_index_model.m_base_url_model.m_url) == m_host_url:
-                m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_DUPLICATE, [p_index_model.m_content], [True]])
-                if m_status is False:
-                    log.g().e(m_json)
-                    return
-
-                if len(m_json)>0:
-                    for m_document in m_json:
-                        m_json = m_document['_source']
-                        if fuzz.ratio(m_json['m_title_hidden'],p_index_model.m_title_hidden)>85 and fuzz.ratio(m_json['m_important_content_hidden'],p_index_model.m_important_content_hidden)>85:
-                            return
-
             elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [p_index_model], [True]])
             log.g().s(MESSAGE_STRINGS.S_URL_PARSED + STRINGS.S_SEPERATOR + p_index_model.m_base_url_model.m_url)
 
