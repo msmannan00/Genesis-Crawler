@@ -54,7 +54,7 @@ class file_parse_manager:
                 if self.__m_duplication_url_handler.validate_duplicate(m_url) is False:
 
                     time.sleep(CRAWL_SETTINGS_CONSTANTS.S_ICRAWL_IMAGE_INVOKE_DELAY)
-                    if m_url.startswith("data"):
+                    if m_url.startswith("data") or m_url.endswith("gif"):
                         continue
                     m_status, m_response = self.m_web_request_hander.download_image(m_url)
                     self.__m_images[m_url] = 0

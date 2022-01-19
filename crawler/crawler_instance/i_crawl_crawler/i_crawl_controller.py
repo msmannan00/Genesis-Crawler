@@ -69,14 +69,14 @@ class i_crawl_controller(request_handler):
                     self.__m_save_to_mongodb = False
                     log.g().w(MESSAGE_STRINGS.S_LOCAL_DUPLICATE_URL + " : " + p_request_model.m_url)
                 elif m_status is False and m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and m_response:
-                    m_parsed_model = m_html_parser.on_parse_files(m_parsed_model)
+                    # m_parsed_model = m_html_parser.on_parse_files(m_parsed_model)
                     self.__m_duplication_handler.insert(m_parsed_model.m_base_url_model.m_redirected_host)
                     self.__m_save_to_mongodb = True
                     self.__m_content_duplication_handler.append(m_parsed_model.m_content)
                 else:
                     self.__m_save_to_mongodb = False
                     log.g().w(MESSAGE_STRINGS.S_LOW_YIELD_URL + " : " + p_request_model.m_url)
-                self.__m_url_status = CRAWL_STATUS_TYPE.S_LOW_YIELD
+                    self.__m_url_status = CRAWL_STATUS_TYPE.S_LOW_YIELD
 
             m_parsed_model = self.__clean_sub_url(m_parsed_model)
 
@@ -90,13 +90,13 @@ class i_crawl_controller(request_handler):
         self.__invoke_thread(True, p_request_model)
         while self.__m_thread_status in [CRAWLER_STATUS.S_RUNNING, CRAWLER_STATUS.S_PAUSE]:
             time.sleep(CRAWL_SETTINGS_CONSTANTS.S_ICRAWL_INVOKE_DELAY)
-            #try:
-            if self.__m_thread_status == CRAWLER_STATUS.S_RUNNING:
+            try:
+                if self.__m_thread_status == CRAWLER_STATUS.S_RUNNING:
                     self.__m_parsed_model = self.__trigger_url_request(self.__m_request_model)
                     self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
-            #except Exception as ex:
-            #    self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
-            #    print(ex.__traceback__)
+            except Exception as ex:
+                self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
+                print(ex.__traceback__)
 
     # Crawl Manager Makes Request To Get Crawl duplicationHandlerService
     def __get_crawled_data(self):
