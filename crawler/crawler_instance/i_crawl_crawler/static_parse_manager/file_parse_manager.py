@@ -2,7 +2,6 @@
 import os
 import random
 import string
-import threading
 import time
 
 from PIL import Image
@@ -36,7 +35,7 @@ class file_parse_manager:
                 m_response, m_header = self.m_web_request_hander.load_header(m_url)
                 if m_response is True and (PARSE_STRINGS.S_CONTENT_LENGTH_HEADER not in m_header or int(m_header[PARSE_STRINGS.S_CONTENT_LENGTH_HEADER]) >= CRAWL_SETTINGS_CONSTANTS.S_MIN_CONTENT_LENGTH):
                    m_filtered_list.insert(0, m_url)
-                   log.g().s(MESSAGE_STRINGS.S_FILE_PARSED + STRINGS.S_SEPERATOR + m_url + " : " + str(threading.get_native_id()))
+                   log.g().s(MESSAGE_STRINGS.S_FILE_PARSED + STRINGS.S_SEPERATOR + m_url)
             if len(m_filtered_list)>CRAWL_SETTINGS_CONSTANTS.S_STATIC_PARSER_LIST_MAX_SIZE:
                 break
 
@@ -79,7 +78,7 @@ class file_parse_manager:
                             os.remove(m_url_path)
                             continue
 
-                        log.g().s(MESSAGE_STRINGS.S_FILE_PARSED + STRINGS.S_SEPERATOR + m_url + " : " + str(threading.get_native_id()))
+                        log.g().s(MESSAGE_STRINGS.S_FILE_PARSED + STRINGS.S_SEPERATOR + m_url)
                         if m_classifier_response[m_url_path]['unsafe'] > 0.5:
                             m_porn_image_count += 1
                             self.__m_images[m_url] = 'a'

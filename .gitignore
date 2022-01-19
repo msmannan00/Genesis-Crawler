@@ -1,3 +1,4 @@
 *.pyc
 crawler/crawler_services/raw/classifier_output/training_data.csv
 *.File
+*.pyc

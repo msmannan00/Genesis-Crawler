@@ -3,15 +3,14 @@ import os
 import subprocess
 import threading
 import time
-
 import requests
 import urllib3
-from requests.adapters import HTTPAdapter
 
+from requests.adapters import HTTPAdapter
 from stem import Signal
 from urllib3 import Retry
 from crawler.crawler_instance.constants import app_status
-from crawler.crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from crawler.crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS, TOR_CONSTANTS
 from crawler.crawler_instance.constants.strings import STRINGS, TOR_STRINGS
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS, TOR_CMD_COMMANDS, TOR_STATUS
@@ -54,8 +53,17 @@ class tor_controller(request_handler):
         }
         return m_request_handler, proxies, headers
 
+    def __on_remove_carriage_return(self):
+        with open(TOR_CONSTANTS.S_SHELL_CONFIG_PATH, 'r') as file:
+            content = file.read()
+
+        with open(TOR_CONSTANTS.S_SHELL_CONFIG_PATH, 'w', newline='\n') as file:
+            file.write(content)
+
 
     def __on_start_subprocess(self, p_command):
+        self.__on_remove_carriage_return()
+
         app_status.S_TOR_STATUS = TOR_STATUS.S_START
         self.__m_tor_shell = subprocess.Popen(p_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="/")
         self.__m_controller = Controller.from_port(port=int(app_status.TOR_STATUS.S_TOR_CONTROL_PORT))
