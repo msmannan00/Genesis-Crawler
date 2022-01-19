@@ -1,4 +1,3 @@
 *.pyc
-crawler/crawler_services/raw/config_script.sh
 crawler/crawler_services/raw/classifier_output/training_data.csv
 *.File
