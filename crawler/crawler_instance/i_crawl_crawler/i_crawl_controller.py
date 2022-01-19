@@ -69,7 +69,7 @@ class i_crawl_controller(request_handler):
                     self.__m_save_to_mongodb = False
                     log.g().w(MESSAGE_STRINGS.S_LOCAL_DUPLICATE_URL + " : " + p_request_model.m_url)
                 elif m_status is False and m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and m_response:
-                    # m_parsed_model = m_html_parser.on_parse_files(m_parsed_model)
+                    m_parsed_model = m_html_parser.on_parse_files(m_parsed_model)
                     self.__m_duplication_handler.insert(m_parsed_model.m_base_url_model.m_redirected_host)
                     self.__m_save_to_mongodb = True
                     self.__m_content_duplication_handler.append(m_parsed_model.m_content)
