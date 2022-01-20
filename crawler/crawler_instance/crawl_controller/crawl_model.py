@@ -33,7 +33,6 @@ class crawl_model(request_handler):
     def __init__(self):
         self.__m_url_queue = dict()
         self.__m_duplication_host_handler = duplication_handler()
-
         self.__init_duplication_handler()
 
     def __init_duplication_handler(self):

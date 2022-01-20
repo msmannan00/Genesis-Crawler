@@ -49,6 +49,6 @@ class application_controller(request_handler):
         self.__m_crawl_controller.invoke_trigger(CRAWL_CONTROLLER_COMMANDS.S_RUN_GENERAL_CRAWLER)
 
     # External Reuqest Manager
-    def invoke_trigger(self, p_command, p_data=None):
+    def invoke_triggers(self, p_command, p_data=None):
         if p_command == APPICATION_COMMANDS.S_START_APPLICATION:
             return self.__on_start()
