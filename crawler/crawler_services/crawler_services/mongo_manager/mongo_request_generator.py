@@ -60,6 +60,9 @@ class mongo_request_generator(request_handler):
     def __on_get_crawl_count(self):
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_BACKUP_MODEL, MONGODB_KEYS.S_FILTER:{}}
 
+    def __on_remove_dead_crawlable_url(self):
+        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_CRAWLABLE_URL_MODEL, MONGODB_KEYS.S_FILTER: {"m_live": {"$eq": False}}}
+
     def invoke_trigger(self, p_commands, p_data=None):
         if p_commands == MONGODB_COMMANDS.S_CLEAR_BACKUP:
             return self.__on_clear_backup()
@@ -85,4 +88,7 @@ class mongo_request_generator(request_handler):
             return self.__on_set_backup_parsable(p_data[0])
         elif p_commands == MONGODB_COMMANDS.S_COUNT_CRAWLED_URL:
             return self.__on_get_crawl_count()
+        elif p_commands == MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL:
+            return self.__on_remove_dead_crawlable_url()
+
 

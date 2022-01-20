@@ -43,6 +43,7 @@ class crawl_controller(request_handler):
             for line in m_response.text.splitlines():
                 log.g().s(MESSAGE_STRINGS.S_INSTALLED_URL + " : " + line)
                 mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [line], [None]])
+            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE,[MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL, [], [None]])
         except Exception:
             pass
 
