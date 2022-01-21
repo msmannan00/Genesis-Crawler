@@ -1,10 +1,9 @@
 # Local Libraries
-from thefuzz import fuzz
 from crawler.crawler_instance.constants import app_status
 from crawler.crawler_instance.constants.app_status import CRAWL_STATUS
 from crawler.crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_instance.constants.keys import CRAWL_MODEL_KEYS
-from crawler.crawler_instance.constants.strings import STRINGS, MESSAGE_STRINGS, ERROR_MESSAGES
+from crawler.crawler_instance.constants.strings import STRINGS, MANAGE_CRAWLER_MESSAGES, ERROR_MESSAGES
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
@@ -36,10 +35,11 @@ class crawl_model(request_handler):
         self.__init_duplication_handler()
 
     def __init_duplication_handler(self):
+        log.g().i(MANAGE_CRAWLER_MESSAGES.S_FEEDER_DATA_LOADING)
         m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_UNIQUE_HOST, [None], [None]])
 
         if m_status is False:
-            log.g().e(m_json)
+            log.g().c(MANAGE_CRAWLER_MESSAGES.S_LIVE_URL_CACHE_LOAD_FAILURE + " : " + m_json)
             exit(0)
 
         for m_document in m_json:
@@ -89,7 +89,7 @@ class crawl_model(request_handler):
             else:
                 m_data = backup_model(m_host, m_subhost, p_url_depth, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)
             mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_SAVE_BACKUP, [m_data], [None]])
-            log.g().s(MESSAGE_STRINGS.S_BACKUP_PARSED + " : " + str(p_url))
+            log.g().s(MANAGE_CRAWLER_MESSAGES.S_BACKUP_PARSED + " : " + str(p_url))
         else:
             self.__m_duplication_host_handler.insert(p_url)
 
@@ -151,9 +151,9 @@ class crawl_model(request_handler):
 
 
 
-                log.g().i(MESSAGE_STRINGS.S_LOADING_BACKUP_URL)
+                log.g().i(MANAGE_CRAWLER_MESSAGES.S_LOADING_BACKUP_URL)
                 if len(m_document_list) < CRAWL_SETTINGS_CONSTANTS.S_BACKUP_FETCH_LIMIT:
-                    log.g().w(MESSAGE_STRINGS.S_BACKUP_QUEUE_EMPTY)
+                    log.g().w(MANAGE_CRAWLER_MESSAGES.S_BACKUP_QUEUE_EMPTY)
                     app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = False
             else:
                 log.g().w("W1 : " + ERROR_MESSAGES.S_DATABASE_FETCH_ERROR)
@@ -170,7 +170,7 @@ class crawl_model(request_handler):
     def __on_save_url(self, p_index_model, p_save_to_mongodb):
         if p_save_to_mongodb is True:
             elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [p_index_model], [True]])
-            log.g().s(MESSAGE_STRINGS.S_URL_PARSED + STRINGS.S_SEPERATOR + p_index_model.m_base_url_model.m_url)
+            log.g().s(MANAGE_CRAWLER_MESSAGES.S_URL_PARSED + STRINGS.S_SEPERATOR + p_index_model.m_base_url_model.m_url)
 
         for m_url in p_index_model.m_sub_url:
             self.__insert_url(m_url, p_index_model.m_base_url_model)

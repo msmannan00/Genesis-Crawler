@@ -4,7 +4,7 @@ from time import sleep
 from raven.transport import requests
 from crawler.crawler_instance.constants import app_status
 from crawler.crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
-from crawler.crawler_instance.constants.strings import MESSAGE_STRINGS
+from crawler.crawler_instance.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWLER_STATUS, CRAWL_MODEL_COMMANDS, CRAWL_CONTROLLER_COMMANDS, NETWORK_STATUS
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.i_crawl_crawler.i_crawl_enums import ICRAWL_CONTROLLER_COMMANDS
@@ -41,14 +41,15 @@ class crawl_controller(request_handler):
             m_response = requests.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL)
 
             for line in m_response.text.splitlines():
-                log.g().s(MESSAGE_STRINGS.S_INSTALLED_URL + " : " + line)
+                log.g().s(MANAGE_CRAWLER_MESSAGES.S_INSTALLED_URL + " : " + line)
                 mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [line], [None]])
             mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE,[MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL, [], [None]])
-        except Exception:
-            pass
+        except Exception as ex:
+            log.g().c(MANAGE_CRAWLER_MESSAGES.S_UNIQUE_URL_CACHE_LOAD_FAILURE + " : " + ex)
+            exit(0)
 
     def __init_live_url(self):
-        log.g().i(MESSAGE_STRINGS.S_REINITIALIZING_CRAWLABLE_URL)
+        log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
 
         m_url_list = []
         m_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ,[MONGODB_COMMANDS.S_GET_CRAWLABLE_URL_DATA,[None], [None]])
@@ -65,39 +66,43 @@ class crawl_controller(request_handler):
 
     # ICrawler Manager
     def __init_thread_manager(self):
-        sleep(5)
-        while True:
-
-            if network_monitor.get_instance().get_network_status() == NETWORK_STATUS.S_ONLINE:
-                self.__crawler_instance_manager()
-            else:
-                log.g().e(MESSAGE_STRINGS.S_INTERNET_ERROR)
-                sleep(5)
-                continue
-
-            if app_status.TOR_STATUS.S_TOR_STATUS != tor_enums.TOR_STATUS.S_RUNNING:
-                threading.Event().wait(CRAWL_SETTINGS_CONSTANTS.S_CRAWLER_INVOKE_DELAY)
-                continue
-
-            while len(self.__m_crawler_instance_list) < CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT_PER_INSTANCE:
-
-                m_status, m_url_model = self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_GET_HOST_URL)
-                if m_status is False:
-                    break
+        try:
+            sleep(5)
+            while True:
+                if network_monitor.get_instance().get_network_status() == NETWORK_STATUS.S_ONLINE:
+                    self.__crawler_instance_manager()
                 else:
-                    m_icrawler_instance = i_crawl_controller()
-                    self.__m_crawler_instance_list.insert(0, m_icrawler_instance)
-                    thread_instance = threading.Thread(target=self.__create_crawler_instance, args=(m_url_model,m_icrawler_instance,))
-                    thread_instance.start()
+                    log.g().e(MANAGE_CRAWLER_MESSAGES.S_INTERNET_ERROR)
+                    sleep(5)
+                    continue
 
-            threading.Event().wait(CRAWL_SETTINGS_CONSTANTS.S_CRAWLER_INVOKE_DELAY)
-            if app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS is False and len(self.__m_crawler_instance_list)<=0:
-                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_CLEAR_BACKUP, [None],[None]])
-                app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = True
-                self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_CRAWL_FINISHED_STATUS)
-                self.__m_crawl_model = crawl_model()
-                self.__install_live_url()
-                self.__init_live_url()
+                if app_status.TOR_STATUS.S_TOR_STATUS != tor_enums.TOR_STATUS.S_RUNNING:
+                    threading.Event().wait(CRAWL_SETTINGS_CONSTANTS.S_CRAWLER_INVOKE_DELAY)
+                    continue
+
+                while len(self.__m_crawler_instance_list) < CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT_PER_INSTANCE:
+
+                    m_status, m_url_model = self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_GET_HOST_URL)
+                    if m_status is False:
+                        break
+                    else:
+                        m_icrawler_instance = i_crawl_controller()
+                        self.__m_crawler_instance_list.insert(0, m_icrawler_instance)
+                        thread_instance = threading.Thread(target=self.__create_crawler_instance, args=(m_url_model,m_icrawler_instance,))
+                        thread_instance.start()
+
+                threading.Event().wait(CRAWL_SETTINGS_CONSTANTS.S_CRAWLER_INVOKE_DELAY)
+                if app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS is False and len(self.__m_crawler_instance_list)<=0:
+                    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_CLEAR_BACKUP, [None],[None]])
+                    app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = True
+                    self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_CRAWL_FINISHED_STATUS)
+                    self.__m_crawl_model = crawl_model()
+                    self.__install_live_url()
+                    self.__init_live_url()
+
+        except Exception as ex:
+            log.g().c(MANAGE_CRAWLER_MESSAGES.S_APPLICATION_MAIN_FAILURE + " : " + ex)
+            exit(0)
 
     # Awake Crawler From Sleep
     def __crawler_instance_manager(self):
@@ -116,7 +121,7 @@ class crawl_controller(request_handler):
         m_crawler_instance = p_crawler_instance
 
         # Saving Thread Instace
-        log.g().i("THREAD CREATED : " + str(len(self.__m_crawler_instance_list)))
+        log.g().i(MANAGE_CRAWLER_MESSAGES.S_THREAD_CREATED + " : " + str(len(self.__m_crawler_instance_list)))
 
         # Start Thread Instace
         m_crawler_instance.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url_model])

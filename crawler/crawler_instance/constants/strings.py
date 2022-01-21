@@ -17,8 +17,8 @@ class TOR_STRINGS:
 class PARSE_STRINGS:
     S_CONTENT_LENGTH_HEADER = 'content-length'
 
-class MESSAGE_STRINGS:
-    S_URL_PROCESSING_ERROR = "[1] Error Processing"
+class MANAGE_CRAWLER_MESSAGES:
+    S_WEB_REQUEST_PROCESSING_ERROR = "[1] Error Fetching response from server"
     S_FILE_PARSED = "[2] Successfully Parsed File"
     S_URL_PARSED = "[3] Successfully Parsed URL"
     S_PROCESS_FINISHED_FAILURE = "[5] Processing Finished Failure"
@@ -38,6 +38,11 @@ class MESSAGE_STRINGS:
     S_INTERNET_ERROR = "[18] Internet not running"
     S_LOCAL_URL_PARSED = "[19] Successfully Parsed Local URL"
     S_LOCAL_URL_EMPTY = "[20] Local URL Document Empty"
+    S_UNIQUE_URL_CACHE_LOAD_FAILURE = "[21] Unique URL Duplication Handler Failure"
+    S_LIVE_URL_CACHE_LOAD_FAILURE = "[22] Live Feeder Load Failure"
+    S_APPLICATION_MAIN_FAILURE = "[23] Main Thread Failure"
+    S_FEEDER_DATA_LOADING = "[24] Live Feeder Data Loading"
+    S_THREAD_CREATED = "[25] Thread Created"
 
 class SPELL_CHECKER_STRINGS:
     S_STOPWORD_LANGUAGE = "english"

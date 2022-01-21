@@ -89,7 +89,7 @@ class elastic_controller(request_handler):
                 )
 
         except Exception as ex:
-            log.g().e("ELASTIC 1 : " + MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
+            log.g().e(MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
 
 
     def __index(self, p_data):
@@ -97,7 +97,7 @@ class elastic_controller(request_handler):
             self.__m_connection.index(body=p_data[ELASTIC_KEYS.S_VALUE],id=p_data[ELASTIC_KEYS.S_ID], index=p_data[ELASTIC_KEYS.S_DOCUMENT])
             return True, None
         except Exception as ex:
-            log.g().e("ELASTIC 2 : " + MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
+            log.g().e(MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
             return False, str(ex)
 
     def __update(self, p_data, p_upsert):
@@ -105,7 +105,7 @@ class elastic_controller(request_handler):
             self.__m_connection.update(body=p_data[ELASTIC_KEYS.S_VALUE],id=p_data[ELASTIC_KEYS.S_ID], index=p_data[ELASTIC_KEYS.S_DOCUMENT])
             return True, None
         except Exception as ex:
-            log.g().e("ELASTIC 2 : " + MANAGE_ELASTIC_MESSAGES.S_UPDATE_FAILURE + " : " + str(ex))
+            log.g().e(MANAGE_ELASTIC_MESSAGES.S_UPDATE_FAILURE + " : " + str(ex))
             return False, str(ex)
 
     def __read(self, p_data):
@@ -113,7 +113,7 @@ class elastic_controller(request_handler):
             m_json = self.__m_connection.search(index=p_data[ELASTIC_KEYS.S_DOCUMENT], body=p_data[ELASTIC_KEYS.S_FILTER])
             return True, m_json['hits']['hits']
         except Exception as ex:
-            log.g().e("ELASTIC 3 : " + MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
+            log.g().e(MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
             return False, str(ex)
 
     def invoke_trigger(self, p_commands, p_data=None):

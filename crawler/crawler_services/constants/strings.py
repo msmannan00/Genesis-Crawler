@@ -14,7 +14,7 @@ class MANAGE_MONGO_MESSAGES:
     S_DELETE_SUCCESS = "[6] Data Deleted Successfully"
     S_READ_FAILURE = "[5] Something unexpected happened while reading"
     S_READ_SUCCESS = "[6] Data Read Successfully"
-    S_COUNT_FAILURE = "[1] Something unexpected happened while counting"
+    S_COUNT_FAILURE = "[7] Something unexpected happened while counting"
 
 class MANAGE_ELASTIC_MESSAGES:
     S_INSERT_FAILURE = "[1] Something unexpected happened while inserting"
@@ -25,4 +25,4 @@ class MANAGE_ELASTIC_MESSAGES:
     S_DELETE_SUCCESS = "[6] Data Deleted Successfully"
     S_READ_FAILURE = "[5] Something unexpected happened while reading"
     S_READ_SUCCESS = "[6] Data Read Successfully"
-    S_COUNT_FAILURE = "[1] Something unexpected happened while counting"
+    S_COUNT_FAILURE = "[7] Something unexpected happened while counting"

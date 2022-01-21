@@ -3,12 +3,11 @@ import time
 
 from thefuzz import fuzz
 from crawler.crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from crawler.crawler_instance.constants.strings import MESSAGE_STRINGS
+from crawler.crawler_instance.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWLER_STATUS
 from crawler.crawler_instance.i_crawl_crawler.i_crawl_enums import ICRAWL_CONTROLLER_COMMANDS, CRAWL_STATUS_TYPE
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, \
-    ELASTIC_REQUEST_COMMANDS
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
@@ -46,7 +45,7 @@ class i_crawl_controller(request_handler):
 
     def __validate_duplicate_content(self, p_content, p_url):
         for m_document in self.__m_content_duplication_handler:
-            if fuzz.ratio(m_document,p_content)>85:
+            if fuzz.ratio(m_document,p_content)>CRAWL_SETTINGS_CONSTANTS.S_SUB_HOST_DATA_FUZZY_SCORE:
                 return True
 
         return False
@@ -56,13 +55,12 @@ class i_crawl_controller(request_handler):
         if helper_method.normalize_slashes(p_index_model.m_base_url_model.m_url) == m_host_url:
             m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_DUPLICATE, [p_index_model.m_content], [True]])
             if m_status is False:
-                log.g().e(m_json)
                 return False
 
             if len(m_json) > 0:
                 for m_document in m_json:
                     m_json = m_document['_source']
-                    if fuzz.ratio(m_json['m_title_hidden'], p_index_model.m_title_hidden) > 85 and fuzz.ratio( m_json['m_important_content_hidden'], p_index_model.m_important_content_hidden) > 85:
+                    if fuzz.ratio(m_json['m_title_hidden'], p_index_model.m_title_hidden) > CRAWL_SETTINGS_CONSTANTS.S_HOST_DATA_FUZZY_SCORE and fuzz.ratio( m_json['m_important_content_hidden'], p_index_model.m_important_content_hidden) > CRAWL_SETTINGS_CONSTANTS.S_HOST_DATA_FUZZY_SCORE:
                         return False
         return True
 
@@ -85,7 +83,7 @@ class i_crawl_controller(request_handler):
                 m_status = self.__validate_duplicate_content(m_parsed_model.m_content, p_request_model.m_url)
                 if m_status is True:
                     self.__m_save_to_mongodb = False
-                    log.g().w(MESSAGE_STRINGS.S_LOCAL_DUPLICATE_URL + " : " + p_request_model.m_url)
+                    log.g().w(MANAGE_CRAWLER_MESSAGES.S_LOCAL_DUPLICATE_URL + " : " + p_request_model.m_url)
                 elif m_status is False and m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and m_response:
                     m_status = self.__validate_recrawl(m_parsed_model)
                     if m_status is True:
@@ -95,10 +93,10 @@ class i_crawl_controller(request_handler):
                         self.__m_content_duplication_handler.append(m_parsed_model.m_content)
                     else:
                         self.__m_save_to_mongodb = False
-                        log.g().w(MESSAGE_STRINGS.S_ALREADY_CRAWL_URL + " : " + p_request_model.m_url)
+                        log.g().w(MANAGE_CRAWLER_MESSAGES.S_ALREADY_CRAWL_URL + " : " + p_request_model.m_url)
                 else:
                     self.__m_save_to_mongodb = False
-                    log.g().w(MESSAGE_STRINGS.S_LOW_YIELD_URL + " : " + p_request_model.m_url)
+                    log.g().w(MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + p_request_model.m_url)
                     self.__m_url_status = CRAWL_STATUS_TYPE.S_LOW_YIELD
 
             m_parsed_model = self.__clean_sub_url(m_parsed_model)
