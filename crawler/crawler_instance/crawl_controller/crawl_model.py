@@ -51,7 +51,7 @@ class crawl_model(request_handler):
         parent_host = helper_method.get_host_url(p_base_url_model.m_url)
         m_onion_extention = STRINGS.S_ONION_EXTENTION
 
-        if m_onion_extention in new_url_host:
+        if new_url_host == parent_host or parent_host == "https://drive.google.com":
             if new_url_host == parent_host:
                 depth = p_base_url_model.m_depth + 1
             else:
