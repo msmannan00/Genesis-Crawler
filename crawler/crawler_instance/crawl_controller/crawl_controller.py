@@ -33,8 +33,13 @@ class crawl_controller(request_handler):
     def __init__(self):
         self.__m_crawl_model = crawl_model()
 
-    # Start Crawler Manager
+    def __update_status(self):
+        while True:
+            sleep(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT)
+            requests.get(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_URL, timeout=10)
+            log.g().i("status updated")
 
+    # Start Crawler Manager
     def __install_live_url(self):
         try:
             mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_RESET_CRAWLABLE_URL, [None], [None]])
@@ -60,9 +65,10 @@ class crawl_controller(request_handler):
             self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_INSERT_INIT, [m_document['m_url'], url_model(CRAWL_SETTINGS_CONSTANTS.S_START_URL, 0, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)])
 
     def __on_run_general(self):
-        helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
-        self.__m_main_thread = threading.Thread(target=self.__init_thread_manager)
-        self.__m_main_thread.start()
+        threading.Thread(target=self.__update_status).start()
+        # helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
+        # self.__m_main_thread = threading.Thread(target=self.__init_thread_manager)
+        # self.__m_main_thread.start()
 
     # ICrawler Manager
     def __init_thread_manager(self):

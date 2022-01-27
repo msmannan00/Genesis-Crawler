@@ -25,6 +25,10 @@ class CRAWL_SETTINGS_CONSTANTS:
     # Total Thread Instances Allowed
     S_MAX_THREAD_COUNT_PER_INSTANCE = 30
 
+    # Total Thread Instances Allowed
+    S_UPDATE_STATUS_TIMEOUT = 300
+    S_UPDATE_STATUS_URL = "https://167.86.99.31/update_status/?pRequest=m_crawler"
+
     # Time Delay to Invoke New Url Requests
     S_ICRAWL_INVOKE_DELAY = 2
     S_CRAWLER_INVOKE_DELAY = 2
