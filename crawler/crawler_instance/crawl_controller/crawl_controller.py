@@ -66,9 +66,9 @@ class crawl_controller(request_handler):
 
     def __on_run_general(self):
         threading.Thread(target=self.__update_status).start()
-        # helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
-        # self.__m_main_thread = threading.Thread(target=self.__init_thread_manager)
-        # self.__m_main_thread.start()
+        helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
+        self.__m_main_thread = threading.Thread(target=self.__init_thread_manager)
+        self.__m_main_thread.start()
 
     # ICrawler Manager
     def __init_thread_manager(self):
