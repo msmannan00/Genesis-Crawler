@@ -1,5 +1,6 @@
 # Local Imports
 import copy
+import json
 from json import JSONEncoder
 
 
@@ -21,6 +22,9 @@ class index_model:
         self.m_video = p_video
         self.m_validity_score = p_validity_score
         self.m_user_crawled = False
+
+    def to_json(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 class UrlObjectEncoder(JSONEncoder):
     def default(self, o):

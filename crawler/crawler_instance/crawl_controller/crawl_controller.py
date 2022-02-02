@@ -1,4 +1,5 @@
 # Local Imports
+import json
 import threading
 from time import sleep
 from raven.transport import requests
@@ -9,6 +10,7 @@ from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWLER_STATUS
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.i_crawl_crawler.i_crawl_enums import ICRAWL_CONTROLLER_COMMANDS
 from crawler.crawler_instance.local_shared_model.url_model import url_model
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS
 from crawler.crawler_services.helper_services.internet_monitor import network_monitor
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
@@ -72,7 +74,7 @@ class crawl_controller(request_handler):
 
     # ICrawler Manager
     def __init_thread_manager(self):
-        try:
+        #try:
             sleep(5)
             while True:
                 if network_monitor.get_instance().get_network_status() == NETWORK_STATUS.S_ONLINE:
@@ -106,9 +108,9 @@ class crawl_controller(request_handler):
                     self.__install_live_url()
                     self.__init_live_url()
 
-        except Exception as ex:
-            log.g().c(MANAGE_CRAWLER_MESSAGES.S_APPLICATION_MAIN_FAILURE + " : " + ex)
-            exit(0)
+        #except Exception as ex:
+        #    log.g().c(MANAGE_CRAWLER_MESSAGES.S_APPLICATION_MAIN_FAILURE + " : " + str(ex))
+        #    exit(0)
 
     # Awake Crawler From Sleep
     def __crawler_instance_manager(self):

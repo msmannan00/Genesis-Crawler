@@ -1,4 +1,6 @@
 # Local Libraries
+import json
+
 from crawler.crawler_instance.constants import app_status
 from crawler.crawler_instance.constants.app_status import CRAWL_STATUS
 from crawler.crawler_instance.constants.constant import CRAWL_SETTINGS_CONSTANTS
@@ -169,7 +171,7 @@ class crawl_model(request_handler):
 
     def __on_save_url(self, p_index_model, p_save_to_mongodb):
         if p_save_to_mongodb is True:
-            elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [p_index_model], [True]])
+            elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.loads(p_index_model.to_json())], [True]])
             log.g().s(MANAGE_CRAWLER_MESSAGES.S_URL_PARSED + STRINGS.S_SEPERATOR + p_index_model.m_base_url_model.m_url)
 
         for m_url in p_index_model.m_sub_url:
