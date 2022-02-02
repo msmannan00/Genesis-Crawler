@@ -30,7 +30,7 @@ class webRequestManager:
                 return page.url, True, str(soup)
 
         except Exception as ex:
-            log.g().e(MANAGE_CRAWLER_MESSAGES.S_WEB_REQUEST_PROCESSING_ERROR + " : " + ex)
+            log.g().e(MANAGE_CRAWLER_MESSAGES.S_WEB_REQUEST_PROCESSING_ERROR + " : " + str(ex))
             return p_url, False, None
 
 
