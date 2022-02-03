@@ -70,7 +70,6 @@ class tor_controller(request_handler):
             app_status.S_TOR_STATUS = TOR_STATUS.S_START
             self.__m_tor_shell = subprocess.Popen(p_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="/")
             self.__m_controller = Controller.from_port(port=int(app_status.TOR_STATUS.S_TOR_CONTROL_PORT))
-            self.__on_stop_tor()
             self.__m_controller.authenticate()
             self.__m_new_circuit_threadS = threading.Thread(target=self.__on_new_circuit_repeat)
             self.__m_new_circuit_threadS.start()
