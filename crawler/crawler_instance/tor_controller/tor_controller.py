@@ -105,7 +105,7 @@ class tor_controller(request_handler):
         self.__m_tor_thread.start()
 
     def __on_stop_tor(self):
-        #self.__m_controller.signal(Signal.SHUTDOWN)
+        self.__m_controller.signal(Signal.SHUTDOWN)
         self.__on_clear_cache()
 
     def __on_restart_tor(self):
