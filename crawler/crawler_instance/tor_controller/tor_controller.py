@@ -66,7 +66,6 @@ class tor_controller(request_handler):
 
     def __on_start_subprocess(self, p_command):
         self.__on_remove_carriage_return()
-        self.__on_clear_cache()
 
         app_status.S_TOR_STATUS = TOR_STATUS.S_START
         self.__m_tor_shell = subprocess.Popen(p_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="/")
@@ -107,6 +106,7 @@ class tor_controller(request_handler):
 
     def __on_stop_tor(self):
         self.__m_controller.signal(Signal.SHUTDOWN)
+        self.__on_clear_cache()
 
     def __on_restart_tor(self):
         self.__m_controller.signal(Signal.RELOAD)
