@@ -65,32 +65,26 @@ class tor_controller(request_handler):
         shutil.rmtree(TOR_CONSTANTS.S_TOR_PROXY_PATH)
 
     def __on_start_subprocess(self, p_command):
-        self.__on_remove_carriage_return()
+        app_status.S_TOR_STATUS = TOR_STATUS.S_START
+        self.__m_tor_shell = subprocess.Popen(p_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="/")
+        self.__m_controller = Controller.from_port(port=int(app_status.TOR_STATUS.S_TOR_CONTROL_PORT))
+        self.__m_new_circuit_threadS = threading.Thread(target=self.__on_new_circuit_repeat)
+        self.__m_new_circuit_threadS.start()
+
         while True:
-            app_status.S_TOR_STATUS = TOR_STATUS.S_START
-            self.__m_tor_shell = subprocess.Popen(p_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="/")
-            self.__m_controller = Controller.from_port(port=int(app_status.TOR_STATUS.S_TOR_CONTROL_PORT))
-            self.__m_controller.authenticate()
-            self.__m_new_circuit_threadS = threading.Thread(target=self.__on_new_circuit_repeat)
-            self.__m_new_circuit_threadS.start()
+            nextline = self.__m_tor_shell.stdout.readline()
+            m_log = nextline.decode(STRINGS.S_UTF8_ENCODING)
+            if len(m_log) > 5 and app_status.TOR_STATUS.S_TOR_STATUS != TOR_STATUS.S_RUNNING:
+                print(m_log, flush=True)
 
-            while True:
-                nextline = self.__m_tor_shell.stdout.readline()
-                m_log = nextline.decode(STRINGS.S_UTF8_ENCODING)
-                if len(m_log)>5 and app_status.TOR_STATUS.S_TOR_STATUS != TOR_STATUS.S_RUNNING:
-                    print(m_log, flush=True)
+            if nextline == STRINGS.S_EMPTY:
+                break
 
-                if nextline == STRINGS.S_EMPTY:
-                    break
-
-                if m_log.__contains__("Bootstrapped 100% (done)"):
-                    app_status.TOR_STATUS.S_TOR_STATUS = TOR_STATUS.S_RUNNING
-                if m_log.__contains__("actively refused"):
-                    print("FUCK1", flush=True)
-                    break
-
-            time.sleep(5)
-            print("FUCK2", flush=True)
+            if m_log.__contains__("Bootstrapped 100% (done)"):
+                app_status.TOR_STATUS.S_TOR_STATUS = TOR_STATUS.S_RUNNING
+            if m_log.__contains__("actively refused"):
+                print("FUCK1", flush=True)
+                break
 
     def __on_new_circuit_repeat(self):
         while True:
@@ -111,9 +105,8 @@ class tor_controller(request_handler):
         self.__m_tor_thread.start()
 
     def __on_stop_tor(self):
-        pass
-        #self.__m_controller.signal(Signal.SHUTDOWN)
-        #self.__on_clear_cache()
+        self.__m_controller.signal(Signal.SHUTDOWN)
+        self.__on_clear_cache()
 
     def __on_restart_tor(self):
         self.__m_controller.signal(Signal.RELOAD)

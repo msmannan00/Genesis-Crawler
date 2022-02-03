@@ -1,27 +1,28 @@
-# Tor state file last generated on 2022-02-03 16:08:55 local time
+# Tor state file last generated on 2022-02-03 16:23:28 local time
 # Other times below are in UTC
 # You *do not* need to edit this file.
 
 CircuitBuildTimeBin 475 3
 CircuitBuildTimeBin 525 31
-CircuitBuildTimeBin 575 27
-CircuitBuildTimeBin 625 17
-CircuitBuildTimeBin 675 12
-CircuitBuildTimeBin 725 6
-CircuitBuildTimeBin 775 3
-CircuitBuildTimeBin 825 4
-CircuitBuildTimeBin 875 6
-CircuitBuildTimeBin 925 3
-CircuitBuildTimeBin 975 9
+CircuitBuildTimeBin 575 31
+CircuitBuildTimeBin 625 32
+CircuitBuildTimeBin 675 43
+CircuitBuildTimeBin 725 29
+CircuitBuildTimeBin 775 14
+CircuitBuildTimeBin 825 13
+CircuitBuildTimeBin 875 10
+CircuitBuildTimeBin 925 8
+CircuitBuildTimeBin 975 12
+CircuitBuildTimeBin 1025 1
 CircuitBuildTimeBin 1125 1
-CircuitBuildTimeBin 1175 1
+CircuitBuildTimeBin 1175 2
 CircuitBuildTimeBin 1325 1
 CircuitBuildTimeBin 4075 1
 Dormant 0
 Guard in=default rsa_id=E92EC87C899799C1D1E10E8F94E34659CD4CA436 nickname=SomeSwissRelay sampled_on=2022-01-29T05:39:32 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=EFEDC3115EFE4BFA11FC59B9E68F86C65E21F5D5 nickname=marina sampled_on=2022-01-27T12:47:28 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2022-01-25T14:46:46 confirmed_idx=2
 Guard in=default rsa_id=299CC5D7A58E5B92B69DC333B28D926CD7B157D8 nickname=Unnamed sampled_on=2022-01-29T19:35:21 sampled_by=0.4.3.4-rc listed=1
-Guard in=default rsa_id=404DBE0F72D66576925432B1E4A28425FA2E4825 nickname=KagamineLenNazareth sampled_on=2022-02-01T11:23:44 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2022-01-27T17:25:38 confirmed_idx=0 pb_circ_attempts=125.000000 pb_circ_successes=124.000000 pb_successful_circuits_closed=123.000000 pb_collapsed_circuits=1.000000
+Guard in=default rsa_id=404DBE0F72D66576925432B1E4A28425FA2E4825 nickname=KagamineLenNazareth sampled_on=2022-02-01T11:23:44 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2022-01-27T17:25:38 confirmed_idx=0 pb_use_attempts=64.000000 pb_use_successes=64.000000 pb_circ_attempts=201.000000 pb_circ_successes=198.000000 pb_successful_circuits_closed=197.000000 pb_collapsed_circuits=1.000000
 Guard in=default rsa_id=12D552E8AF7AA2B71B218B5BBF6A5FEFA6F26BA0 nickname=TOR2DFNrelA sampled_on=2022-02-01T17:08:20 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=399F99CB398A003B1FA24828BB8F0C282F1AA1B2 nickname=hetzDEicebeer09 sampled_on=2022-01-27T15:32:21 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=9869386074B215934264AF2F97A80C1E1D6729BD nickname=gbtUSicebeer02b sampled_on=2022-01-29T18:49:31 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2022-01-22T16:47:30 confirmed_idx=1 pb_circ_attempts=1.000000 pb_circ_successes=1.000000 pb_successful_circuits_closed=1.000000
@@ -38,7 +39,6 @@ Guard in=default rsa_id=5EBF67F71714662ABF75BF8B7E69F330F57A72B2 nickname=MyRhin
 Guard in=default rsa_id=94F5629AE5F2DC409CD44668176597FF48296BA1 nickname=kuro sampled_on=2022-01-26T17:27:00 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=055BABC096A36F41FCDA19E08859FB1C34AB5A5A nickname=tor4 sampled_on=2022-01-27T18:03:35 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=19E685EE86A504DDDBDF8DF2378A10B9B46CC423 nickname=WoweRelay sampled_on=2022-01-25T07:09:43 sampled_by=0.4.3.4-rc listed=1
-LastWritten 2022-02-03 11:08:55
-MinutesSinceUserActivity 33
+LastWritten 2022-02-03 11:23:28
 TorVersion Tor 0.4.3.4-rc
-TotalBuildTimes 125
+TotalBuildTimes 232
