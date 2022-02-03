@@ -13,6 +13,7 @@ class TOR_CONSTANTS:
 
     S_SHELL_CONFIG_PATH = RAW_PATH_CONSTANTS.S_PROJECT_PATH + "/crawler/crawler_services/raw/config_script.sh"
     S_TOR_PATH = RAW_PATH_CONSTANTS.S_PROJECT_PATH + "/genesis_onion_proxy"
+    S_TOR_PROXY_PATH = S_TOR_PATH + "/9052"
 
 class CRAWL_SETTINGS_CONSTANTS:
 

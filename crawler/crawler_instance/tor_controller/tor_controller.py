@@ -1,5 +1,6 @@
 # Local Imports
 import os
+import shutil
 import subprocess
 import threading
 import time
@@ -60,9 +61,12 @@ class tor_controller(request_handler):
         with open(TOR_CONSTANTS.S_SHELL_CONFIG_PATH, 'w', newline='\n') as file:
             file.write(content)
 
+    def __on_clear_cache(self):
+        shutil.rmtree(TOR_CONSTANTS.S_TOR_PROXY_PATH)
 
     def __on_start_subprocess(self, p_command):
         self.__on_remove_carriage_return()
+        self.__on_clear_cache()
 
         app_status.S_TOR_STATUS = TOR_STATUS.S_START
         self.__m_tor_shell = subprocess.Popen(p_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="/")
