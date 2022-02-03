@@ -43,8 +43,6 @@ class application_controller(request_handler):
     # External Reuqest Callbacks
     def __on_start(self):
         tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_START, None)
-        tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_START, None)
-        tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_START, None)
         network_monitor.get_instance().init()
         topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_LOAD_CLASSIFIER)
         self.__on_reset_backup()

@@ -1,5 +1,6 @@
 # Local Imports
 import os
+import shutil
 import subprocess
 import threading
 import time
@@ -98,6 +99,7 @@ class tor_controller(request_handler):
         os.system(TOR_STRINGS.S_RELEASE_PORT)
 
     def __on_start_tor(self):
+        self.__on_clear_cache()
         self.__m_tor_thread = threading.Thread(target=self.__on_start_subprocess, args=[TOR_CMD_COMMANDS.S_START.value + STRINGS.S_EMPTY_SPACE + str(
             app_status.TOR_STATUS.S_TOR_CONNECTION_PORT) + STRINGS.S_EMPTY_SPACE + str(
             app_status.TOR_STATUS.S_TOR_CONTROL_PORT)])
