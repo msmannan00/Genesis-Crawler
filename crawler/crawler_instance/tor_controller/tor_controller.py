@@ -62,7 +62,8 @@ class tor_controller(request_handler):
             file.write(content)
 
     def __on_clear_cache(self):
-        shutil.rmtree(TOR_CONSTANTS.S_TOR_PROXY_PATH)
+        if os.path.exists(TOR_CONSTANTS.S_TOR_PROXY_PATH):
+            shutil.rmtree(TOR_CONSTANTS.S_TOR_PROXY_PATH)
 
     def __on_start_subprocess(self, p_command):
         self.__on_remove_carriage_return()

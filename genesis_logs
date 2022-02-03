@@ -1,0 +1,6 @@
+13:32:20,74 root INFO [24] Live Feeder Data Loading
+13:32:20,76 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): 167.86.99.31:443
+13:32:20,826 urllib3.connectionpool DEBUG https://167.86.99.31:443 "POST /crawl_index/ HTTP/1.1" 200 None
+13:32:20,880 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.google.com:443
+13:32:21,619 urllib3.connectionpool DEBUG https://www.google.com:443 "HEAD / HTTP/1.1" 200 0
+13:32:21,631 stem DEBUG GETCONF __owningcontrollerprocess (runtime: 0.0020)

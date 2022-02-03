@@ -20,6 +20,8 @@ stopwords
 thefuzz
 python-Levenshtein-wheels
 lxml
+arrow
+
 ###### Requirements with Version Specifiers ######
 simplejson==3.8.0
 scikit-learn==0.24.2
