@@ -8,6 +8,8 @@ from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWLER_STATUS
 from crawler.crawler_instance.i_crawl_crawler.i_crawl_enums import ICRAWL_CONTROLLER_COMMANDS, CRAWL_STATUS_TYPE
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
+from crawler.crawler_services.crawler_services.url_duplication_manager.url_duplication_controller import \
+    url_duplication_controller
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
@@ -43,25 +45,26 @@ class i_crawl_controller(request_handler):
 
         return p_parsed_model
 
-    def __validate_duplicate_content(self, p_content, p_url):
+    def __validate_duplicate_content(self, p_content):
         for m_document in self.__m_content_duplication_handler:
             if fuzz.ratio(m_document,p_content)>CRAWL_SETTINGS_CONSTANTS.S_SUB_HOST_DATA_FUZZY_SCORE:
-                return False
+                return True
 
         return False
 
     def __validate_recrawl(self, p_index_model):
-        '''m_host_url = helper_method.get_host_url(p_index_model.m_base_url_model.m_url)
+        m_host_url = helper_method.get_host_url(p_index_model.m_base_url_model.m_url)
         if helper_method.normalize_slashes(p_index_model.m_base_url_model.m_url) == m_host_url:
             m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_DUPLICATE, [p_index_model.m_content], [True]])
             if m_status is False:
-                return False
+                return True
 
             if len(m_json) > 0:
                 for m_document in m_json:
                     m_json = m_document['_source']
                     if fuzz.ratio(m_json['m_title_hidden'], p_index_model.m_title_hidden) > CRAWL_SETTINGS_CONSTANTS.S_HOST_DATA_FUZZY_SCORE and fuzz.ratio( m_json['m_important_content_hidden'], p_index_model.m_important_content_hidden) > CRAWL_SETTINGS_CONSTANTS.S_HOST_DATA_FUZZY_SCORE:
-                        return False'''
+                        if url_duplication_controller.get_instance().verify_content_duplication(m_json['m_host']) is True:
+                            return False
         return True
 
     # Web Request To Get Physical URL HTML
@@ -69,7 +72,7 @@ class i_crawl_controller(request_handler):
         __m_save_to_mongodb = False
         m_html_parser = parse_controller()
 
-        m_redirected_url, m_response, m_html = self.__m_web_request_handler.load_url("http://45bgmhjtj3i4oigyd32aw5ddtyqg5uim7zkpj2vbr223pcgb2m4is4qd.onion/general-escrow-instructions.php")
+        m_redirected_url, m_response, m_html = self.__m_web_request_handler.load_url(p_request_model.m_url)
         if m_response is True:
             m_status, m_parsed_model = m_html_parser.on_parse_html(m_html, p_request_model)
             if m_status is False:
@@ -80,7 +83,7 @@ class i_crawl_controller(request_handler):
             if m_redirected_url == m_redirected_requested_url or m_redirected_url != m_redirected_requested_url and self.__m_duplication_handler.validate_duplicate(m_redirected_url) is False:
                 self.__m_duplication_handler.insert(m_redirected_url)
 
-                m_status = self.__validate_duplicate_content(m_parsed_model.m_content, p_request_model.m_url)
+                m_status = self.__validate_duplicate_content(m_parsed_model.m_content)
                 if m_status is True:
                     self.__m_save_to_mongodb = False
                     log.g().w(MANAGE_CRAWLER_MESSAGES.S_LOCAL_DUPLICATE_URL + " : " + p_request_model.m_url)

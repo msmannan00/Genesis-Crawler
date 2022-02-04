@@ -9,12 +9,12 @@ from crawler.crawler_instance.constants.strings import STRINGS, MANAGE_CRAWLER_M
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
+from crawler.crawler_services.crawler_services.url_duplication_manager.url_duplication_controller import url_duplication_controller
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_instance.local_shared_model.backup_model import backup_model
 from crawler.crawler_instance.local_shared_model.url_model import url_model
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS, MONGO_CRUD
-from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.crawler_services.helper_services.helper_method import helper_method
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
 
@@ -27,25 +27,19 @@ class crawl_model(request_handler):
     __m_active_queue_keys = []
     __m_inactive_queue_keys = []
 
-    # Local Variables
-    __m_duplication_host_handler = None
-
     # Helper Methods
     def __init__(self):
         self.__m_url_queue = dict()
-        self.__m_duplication_host_handler = duplication_handler()
-        self.__init_duplication_handler()
 
     def __init_duplication_handler(self):
         m_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_FETCH_CRAWLED_URL, [None], [None]])
         for m_document in m_response:
-            self.__m_duplication_host_handler.insert(m_document['m_url'])
+            url_duplication_controller.get_instance().insert(m_document['m_url'])
 
     def __calculate_depth(self, p_url, p_base_url_model):
         depth = 1
         new_url_host = helper_method.get_host_url(p_url)
         parent_host = helper_method.get_host_url(p_base_url_model.m_url)
-        m_onion_extention = STRINGS.S_ONION_EXTENTION
 
         if new_url_host == parent_host or parent_host == "https://drive.google.com":
             if new_url_host == parent_host:
@@ -65,8 +59,8 @@ class crawl_model(request_handler):
             if p_init is True:
                 if len(self.__m_url_queue) < CRAWL_SETTINGS_CONSTANTS.S_MAX_HOST_QUEUE_SIZE:
                     m_fresh_url_model = url_model(p_url, m_url_depth, p_base_url_model.m_type)
-                    if self.__m_duplication_host_handler.validate_duplicate(m_url_host) is False:
-                        self.__m_duplication_host_handler.insert(m_url_host)
+                    if url_duplication_controller.get_instance().validate_duplicate(m_url_host) is False:
+                        url_duplication_controller.get_instance().insert(m_url_host)
                         self.__m_url_queue[m_url_host] = [m_fresh_url_model]
                         self.__m_inactive_queue_keys.append(m_url_host)
                 else:
@@ -76,7 +70,7 @@ class crawl_model(request_handler):
                 self.__m_url_queue[m_url_host].insert(0, url_model(p_url, m_url_depth, p_base_url_model.m_type))
 
     def __save_backup_url_to_drive(self, p_url, p_url_depth, p_category = None):
-        if self.__m_duplication_host_handler.validate_duplicate(p_url) is False:
+        if url_duplication_controller.get_instance().validate_duplicate(p_url) is False:
             app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = True
             m_host = helper_method.get_host_url(p_url)
             m_subhost = p_url.replace(m_host, STRINGS.S_EMPTY)
@@ -87,7 +81,7 @@ class crawl_model(request_handler):
             mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_SAVE_BACKUP, [m_data], [None]])
             log.g().s(MANAGE_CRAWLER_MESSAGES.S_BACKUP_PARSED + " : " + str(p_url))
         else:
-            self.__m_duplication_host_handler.insert(p_url)
+            url_duplication_controller.get_instance().insert(p_url)
 
     # Extract Fresh Host URL
     def __get_host_url(self):
@@ -162,7 +156,7 @@ class crawl_model(request_handler):
         self.__m_url_queue = {}
         self.__m_active_queue_keys = []
         self.__m_inactive_queue_keys = []
-        self.__m_duplication_host_handler.clear_filter()
+        url_duplication_controller.get_instance().clear_filter()
 
     def __on_save_url(self, p_index_model, p_save_to_mongodb):
         if p_save_to_mongodb is True:
