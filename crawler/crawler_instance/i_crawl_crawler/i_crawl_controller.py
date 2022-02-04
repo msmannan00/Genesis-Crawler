@@ -46,12 +46,12 @@ class i_crawl_controller(request_handler):
     def __validate_duplicate_content(self, p_content, p_url):
         for m_document in self.__m_content_duplication_handler:
             if fuzz.ratio(m_document,p_content)>CRAWL_SETTINGS_CONSTANTS.S_SUB_HOST_DATA_FUZZY_SCORE:
-                return True
+                return False
 
         return False
 
     def __validate_recrawl(self, p_index_model):
-        m_host_url = helper_method.get_host_url(p_index_model.m_base_url_model.m_url)
+        '''m_host_url = helper_method.get_host_url(p_index_model.m_base_url_model.m_url)
         if helper_method.normalize_slashes(p_index_model.m_base_url_model.m_url) == m_host_url:
             m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_DUPLICATE, [p_index_model.m_content], [True]])
             if m_status is False:
@@ -61,7 +61,7 @@ class i_crawl_controller(request_handler):
                 for m_document in m_json:
                     m_json = m_document['_source']
                     if fuzz.ratio(m_json['m_title_hidden'], p_index_model.m_title_hidden) > CRAWL_SETTINGS_CONSTANTS.S_HOST_DATA_FUZZY_SCORE and fuzz.ratio( m_json['m_important_content_hidden'], p_index_model.m_important_content_hidden) > CRAWL_SETTINGS_CONSTANTS.S_HOST_DATA_FUZZY_SCORE:
-                        return False
+                        return False'''
         return True
 
     # Web Request To Get Physical URL HTML
@@ -69,7 +69,7 @@ class i_crawl_controller(request_handler):
         __m_save_to_mongodb = False
         m_html_parser = parse_controller()
 
-        m_redirected_url, m_response, m_html = self.__m_web_request_handler.load_url(p_request_model.m_url)
+        m_redirected_url, m_response, m_html = self.__m_web_request_handler.load_url("http://45bgmhjtj3i4oigyd32aw5ddtyqg5uim7zkpj2vbr223pcgb2m4is4qd.onion/general-escrow-instructions.php")
         if m_response is True:
             m_status, m_parsed_model = m_html_parser.on_parse_html(m_html, p_request_model)
             if m_status is False:

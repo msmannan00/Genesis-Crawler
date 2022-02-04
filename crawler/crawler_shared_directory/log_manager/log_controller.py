@@ -34,7 +34,7 @@ class log:
         if os.path.exists(RAW_PATH_CONSTANTS.S_LOGS_DIRECTORY) is False:
             os.mkdir(RAW_PATH_CONSTANTS.S_LOGS_DIRECTORY)
 
-        logging.basicConfig(filename=RAW_PATH_CONSTANTS.S_LOGS_DIRECTORY + str(datetime.date.today()), filemode='a', format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s', datefmt='%H:%M:%S', level=logging.WARNING)
+        logging.basicConfig(filename=RAW_PATH_CONSTANTS.S_LOGS_DIRECTORY + str(datetime.date.today()), filemode='a', format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
     # Initializations
     @staticmethod
@@ -54,28 +54,28 @@ class log:
 
     # Info Logs
     def i(self, p_log):
-        logging.info("INFO:" + p_log)
+        logging.info("INFO : " + p_log)
         print(colored(str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " : " + self.get_caller_class() + " : " + str(threading.get_native_id())) + " : " + p_log, 'cyan'))
 
     # Success Logs
     def s(self, p_log):
-        logging.info(p_log)
+        logging.info("SUCCESS : " + p_log)
         print(colored(str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " : " + self.get_caller_class() + " : " + str(threading.get_native_id())) + " : " + p_log, 'green'))
 
     # Warning Logs
     def w(self, p_log):
-        logging.info("WARNING:" + p_log)
+        logging.info("WARNING : " + p_log)
         logging.info(p_log)
         print(colored(str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " : " + self.get_caller_class() + " : " + str(threading.get_native_id())) + " : " + p_log, 'yellow'))
 
     # Error Logs
     def e(self, p_log):
-        logging.info("ERROR:" + p_log)
+        logging.info("ERROR : " + p_log)
         logging.info(p_log)
         print(colored(str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " : " + self.get_caller_class() + " : " + str(threading.get_native_id())) + " : " + p_log, 'blue'))
 
     # Error Logs
     def c(self, p_log):
-        logging.info("CRITICAL:" + p_log)
+        logging.info("CRITICAL : " + p_log)
         logging.info(p_log)
         print(colored(str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " : " + self.get_caller_class() + " : " + str(threading.get_native_id())) + " : " + p_log, 'red'))

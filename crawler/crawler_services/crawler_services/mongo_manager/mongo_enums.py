@@ -15,10 +15,14 @@ class MONGODB_COMMANDS(enum.Enum):
     S_SET_BACKUP_URL = 21
     S_COUNT_CRAWLED_URL = 23
     S_REMOVE_DEAD_CRAWLABLE_URL = 24
+    S_INSERT_CRAWLED_URL = 25
+    S_FETCH_CRAWLED_URL = 26
+    S_CLEAR_CRAWLED_URL = 27
 
 class MONGODB_COLLECTIONS:
     S_BACKUP_MODEL = 'backup_model'
     S_CRAWLABLE_URL_MODEL = 'crawlable_url_model'
+    S_CRAWLED_URL_MODEL = 'crawled_url_model'
 
 class MONGO_CONNECTIONS:
     S_DATABASE_NAME = 'genesis-crawler'

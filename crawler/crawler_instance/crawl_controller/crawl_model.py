@@ -37,15 +37,9 @@ class crawl_model(request_handler):
         self.__init_duplication_handler()
 
     def __init_duplication_handler(self):
-        log.g().i(MANAGE_CRAWLER_MESSAGES.S_FEEDER_DATA_LOADING)
-        m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_UNIQUE_HOST, [None], [None]])
-
-        if m_status is False:
-            log.g().c(MANAGE_CRAWLER_MESSAGES.S_LIVE_URL_CACHE_LOAD_FAILURE + " : " + m_json)
-            exit(0)
-
-        for m_document in m_json:
-            self.__m_duplication_host_handler.insert(m_document['_source']["m_host"])
+        m_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_FETCH_CRAWLED_URL, [None], [None]])
+        for m_document in m_response:
+            self.__m_duplication_host_handler.insert(m_document['m_url'])
 
     def __calculate_depth(self, p_url, p_base_url_model):
         depth = 1
@@ -121,6 +115,7 @@ class crawl_model(request_handler):
             self.__m_url_queue.pop(m_url_host, None)
 
             mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_REMOVE_BACKUP, [m_url_host], [None]])
+            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_CREATE_UNIQUE, [MONGODB_COMMANDS.S_INSERT_CRAWLED_URL, [m_url_host], [None]])
             return False, None
 
     def __load_backup_url(self):

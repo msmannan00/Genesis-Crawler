@@ -101,6 +101,7 @@ class crawl_controller(request_handler):
 
                 threading.Event().wait(CRAWL_SETTINGS_CONSTANTS.S_CRAWLER_INVOKE_DELAY)
                 if app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS is False and len(self.__m_crawler_instance_list)<=0:
+                    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_CLEAR_CRAWLED_URL, [None], [None]])
                     mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_CLEAR_BACKUP, [None],[None]])
                     app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = True
                     self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_CRAWL_FINISHED_STATUS)

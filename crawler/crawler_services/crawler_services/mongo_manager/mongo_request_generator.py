@@ -54,14 +54,23 @@ class mongo_request_generator(request_handler):
 
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_CRAWLABLE_URL_MODEL, MONGODB_KEYS.S_FILTER: {'m_url': {'$eq': p_url}}, MONGODB_KEYS.S_VALUE: { '$inc': {'m_failed_hits': m_failed, 'm_low_yield_hits': m_low_yield, 'm_duplicate_hits': m_duplicate}}}
 
-    def __on_remove_unique_backup(self, p_data):
-        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_BACKUP_MODEL, MONGODB_KEYS.S_FILTER:{'m_host': p_data}}
+    def __on_remove_backup(self, p_url):
+        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_CRAWLABLE_URL_MODEL,MONGODB_KEYS.S_FILTER: {"m_host": {"$eq": p_url}}}
 
     def __on_get_crawl_count(self):
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_BACKUP_MODEL, MONGODB_KEYS.S_FILTER:{}}
 
     def __on_remove_dead_crawlable_url(self):
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_CRAWLABLE_URL_MODEL, MONGODB_KEYS.S_FILTER: {"m_live": {"$eq": False}}}
+
+    def __on_insert_crawled_url(self, p_url):
+        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_CRAWLED_URL_MODEL, MONGODB_KEYS.S_VALUE: {"m_url": p_url[0]}}
+
+    def __on_fetch_crawled_url(self):
+        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_CRAWLED_URL_MODEL, MONGODB_KEYS.S_FILTER: {}}
+
+    def __on_clear_crawled_url(self):
+        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_CRAWLED_URL_MODEL, MONGODB_KEYS.S_FILTER: {}}
 
     def invoke_trigger(self, p_commands, p_data=None):
         if p_commands == MONGODB_COMMANDS.S_CLEAR_BACKUP:
@@ -81,7 +90,7 @@ class mongo_request_generator(request_handler):
         elif p_commands == MONGODB_COMMANDS.S_UPDATE_CRAWLABLE_URL_DATA:
             return self.__on_update_crawlable_url(p_data[0], p_data[1])
         elif p_commands == MONGODB_COMMANDS.S_REMOVE_BACKUP:
-            return self.__on_remove_unique_backup(p_data)
+            return self.__on_remove_backup(p_data)
         elif p_commands == MONGODB_COMMANDS.S_GET_UNPARSED_URL:
             return self.__on_get_unparsed_url()
         elif p_commands == MONGODB_COMMANDS.S_SET_BACKUP_URL:
@@ -90,5 +99,11 @@ class mongo_request_generator(request_handler):
             return self.__on_get_crawl_count()
         elif p_commands == MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL:
             return self.__on_remove_dead_crawlable_url()
+        elif p_commands == MONGODB_COMMANDS.S_INSERT_CRAWLED_URL:
+            return self.__on_insert_crawled_url(p_data)
+        elif p_commands == MONGODB_COMMANDS.S_FETCH_CRAWLED_URL:
+            return self.__on_fetch_crawled_url()
+        elif p_commands == MONGODB_COMMANDS.S_CLEAR_CRAWLED_URL:
+            return self.__on_clear_crawled_url()
 
 

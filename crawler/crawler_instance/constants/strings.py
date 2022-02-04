@@ -18,6 +18,7 @@ class PARSE_STRINGS:
     S_CONTENT_LENGTH_HEADER = 'content-length'
 
 class MANAGE_CRAWLER_MESSAGES:
+    S_APPLICATION_STARTING = "[0] ----------------------- APPLICATION STARTING -----------------------"
     S_WEB_REQUEST_PROCESSING_ERROR = "[1] Error Fetching response from server"
     S_FILE_PARSED = "[2] Successfully Parsed File"
     S_URL_PARSED = "[3] Successfully Parsed URL"
