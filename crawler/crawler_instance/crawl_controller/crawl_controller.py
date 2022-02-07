@@ -1,5 +1,4 @@
 # Local Imports
-import json
 import threading
 from time import sleep
 from raven.transport import requests
@@ -10,7 +9,6 @@ from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWLER_STATUS
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.i_crawl_crawler.i_crawl_enums import ICRAWL_CONTROLLER_COMMANDS
 from crawler.crawler_instance.local_shared_model.url_model import url_model
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS
 from crawler.crawler_services.helper_services.internet_monitor import network_monitor
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler

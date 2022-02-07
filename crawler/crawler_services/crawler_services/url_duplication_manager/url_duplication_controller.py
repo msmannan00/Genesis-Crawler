@@ -6,6 +6,7 @@ class url_duplication_controller:
 
     __instance = None
     __m_duplication_content_handler = None
+    __m_parsed = {}
 
     # Initializations
 
@@ -28,5 +29,16 @@ class url_duplication_controller:
     def on_insert_content(self, p_url):
         self.__m_duplication_content_handler.insert(p_url)
 
+    def on_set_parsed_content(self, p_url, p_state):
+        self.__m_parsed[p_url] = p_state
+
+    def on_get_parsed_content(self, p_url):
+        return self.__m_parsed[p_url]
+
     def on_reset(self):
         self.__m_duplication_content_handler.clear_filter()
+        self.__m_parsed.clear()
+
+    def clear_filter(self):
+        self.__m_duplication_content_handler.clear_filter()
+        self.__m_parsed.clear()

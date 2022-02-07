@@ -20,19 +20,16 @@ from crawler.crawler_instance.i_crawl_crawler.web_request_handler import webRequ
 
 class i_crawl_controller(request_handler):
 
-    __m_web_request_handler = None
-    __m_duplication_handler = None
-    __m_content_duplication_handler = []
-    __m_request_model = None
-
-    __m_parsed_model = None
-    __m_thread_status = CRAWLER_STATUS.S_RUNNING
-    __m_save_to_mongodb = False
-    __m_url_status = CRAWL_STATUS_TYPE.S_NONE
-
     def __init__(self):
         self.__m_duplication_handler = duplication_handler()
         self.__m_web_request_handler = webRequestManager()
+        self.__m_content_duplication_handler = []
+        self.__m_request_model = None
+
+        self.__m_parsed_model = None
+        self.__m_thread_status = CRAWLER_STATUS.S_RUNNING
+        self.__m_save_to_mongodb = False
+        self.__m_url_status = CRAWL_STATUS_TYPE.S_NONE
 
     def __clean_sub_url(self, p_parsed_model):
         m_sub_url_filtered = []
@@ -53,19 +50,28 @@ class i_crawl_controller(request_handler):
         return False
 
     def __validate_recrawl(self, p_index_model):
+        m_status = True
+        m_unique_duplicate = 0
         m_host_url = helper_method.get_host_url(p_index_model.m_base_url_model.m_url)
         if helper_method.normalize_slashes(p_index_model.m_base_url_model.m_url) == m_host_url:
             m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_DUPLICATE, [p_index_model.m_content], [True]])
             if m_status is False:
-                return True
+                m_status = False
 
-            if len(m_json) > 0:
+            if len(m_json) > 3:
                 for m_document in m_json:
                     m_json = m_document['_source']
                     if fuzz.ratio(m_json['m_title_hidden'], p_index_model.m_title_hidden) > CRAWL_SETTINGS_CONSTANTS.S_HOST_DATA_FUZZY_SCORE and fuzz.ratio( m_json['m_important_content_hidden'], p_index_model.m_important_content_hidden) > CRAWL_SETTINGS_CONSTANTS.S_HOST_DATA_FUZZY_SCORE:
                         if url_duplication_controller.get_instance().verify_content_duplication(m_json['m_host']) is True:
-                            return False
-        return True
+                            m_status_parsed = url_duplication_controller.get_instance().on_get_parsed_content(m_json['m_host'])
+                            if m_status_parsed is False:
+                                url_duplication_controller.get_instance().on_insert_content(m_json['m_host'])
+                                m_unique_duplicate +=1
+                                if m_unique_duplicate>3:
+                                    m_status = False
+
+        url_duplication_controller.get_instance().on_set_parsed_content(m_host_url, True)
+        return m_status
 
     # Web Request To Get Physical URL HTML
     def __trigger_url_request(self, p_request_model):
@@ -112,6 +118,7 @@ class i_crawl_controller(request_handler):
     # Wait For Crawl Manager To Provide URL From Queue
     def __start_crawler_instance(self, p_request_model):
         self.__invoke_thread(True, p_request_model)
+        self.__m_content_duplication_handler.clear()
         while self.__m_thread_status in [CRAWLER_STATUS.S_RUNNING, CRAWLER_STATUS.S_PAUSE]:
             time.sleep(CRAWL_SETTINGS_CONSTANTS.S_ICRAWL_INVOKE_DELAY)
             #try:

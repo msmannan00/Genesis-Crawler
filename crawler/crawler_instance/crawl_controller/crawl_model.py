@@ -59,8 +59,9 @@ class crawl_model(request_handler):
             if p_init is True:
                 if len(self.__m_url_queue) < CRAWL_SETTINGS_CONSTANTS.S_MAX_HOST_QUEUE_SIZE:
                     m_fresh_url_model = url_model(p_url, m_url_depth, p_base_url_model.m_type)
-                    if url_duplication_controller.get_instance().validate_duplicate(m_url_host) is False:
-                        url_duplication_controller.get_instance().insert(m_url_host)
+                    if url_duplication_controller.get_instance().verify_content_duplication(m_url_host) is False:
+                        url_duplication_controller.get_instance().on_insert_content(m_url_host)
+                        url_duplication_controller.get_instance().on_set_parsed_content(m_url_host, False)
                         self.__m_url_queue[m_url_host] = [m_fresh_url_model]
                         self.__m_inactive_queue_keys.append(m_url_host)
                 else:
@@ -70,7 +71,7 @@ class crawl_model(request_handler):
                 self.__m_url_queue[m_url_host].insert(0, url_model(p_url, m_url_depth, p_base_url_model.m_type))
 
     def __save_backup_url_to_drive(self, p_url, p_url_depth, p_category = None):
-        if url_duplication_controller.get_instance().validate_duplicate(p_url) is False:
+        if url_duplication_controller.get_instance().verify_content_duplication(p_url) is False:
             app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = True
             m_host = helper_method.get_host_url(p_url)
             m_subhost = p_url.replace(m_host, STRINGS.S_EMPTY)

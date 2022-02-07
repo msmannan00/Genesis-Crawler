@@ -35,7 +35,7 @@ class MANAGE_CRAWLER_MESSAGES:
     S_INSTALLED_URL = "[14] Successfully Installed URL"
     S_UPDATE_URL_STATUS_URL = "[15] Successfully Updated URL status"
     S_RESET_CRAWLABLE_URL = "[16] Successfully Reset Crawlable URL"
-    S_LOCAL_DUPLICATE_URL = "[17] Duplicate Content URL Error"
+    S_LOCAL_DUPLICATE_URL = "[17] Local Duplicate Content URL Error"
     S_INTERNET_ERROR = "[18] Internet not running"
     S_LOCAL_URL_PARSED = "[19] Successfully Parsed Local URL"
     S_LOCAL_URL_EMPTY = "[20] Local URL Document Empty"
