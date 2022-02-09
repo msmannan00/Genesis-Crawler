@@ -121,13 +121,13 @@ class i_crawl_controller(request_handler):
         self.__m_content_duplication_handler.clear()
         while self.__m_thread_status in [CRAWLER_STATUS.S_RUNNING, CRAWLER_STATUS.S_PAUSE]:
             time.sleep(CRAWL_SETTINGS_CONSTANTS.S_ICRAWL_INVOKE_DELAY)
-            #try:
-            if self.__m_thread_status == CRAWLER_STATUS.S_RUNNING:
-                    self.__m_parsed_model = self.__trigger_url_request(self.__m_request_model)
-                    self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
-            #except Exception as ex:
-            #    self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
-            #    print(ex.__traceback__)
+            try:
+                if self.__m_thread_status == CRAWLER_STATUS.S_RUNNING:
+                        self.__m_parsed_model = self.__trigger_url_request(self.__m_request_model)
+                        self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
+            except Exception as ex:
+                self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
+                print(ex.__traceback__)
 
     # Crawl Manager Makes Request To Get Crawl duplicationHandlerService
     def __get_crawled_data(self):

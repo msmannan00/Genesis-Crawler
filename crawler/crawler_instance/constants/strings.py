@@ -44,6 +44,7 @@ class MANAGE_CRAWLER_MESSAGES:
     S_APPLICATION_MAIN_FAILURE = "[23] Main Thread Failure"
     S_FEEDER_DATA_LOADING = "[24] Live Feeder Data Loading"
     S_THREAD_CREATED = "[25] Thread Created"
+    S_ELASTIC_CONNECTION_ERROR = "[1] Error connecting to elastic server"
 
 class SPELL_CHECKER_STRINGS:
     S_STOPWORD_LANGUAGE = "english"
