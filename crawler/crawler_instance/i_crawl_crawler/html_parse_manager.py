@@ -65,6 +65,7 @@ class html_parse_manager(HTMLParser, ABC):
                 if validators.url(p_url):
                     suffix = ''.join(pathlib.Path(p_url).suffixes)
                     m_host_url = helper_method.get_host_url(p_url)
+                    m_parent_url = helper_method.get_host_url(self.m_base_url.m_url)
                     if mime is None:
                         mime = mimetypes.MimeTypes().guess_type(p_url)[0]
                     if mime is not None and mime != "text/html":
@@ -72,7 +73,7 @@ class html_parse_manager(HTMLParser, ABC):
                             self.m_doc_url.append(p_url)
                         elif str(mime).startswith("video") and len(self.m_video_url) < 10:
                             self.m_video_url.append(p_url)
-                    elif m_host_url.__contains__(".onion"):
+                    elif m_host_url.__contains__(".onion") and m_host_url.__eq__(m_parent_url):
                         if m_host_url.__contains__("?"):
                             self.m_query_url_count+=1
                         if self.m_query_url_count < 5:

@@ -166,8 +166,6 @@ class crawl_model(request_handler):
             self.__insert_url(m_url, p_index_model.m_base_url_model)
 
     def invoke_trigger(self, p_command, p_data=None):
-        if p_command == CRAWL_MODEL_COMMANDS.S_SAVE_BACKUP_URL:
-           return self.__save_backup_url_to_drive(p_data[0],p_data[1],p_data[2])
         if p_command == CRAWL_MODEL_COMMANDS.S_GET_HOST_URL:
            return self.__get_host_url()
         if p_command == CRAWL_MODEL_COMMANDS.S_CRAWL_FINISHED_STATUS:
