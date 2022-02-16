@@ -79,7 +79,7 @@ class crawl_model(request_handler):
                 m_data = backup_model(m_host, m_subhost, p_url_depth, p_category)
             else:
                 m_data = backup_model(m_host, m_subhost, p_url_depth, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)
-            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_SAVE_BACKUP, [m_data], [None]])
+            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_SAVE_BACKUP, [m_data], [True]])
             log.g().s(MANAGE_CRAWLER_MESSAGES.S_BACKUP_PARSED + " : " + str(p_url))
         else:
             url_duplication_controller.get_instance().insert(p_url)
@@ -114,7 +114,7 @@ class crawl_model(request_handler):
             return False, None
 
     def __load_backup_url(self):
-        try:
+        #try:
             m_data = backup_model(STRINGS.S_EMPTY, STRINGS.S_EMPTY, STRINGS.S_EMPTY, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)
             m_backup_model = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_UNPARSED_URL, [m_data], [CRAWL_SETTINGS_CONSTANTS.S_BACKUP_FETCH_LIMIT]])
 
@@ -125,7 +125,7 @@ class crawl_model(request_handler):
                 m_document_list_id.append(m_document["_id"])
 
             if len(m_document_list) > 0:
-                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_SET_BACKUP_URL, [m_document_list_id], [False]])
+                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_SET_BACKUP_URL, [m_document_list_id], [True]])
                 for data_item in m_document_list:
                     for m_url_model in data_item[CRAWL_MODEL_KEYS.S_URL_DATA]:
                         p_url = data_item[CRAWL_MODEL_KEYS.S_HOST]
@@ -150,8 +150,8 @@ class crawl_model(request_handler):
             else:
                 log.g().w("W1 : " + ERROR_MESSAGES.S_DATABASE_FETCH_ERROR)
                 app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = False
-        except Exception as e:
-           log.g().e("Crawl Model E1 : " + str(e))
+        #except Exception as e:
+           #log.g().e("Crawl Model E1 : " + str(e))
 
     def on_reset(self):
         self.__m_url_queue = {}

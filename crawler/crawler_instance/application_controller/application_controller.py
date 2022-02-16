@@ -39,7 +39,7 @@ class application_controller(request_handler):
     def __on_reset_backup(self):
         m_document_count = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_COUNT_CRAWLED_URL, [None],[None]]).count()
         if m_document_count>0:
-            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_RESET, [None], [None]])
+            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_RESET, [None], [False]])
 
     # External Reuqest Callbacks
     def __on_start(self):

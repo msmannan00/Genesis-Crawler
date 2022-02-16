@@ -55,7 +55,7 @@ class mongo_request_generator(request_handler):
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_CRAWLABLE_URL_MODEL, MONGODB_KEYS.S_FILTER: {'m_url': {'$eq': p_url}}, MONGODB_KEYS.S_VALUE: { '$inc': {'m_failed_hits': m_failed, 'm_low_yield_hits': m_low_yield, 'm_duplicate_hits': m_duplicate}}}
 
     def __on_remove_backup(self, p_url):
-        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_CRAWLABLE_URL_MODEL,MONGODB_KEYS.S_FILTER: {"m_host": {"$eq": p_url}}}
+        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_BACKUP_MODEL,MONGODB_KEYS.S_FILTER: {"m_host": {"$eq": p_url[0]}}}
 
     def __on_get_crawl_count(self):
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_BACKUP_MODEL, MONGODB_KEYS.S_FILTER:{}}

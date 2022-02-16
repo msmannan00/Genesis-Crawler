@@ -30,7 +30,6 @@ class MANAGE_CRAWLER_MESSAGES:
     S_REINITIALIZING_CRAWLABLE_URL = "[9] Re-initializing Crawlable URL"
     S_LOADING_BACKUP_URL = "[10] Loading Backup URL"
     S_BACKUP_QUEUE_EMPTY = "[11] Backup Queue Empty"
-    S_URL_PARSED = "[12] Successfully Parsed URL"
     S_BACKUP_PARSED = "[13] Successfully Saved Backup URL"
     S_INSTALLED_URL = "[14] Successfully Installed URL"
     S_UPDATE_URL_STATUS_URL = "[15] Successfully Updated URL status"
@@ -44,6 +43,7 @@ class MANAGE_CRAWLER_MESSAGES:
     S_APPLICATION_MAIN_FAILURE = "[23] Main Thread Failure"
     S_FEEDER_DATA_LOADING = "[24] Live Feeder Data Loading"
     S_THREAD_CREATED = "[25] Thread Created"
+    S_ELASTIC_ERROR = "[26] Elastic Commands Failed"
 
 class SPELL_CHECKER_STRINGS:
     S_STOPWORD_LANGUAGE = "english"

@@ -58,9 +58,9 @@ class mongo_controller(request_handler):
             log.g().e(MANAGE_MONGO_MESSAGES.S_READ_FAILURE + " : " + str(ex))
             return str(ex)
 
-    def __update(self, p_data):
+    def __update(self, p_data, upsert):
         try:
-            self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].update_many(p_data[MONGODB_KEYS.S_FILTER],p_data[MONGODB_KEYS.S_VALUE], upsert=True)
+            self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].update_many(p_data[MONGODB_KEYS.S_FILTER],p_data[MONGODB_KEYS.S_VALUE], upsert=upsert)
             return True, MANAGE_MONGO_MESSAGES.S_UPDATE_SUCCESS
 
         except Exception as ex:
@@ -88,7 +88,7 @@ class mongo_controller(request_handler):
         elif p_commands == MONGO_CRUD.S_READ:
             return self.__read(m_request, m_param[0])
         elif p_commands == MONGO_CRUD.S_UPDATE:
-            return self.__update(m_request)
+            return self.__update(m_request, m_param[0])
         elif p_commands == MONGO_CRUD.S_DELETE:
             return self.__delete(m_request)
         elif p_commands == MONGO_CRUD.S_CREATE_UNIQUE:

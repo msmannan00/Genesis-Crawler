@@ -35,19 +35,19 @@ class crawl_controller(request_handler):
 
     def __update_status(self):
         while True:
-            sleep(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT)
             requests.get(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_URL, timeout=10)
             log.g().i("status updated")
+            sleep(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT)
 
     # Start Crawler Manager
     def __install_live_url(self):
         try:
-            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_RESET_CRAWLABLE_URL, [None], [None]])
+            mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_RESET_CRAWLABLE_URL, [None], [False]])
             m_response = requests.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL)
 
             for line in m_response.text.splitlines():
                 log.g().s(MANAGE_CRAWLER_MESSAGES.S_INSTALLED_URL + " : " + line)
-                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [line], [None]])
+                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [line], [True]])
             mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE,[MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL, [], [None]])
         except Exception as ex:
             log.g().c(MANAGE_CRAWLER_MESSAGES.S_UNIQUE_URL_CACHE_LOAD_FAILURE + " : " + ex)
@@ -72,9 +72,9 @@ class crawl_controller(request_handler):
 
     # ICrawler Manager
     def __init_thread_manager(self):
-        #try:
-            sleep(5)
-            while True:
+        sleep(5)
+        while True:
+            try:
                 if network_monitor.get_instance().get_network_status() == NETWORK_STATUS.S_ONLINE:
                     self.__crawler_instance_manager()
                 else:
@@ -94,22 +94,20 @@ class crawl_controller(request_handler):
                     else:
                         m_icrawler_instance = i_crawl_controller()
                         self.__m_crawler_instance_list.insert(0, m_icrawler_instance)
-                        thread_instance = threading.Thread(target=self.__create_crawler_instance, args=(m_url_model,m_icrawler_instance,))
+                        thread_instance = threading.Thread(target=self.__create_crawler_instance,args=(m_url_model, m_icrawler_instance,))
                         thread_instance.start()
 
                 threading.Event().wait(CRAWL_SETTINGS_CONSTANTS.S_CRAWLER_INVOKE_DELAY)
-                if app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS is False and len(self.__m_crawler_instance_list)<=0:
-                    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_CLEAR_CRAWLED_URL, [None], [None]])
-                    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_CLEAR_BACKUP, [None],[None]])
+                if app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS is False and len(self.__m_crawler_instance_list) <= 0:
+                    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE,[MONGODB_COMMANDS.S_CLEAR_CRAWLED_URL, [None],[None]])
+                    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE,[MONGODB_COMMANDS.S_CLEAR_BACKUP, [None], [None]])
                     app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = True
                     self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_CRAWL_FINISHED_STATUS)
                     self.__m_crawl_model = crawl_model()
                     self.__install_live_url()
                     self.__init_live_url()
-
-        #except Exception as ex:
-        #    log.g().c(MANAGE_CRAWLER_MESSAGES.S_APPLICATION_MAIN_FAILURE + " : " + str(ex))
-        #    exit(0)
+            except Exception as ex:
+                log.g().c(MANAGE_CRAWLER_MESSAGES.S_APPLICATION_MAIN_FAILURE + " : " + str(ex))
 
     # Awake Crawler From Sleep
     def __crawler_instance_manager(self):
@@ -119,7 +117,8 @@ class crawl_controller(request_handler):
                 self.__m_crawler_instance_list.remove(m_crawl_instance)
             elif m_thread_status == CRAWLER_STATUS.S_PAUSE:
                 m_status, m_url_model = self.__crawler_instance_job_fetcher(m_index_model, m_save_to_mongodb, m_request_model)
-                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_CRAWLABLE_URL_DATA, [m_request_model.m_url, m_url_status], [None]])
+                if helper_method.normalize_slashes(m_request_model.m_url).endswith("onion"):
+                    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_CRAWLABLE_URL_DATA, [m_request_model.m_url, m_url_status], [False]])
                 m_crawl_instance.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_INVOKE_THREAD,[m_status, m_url_model])
 
     def __create_crawler_instance(self, p_url_model, p_crawler_instance):
