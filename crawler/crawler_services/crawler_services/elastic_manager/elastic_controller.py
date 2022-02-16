@@ -37,8 +37,8 @@ class elastic_controller(request_handler):
                 m_data = m_data['hits']['hits']
             return m_status, m_data
         except Exception as ex:
-            log.g().e(MANAGE_CRAWLER_MESSAGES.S_ELASTIC_ERROR + " : " + ex)
-            return False, ex
+            log.g().e(MANAGE_CRAWLER_MESSAGES.S_ELASTIC_ERROR + " : " + str(ex))
+            return False, None
 
     def invoke_trigger(self, p_commands, p_data=None):
         return self.__post_data(p_commands, p_data)

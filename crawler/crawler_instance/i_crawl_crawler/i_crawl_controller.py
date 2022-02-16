@@ -56,6 +56,9 @@ class i_crawl_controller(request_handler):
         if helper_method.normalize_slashes(p_index_model.m_base_url_model.m_url) == m_host_url:
             m_status, m_json = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_DUPLICATE, [p_index_model.m_content], [True]])
             if m_status is False:
+                return None
+
+            if m_status is False:
                 m_status = False
 
             if len(m_json) > 3:
@@ -95,6 +98,10 @@ class i_crawl_controller(request_handler):
                     log.g().w(MANAGE_CRAWLER_MESSAGES.S_LOCAL_DUPLICATE_URL + " : " + p_request_model.m_url)
                 elif m_status is False and m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and m_response:
                     m_status = self.__validate_recrawl(m_parsed_model)
+                    if m_status is None:
+                        self.__m_save_to_mongodb = False
+                        return None
+
                     if m_status is True:
                         m_parsed_model = m_html_parser.on_parse_files(m_parsed_model)
                         self.__m_duplication_handler.insert(m_parsed_model.m_base_url_model.m_redirected_host)
@@ -121,13 +128,13 @@ class i_crawl_controller(request_handler):
         self.__m_content_duplication_handler.clear()
         while self.__m_thread_status in [CRAWLER_STATUS.S_RUNNING, CRAWLER_STATUS.S_PAUSE]:
             time.sleep(CRAWL_SETTINGS_CONSTANTS.S_ICRAWL_INVOKE_DELAY)
-            try:
-                if self.__m_thread_status == CRAWLER_STATUS.S_RUNNING:
+            #try:
+            if self.__m_thread_status == CRAWLER_STATUS.S_RUNNING:
                     self.__m_parsed_model = self.__trigger_url_request(self.__m_request_model)
                     self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
-            except Exception as ex:
-                self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
-                print(ex.__traceback__)
+            #except Exception as ex:
+            #    self.__m_thread_status = CRAWLER_STATUS.S_PAUSE
+            #    print(ex.__traceback__)
 
     # Crawl Manager Makes Request To Get Crawl duplicationHandlerService
     def __get_crawled_data(self):

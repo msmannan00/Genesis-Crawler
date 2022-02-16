@@ -1,4 +1,5 @@
 # Local Imports
+import os
 import threading
 from time import sleep
 from raven.transport import requests
@@ -34,10 +35,17 @@ class crawl_controller(request_handler):
         self.__m_crawl_model = crawl_model()
 
     def __update_status(self):
-        while True:
-            requests.get(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_URL, timeout=10)
-            log.g().i("status updated")
-            sleep(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT)
+        try:
+            while True:
+                requests.get(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_URL, timeout=10)
+                log.g().i("status updated")
+                sleep(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT)
+        except Exception:
+            log.g().c(MANAGE_CRAWLER_MESSAGES.S_SERVER_REQUEST_FAILURE)
+
+    def __init_image_cache(self):
+        if not os.path.isdir(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH):
+            os.makedirs(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
 
     # Start Crawler Manager
     def __install_live_url(self):
@@ -65,6 +73,7 @@ class crawl_controller(request_handler):
             self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_INSERT_INIT, [m_document['m_url'], url_model(CRAWL_SETTINGS_CONSTANTS.S_START_URL, 0, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)])
 
     def __on_run_general(self):
+        self.__init_image_cache()
         threading.Thread(target=self.__update_status).start()
         helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
         self.__m_main_thread = threading.Thread(target=self.__init_thread_manager)

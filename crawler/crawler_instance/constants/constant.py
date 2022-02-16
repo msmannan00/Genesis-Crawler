@@ -7,7 +7,7 @@ class RAW_PATH_CONSTANTS:
     S_PROJECT_PATH = str(Path(__file__).parent.parent.parent.parent)
     S_RAW_PATH = S_PROJECT_PATH + "/"
     S_DATASET_PATH = "/crawler/crawler_services/raw/crawled_classifier_websites.csv"
-    S_CRAWLER_IMAGE_CACHE_PATH = S_PROJECT_PATH + "/crawler/crawler_instance/raw/"
+    S_CRAWLER_IMAGE_CACHE_PATH = str(Path(__file__).parent.parent.parent.parent.parent) + "/crawler_image_cache"
     S_LOGS_DIRECTORY = str(Path(__file__).parent.parent.parent.parent.parent) +"/logs/"
 
 class TOR_CONSTANTS:
