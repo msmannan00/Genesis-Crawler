@@ -117,7 +117,7 @@ class crawl_controller(request_handler):
                 self.__m_crawler_instance_list.remove(m_crawl_instance)
             elif m_thread_status == CRAWLER_STATUS.S_PAUSE:
                 m_status, m_url_model = self.__crawler_instance_job_fetcher(m_index_model, m_save_to_mongodb, m_request_model)
-                if helper_method.normalize_slashes(m_request_model.m_url).endswith("onion"):
+                if helper_method.normalize_slashes(m_request_model.m_url).endswith(".onion"):
                     mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_CRAWLABLE_URL_DATA, [m_request_model.m_url, m_url_status], [False]])
                 m_crawl_instance.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_INVOKE_THREAD,[m_status, m_url_model])
 

@@ -76,7 +76,7 @@ class html_parse_manager(HTMLParser, ABC):
                         if m_host_url.__contains__("?"):
                             self.m_query_url_count+=1
                         if self.m_query_url_count < 5:
-                            self.m_sub_url.append(p_url)
+                            self.m_sub_url.append(helper_method.normalize_slashes(p_url))
 
 
     def handle_starttag(self, p_tag, p_attrs):
@@ -282,10 +282,4 @@ class html_parse_manager(HTMLParser, ABC):
         m_content_type = self.__get_content_type()
         m_validity_score = self.__get_validity_score(m_important_content)
 
-        print("------------",flush=True)
-        print(m_meta_description,flush=True)
-        print(m_title_hidden,flush=True)
-        print(m_important_content,flush=True)
-        print(m_important_content_hidden,flush=True)
-        print("------------",flush=True)
         return m_title, self.m_meta_content + m_meta_description, m_title_hidden, m_important_content, m_important_content_hidden,m_meta_keywords, m_content, m_content_type, m_sub_url, m_images, m_document, m_video, m_validity_score

@@ -114,7 +114,7 @@ class crawl_model(request_handler):
             return False, None
 
     def __load_backup_url(self):
-        #try:
+        try:
             m_data = backup_model(STRINGS.S_EMPTY, STRINGS.S_EMPTY, STRINGS.S_EMPTY, CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL)
             m_backup_model = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_UNPARSED_URL, [m_data], [CRAWL_SETTINGS_CONSTANTS.S_BACKUP_FETCH_LIMIT]])
 
@@ -141,8 +141,6 @@ class crawl_model(request_handler):
                         else:
                             self.__m_url_queue[m_url_host].append(url_model(p_url, p_depth, p_type))
 
-
-
                 log.g().i(MANAGE_CRAWLER_MESSAGES.S_LOADING_BACKUP_URL)
                 if len(m_document_list) < CRAWL_SETTINGS_CONSTANTS.S_BACKUP_FETCH_LIMIT:
                     log.g().w(MANAGE_CRAWLER_MESSAGES.S_BACKUP_QUEUE_EMPTY)
@@ -150,8 +148,8 @@ class crawl_model(request_handler):
             else:
                 log.g().w("W1 : " + ERROR_MESSAGES.S_DATABASE_FETCH_ERROR)
                 app_status.CRAWL_STATUS.S_QUEUE_BACKUP_STATUS = False
-        #except Exception as e:
-           #log.g().e("Crawl Model E1 : " + str(e))
+        except Exception as e:
+           log.g().e("Crawl Model E1 : " + str(e))
 
     def on_reset(self):
         self.__m_url_queue = {}
