@@ -41,12 +41,12 @@ class webRequestManager:
                 try:
                     headers = {tor_keys.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT}
                     page = m_request_handler.head(p_url, headers=headers, timeout=(CRAWL_SETTINGS_CONSTANTS.S_HEADER_TIMEOUT, 27), proxies=proxies, allow_redirects=True, verify=False)
-                except Exception as ex:
-                    log.g().e(MANAGE_CRAWLER_MESSAGES.S_WEB_REQUEST_PROCESSING_ERROR + " : " + ex)
+                except:
+                    log.g().e(MANAGE_CRAWLER_MESSAGES.S_WEB_REQUEST_PROCESSING_ERROR + " : " + str(p_url))
                     return False, None
                 return True, page.headers
-        except Exception as ex:
-            log.g().e(MANAGE_CRAWLER_MESSAGES.S_WEB_REQUEST_PROCESSING_ERROR + " : " + ex)
+        except :
+            log.g().e(MANAGE_CRAWLER_MESSAGES.S_WEB_REQUEST_PROCESSING_ERROR + " : " + str(p_url))
             return False, None
 
     # Load Header - used to get header without actually downloading the content

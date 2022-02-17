@@ -33,6 +33,8 @@ class file_parse_manager:
                 self.__m_duplication_url_handler.insert(m_url)
 
                 m_response, m_header = self.m_web_request_hander.load_header(m_url)
+                if m_response is False:
+                    continue
                 if m_response is True and (PARSE_STRINGS.S_CONTENT_LENGTH_HEADER not in m_header or int(m_header[PARSE_STRINGS.S_CONTENT_LENGTH_HEADER]) >= CRAWL_SETTINGS_CONSTANTS.S_MIN_CONTENT_LENGTH):
                    m_filtered_list.insert(0, m_url)
                    log.g().s(MANAGE_CRAWLER_MESSAGES.S_FILE_PARSED + " : " + m_url)

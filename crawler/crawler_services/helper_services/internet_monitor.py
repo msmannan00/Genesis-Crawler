@@ -31,7 +31,7 @@ class network_monitor:
                 try:
                     requests.head(url, timeout=timeout)
                     self.__m_running = True
-                except (requests.ConnectionError, requests.Timeout) as exception:
+                except:
                     self.__m_running = False
                 sleep(60)
         except KeyboardInterrupt:
