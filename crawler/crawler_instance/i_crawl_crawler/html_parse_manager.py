@@ -277,7 +277,7 @@ class html_parse_manager(HTMLParser, ABC):
         m_title = self.__get_title()
         m_meta_description = self.__get_meta_description()
         m_title_hidden = STRINGS.S_EMPTY # self.__get_title_hidden(m_title)
-        m_important_content = STRINGS.S_EMPTY # self.__get_important_content()
+        m_important_content = self.__get_important_content()
         m_important_content_hidden = STRINGS.S_EMPTY # self.__get_meta_description_hidden(m_important_content)
         m_meta_keywords = self.__get_meta_keywords()
         m_content_type = self.__get_content_type()
