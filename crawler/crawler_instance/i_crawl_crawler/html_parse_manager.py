@@ -272,7 +272,6 @@ class html_parse_manager(HTMLParser, ABC):
     def parse_html_files(self):
         self.__generate_html()
 
-        m_content = self.__get_content()
         m_sub_url, m_images, m_document, m_video = self.__get_static_file()
         m_title = self.__get_title()
         m_meta_description = self.__get_meta_description()
@@ -281,6 +280,7 @@ class html_parse_manager(HTMLParser, ABC):
         m_important_content_hidden = STRINGS.S_EMPTY # self.__get_meta_description_hidden(m_important_content)
         m_meta_keywords = self.__get_meta_keywords()
         m_content_type = self.__get_content_type()
+        m_content = self.__get_content() + " " + m_title + " " + m_meta_description
         m_validity_score = self.__get_validity_score(m_important_content)
 
         return m_title, self.m_meta_content + m_meta_description, m_title_hidden, m_important_content, m_important_content_hidden,m_meta_keywords, m_content, m_content_type, m_sub_url, m_images, m_document, m_video, m_validity_score
