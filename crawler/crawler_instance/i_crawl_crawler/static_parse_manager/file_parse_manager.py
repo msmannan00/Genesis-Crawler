@@ -110,7 +110,7 @@ class file_parse_manager:
         m_documents = self.__is_static_url_valid(p_documents)
         m_videos = self.__is_static_url_valid(p_videos)
 
-        if m_porn_image_count>2:
+        if m_porn_image_count>0:
             m_content_type = 'adult'
         else:
             m_content_type = p_content_type
