@@ -22,6 +22,6 @@ class ELASTIC_REQUEST_COMMANDS:
     S_DUPLICATE = 7
 
 class ELASTIC_CONNECTIONS:
-    S_DATABASE_IP = 'https://167.86.99.31/crawl_index/'
+    S_DATABASE_IP = 'http://192.168.10.11:8000/crawl_index/'
 
 

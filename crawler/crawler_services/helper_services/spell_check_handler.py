@@ -31,7 +31,7 @@ class spell_checker_handler:
         self.__spell_check = set(open(spell_check_constants.S_DICTIONARY_MINI_PATH).read().split())
 
     def stem_word(self, p_word):
-        return p_word
+        return self.__m_porter_stemmer.stem(p_word)
 
     def validate_word(self, p_word):
         if p_word in self.__spell_check:
