@@ -69,7 +69,7 @@ class topic_classifier_model(request_handler):
                 max_value = max(m_predictions)
                 max_index = m_predictions.index(max_value)
 
-                if max_value > 0.70:
+                if max_value > 0.50:
                     m_predictions = self.__m_classifier.classes_[max_index]
                 else:
                     m_predictions = CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
