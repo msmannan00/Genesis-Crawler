@@ -1,4 +1,4 @@
-# Tor state file last generated on 2022-02-22 14:03:29 local time
+# Tor state file last generated on 2022-02-22 14:03:46 local time
 # Other times below are in UTC
 # You *do not* need to edit this file.
 
@@ -6,34 +6,34 @@ CircuitBuildTimeBin 525 2
 CircuitBuildTimeBin 575 4
 CircuitBuildTimeBin 625 4
 CircuitBuildTimeBin 675 13
-CircuitBuildTimeBin 725 49
-CircuitBuildTimeBin 775 63
-CircuitBuildTimeBin 825 50
-CircuitBuildTimeBin 875 60
-CircuitBuildTimeBin 925 55
+CircuitBuildTimeBin 725 50
+CircuitBuildTimeBin 775 61
+CircuitBuildTimeBin 825 52
+CircuitBuildTimeBin 875 61
+CircuitBuildTimeBin 925 57
 CircuitBuildTimeBin 975 42
-CircuitBuildTimeBin 1025 42
-CircuitBuildTimeBin 1075 22
-CircuitBuildTimeBin 1125 30
+CircuitBuildTimeBin 1025 45
+CircuitBuildTimeBin 1075 25
+CircuitBuildTimeBin 1125 29
 CircuitBuildTimeBin 1175 22
-CircuitBuildTimeBin 1225 17
-CircuitBuildTimeBin 1275 38
-CircuitBuildTimeBin 1325 32
-CircuitBuildTimeBin 1375 44
-CircuitBuildTimeBin 1425 28
+CircuitBuildTimeBin 1225 18
+CircuitBuildTimeBin 1275 36
+CircuitBuildTimeBin 1325 34
+CircuitBuildTimeBin 1375 43
+CircuitBuildTimeBin 1425 27
 CircuitBuildTimeBin 1475 30
-CircuitBuildTimeBin 1525 25
-CircuitBuildTimeBin 1575 30
-CircuitBuildTimeBin 1625 14
-CircuitBuildTimeBin 1675 19
-CircuitBuildTimeBin 1725 22
+CircuitBuildTimeBin 1525 24
+CircuitBuildTimeBin 1575 29
+CircuitBuildTimeBin 1625 13
+CircuitBuildTimeBin 1675 17
+CircuitBuildTimeBin 1725 23
 CircuitBuildTimeBin 1775 26
-CircuitBuildTimeBin 1825 20
+CircuitBuildTimeBin 1825 18
 CircuitBuildTimeBin 1875 19
-CircuitBuildTimeBin 1925 15
-CircuitBuildTimeBin 1975 16
+CircuitBuildTimeBin 1925 16
+CircuitBuildTimeBin 1975 15
 CircuitBuildTimeBin 2025 9
-CircuitBuildTimeBin 2075 11
+CircuitBuildTimeBin 2075 10
 CircuitBuildTimeBin 2125 19
 CircuitBuildTimeBin 2175 13
 CircuitBuildTimeBin 2225 11
@@ -64,7 +64,6 @@ CircuitBuildTimeBin 4675 1
 CircuitBuildTimeBin 4875 1
 CircuitBuildTimeBin 4925 1
 CircuitBuildTimeBin 5025 1
-CircuitBuildTimeBin 7125 1
 CircuitBuildTimeBin 8325 1
 CircuitBuildTimeBin 13975 1
 CircuitBuildTimeBin 22175 1
@@ -73,7 +72,7 @@ Dormant 0
 Guard in=default rsa_id=72B3EDBD9698869A56DA41C80E955C6115F9B786 nickname=Ares sampled_on=2022-02-21T01:38:52 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=AB687988F260DE9EDC3B36C66287DE2660ED1CE0 nickname=UseMoaBandwidth2 sampled_on=2022-02-13T22:53:36 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=A16933881734FBAD4535EF0A7331F2120E5E9EBB nickname=Lainwire sampled_on=2022-02-11T16:24:34 sampled_by=0.4.3.4-rc listed=1
-Guard in=default rsa_id=0EC4025AA4B4E2074F41CB1860EE567DBCF702D9 nickname=AmIHelping sampled_on=2022-02-17T19:23:27 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2022-02-12T10:04:04 confirmed_idx=0 pb_use_attempts=242.000000 pb_use_successes=242.000000 pb_circ_attempts=276.876953 pb_circ_successes=274.876953 pb_successful_circuits_closed=274.626953 pb_unusable_circuits=0.250000 pb_timeouts=1.625000
+Guard in=default rsa_id=0EC4025AA4B4E2074F41CB1860EE567DBCF702D9 nickname=AmIHelping sampled_on=2022-02-17T19:23:27 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2022-02-12T10:04:04 confirmed_idx=0 pb_use_attempts=251.000000 pb_use_successes=251.000000 pb_circ_attempts=292.876953 pb_circ_successes=290.876953 pb_successful_circuits_closed=290.626953 pb_unusable_circuits=0.250000 pb_timeouts=1.625000
 Guard in=default rsa_id=23722976B04384E41AE71B45E040051AE6E398F2 nickname=TorZabehlice2 sampled_on=2022-02-21T13:36:58 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=D6FC47681B4D8C91F6BB8285BB34A67BBCA24464 nickname=moneyprintor sampled_on=2022-02-19T01:49:17 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=D5A2B3AE1E8047017A0BBC7209FD624DB84D47CE nickname=komeru2 sampled_on=2022-02-18T00:14:37 sampled_by=0.4.3.4-rc listed=1
@@ -87,9 +86,9 @@ Guard in=default rsa_id=9E4CC64C4F94C359D43C5BA09094323FDBEFD975 nickname=marla 
 Guard in=default rsa_id=D405FCCF06ADEDF898DF2F29C9348DCB623031BA nickname=gGDHjdcC6zAlM8k08lY sampled_on=2022-02-18T02:20:04 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=B4BAEE803B6EB75750D6584A24FB37BE53F4E75D nickname=MDMLU1 sampled_on=2022-02-16T22:19:35 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=2AA5F598F9A1812F01CD99E3B59BB87362ED7438 nickname=setsun sampled_on=2022-02-16T08:41:55 sampled_by=0.4.3.4-rc listed=1
-Guard in=default rsa_id=D80EA21626BFAE8044E4037FE765252E157E3586 nickname=bonjour1 sampled_on=2022-02-18T23:27:05 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2022-02-16T11:36:09 confirmed_idx=1 pb_use_attempts=71.000000 pb_use_successes=71.000000 pb_circ_attempts=82.000000 pb_circ_successes=81.000000 pb_successful_circuits_closed=81.000000
+Guard in=default rsa_id=D80EA21626BFAE8044E4037FE765252E157E3586 nickname=bonjour1 sampled_on=2022-02-18T23:27:05 sampled_by=0.4.3.4-rc listed=1 confirmed_on=2022-02-16T11:36:09 confirmed_idx=1 pb_use_attempts=71.000000 pb_use_successes=71.000000 pb_circ_attempts=83.000000 pb_circ_successes=82.000000 pb_successful_circuits_closed=82.000000
 Guard in=default rsa_id=ACE420872AF1F8A7E064403D92669D14C5CE74AE nickname=qwertz1 sampled_on=2022-02-12T05:03:04 sampled_by=0.4.3.4-rc listed=1
 Guard in=default rsa_id=8ABC4D5F6182C7E79B087D1ED9E5CF652C83E52C nickname=UDEtor sampled_on=2022-02-21T22:18:37 sampled_by=0.4.3.4-rc listed=1
-LastWritten 2022-02-22 09:03:29
+LastWritten 2022-02-22 09:03:46
 TorVersion Tor 0.4.3.4-rc
 TotalBuildTimes 1000
