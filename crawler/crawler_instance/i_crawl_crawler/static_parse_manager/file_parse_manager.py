@@ -26,7 +26,6 @@ class file_parse_manager:
 
     def __is_static_url_valid(self, p_list):
 
-        m_filtered_list = []
 
         for m_url in p_list:
             if self.__m_duplication_url_handler.validate_duplicate(m_url) is False:
