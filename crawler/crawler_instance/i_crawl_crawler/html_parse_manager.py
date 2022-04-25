@@ -164,8 +164,6 @@ class html_parse_manager(HTMLParser, ABC):
     # creating keyword request_manager1 for webpage representation
     def __add_important_description(self, p_data):
         p_data = " ".join(p_data.split())
-        if (p_data.__contains__("java") and p_data.__contains__("script")) or p_data.__contains__("cookies"):
-            return
 
         if (p_data.count(' ')>2 or (self.m_paragraph_count>0 and len(p_data)>0 and p_data!=" ")) and p_data not in self.m_important_content:
             if self.m_parsed_paragraph_count<8:
