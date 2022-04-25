@@ -57,7 +57,7 @@ class i_crawl_controller(request_handler):
         __m_save_to_mongodb = False
         m_html_parser = parse_controller()
 
-        m_redirected_url, m_response, m_html = self.__m_web_request_handler.load_url("http://uk3zgj3sqb7rjboedeptx5wzz7r7a46u46hug5eetpafnu324rdzssad.onion")
+        m_redirected_url, m_response, m_html = self.__m_web_request_handler.load_url(p_request_model.m_url)
         if m_response is True:
             m_status, m_parsed_model = m_html_parser.on_parse_html(m_html, p_request_model)
             if m_status is False:
@@ -84,6 +84,7 @@ class i_crawl_controller(request_handler):
                         self.__m_duplication_handler.insert(m_parsed_model.m_base_url_model.m_redirected_host)
                         self.__m_save_to_mongodb = True
                         self.__m_content_duplication_handler.append(m_parsed_model.m_content)
+                        m_parsed_model.m_sub_url = []
                     else:
                         self.__m_save_to_mongodb = False
                         log.g().w(MANAGE_CRAWLER_MESSAGES.S_ALREADY_CRAWL_URL + " : " + p_request_model.m_url)

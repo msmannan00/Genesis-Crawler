@@ -47,7 +47,6 @@ class file_parse_manager:
 
         m_filtered_list = []
         m_porn_image_count = 0
-
         for m_url in p_list:
             try:
                 if len(m_filtered_list) > 5 or m_porn_image_count > 5:

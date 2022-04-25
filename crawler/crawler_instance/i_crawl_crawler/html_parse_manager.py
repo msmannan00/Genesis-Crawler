@@ -164,6 +164,8 @@ class html_parse_manager(HTMLParser, ABC):
     # creating keyword request_manager1 for webpage representation
     def __add_important_description(self, p_data):
         p_data = " ".join(p_data.split())
+        if (p_data.__contains__("java") and p_data.__contains__("script")) or p_data.__contains__("cookies"):
+            return
 
         if (p_data.count(' ')>2 or (self.m_paragraph_count>0 and len(p_data)>0 and p_data!=" ")) and p_data not in self.m_important_content:
             if self.m_parsed_paragraph_count<8:
@@ -277,10 +279,10 @@ class html_parse_manager(HTMLParser, ABC):
         m_meta_description = self.__get_meta_description()
         m_title_hidden = STRINGS.S_EMPTY # self.__get_title_hidden(m_title)
         m_important_content = self.__get_important_content()
-        m_important_content_hidden = STRINGS.S_EMPTY # self.__get_meta_description_hidden(m_important_content)
         m_meta_keywords = self.__get_meta_keywords()
         m_content_type = self.__get_content_type()
         m_content = self.__get_content() + " " + m_title + " " + m_meta_description
         m_validity_score = self.__get_validity_score(m_important_content)
+        m_important_content_hidden = self.__get_meta_description_hidden(self.m_meta_content + " " + m_title + " " + m_meta_description + " " + m_important_content)
 
         return m_title, self.m_meta_content + m_meta_description, m_title_hidden, m_important_content, m_important_content_hidden,m_meta_keywords, m_content, m_content_type, m_sub_url, m_images, m_document, m_video, m_validity_score
