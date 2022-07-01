@@ -9,4 +9,4 @@ class ELASTIC_REQUEST_COMMANDS:
 
 
 class ELASTIC_CONNECTIONS:
-    S_DATABASE_IP = 'http://192.168.10.7:8000/crawl_index/'
+    S_DATABASE_IP = 'http://167.86.99.31/crawl_index/'
