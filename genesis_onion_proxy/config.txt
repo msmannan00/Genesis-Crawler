@@ -1,2 +1,0 @@
-version=0
-torrc=0

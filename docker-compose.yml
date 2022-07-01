@@ -1,0 +1,69 @@
+version: "3.3"
+
+services:
+    redis_server:
+        image: redis
+        command: redis-server --requirepass killprg1
+        networks:
+            backend:
+                ipv4_address: 10.0.0.3
+
+    celery:
+        build:
+            context: ./
+            dockerfile: dockerFiles/celery_docker
+
+        environment:
+            REDISSERVER: redis://redis_server:6379
+            C_FORCE_ROOT: "true"
+        depends_on:
+            - redis_server
+        networks:
+            backend:
+                ipv4_address: 10.0.0.4
+        volumes:
+            - ./app/:/app
+
+    tor:
+        build:
+            context: ./
+            dockerfile: dockerFiles/tor_docker
+        networks:
+            backend:
+                ipv4_address: 10.0.0.106
+
+
+    mongo:
+        image: mongo
+        container_name: mongo-db
+        volumes:
+            - ./data/db:/data/db
+        ports:
+            - "27017:27017"
+        networks:
+            backend:
+                ipv4_address: 10.0.0.5
+
+    api:
+        build:
+            context: ./
+            dockerfile: dockerFiles/api_docker
+        ports:
+            - "8000:8000"
+        depends_on:
+            - mongo
+            - celery
+            - tor
+        networks:
+            backend:
+                ipv4_address: 10.0.0.100
+        volumes:
+            - ./app/:/app
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 10.0.0.0/24

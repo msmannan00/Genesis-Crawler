@@ -1,4 +1,4 @@
+data
 *.pyc
-crawler/crawler_services/raw/classifier_output/training_data.csv
-*.File
-*.pyc
+tor_proxy
+global_raw
