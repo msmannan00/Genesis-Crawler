@@ -20,6 +20,8 @@ from gevent import sleep
 
 from crawler.shared_data import celery_shared_data
 
+from app.crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
+
 
 class genbot_controller(request_handler):
 
@@ -40,8 +42,7 @@ class genbot_controller(request_handler):
         for m_data in m_mongo_response:
             self.__m_parsed_url = m_data["sub_url_parsed"]
             m_unparsed_url = m_data["sub_url_pending"]
-            if "document_url_parsed" in m_data:
-                self.__m_html_parser.on_static_parser_init(m_data["document_url_parsed"], m_data["image_url_parsed"], m_data["video_url_parsed"])
+            self.__m_html_parser.on_static_parser_init(m_data["document_url_parsed"], m_data["image_url_parsed"], m_data["video_url_parsed"])
             break
 
         for m_parsed_url in self.__m_parsed_url:
@@ -65,7 +66,7 @@ class genbot_controller(request_handler):
     def __trigger_url_request(self, p_request_model: url_model):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
         m_redirected_url, m_response, m_content = self.__m_web_request_handler.load_url(p_request_model.m_url)
-        m_unique_file_model = None
+        m_unique_file_model = unique_file_model([],[],[])
 
         if m_response is True:
 
