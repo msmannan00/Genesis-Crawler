@@ -32,6 +32,8 @@ class MANAGE_CRAWLER_MESSAGES:
     S_ELASTIC_ERROR = "[8] Elastic Commands Failed"
     S_SINGLETON_EXCEPTION = "[9] This class is a singleton"
     S_LOCAL_URL_PARSED_FAILED = "[10] Error during loading Local URL"
+    S_INTERNET_CONNECTION_ISSUE = "[11] internet connection issue ..."
+    S_PARSING_STARTING = "[12] URL parsing started"
 
 
 class MANAGE_MONGO_MESSAGES:

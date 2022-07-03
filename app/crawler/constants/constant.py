@@ -8,7 +8,7 @@ class RAW_PATH_CONSTANTS:
 
 
 class NETWORK_MONITOR:
-    S_PING_URL = "https://www.google.com"
+    S_PING_URL = "https://duckduckgo.com"
 
 
 class LOG_CONSTANTS:
@@ -47,6 +47,7 @@ class CRAWL_SETTINGS_CONSTANTS:
 
     # Total Thread Instances Allowed
     S_UPDATE_STATUS_TIMEOUT = 200
+    S_UPDATE_NETWORK_STATUS_TIMEOUT = 60
     S_UPDATE_STATUS_URL = "https://167.86.99.31/update_status/?pRequest=m_crawler"
 
     # Time Delay to Invoke New Url Requests
@@ -60,7 +61,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_DEFAULT_DEPTH = 0
 
     # Max URL Timeout
-    S_URL_TIMEOUT = 11170
+    S_URL_TIMEOUT = 30
     S_HEADER_TIMEOUT = 30
 
     # Max Host Queue Size

@@ -30,7 +30,7 @@ class mongo_controller(request_handler):
 
     def __reset(self, p_data):
         try:
-            self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].update_many(p_data[MONGODB_KEYS.S_FILTER],p_data[MONGODB_KEYS.S_VALUE])
+            self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].update_many(p_data[MONGODB_KEYS.S_FILTER], p_data[MONGODB_KEYS.S_VALUE])
             return True, MANAGE_MONGO_MESSAGES.S_UPDATE_SUCCESS
 
         except Exception as ex:
@@ -61,7 +61,7 @@ class mongo_controller(request_handler):
 
     def __update(self, p_data, upsert):
         try:
-            self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].update_many(p_data[MONGODB_KEYS.S_FILTER],p_data[MONGODB_KEYS.S_VALUE], upsert=upsert)
+            self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].update_many(p_data[MONGODB_KEYS.S_FILTER], p_data[MONGODB_KEYS.S_VALUE], upsert=upsert)
             return True, MANAGE_MONGO_MESSAGES.S_UPDATE_SUCCESS
 
         except Exception as ex:
