@@ -20,7 +20,7 @@ from gevent import sleep
 
 from crawler.shared_data import celery_shared_data
 
-from app.crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
+from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
 
 
 class genbot_controller(request_handler):
