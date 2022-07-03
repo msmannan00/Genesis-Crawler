@@ -40,7 +40,6 @@ class crawl_controller(request_handler):
             log.g().w(MANAGE_CRAWLER_MESSAGES.S_INTERNET_CONNECTION_ISSUE)
 
     def __wait_for_tor(self):
-
         while APP_STATUS.S_TOR_STATUS != TOR_STATUS.S_RUNNING:
             sleep(10)
             continue

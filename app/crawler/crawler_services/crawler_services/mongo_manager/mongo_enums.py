@@ -4,11 +4,10 @@ import enum
 class MONGODB_COMMANDS(enum.Enum):
     S_INSTALL_CRAWLABLE_URL = 1
     S_GET_CRAWLABLE_URL_DATA = 2
-    S_RESET_CRAWLABLE_URL = 3
-    S_REMOVE_DEAD_CRAWLABLE_URL = 4
-    S_CLOSE_INDEX_ON_COMPLETE = 5
-    S_UPDATE_INDEX = 6
-    S_GET_INDEX = 7
+    S_REMOVE_DEAD_CRAWLABLE_URL = 3
+    S_CLOSE_INDEX_ON_COMPLETE = 4
+    S_UPDATE_INDEX = 5
+    S_GET_INDEX = 6
 
 
 class MONGODB_COLLECTIONS:
@@ -34,3 +33,7 @@ class MONGODB_KEYS:
     S_DOCUMENT = 'm_document'
     S_FILTER = 'm_filter'
     S_VALUE = 'm_value'
+
+
+class MONGODB_PROPERTIES:
+    S_SORT = 'm_sort'
