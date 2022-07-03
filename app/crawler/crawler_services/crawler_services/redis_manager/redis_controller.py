@@ -1,7 +1,6 @@
 import redis
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_CONNECTIONS
-from crawler.crawler_services.helper_services.helper_method import helper_method
 
 
 class redis_controller:
@@ -20,7 +19,7 @@ class redis_controller:
             raise Exception(MANAGE_CRAWLER_MESSAGES.S_SINGLETON_EXCEPTION)
         else:
             redis_controller.__instance = self
-        self.__redis = redis.StrictRedis(REDIS_CONNECTIONS.S_DATABASE_IP, decode_responses=True)
+        self.__redis = redis.StrictRedis(REDIS_CONNECTIONS.S_DATABASE_IP, decode_responses=True, password=REDIS_CONNECTIONS.S_DATABASE_PASSWORD)
 
     def __set_bool(self, p_key, p_val):
         self.__redis.set(p_key, int(p_val))

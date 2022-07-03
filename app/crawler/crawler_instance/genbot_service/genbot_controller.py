@@ -40,7 +40,8 @@ class genbot_controller(request_handler):
         for m_data in m_mongo_response:
             self.__m_parsed_url = m_data["sub_url_parsed"]
             m_unparsed_url = m_data["sub_url_pending"]
-            self.__m_html_parser.on_static_parser_init(m_data["document_url_parsed"], m_data["image_url_parsed"], m_data["video_url_parsed"])
+            if "document_url_parsed" in m_data:
+                self.__m_html_parser.on_static_parser_init(m_data["document_url_parsed"], m_data["image_url_parsed"], m_data["video_url_parsed"])
             break
 
         for m_parsed_url in self.__m_parsed_url:

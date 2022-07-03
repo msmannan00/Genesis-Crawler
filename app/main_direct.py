@@ -11,7 +11,8 @@ try:
     TOR_STRINGS.S_SOCKS_HTTPS_PROXY = "socks5h://127.0.0.1:"
     TOR_STRINGS.S_SOCKS_HTTP_PROXY = "socks5h://127.0.0.1:"
     REDIS_CONNECTIONS.S_DATABASE_IP = "localhost"
+    REDIS_CONNECTIONS.S_DATABASE_PASSWORD = ""
 
     application_controller.get_instance().invoke_triggers(APPICATION_COMMANDS.S_START_APPLICATION_DIRECT)
-except KeyboardInterrupt:
+except Exception:
     pass
