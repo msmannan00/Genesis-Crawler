@@ -1,5 +1,3 @@
-import enum
-
 from crawler.constants.constant import RAW_PATH_CONSTANTS, TOR_CONSTANTS
 
 

@@ -15,7 +15,6 @@ class webRequestManager:
     def __init__(self):
         pass
 
-    # Load URL - used to request url for parsing to actually crawl the hidden web
     def load_url(self, p_url):
 
         m_request_handler, proxies, headers = tor_controller.get_instance().invoke_trigger(

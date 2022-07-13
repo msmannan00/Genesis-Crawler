@@ -3,17 +3,15 @@ import os
 import shutil
 import subprocess
 import threading
-import schedule
 import requests
+import stem
+import socket
 
 from time import sleep
 from requests.adapters import HTTPAdapter
 from stem import Signal
 from stem.control import Controller
 from urllib3 import Retry
-import stem
-
-import socket
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import TOR_CONSTANTS, CRAWL_SETTINGS_CONSTANTS, TOR_CONNECTION_CONSTANTS
 from crawler.constants.keys import TOR_KEYS

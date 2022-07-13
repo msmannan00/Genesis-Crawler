@@ -51,7 +51,6 @@ class crawl_model(request_handler):
         self.__start_docker_request(m_updated_url_list)
 
     def __start_docker_request(self, p_fetched_url_list):
-        RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_CELERY_RESTART_DELAY, self.__reinit_docker_request)
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
 
         for m_url_node in p_fetched_url_list:
@@ -78,6 +77,7 @@ class crawl_model(request_handler):
         m_parsable_url_list.extend(m_updated_url_list)
 
         if APP_STATUS.DOCKERIZED_RUN:
+            RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_CELERY_RESTART_DELAY, self.__reinit_docker_request)
             self.__start_docker_request(m_parsable_url_list)
         else:
             self.__start_direct_request(m_parsable_url_list)

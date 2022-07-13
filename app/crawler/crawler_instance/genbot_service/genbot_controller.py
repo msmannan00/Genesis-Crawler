@@ -66,7 +66,7 @@ class genbot_controller(request_handler):
     def __trigger_url_request(self, p_request_model: url_model):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
         m_redirected_url, m_response, m_content = self.__m_web_request_handler.load_url(p_request_model.m_url)
-        m_unique_file_model = unique_file_model([],[],[])
+        m_unique_file_model = unique_file_model([], [], [])
 
         if m_response is True:
 

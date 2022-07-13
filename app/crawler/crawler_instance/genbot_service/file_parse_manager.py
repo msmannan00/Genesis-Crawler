@@ -39,7 +39,6 @@ class file_parse_manager:
             m_image_model = image_model(**m_url)
             self.__m_duplication_url_handler.insert(m_image_model.m_url)
             self.__m_images[m_image_model.m_url] = m_image_model.m_type
-        pass
 
 
     def __is_static_url_valid(self, p_list):
@@ -61,9 +60,7 @@ class file_parse_manager:
 
                         if m_response is False:
                             continue
-                        if m_response is True and (PARSE_STRINGS.S_CONTENT_LENGTH_HEADER not in m_header or int(
-                                m_header[
-                                    PARSE_STRINGS.S_CONTENT_LENGTH_HEADER]) >= CRAWL_SETTINGS_CONSTANTS.S_MIN_CONTENT_LENGTH):
+                        if m_response is True and (PARSE_STRINGS.S_CONTENT_LENGTH_HEADER not in m_header or int( m_header[PARSE_STRINGS.S_CONTENT_LENGTH_HEADER]) >= CRAWL_SETTINGS_CONSTANTS.S_MIN_CONTENT_LENGTH):
                             m_filtered_list.insert(0, m_url)
                             m_filtered_list_unique.insert(0, m_url)
                             log.g().s(MANAGE_CRAWLER_MESSAGES.S_FILE_PARSED + " : " + m_url)
