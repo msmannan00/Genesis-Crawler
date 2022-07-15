@@ -72,7 +72,7 @@ class tor_controller(request_handler):
             shutil.rmtree(TOR_CONSTANTS.S_TOR_PROXY_PATH)
 
     def tor_running(self, p_port):
-        HOST = "10.0.0.103"
+        HOST = "10.0.0.4"
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         result = sock.connect_ex((HOST, p_port))
@@ -114,7 +114,7 @@ class tor_controller(request_handler):
                 sleep(1)
                 continue
 
-            self.__m_controller = Controller(stem.socket.ControlPort("10.0.0.103", 9053))
+            self.__m_controller = Controller(stem.socket.ControlPort("10.0.0.4", 9053))
             self.__m_controller.authenticate("Imammehdi@00")
 
             APP_STATUS.S_TOR_STATUS = TOR_STATUS.S_RUNNING
