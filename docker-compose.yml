@@ -1,12 +1,38 @@
 version: "3.3"
 
 services:
+
+    api:
+        build:
+            context: ./
+            dockerfile: dockerFiles/api_docker
+        ports:
+            - "8000:8000"
+        depends_on:
+            - mongo
+            - celery
+            - tor
+        networks:
+            backend:
+                ipv4_address: 10.0.0.1
+        volumes:
+            - ./app/:/app
+
     redis_server:
         image: redis
         command: redis-server --requirepass killprg1
         networks:
             backend:
+                ipv4_address: 10.0.0.2
+
+    tor:
+        build:
+            context: ./
+            dockerfile: dockerFiles/tor_docker
+        networks:
+            backend:
                 ipv4_address: 10.0.0.3
+
 
     celery:
         build:
@@ -24,15 +50,6 @@ services:
         volumes:
             - ./app/:/app
 
-    tor:
-        build:
-            context: ./
-            dockerfile: dockerFiles/tor_docker
-        networks:
-            backend:
-                ipv4_address: 10.0.0.106
-
-
     mongo:
         image: mongo
         container_name: mongo-db
@@ -43,22 +60,6 @@ services:
         networks:
             backend:
                 ipv4_address: 10.0.0.5
-
-    api:
-        build:
-            context: ./
-            dockerfile: dockerFiles/api_docker
-        ports:
-            - "8000:8000"
-        depends_on:
-            - mongo
-            - celery
-            - tor
-        networks:
-            backend:
-                ipv4_address: 10.0.0.100
-        volumes:
-            - ./app/:/app
 
 networks:
   backend:
