@@ -2,7 +2,7 @@ from threading import Timer
 
 
 class RepeatedTimer(object):
-    def __init__(self, interval, function, *args, **kwargs):
+    def __init__(self, interval, function, trigger_on_start=True, *args, **kwargs):
         self._timer = None
         self.interval = interval
         self.function = function
@@ -10,11 +10,13 @@ class RepeatedTimer(object):
         self.kwargs = kwargs
         self.is_running = False
         self.start()
+        if trigger_on_start:
+            self.function(*self.args, **self.kwargs)
 
     def _run(self):
-        self.function(*self.args, **self.kwargs)
         self.is_running = False
         self.start()
+        self.function(*self.args, **self.kwargs)
 
     def start(self):
         if not self.is_running:
