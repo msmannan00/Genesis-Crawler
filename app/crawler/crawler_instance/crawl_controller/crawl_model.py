@@ -78,7 +78,6 @@ class crawl_model(request_handler):
 
         if APP_STATUS.DOCKERIZED_RUN:
             RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_CELERY_RESTART_DELAY, self.__reinit_docker_request)
-            self.__start_docker_request(m_parsable_url_list)
         else:
             self.__start_direct_request(m_parsable_url_list)
 
