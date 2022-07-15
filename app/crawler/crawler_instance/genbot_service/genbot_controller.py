@@ -17,9 +17,7 @@ from crawler.crawler_instance.genbot_service.web_request_handler import webReque
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from gevent import sleep
-
 from crawler.shared_data import celery_shared_data
-
 from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
 
 

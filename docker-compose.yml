@@ -14,7 +14,7 @@ services:
             - tor
         networks:
             backend:
-                ipv4_address: 10.0.0.1
+                ipv4_address: 10.0.0.2
         volumes:
             - ./app/:/app
 
@@ -23,7 +23,7 @@ services:
         command: redis-server --requirepass killprg1
         networks:
             backend:
-                ipv4_address: 10.0.0.2
+                ipv4_address: 10.0.0.3
 
     tor:
         build:
@@ -31,7 +31,7 @@ services:
             dockerfile: dockerFiles/tor_docker
         networks:
             backend:
-                ipv4_address: 10.0.0.3
+                ipv4_address: 10.0.0.4
 
 
     celery:
@@ -46,7 +46,7 @@ services:
             - redis_server
         networks:
             backend:
-                ipv4_address: 10.0.0.4
+                ipv4_address: 10.0.0.5
         volumes:
             - ./app/:/app
 
@@ -59,7 +59,7 @@ services:
             - "27017:27017"
         networks:
             backend:
-                ipv4_address: 10.0.0.5
+                ipv4_address: 10.0.0.6
 
 networks:
   backend:
