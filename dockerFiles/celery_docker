@@ -17,5 +17,5 @@ RUN pip3 install -r /tmp/requirements.txt
 COPY app ./app
 WORKDIR /app
 
-ENTRYPOINT ["bash","-c","./start_app.bat genbot_service"]
+ENTRYPOINT ["bash","-c","./start_celery.sh genbot_service"]
 
