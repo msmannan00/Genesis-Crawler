@@ -18,4 +18,3 @@ COPY app ./app
 WORKDIR /app
 
 ENTRYPOINT ["bash","-c","./start_celery.sh genbot_service"]
-
