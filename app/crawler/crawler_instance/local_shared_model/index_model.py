@@ -13,13 +13,13 @@ class index_model(BaseModel):
     m_meta_keywords: str
     m_content: str
     m_content_type: str
+    m_extended_content: str
     m_sub_url: list
     m_images: list = []
     m_document: list
     m_video: list
     m_validity_score: int
     m_user_crawled: bool = False
-    m_extended_content = str
 
 
 def index_model_init(p_base_model, p_title, p_meta_description, p_title_hidden, p_important_content, p_important_content_hidden, p_meta_keywords, p_content, p_content_type, p_sub_url, p_document, p_video, p_validity_score, p_extended_content):

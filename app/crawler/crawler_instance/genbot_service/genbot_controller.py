@@ -66,6 +66,11 @@ class genbot_controller(request_handler):
 
     def __check_content_duplication(self, p_parsed_model):
         m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_extended_content)
+
+        print("::::::::::::::::::::", flush=True)
+        print(m_score, flush=True)
+        print("::::::::::::::::::::", flush=True)
+
         if m_score < 0.5:
             self.__html_duplication_handler.on_insert_content(p_parsed_model.m_extended_content)
             return False
