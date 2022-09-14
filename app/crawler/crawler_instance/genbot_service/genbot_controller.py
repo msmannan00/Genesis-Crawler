@@ -62,6 +62,7 @@ class genbot_controller(request_handler):
             if m_url_duplication_validated:
                 return True
 
+        log.g().w(MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url))
         return False
 
     def __check_content_duplication(self, p_parsed_model):

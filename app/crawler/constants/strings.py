@@ -35,6 +35,7 @@ class MANAGE_CRAWLER_MESSAGES:
     S_INTERNET_CONNECTION_ISSUE = "[11] internet connection issue ..."
     S_PARSING_STARTING = "[12] URL parsing started"
     S_DUPLICATE_CONTENT = "[14] Dupicate URL Content"
+    S_DUPLICATE_HOST_CONTENT = "[15] Dupicate Host Content"
 
 
 class MANAGE_MONGO_MESSAGES:
