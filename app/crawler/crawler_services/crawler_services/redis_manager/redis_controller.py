@@ -37,13 +37,24 @@ class redis_controller:
             self.__set_int(p_key, p_val)
         return self.__redis.get(p_key)
 
-    def __set_string(self, p_key, p_val):
-        self.__redis.set(p_key, p_val)
+    def __set_string(self, p_key, p_val, expiry=None):
+        self.__redis.set(p_key, p_val, expiry)
 
-    def __get_string(self, p_key, p_val):
+    def __get_string(self, p_key, p_val, expiry=None):
         if not self.__redis.exists(p_key):
-            self.__set_string(p_key, p_val)
+            self.__set_string(p_key, p_val, expiry)
         return self.__redis.get(p_key)
+
+    def __set_list(self, p_key, p_val):
+        self.__redis.lpush(p_key, p_val)
+
+    def __get_list(self, p_key, p_val):
+        if not self.__redis.exists(p_key):
+            self.__set_list(p_key, p_val)
+        return self.__redis.lrange(p_key, 0, -1)
+
+    def __get_keys(self):
+        return self.__redis.keys()
 
     def invoke_trigger(self, p_commands, p_data=None):
 
@@ -51,14 +62,20 @@ class redis_controller:
             return self.__get_int(p_data[0], p_data[1])
         if p_commands == REDIS_COMMANDS.S_SET_INT:
             return self.__set_int(p_data[0], p_data[1])
-
-
         elif p_commands == REDIS_COMMANDS.S_GET_BOOL:
             return self.__get_bool(p_data[0], p_data[1])
         elif p_commands == REDIS_COMMANDS.S_SET_BOOL:
             return self.__set_bool(p_data[0], p_data[1])
-
         elif p_commands == REDIS_COMMANDS.S_GET_STRING:
-            return self.__get_string(p_data[0], p_data[1])
+            return self.__get_string(p_data[0], p_data[1], p_data[2])
         elif p_commands == REDIS_COMMANDS.S_SET_STRING:
-            return self.__set_string(p_data[0], p_data[1])
+            return self.__set_string(p_data[0], p_data[1], p_data[2])
+        elif p_commands == REDIS_COMMANDS.S_SET_LIST:
+            return self.__set_list(p_data[0], p_data[1])
+        elif p_commands == REDIS_COMMANDS.S_GET_LIST:
+            return self.__get_list(p_data[0], p_data[1])
+        elif p_commands == REDIS_COMMANDS.S_GET_KEYS:
+            return self.__get_keys()
+
+
+

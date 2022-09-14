@@ -5,6 +5,8 @@ stopwords
 python-Levenshtein-wheels
 pandas
 django
+html-similarity
+jaccard-index
 
 ###### Requirements with Version Specifiers ######
 logdna~=1.18.2

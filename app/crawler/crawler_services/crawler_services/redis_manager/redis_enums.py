@@ -10,3 +10,6 @@ class REDIS_COMMANDS:
     S_GET_INT = 4
     S_SET_STRING = 5
     S_GET_STRING = 6
+    S_SET_LIST = 7
+    S_GET_LIST = 8
+    S_GET_KEYS = 9

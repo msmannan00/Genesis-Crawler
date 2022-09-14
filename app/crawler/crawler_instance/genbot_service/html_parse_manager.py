@@ -31,7 +31,6 @@ class html_parse_manager(HTMLParser, ABC):
         self.m_meta_description = STRINGS.S_EMPTY
         self.m_meta_content = STRINGS.S_EMPTY
         self.m_important_content = STRINGS.S_EMPTY
-        self.m_important_content_raw = []
         self.m_content = STRINGS.S_EMPTY
         self.m_meta_keyword = STRINGS.S_EMPTY
         self.m_content_type = CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
@@ -44,13 +43,15 @@ class html_parse_manager(HTMLParser, ABC):
         self.m_parsed_paragraph_count = 0
         self.m_query_url_count = 0
         self.m_non_important_text = STRINGS.S_EMPTY
+        self.m_all_url_count = 0
+        self.m_extended_content = STRINGS.S_EMPTY
+        self.m_important_content_raw = []
         self.rec = PARSE_TAGS.S_NONE
-        self.all_url_count = 0
 
     # find url type and populate the list respectively
 
     def __insert_external_url(self, p_url):
-        self.all_url_count += 1
+        self.m_all_url_count += 1
         if p_url is not None and not str(p_url).__contains__("#"):
             mime = mimetypes.MimeTypes().guess_type(p_url)[0]
             if 5 < len(p_url) <= CRAWL_SETTINGS_CONSTANTS.S_MAX_URL_SIZE:
@@ -145,44 +146,47 @@ class html_parse_manager(HTMLParser, ABC):
 
     def handle_data(self, p_data):
         if self.rec == PARSE_TAGS.S_HEADER:
-            self.__add_important_description(p_data)
+            self.__add_important_description(p_data, False)
         if self.rec == PARSE_TAGS.S_TITLE and len(self.m_title) == 0:
             self.m_title = p_data
         elif self.rec == PARSE_TAGS.S_META and len(self.m_title) > 0:
             self.m_title = p_data
         elif self.rec == PARSE_TAGS.S_PARAGRAPH or self.rec == PARSE_TAGS.S_BR:
-            self.__add_important_description(p_data)
+            self.__add_important_description(p_data, False)
         elif self.rec == PARSE_TAGS.S_SPAN and p_data.count(' ') > 5:
-            self.__add_important_description(p_data)
+            self.__add_important_description(p_data, False)
         elif self.rec == PARSE_TAGS.S_DIV:
-            if p_data.count(' ') > 5 and p_data not in self.m_non_important_text:
-                self.m_non_important_text += p_data
+            if p_data.count(' ') > 5:
+                self.__add_important_description(p_data, True)
+                if p_data not in self.m_non_important_text:
+                    self.m_non_important_text += p_data
         elif self.rec == PARSE_TAGS.S_NONE:
             if self.m_paragraph_count > 0:
-                self.__add_important_description(p_data)
+                self.__add_important_description(p_data, False)
         if self.rec == PARSE_TAGS.S_BR:
             self.rec = PARSE_TAGS.S_NONE
 
     # creating keyword request_manager1 for webpage representation
-    def __add_important_description(self, p_data):
+    def __add_important_description(self, p_data, extended_only):
         p_data = " ".join(p_data.split())
         if (p_data.__contains__("java") and p_data.__contains__("script")) or p_data.__contains__("cookies"):
             return
 
         if (p_data.count(' ') > 2 or (self.m_paragraph_count > 0 and len(
                 p_data) > 0 and p_data != " ")) and p_data not in self.m_important_content:
-            if self.m_parsed_paragraph_count < 8:
-                self.m_important_content_raw.append(p_data)
-                self.m_parsed_paragraph_count += 1
+            self.m_important_content_raw.append(p_data)
+            self.m_parsed_paragraph_count += 1
 
-                p_data = re.sub('[^A-Za-z0-9 ,;"\]\[/.+-;!\'@#$%^&*_+=]', '', p_data)
-                p_data = re.sub(' +', ' ', p_data)
-                p_data = re.sub(r'^\W*', '', p_data)
+            p_data = re.sub('[^A-Za-z0-9 ,;"\]\[/.+-;!\'@#$%^&*_+=]', '', p_data)
+            p_data = re.sub(' +', ' ', p_data)
+            p_data = re.sub(r'^\W*', '', p_data)
 
-                if p_data.lower() in self.m_important_content.lower():
-                    return
+            if p_data.lower() in self.m_important_content.lower():
+                return
+
+            self.m_extended_content = self.m_extended_content + " " + spell_checker_handler.get_instance().clean_paragraph(p_data.lower())
+            if self.m_parsed_paragraph_count < 8 and not extended_only:
                 self.m_important_content = self.m_important_content + " " + spell_checker_handler.get_instance().clean_paragraph(p_data.lower())
-
                 if len(self.m_important_content) > 250:
                     self.m_parsed_paragraph_count = 9
 
@@ -246,16 +250,16 @@ class html_parse_manager(HTMLParser, ABC):
             m_content += self.m_meta_description
         if len(m_content) < 150 and fuzz.ratio(m_content, self.m_non_important_text) < 85 and len(
                 self.m_non_important_text) > 10:
-            self.__add_important_description(self.m_non_important_text)
+            self.__add_important_description(self.m_non_important_text, False)
             m_content += self.m_important_content
         if len(m_content) < 50 and len(self.m_sub_url) >= 3:
             m_content = "- No description found but contains some urls. This website is most probably a search engine or only contain references of other websites - " + self.m_title.lower()
 
-        return helper_method.strip_special_character(m_content)[0:300]
+        return helper_method.strip_special_character(m_content)
 
     def __get_validity_score(self, p_important_content):
         m_rank = (((len(p_important_content) + len(self.m_title)) > 150) or len(self.m_sub_url) >= 3) * 10 + (
-                len(self.m_sub_url) > 0 or self.all_url_count > 5) * 5
+                len(self.m_sub_url) > 0 or self.m_all_url_count > 5) * 5
         return m_rank
 
     def __get_content_type(self):
@@ -286,5 +290,6 @@ class html_parse_manager(HTMLParser, ABC):
         m_content = self.__get_content() + " " + m_title + " " + m_meta_description
         m_validity_score = self.__get_validity_score(m_important_content)
         m_important_content_hidden = self.__get_meta_description_hidden(self.m_meta_content + " " + m_title + " " + m_meta_description + " " + m_important_content)
+        m_extended_content = " ".join(list(set(self.__clean_text(self.m_extended_content).split(" "))))
 
-        return m_title, self.m_meta_content + m_meta_description, m_title_hidden, m_important_content, m_important_content_hidden, m_meta_keywords, m_content, m_content_type, m_sub_url, m_images, m_document, m_video, m_validity_score
+        return m_title, self.m_meta_content + m_meta_description, m_title_hidden, m_important_content, m_important_content_hidden, m_meta_keywords, m_content, m_content_type, m_sub_url, m_images, m_document, m_video, m_validity_score, m_extended_content
