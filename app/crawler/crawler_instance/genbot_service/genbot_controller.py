@@ -140,6 +140,7 @@ class genbot_controller(request_handler):
                     m_raw_html_redis = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [key, "", 60*60*24*10])
                     m_similarity = int(self.__html_duplication_handler.verify_structural_duplication(p_raw_html, m_raw_html_redis))
                     if m_similarity > 0 and m_similarity > m_max_similarity:
+                        log.g().w(MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : [[" + str(p_request_url) + "]] : [[" + str(key) + "]] : " + str(p_request_url not in str(key)) + " : " + str(m_similarity) + " : " + str(m_max_similarity))
                         m_max_similarity = m_similarity
 
         redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["RAW_HTML_SCORE" + p_request_url, m_max_similarity])
