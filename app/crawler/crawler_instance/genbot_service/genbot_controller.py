@@ -139,7 +139,7 @@ class genbot_controller(request_handler):
                         m_max_similarity = m_similarity
 
         redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["RAW_HTML_SCORE" + p_request_url, m_max_similarity])
-        if m_max_similarity < 0.9:
+        if m_max_similarity < 0.95:
             return True
         else:
             return False
