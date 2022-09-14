@@ -59,14 +59,7 @@ class genbot_controller(request_handler):
     def __check_host_duplication(self, p_request_url, m_raw_html):
         if m_raw_html is not None:
             m_url_duplication_validated = self.validate_duplicate_host_url(p_request_url, m_raw_html)
-            print("::::::::::::::::::::::::::::::::::::::::", flush=True)
-            print(m_url_duplication_validated, flush=True)
-            print("::::::::::::::::::::::::::::::::::::::::", flush=True)
             if m_url_duplication_validated:
-                print("::::::::::::::::::::::::::::::::::::::::", flush=True)
-                print("I AM FUCKED1")
-                print("I AM FUCKED1")
-                print("::::::::::::::::::::::::::::::::::::::::", flush=True)
                 return True
 
         return False
@@ -111,10 +104,10 @@ class genbot_controller(request_handler):
                 self.__m_url_duplication_handler.insert(m_redirected_requested_url)
 
                 if m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and m_response:
-                    m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images)
                     status = self.__check_host_duplication(p_request_model.m_url, m_raw_html)
                     if status:
                         log.g().s(MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
+                        m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images)
                         elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
                     else:
                         return None, None, None
@@ -144,7 +137,7 @@ class genbot_controller(request_handler):
                         m_max_similarity = m_similarity
 
         redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["RAW_HTML_SCORE" + p_request_url, m_max_similarity])
-        if m_max_similarity < 0.8:
+        if m_max_similarity < 0.9:
             return True
         else:
             return False
