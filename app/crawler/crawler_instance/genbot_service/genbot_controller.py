@@ -33,6 +33,7 @@ class genbot_controller(request_handler):
         self.__depth = 0
         self.__m_unparsed_url = []
         self.__m_parsed_url = []
+        self.__m_url_duplication_validated = False
 
         self.__m_html_parser = parse_controller()
 
@@ -62,13 +63,12 @@ class genbot_controller(request_handler):
             if m_url_duplication_validated:
                 return True
 
-        log.g().w(MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url))
         return False
 
     def __check_content_duplication(self, p_parsed_model):
         m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_extended_content)
 
-        if m_score < 0.6:
+        if m_score <= 0.6:
             self.__html_duplication_handler.on_insert_content(p_parsed_model.m_extended_content)
             return False
         else:
@@ -106,7 +106,11 @@ class genbot_controller(request_handler):
                 self.__m_url_duplication_handler.insert(m_redirected_requested_url)
 
                 if m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and m_response:
-                    status = self.__check_host_duplication(p_request_model.m_url, m_raw_html)
+                    if not self.__m_url_duplication_validated:
+                        status = self.__check_host_duplication(p_request_model.m_url, m_raw_html)
+                    else:
+                        status = True
+
                     if status:
                         log.g().s(MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
                         m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images)
@@ -132,21 +136,21 @@ class genbot_controller(request_handler):
         if m_duplicate_score == -1:
             redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, ["RAW_HTML_CODE" + p_request_url, p_raw_html, 60 * 60 * 24 * 10])
             for key in keys:
-                if str(key).startswith("RAW_HTML_") and p_request_url not in key:
+                if str(key).startswith("RAW_HTML_") and p_request_url not in str(key):
                     m_raw_html_redis = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [key, "", 60*60*24*10])
                     m_similarity = int(self.__html_duplication_handler.verify_structural_duplication(p_raw_html, m_raw_html_redis))
-                    if m_similarity > m_max_similarity:
+                    if m_similarity > 0 and m_similarity > m_max_similarity:
                         m_max_similarity = m_similarity
 
         redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["RAW_HTML_SCORE" + p_request_url, m_max_similarity])
-        if m_max_similarity < 0.95:
+
+        if m_max_similarity < 0.9:
             return True
         else:
             return False
 
     # Wait For Crawl Manager To Provide URL From Queue
     def start_crawler_instance(self, p_request_url):
-        m_url_duplication_validated = False
 
         self.init(p_request_url)
         self.__m_unparsed_url.append(url_model_init(p_request_url, CRAWL_SETTINGS_CONSTANTS.S_DEFAULT_DEPTH))
@@ -154,6 +158,7 @@ class genbot_controller(request_handler):
             if celery_shared_data.get_instance().get_network_status():
                 item = self.__m_unparsed_url.pop(0)
                 m_parsed_model, m_unique_file_model, m_raw_html = self.__trigger_url_request(item)
+                self.__m_url_duplication_validated = True
 
                 if m_parsed_model is None and not celery_shared_data.get_instance().get_network_status():
                     sleep(30)
@@ -162,6 +167,7 @@ class genbot_controller(request_handler):
                 if m_parsed_model:
                     if item.m_depth < CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH and len(self.__m_unparsed_url) < CRAWL_SETTINGS_CONSTANTS.S_MAX_HOST_QUEUE_SIZE:
                         for sub_url in m_parsed_model.m_sub_url[0:int(CRAWL_SETTINGS_CONSTANTS.S_MAX_SUBHOST_QUEUE_SIZE / (item.m_depth + 1))]:
+                            self.__m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
                             self.__m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
 
                     mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_INDEX, [helper_method.on_clean_url(helper_method.get_host_url(item.m_url)), self.__m_parsed_url, self.__m_unparsed_url, m_unique_file_model], [True]])

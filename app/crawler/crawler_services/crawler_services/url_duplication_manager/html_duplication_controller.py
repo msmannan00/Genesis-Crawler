@@ -6,7 +6,7 @@ from jaccard_index.jaccard import jaccard_index
 
 class html_duplication_controller:
 
-    __k_score = 6
+    __k_score = 0.3
 
     # Initializations
 
