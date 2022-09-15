@@ -1,5 +1,3 @@
-import urllib3
-
 from bs4 import BeautifulSoup
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
@@ -7,7 +5,6 @@ from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_shared_directory.log_manager.log_controller import log
-urllib3.disable_warnings()
 
 
 class webRequestManager:
