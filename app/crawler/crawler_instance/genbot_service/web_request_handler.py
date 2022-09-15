@@ -18,7 +18,7 @@ class webRequestManager:
             TOR_COMMANDS.S_CREATE_SESSION, [True])
 
         try:
-            page = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=proxies, allow_redirects=True, ).encode('utf-8')
+            page = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=proxies, allow_redirects=True, )
             soup = BeautifulSoup(page.content.decode('utf-8', 'ignore'), features="lxml")
             if page == "" or page.status_code != 200:
                 return p_url, False, page.status_code
