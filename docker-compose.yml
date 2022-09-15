@@ -20,6 +20,8 @@ services:
 
     redis_server:
         image: redis
+        logging:
+            driver: none
         command: redis-server --requirepass killprg1
         networks:
             backend:
@@ -48,12 +50,16 @@ services:
         networks:
             backend:
                 ipv4_address: 10.0.0.5
+        logging:
+            driver: local
         volumes:
             - ./app/:/app
 
     mongo:
         image: mongo
         container_name: mongo-db
+        logging:
+            driver: none
         volumes:
             - ./data/db:/data/db
         ports:

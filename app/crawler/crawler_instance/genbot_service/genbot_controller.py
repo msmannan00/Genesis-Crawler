@@ -1,5 +1,7 @@
 # Local Imports
 import json
+import logging
+
 from crawler.celery_manager import celery_genbot
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
@@ -21,7 +23,7 @@ from crawler.crawler_shared_directory.request_manager.request_handler import req
 from gevent import sleep
 from crawler.shared_data import celery_shared_data
 from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
-
+logger = logging.getLogger('style_similarity')
 
 class genbot_controller(request_handler):
 
@@ -139,15 +141,16 @@ class genbot_controller(request_handler):
                 if str(key).startswith("RAW_HTML_") and p_request_url not in str(key):
                     m_raw_html_redis = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [key, "", 60*60*24*10])
                     m_similarity = int(self.__html_duplication_handler.verify_structural_duplication(p_raw_html, m_raw_html_redis))
+                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["RAW_HTML_SCORE" + p_request_url, m_max_similarity])
                     if m_similarity > 0 and m_similarity > m_max_similarity:
-                        log.g().w(MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : [[" + str(p_request_url) + "]] : [[" + str(key) + "]] : " + str(p_request_url not in str(key)) + " : " + str(m_similarity) + " : " + str(m_max_similarity))
                         m_max_similarity = m_similarity
-
-        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["RAW_HTML_SCORE" + p_request_url, m_max_similarity])
+                    if m_max_similarity > 0.9:
+                        break
 
         if m_max_similarity < 0.9:
             return True
         else:
+            log.g().w(MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url))
             return False
 
     # Wait For Crawl Manager To Provide URL From Queue

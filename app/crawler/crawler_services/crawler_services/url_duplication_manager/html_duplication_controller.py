@@ -1,7 +1,9 @@
 # Local Imports
+import logging
 from html_similarity import structural_similarity
 from html_similarity.style_similarity import style_similarity
 from jaccard_index.jaccard import jaccard_index
+logger = logging.getLogger(('style_similarity'))
 
 
 class html_duplication_controller:
