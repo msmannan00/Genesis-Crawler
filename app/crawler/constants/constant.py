@@ -58,7 +58,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_CELERY_RESTART_DELAY = 3600
 
     # Max Allowed Depth
-    S_MAX_ALLOWED_DEPTH = 1
+    S_MAX_ALLOWED_DEPTH = 2
     S_DEFAULT_DEPTH = 0
 
     # Max URL Timeout

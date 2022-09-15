@@ -66,10 +66,10 @@ class genbot_controller(request_handler):
         return False
 
     def __check_content_duplication(self, p_parsed_model):
-        m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_extended_content)
+        m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_extended_content, p_parsed_model.m_base_model.m_url)
 
         if m_score <= 0.6:
-            self.__html_duplication_handler.on_insert_content(p_parsed_model.m_extended_content)
+            self.__html_duplication_handler.on_insert_content(p_parsed_model.m_extended_content, p_parsed_model.m_base_model.m_url)
             return False
         else:
             log.g().w(MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + str(m_score))
@@ -82,7 +82,7 @@ class genbot_controller(request_handler):
                 self.__m_url_duplication_handler.insert(m_sub_url)
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
-        p_parsed_model.m_sub_url = m_sub_url_filtered
+        p_parsed_model.m_sub_url = m_sub_url_filtered[0:50]
 
         return p_parsed_model
 
@@ -152,8 +152,9 @@ class genbot_controller(request_handler):
 
     # Wait For Crawl Manager To Provide URL From Queue
     def start_crawler_instance(self, p_request_url):
+        p_request_url = "https://www.bbc.com"
 
-        self.init(p_request_url)
+        #self.init(p_request_url)
         self.__m_unparsed_url.append(url_model_init(p_request_url, CRAWL_SETTINGS_CONSTANTS.S_DEFAULT_DEPTH))
         while len(self.__m_unparsed_url) > 0:
             if celery_shared_data.get_instance().get_network_status():

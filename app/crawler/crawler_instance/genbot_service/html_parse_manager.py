@@ -68,6 +68,9 @@ class html_parse_manager(HTMLParser, ABC):
                     suffix = ''.join(pathlib.Path(p_url).suffixes)
                     m_host_url = helper_method.get_host_url(p_url)
                     m_parent_url = helper_method.get_host_url(self.m_base_url)
+                    parent_domain = helper_method.on_clean_url(self.m_base_url).split(".")[0]
+                    host_domain = helper_method.on_clean_url(p_url).split(".")[0]
+
                     if mime is None:
                         mime = mimetypes.MimeTypes().guess_type(p_url)[0]
                     if mime is not None and mime != "text/html":
@@ -75,7 +78,7 @@ class html_parse_manager(HTMLParser, ABC):
                             self.m_doc_url.append(p_url)
                         elif str(mime).startswith("video") and len(self.m_video_url) < 10:
                             self.m_video_url.append(p_url)
-                    elif m_host_url.__eq__(m_parent_url) and m_host_url.endswith(".onion"):
+                    elif parent_domain.__eq__(host_domain) and m_host_url.endswith(".onion"):
                         if m_host_url.__contains__("?") and self.m_query_url_count < 5:
                             self.m_query_url_count += 1
                             self.m_sub_url.append(helper_method.normalize_slashes(p_url))

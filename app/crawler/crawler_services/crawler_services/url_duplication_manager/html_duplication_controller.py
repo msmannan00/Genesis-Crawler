@@ -11,15 +11,15 @@ class html_duplication_controller:
     # Initializations
 
     def __init__(self):
-        self.__m_duplication_content_handler = []
+        self.__m_duplication_content_handler = {}
 
-    def verify_content_duplication(self, m_content):
+    def verify_content_duplication(self, m_content, m_url: str):
         m_max_k_score = 0
 
         try:
-            for doc in self.__m_duplication_content_handler:
-                m_score = jaccard_index(doc, m_content, 3)
-                if m_score > m_max_k_score:
+            for key in self.__m_duplication_content_handler.keys():
+                m_score = jaccard_index(self.__m_duplication_content_handler[key], m_content, 3)
+                if m_score > m_max_k_score and not m_url.__eq__(key):
                     m_max_k_score = m_score
 
         except Exception as ex:
@@ -32,5 +32,5 @@ class html_duplication_controller:
 
         return m_score
 
-    def on_insert_content(self, m_content):
-        self.__m_duplication_content_handler.append(m_content)
+    def on_insert_content(self, m_content, m_url):
+        self.__m_duplication_content_handler[m_url] = m_content
