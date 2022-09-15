@@ -82,7 +82,7 @@ class genbot_controller(request_handler):
                 self.__m_url_duplication_handler.insert(m_sub_url)
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
-        p_parsed_model.m_sub_url = m_sub_url_filtered[0:10]
+        p_parsed_model.m_sub_url = m_sub_url_filtered[0:50]
 
         return p_parsed_model
 
