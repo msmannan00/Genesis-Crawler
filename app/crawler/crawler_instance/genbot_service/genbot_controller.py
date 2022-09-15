@@ -152,9 +152,7 @@ class genbot_controller(request_handler):
 
     # Wait For Crawl Manager To Provide URL From Queue
     def start_crawler_instance(self, p_request_url):
-        p_request_url = "https://www.bbc.com"
-
-        #self.init(p_request_url)
+        self.init(p_request_url)
         self.__m_unparsed_url.append(url_model_init(p_request_url, CRAWL_SETTINGS_CONSTANTS.S_DEFAULT_DEPTH))
         while len(self.__m_unparsed_url) > 0:
             if celery_shared_data.get_instance().get_network_status():
