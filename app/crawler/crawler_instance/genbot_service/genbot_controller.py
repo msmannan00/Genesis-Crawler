@@ -1,7 +1,5 @@
 # Local Imports
 import json
-import logging
-
 from crawler.celery_manager import celery_genbot
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
@@ -23,6 +21,7 @@ from crawler.crawler_shared_directory.request_manager.request_handler import req
 from gevent import sleep
 from crawler.shared_data import celery_shared_data
 from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
+
 
 class genbot_controller(request_handler):
 
@@ -83,7 +82,7 @@ class genbot_controller(request_handler):
                 self.__m_url_duplication_handler.insert(m_sub_url)
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
-        p_parsed_model.m_sub_url = m_sub_url_filtered[0:50]
+        p_parsed_model.m_sub_url = m_sub_url_filtered[0:0]
 
         return p_parsed_model
 
@@ -138,19 +137,21 @@ class genbot_controller(request_handler):
             redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, ["RAW_HTML_CODE" + p_request_url, p_raw_html, 60 * 60 * 24 * 10])
             for key in keys:
                 try:
-                    if str(key).startswith("RAW_HTML_") and p_request_url not in str(key):
-                        m_raw_html_redis = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [key, "", 60*60*24*10])
-                        m_similarity = int(self.__html_duplication_handler.verify_structural_duplication(p_raw_html, m_raw_html_redis))
-                        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["RAW_HTML_SCORE" + p_request_url, m_max_similarity])
-                        if m_similarity > 0 and m_similarity > m_max_similarity:
-                            m_max_similarity = m_similarity
-                    else:
-                        m_max_similarity = -1
-                        break
+                    if str(key).startswith("RAW_HTML_CODE"):
+                        if p_request_url not in str(key):
+                            m_raw_html_redis = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [key, "", 60*60*24*10])
+                            m_similarity = self.__html_duplication_handler.verify_structural_duplication(p_raw_html, m_raw_html_redis)
+                            redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["RAW_HTML_SCORE" + p_request_url, m_max_similarity])
+
+                            if m_similarity > m_max_similarity:
+                                m_max_similarity = m_similarity
+                        else:
+                            m_max_similarity = -1
+                            break
                 except Exception:
                     pass
 
-        if m_max_similarity < 0.95:
+        if m_max_similarity < 0.90:
             return True
         else:
             log.g().w(MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url))
