@@ -31,11 +31,7 @@ class html_duplication_controller:
         return m_max_k_score
 
     def verify_structural_duplication(self, m_doc_1, m_doc_2):
-        try:
-            m_score = self.__k_score * structural_similarity(m_doc_1, m_doc_2) + (1 - self.__k_score) * style_similarity(m_doc_1, m_doc_2)
-        except Exception as ex:
-            print(ex, flush=True)
-            return 1
+        m_score = self.__k_score * structural_similarity(m_doc_1, m_doc_2) + (1 - self.__k_score) * style_similarity(m_doc_1, m_doc_2)
 
         return m_score
 
