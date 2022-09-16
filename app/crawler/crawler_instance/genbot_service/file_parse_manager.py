@@ -40,7 +40,6 @@ class file_parse_manager:
             self.__m_duplication_url_handler.insert(m_image_model.m_url)
             self.__m_images[m_image_model.m_url] = m_image_model.m_type
 
-
     def __is_static_url_valid(self, p_list):
 
         m_filtered_list = []

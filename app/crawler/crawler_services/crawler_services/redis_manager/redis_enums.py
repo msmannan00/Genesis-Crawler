@@ -13,3 +13,5 @@ class REDIS_COMMANDS:
     S_SET_LIST = 7
     S_GET_LIST = 8
     S_GET_KEYS = 9
+    S_GET_FLOAT = 10
+    S_SET_FLOAT = 11

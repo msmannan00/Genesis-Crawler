@@ -37,6 +37,14 @@ class redis_controller:
             self.__set_int(p_key, p_val)
         return self.__redis.get(p_key)
 
+    def __set_float(self, p_key, p_val):
+        self.__redis.set(p_key, p_val)
+
+    def __get_float(self, p_key, p_val):
+        if not self.__redis.exists(p_key):
+            self.__set_float(p_key, p_val)
+        return float(self.__redis.get(p_key))
+
     def __set_string(self, p_key, p_val, expiry=None):
         self.__redis.set(p_key, p_val, expiry)
 
@@ -76,6 +84,10 @@ class redis_controller:
             return self.__get_list(p_data[0], p_data[1])
         elif p_commands == REDIS_COMMANDS.S_GET_KEYS:
             return self.__get_keys()
+        elif p_commands == REDIS_COMMANDS.S_GET_FLOAT:
+            return self.__get_float(p_data[0], p_data[1])
+        elif p_commands == REDIS_COMMANDS.S_SET_FLOAT:
+            return self.__set_float(p_data[0], p_data[1])
 
 
 

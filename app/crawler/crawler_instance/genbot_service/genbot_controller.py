@@ -130,18 +130,18 @@ class genbot_controller(request_handler):
 
     def validate_duplicate_host_url(self, p_request_url, p_raw_html):
         keys = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_KEYS, [])
-        m_duplicate_score = int(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_INT, ["RAW_HTML_SCORE"+p_request_url, -1]))
+        m_duplicate_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_FLOAT, ["RAW_HTML_SCORE_" + p_request_url, -1])
 
         m_max_similarity = m_duplicate_score
         if m_duplicate_score == -1:
-            redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, ["RAW_HTML_CODE" + p_request_url, p_raw_html, 60 * 60 * 24 * 10])
+            redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, ["RAW_HTML_CODE_" + p_request_url, p_raw_html, 60 * 60 * 24 * 10])
             for key in keys:
                 try:
-                    if str(key).startswith("RAW_HTML_CODE"):
+                    if str(key).startswith("RAW_HTML_CODE_"):
                         if p_request_url not in str(key):
                             m_raw_html_redis = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [key, "", 60*60*24*10])
                             m_similarity = self.__html_duplication_handler.verify_structural_duplication(p_raw_html, m_raw_html_redis)
-                            redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["RAW_HTML_SCORE" + p_request_url, m_max_similarity])
+                            redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, ["RAW_HTML_SCORE_" + p_request_url, m_max_similarity])
 
                             if m_similarity > m_max_similarity:
                                 m_max_similarity = m_similarity
@@ -160,6 +160,9 @@ class genbot_controller(request_handler):
     # Wait For Crawl Manager To Provide URL From Queue
     def start_crawler_instance(self, p_request_url):
         self.init(p_request_url)
+        if len(self.__m_unparsed_url) > 0:
+            self.__m_url_duplication_validated = True
+
         self.__m_unparsed_url.append(url_model_init(p_request_url, CRAWL_SETTINGS_CONSTANTS.S_DEFAULT_DEPTH))
         while len(self.__m_unparsed_url) > 0:
             if celery_shared_data.get_instance().get_network_status():
@@ -167,8 +170,8 @@ class genbot_controller(request_handler):
                 m_parsed_model, m_unique_file_model, m_raw_html = self.__trigger_url_request(item)
                 self.__m_url_duplication_validated = True
 
-                if m_parsed_model is None and not celery_shared_data.get_instance().get_network_status():
-                    sleep(30)
+                if m_parsed_model is None or not celery_shared_data.get_instance().get_network_status():
+                    sleep(5)
                     continue
 
                 if m_parsed_model:
@@ -191,5 +194,6 @@ class genbot_controller(request_handler):
 
 @celery_genbot.task(name='celery_genbot_instance.task', bind=False, queue='genbot_queue')
 def celery_genbot_instance(p_url):
+    p_url = "http://invest2vgs6d4iswmlg3dvk6eqrti2bqyrzp2dpbhuzlb2japeb7ylid.onion/"
     m_crawler = genbot_controller()
     m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url])
