@@ -194,6 +194,5 @@ class genbot_controller(request_handler):
 
 @celery_genbot.task(name='celery_genbot_instance.task', bind=False, queue='genbot_queue')
 def celery_genbot_instance(p_url):
-    p_url = "http://invest2vgs6d4iswmlg3dvk6eqrti2bqyrzp2dpbhuzlb2japeb7ylid.onion/"
     m_crawler = genbot_controller()
     m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url])
