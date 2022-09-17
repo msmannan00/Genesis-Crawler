@@ -11,8 +11,8 @@ class STRINGS:
 
 
 class TOR_STRINGS:
-    S_SOCKS_HTTP_PROXY = "socks5h://10.0.0.4:"
-    S_SOCKS_HTTPS_PROXY = "socks5h://10.0.0.4:"
+    S_SOCKS_HTTP_PROXY = "socks5h://10.0.0.6:"
+    S_SOCKS_HTTPS_PROXY = "socks5h://10.0.0.6:"
     S_RELEASE_PORT = 'for /f "tokens=5" %a in (\'netstat -aon ^| find "' + str(TOR_CONNECTION_CONSTANTS.S_TOR_CONNECTION_PORT) + '"\') do taskkill /f /pid %a'
 
 

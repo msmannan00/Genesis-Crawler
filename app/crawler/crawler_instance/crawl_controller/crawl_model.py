@@ -11,6 +11,8 @@ from crawler.crawler_instance.tor_controller.tor_controller import tor_controlle
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS, MONGO_CRUD
+from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
+from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS
 from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
@@ -33,7 +35,7 @@ class crawl_model(request_handler):
         mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_CRAWLABLE_URL_DATA, [None], [None]])
         m_live_url_list = set().union([x['m_url'] for x in mongo_response])
 
-        m_request_handler, proxies, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
+        m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
         m_response = m_request_handler.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
 
         m_updated_url_list = []
@@ -75,6 +77,7 @@ class crawl_model(request_handler):
                 genbot_controller.celery_genbot_instance(m_url_node)
 
     def __init_crawler(self):
+        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["proxy_queue_id", 0])
         if APP_STATUS.DOCKERIZED_RUN:
             self.__init_docker_request()
             RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_CELERY_RESTART_DELAY, self.__reinit_docker_request, trigger_on_start=False)

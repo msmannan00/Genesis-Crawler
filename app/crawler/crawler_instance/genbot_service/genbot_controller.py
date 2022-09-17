@@ -8,6 +8,8 @@ from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
+from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
+from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
@@ -37,10 +39,15 @@ class genbot_controller(request_handler):
         self.__m_unparsed_url = []
         self.__m_parsed_url = []
         self.__m_url_duplication_validated = False
+        self.__m_proxy = {}
 
         self.__m_html_parser = parse_controller()
 
     def init(self, p_url):
+
+        proxy_queue_id = int(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_INT, ["proxy_queue_id", 0]))
+        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["proxy_queue_id", (proxy_queue_id + 1)])
+        self.__m_proxy = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [proxy_queue_id % 4])
         m_requested_url = helper_method.on_clean_url(p_url)
         m_mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_INDEX, [m_requested_url], [None]])
         m_unparsed_url = []
@@ -92,7 +99,7 @@ class genbot_controller(request_handler):
     # Web Request To Get Physical URL HTML
     def __trigger_url_request(self, p_request_model: url_model):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
-        m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url)
+        m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
         m_unique_file_model = unique_file_model([], [], [])
 
         if m_response is True:
@@ -116,7 +123,7 @@ class genbot_controller(request_handler):
 
                     if status:
                         log.g().s(MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
-                        m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images)
+                        m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
                         elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
                     else:
                         return None, None, None

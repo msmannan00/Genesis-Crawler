@@ -39,15 +39,9 @@ class crawl_controller(request_handler):
             celery_shared_data.get_instance().set_network_status(False)
             log.g().w(MANAGE_CRAWLER_MESSAGES.S_INTERNET_CONNECTION_ISSUE)
 
-    def __wait_for_tor(self):
-        while APP_STATUS.S_TOR_STATUS != TOR_STATUS.S_RUNNING:
-            sleep(10)
-            continue
-
     def __on_start(self):
         RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT, self.__update_crawler_status)
         RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_NETWORK_STATUS_TIMEOUT, self.__update_internet_status)
-        self.__wait_for_tor()
         self.__m_crawl_model.invoke_trigger(CRAWL_MODEL_COMMANDS.S_INIT)
 
     def invoke_trigger(self, p_command, p_data=None):

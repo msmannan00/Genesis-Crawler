@@ -32,7 +32,6 @@ class application_controller(request_handler, ABC):
             application_controller.__instance = self
 
     def __initializations(self):
-        tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_START)
         topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_LOAD_CLASSIFIER)
 
     # External Reuqest Callbacks
