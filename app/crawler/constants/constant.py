@@ -62,7 +62,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_DEFAULT_DEPTH = 0
 
     # Max URL Timeout
-    S_URL_TIMEOUT = 100
+    S_URL_TIMEOUT = 30
     S_HEADER_TIMEOUT = 30
 
     # Max Host Queue Size

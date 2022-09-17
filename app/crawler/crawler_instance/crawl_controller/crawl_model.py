@@ -34,8 +34,7 @@ class crawl_model(request_handler):
         m_live_url_list = set().union([x['m_url'] for x in mongo_response])
 
         m_request_handler, proxies, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
-        m_response = m_request_handler.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={
-            }, allow_redirects=True)
+        m_response = m_request_handler.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
 
         m_updated_url_list = []
         for m_server_url in m_response.text.splitlines():
