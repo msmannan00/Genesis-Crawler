@@ -52,8 +52,9 @@ class html_parse_manager(HTMLParser, ABC):
 
     def __insert_external_url(self, p_url):
         self.m_all_url_count += 1
-        if p_url is not None and not str(p_url).__contains__("#"):
+        if p_url is not None and not str(p_url).endswith("#"):
             mime = mimetypes.MimeTypes().guess_type(p_url)[0]
+
             if 5 < len(p_url) <= CRAWL_SETTINGS_CONSTANTS.S_MAX_URL_SIZE:
 
                 # Joining Relative URL
@@ -63,6 +64,7 @@ class html_parse_manager(HTMLParser, ABC):
                     p_url = urljoin(m_temp_base_url, p_url)
                     p_url = p_url.replace(" ", "%20")
                     p_url = helper_method.on_clean_url(helper_method.normalize_slashes(p_url))
+
 
                 if validators.url(p_url):
                     suffix = ''.join(pathlib.Path(p_url).suffixes)
@@ -263,6 +265,7 @@ class html_parse_manager(HTMLParser, ABC):
     def __get_validity_score(self, p_important_content):
         m_rank = (((len(p_important_content) + len(self.m_title)) > 150) or len(self.m_sub_url) >= 3) * 10 + (
                 len(self.m_sub_url) > 0 or self.m_all_url_count > 5) * 5
+
         return m_rank
 
     def __get_content_type(self):

@@ -1,5 +1,8 @@
 # Local Imports
 import json
+
+import celery.worker.request
+
 from crawler.celery_manager import celery_genbot
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
@@ -118,7 +121,7 @@ class genbot_controller(request_handler):
                     else:
                         return None, None, None
                 else:
-                    log.g().w(MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url)
+                    log.g().w(MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
 
             m_parsed_model = self.__clean_sub_url(m_parsed_model)
             self.__m_parsed_url.append(m_redirected_requested_url)
@@ -196,3 +199,4 @@ class genbot_controller(request_handler):
 def celery_genbot_instance(p_url):
     m_crawler = genbot_controller()
     m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url])
+
