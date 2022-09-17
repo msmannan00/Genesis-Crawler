@@ -43,7 +43,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_DOC_TYPES = [".pdf", ".msword", ".document", ".docx", ".doc"]
 
     # Local URL
-    S_START_URL = "https://drive.google.com/uc?export=download&id=1ZG7D2NsI-NrVyp3SDq9q4zcrgFi3jhaG"
+    S_START_URL = "https://drive.google.com/uc?export=download&id=1O8MsIbOu3Qs5PdMMHJsSxTwoDSV_U8Kl"
 
     # Total Thread Instances Allowed
     S_UPDATE_STATUS_TIMEOUT = 200
@@ -55,7 +55,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_TOR_NEW_CIRCUIT_INVOKE_DELAY = 600
     S_LOCAL_FILE_CRAWLER_INVOKE_DELAY = 1
     S_LOCAL_FILE_CRAWLER_INVOKE_DELAY_LONG = 10
-    S_CELERY_RESTART_DELAY = 3600
+    S_CELERY_RESTART_DELAY = 10
 
     # Max Allowed Depth
     S_MAX_ALLOWED_DEPTH = 2

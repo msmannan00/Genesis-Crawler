@@ -14,6 +14,10 @@ services:
             - mongo
             - celery
             - tor-extended-1
+            - tor-extended-2
+            - tor-extended-3
+            - tor-extended-4
+            - tor-extended-5
         networks:
             backend:
                 ipv4_address: 10.0.0.2
@@ -40,6 +44,10 @@ services:
         depends_on:
             - redis_server
             - tor-extended-1
+            - tor-extended-2
+            - tor-extended-3
+            - tor-extended-4
+            - tor-extended-5
         networks:
             backend:
                 ipv4_address: 10.0.0.4

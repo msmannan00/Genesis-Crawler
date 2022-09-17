@@ -33,7 +33,7 @@ class crawl_model(request_handler):
     # Start Crawler Manager
     def __install_live_url(self):
         mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_CRAWLABLE_URL_DATA, [None], [None]])
-        m_live_url_list = set().union([x['m_url'] for x in mongo_response])
+        m_live_url_list = list([x['m_url'] for x in mongo_response])
 
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
         m_response = m_request_handler.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
