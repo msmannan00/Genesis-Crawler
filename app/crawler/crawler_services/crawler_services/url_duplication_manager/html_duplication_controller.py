@@ -3,7 +3,8 @@ import logging
 from html_similarity import structural_similarity
 from html_similarity.style_similarity import style_similarity
 from jaccard_index.jaccard import jaccard_index
-
+logger_1 = logging.getLogger('style_similarity')
+logger_2 = logging.getLogger('structural_similarity')
 
 class html_duplication_controller:
 
