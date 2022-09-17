@@ -151,7 +151,7 @@ class genbot_controller(request_handler):
                 except Exception:
                     pass
 
-        if m_max_similarity < 0.90:
+        if m_max_similarity < 0.95:
             return True
         else:
             log.g().w(MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url))
