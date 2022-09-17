@@ -40,37 +40,31 @@ class tor_controller(request_handler):
     def __on_proxy(self, p_queue_id):
 
         if p_queue_id == 0:
-            print("fff1", flush=True)
             proxy = {
                 TOR_KEYS.S_HTTP: "socks5h://10.0.0.6:" + "9052",
                 TOR_KEYS.S_HTTPS: "socks5h://10.0.0.6:" + "9052",
             }
         elif p_queue_id == 1:
-            print("fff2", flush=True)
             proxy = {
                 TOR_KEYS.S_HTTP: "socks5h://10.0.0.7:" + "9054",
                 TOR_KEYS.S_HTTPS: "socks5h://10.0.0.7:" + "9054",
             }
         elif p_queue_id == 2:
-            print("fff3", flush=True)
             proxy = {
                 TOR_KEYS.S_HTTP: "socks5h://10.0.0.8:" + "9056",
                 TOR_KEYS.S_HTTPS: "socks5h://10.0.0.8:" + "9056",
             }
         elif p_queue_id == 3:
-            print("fff4", flush=True)
             proxy = {
                 TOR_KEYS.S_HTTP: "socks5h://10.0.0.9:" + "9058",
                 TOR_KEYS.S_HTTPS: "socks5h://10.0.0.9:" + "9058",
             }
         elif p_queue_id == 4:
-            print("fff5", flush=True)
             proxy = {
                 TOR_KEYS.S_HTTP: "socks5h://10.0.0.10:" + "9060",
                 TOR_KEYS.S_HTTPS: "socks5h://10.0.0.10:" + "9060",
             }
         else:
-            print("fff6", flush=True)
             proxy = {}
         return proxy
 

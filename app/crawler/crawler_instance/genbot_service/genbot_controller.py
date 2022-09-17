@@ -47,7 +47,7 @@ class genbot_controller(request_handler):
 
         proxy_queue_id = int(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_INT, ["proxy_queue_id", 0]))
         redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["proxy_queue_id", (proxy_queue_id + 1)])
-        self.__m_proxy = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [proxy_queue_id % 4])
+        self.__m_proxy = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [proxy_queue_id % 5])
         m_requested_url = helper_method.on_clean_url(p_url)
         m_mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_INDEX, [m_requested_url], [None]])
         m_unparsed_url = []
