@@ -77,7 +77,6 @@ class crawl_model(request_handler):
                 genbot_controller.celery_genbot_instance(m_url_node)
 
     def __init_crawler(self):
-        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["proxy_queue_id", 0])
         if APP_STATUS.DOCKERIZED_RUN:
             self.__init_docker_request()
             RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_CELERY_RESTART_DELAY, self.__reinit_docker_request, trigger_on_start=False)

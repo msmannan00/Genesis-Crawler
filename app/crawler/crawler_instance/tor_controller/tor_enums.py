@@ -22,3 +22,27 @@ class TOR_STATUS:
     S_READY = 4
     S_START = 5
     S_CLOSE = 6
+
+
+TOR_PROXIES = [
+    {
+        "http": "socks5h://10.0.0.6:" + "9052",
+        "https": "socks5h://10.0.0.6:" + "9052"
+    },
+    {
+        "http": "socks5h://10.0.0.7:" + "9054",
+        "https": "socks5h://10.0.0.7:" + "9054"
+    },
+    {
+        "http": "socks5h://10.0.0.8:" + "9056",
+        "https": "socks5h://10.0.0.8:" + "9056"
+    },
+    {
+        "http": "socks5h://10.0.0.9:" + "9058",
+        "https": "socks5h://10.0.0.9:" + "9058"
+    },
+    {
+        "http": "socks5h://10.0.0.10:" + "9060",
+        "https": "socks5h://10.0.0.10:" + "9060"
+    }
+]
