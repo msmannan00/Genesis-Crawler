@@ -43,7 +43,7 @@ class redis_controller:
     def __get_float(self, p_key, p_val, expiry=None):
         if not self.__redis.exists(p_key):
             self.__set_float(p_key, p_val, expiry)
-        return float(self.__redis.get(p_key, expiry))
+        return float(self.__redis.get(p_key))
 
     def __set_string(self, p_key, p_val, expiry=None):
         self.__redis.set(p_key, p_val, expiry)

@@ -41,7 +41,8 @@ class genbot_controller(request_handler):
         self.__m_proxy = {}
 
     def init(self, p_url):
-        self.__m_host_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_url, -1, 60 * 60 * 24 * 10])
+        self.__m_host_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_url, -1, 60 * 60 * 24 * 10])
+        print(self.__m_host_score, flush=True)
         self.__m_proxy = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
         m_requested_url = helper_method.on_clean_url(p_url)
         m_mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_INDEX, [m_requested_url], [None]])
@@ -167,7 +168,7 @@ class genbot_controller(request_handler):
         self.init(p_request_url)
         if len(self.__m_unparsed_url) > 0:
             self.__m_host_duplication_validated = True
-        if 0 < self.__m_host_score < 0.95:
+        if 0 <= self.__m_host_score <= 0.95:
             return
 
         self.__m_unparsed_url.append(url_model_init(p_request_url, CRAWL_SETTINGS_CONSTANTS.S_DEFAULT_DEPTH))
