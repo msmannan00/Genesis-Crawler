@@ -40,7 +40,7 @@ class tor_controller(request_handler):
 
     def __on_proxy(self):
         self.m_queue_index += 1
-        return TOR_PROXIES[self.m_queue_index % len(TOR_PROXIES)]
+        return TOR_PROXIES[self.m_queue_index % len(TOR_PROXIES)], self.m_queue_index % len(TOR_PROXIES)
 
     # Request Triggers
     def invoke_trigger(self, p_command, p_data=None):

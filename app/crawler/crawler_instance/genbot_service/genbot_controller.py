@@ -33,6 +33,7 @@ class genbot_controller(request_handler):
         self.__html_duplication_handler = html_duplication_controller()
         self.__m_html_parser = parse_controller()
 
+        self.__m_tor_id = - 1
         self.__m_depth = 0
         self.__m_host_score = -1
         self.__m_unparsed_url = []
@@ -42,7 +43,7 @@ class genbot_controller(request_handler):
 
     def init(self, p_url):
         self.__m_host_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_url, -1, 60 * 60 * 24 * 10])
-        self.__m_proxy = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
+        self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
         m_requested_url = helper_method.on_clean_url(p_url)
         m_mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_INDEX, [m_requested_url], [None]])
         m_unparsed_url = []
@@ -68,7 +69,7 @@ class genbot_controller(request_handler):
             self.__html_duplication_handler.on_insert_content(p_parsed_model.m_extended_content, p_parsed_model.m_base_model.m_url)
             return False
         else:
-            log.g().w(MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + str(m_score))
+            log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + str(m_score))
             return True
 
     def validate_duplicate_host_url(self, p_request_url, p_raw_html):
@@ -99,7 +100,7 @@ class genbot_controller(request_handler):
             if m_max_similarity < 0.95:
                 return True
             else:
-                log.g().w(MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url))
+                log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url))
 
         return False
 
@@ -119,7 +120,7 @@ class genbot_controller(request_handler):
 
     # Web Request To Get Physical URL HTML
     def __trigger_url_request(self, p_request_model: url_model):
-        log.g().i(MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
+        log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
         m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
         m_unique_file_model = unique_file_model([], [], [])
 
@@ -143,7 +144,7 @@ class genbot_controller(request_handler):
                         status = True
 
                     if status:
-                        log.g().s(MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
+                        log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
 
                         if self.__m_host_score >= 0.95:
                             m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
@@ -152,18 +153,19 @@ class genbot_controller(request_handler):
                     else:
                         return None, None, None
                 else:
-                    log.g().w(MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
+                    log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
 
             m_parsed_model = self.__clean_sub_url(m_parsed_model)
             self.__m_parsed_url.append(m_redirected_requested_url)
 
             return m_parsed_model, m_unique_file_model, m_raw_html
         else:
-            log.g().w(MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
+            log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
             return None, None, None
 
     # Wait For Crawl Manager To Provide URL From Queue
-    def start_crawler_instance(self, p_request_url):
+    def start_crawler_instance(self, p_request_url, p_task_id):
+        self.__task_id = p_task_id
         self.init(p_request_url)
         if len(self.__m_unparsed_url) > 0:
             self.__m_host_duplication_validated = True
@@ -178,7 +180,6 @@ class genbot_controller(request_handler):
                 self.__m_host_duplication_validated = True
 
                 if m_parsed_model is None or not celery_shared_data.get_instance().get_network_status():
-                    sleep(5)
                     continue
 
                 if m_parsed_model:
@@ -195,10 +196,10 @@ class genbot_controller(request_handler):
 
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE:
-            self.start_crawler_instance(p_data[0])
+            self.start_crawler_instance(p_data[0], p_data[1])
 
 
 @celery_genbot.task(name='celery_genbot_instance.task', bind=False, queue='genbot_queue')
-def celery_genbot_instance(p_url):
+def celery_genbot_instance(p_url, p_vid):
     m_crawler = genbot_controller()
-    m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url])
+    m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])

@@ -1,6 +1,7 @@
 # Local Imports
 import os
 
+from crawler.celery_manager import celery_genbot
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
@@ -11,8 +12,6 @@ from crawler.crawler_instance.tor_controller.tor_controller import tor_controlle
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS, MONGO_CRUD
-from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
-from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS
 from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
@@ -22,6 +21,7 @@ class crawl_model(request_handler):
 
     def __init__(self):
         self.__init_image_cache()
+        self.__celery_vid = 100000
 
     # Insert To Database - Insert URL to database after parsing them
     def __init_image_cache(self):
@@ -59,13 +59,16 @@ class crawl_model(request_handler):
 
     def __start_docker_request(self, p_fetched_url_list):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
+        virtual_id = self.__celery_vid
 
         for m_url_node in p_fetched_url_list:
             if APP_STATUS.DOCKERIZED_RUN:
                 genbot_controller.celery_genbot_instance.apply_async(
-                    args=[m_url_node],
+                    args=[m_url_node, virtual_id],
                     kwargs={},
                     queue='genbot_queue', retry=False)
+                virtual_id += 1
+        self.__celery_vid = virtual_id
 
     def __start_direct_request(self):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
@@ -77,6 +80,7 @@ class crawl_model(request_handler):
                 genbot_controller.celery_genbot_instance(m_url_node)
 
     def __init_crawler(self):
+        self.__celery_vid = 100000
         if APP_STATUS.DOCKERIZED_RUN:
             self.__init_docker_request()
             RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_CELERY_RESTART_DELAY, self.__reinit_docker_request, trigger_on_start=False)
