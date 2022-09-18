@@ -113,7 +113,7 @@ class genbot_controller(request_handler):
         if self.__m_host_score >= 0.95:
             p_parsed_model.m_sub_url = m_sub_url_filtered[0:50]
         else:
-            p_parsed_model.m_sub_url = m_sub_url_filtered[0:50]
+            p_parsed_model.m_sub_url = m_sub_url_filtered[0:0]
 
         return p_parsed_model
 
