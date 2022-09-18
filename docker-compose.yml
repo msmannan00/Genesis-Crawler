@@ -18,6 +18,7 @@ services:
             - tor-extended-3
             - tor-extended-4
             - tor-extended-5
+            - tor-extended-6
         networks:
             backend:
                 ipv4_address: 10.0.0.2
@@ -48,6 +49,7 @@ services:
             - tor-extended-3
             - tor-extended-4
             - tor-extended-5
+            - tor-extended-6
         networks:
             backend:
                 ipv4_address: 10.0.0.4
@@ -174,6 +176,27 @@ services:
         networks:
             backend:
                 ipv4_address: 10.0.0.10
+
+    tor-extended-6:
+        container_name: tor_6
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9062'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9063'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9062:9062/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.11
 
 networks:
   backend:

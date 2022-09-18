@@ -64,6 +64,11 @@ class tor_controller(request_handler):
                 TOR_KEYS.S_HTTP: "socks5h://10.0.0.10:" + "9060",
                 TOR_KEYS.S_HTTPS: "socks5h://10.0.0.10:" + "9060",
             }
+        elif p_queue_id == 5:
+            proxy = {
+                TOR_KEYS.S_HTTP: "socks5h://10.0.0.11:" + "9062",
+                TOR_KEYS.S_HTTPS: "socks5h://10.0.0.11:" + "9062",
+            }
         else:
             proxy = {}
         return proxy
