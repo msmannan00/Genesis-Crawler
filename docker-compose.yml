@@ -66,6 +66,21 @@ services:
         build:
             context: ./
             dockerfile: dockerFiles/tor_docker
+    tor-extended-1:
+        container_name: tor_1
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9052'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9053'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+            TOR_CONFIG_OVERWRITE: 'true'
+
+        volumes:
+            - ./tor:/data/tor
         ports:
            - "16379:16379"
            - "9150:9150"

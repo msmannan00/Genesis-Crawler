@@ -17,7 +17,7 @@ class webRequestManager:
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
 
         try:
-            page = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, )
+            page = m_request_handler.get(p_url, headers=headers, timeout=(CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT), proxies=p_custom_proxy, allow_redirects=True, )
             soup = BeautifulSoup(page.content.decode('utf-8', 'ignore'), features="lxml")
             if page == "" or page.status_code != 200:
                 return p_url, False, page.status_code
@@ -45,7 +45,7 @@ class webRequestManager:
             TOR_COMMANDS.S_CREATE_SESSION, [True])
 
         try:
-            response = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, )
+            response = m_request_handler.get(p_url, headers=headers, timeout=(CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT), proxies=p_custom_proxy, allow_redirects=True, )
             return True, response
         except Exception as ex:
             return False, None
