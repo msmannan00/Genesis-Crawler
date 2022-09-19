@@ -86,3 +86,6 @@ class CRAWL_SETTINGS_CONSTANTS:
 
     # Max Static Images
     S_STATIC_PARSER_LIST_MAX_SIZE = 10
+
+    # Max Thread Size
+    S_MAX_THREAD_COUNT = 200

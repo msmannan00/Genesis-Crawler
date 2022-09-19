@@ -1,6 +1,9 @@
 # Local Imports
 import json
+from asyncio import sleep
+
 from crawler.celery_manager import celery_genbot
+from crawler.constants import status
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
@@ -21,7 +24,6 @@ from crawler.crawler_instance.genbot_service.parse_controller import parse_contr
 from crawler.crawler_instance.genbot_service.web_request_handler import webRequestManager
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
-from gevent import sleep
 from crawler.shared_data import celery_shared_data
 from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
 
@@ -128,8 +130,6 @@ class genbot_controller(request_handler):
                 kwargs={},
                 queue='web_queue', retry=False).get()
 
-            print("::::::::::::::::::::::::::::::::::::::::xxxx1", flush=True)
-
             m_unique_file_model = unique_file_model([], [], [])
             if m_response is True:
 
@@ -139,7 +139,6 @@ class genbot_controller(request_handler):
 
                 m_status = self.__check_content_duplication(m_parsed_model)
                 if m_status:
-                    print("::::::::::::::::::::::::::::::::::::::::xxxx2", flush=True)
                     return None, None, None
 
                 if m_redirected_url == m_redirected_requested_url or m_redirected_url != m_redirected_requested_url and self.__m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
@@ -159,7 +158,6 @@ class genbot_controller(request_handler):
 
                             elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
                         else:
-                            print("::::::::::::::::::::::::::::::::::::::::xxxx2", flush=True)
                             return None, None, None
                     else:
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
@@ -167,11 +165,9 @@ class genbot_controller(request_handler):
                 m_parsed_model = self.__clean_sub_url(m_parsed_model)
                 self.__m_parsed_url.append(m_redirected_requested_url)
 
-                print("::::::::::::::::::::::::::::::::::::::::xxxx2", flush=True)
                 return m_parsed_model, m_unique_file_model, m_raw_html
             else:
                 log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
-            print("::::::::::::::::::::::::::::::::::::::::xxxx2", flush=True)
         except Exception as ex:
             return None, None, None
 
@@ -216,3 +212,12 @@ def celery_genbot_instance(p_url, p_vid):
     m_crawler = genbot_controller()
     m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
 
+
+def test_instance(p_url, p_vid):
+    try:
+        m_crawler = genbot_controller()
+        m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
+    except Exception:
+        pass
+    finally:
+        status.S_THREAD_COUNT -= 1

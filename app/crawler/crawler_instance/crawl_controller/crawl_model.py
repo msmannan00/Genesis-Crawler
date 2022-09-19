@@ -1,18 +1,20 @@
 # Local Imports
 import os
+import threading
+from time import sleep
 
-from crawler.celery_manager import celery_genbot
+from crawler.constants import status
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
 from crawler.crawler_instance.genbot_service import genbot_controller
+from crawler.crawler_instance.genbot_service.genbot_controller import test_instance
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS, MONGO_CRUD
-from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
@@ -61,15 +63,21 @@ class crawl_model(request_handler):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
         virtual_id = self.__celery_vid
 
-        for m_url_node in p_fetched_url_list[0:100]:
-            if APP_STATUS.DOCKERIZED_RUN:
-                genbot_controller.celery_genbot_instance.apply_async(
-                    args=[m_url_node, virtual_id],
-                    kwargs={},
-                    priority=virtual_id,
-                    queue='genbot_queue', retry=False)
+        while True:
+            t_list = []
+
+            if len(p_fetched_url_list) <= 0:
+                p_fetched_url_list, m_updated_url_list = self.__install_live_url()
+
+            while status.S_THREAD_COUNT >= CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
+                sleep(2)
+
+            while len(p_fetched_url_list) > 0 and status.S_THREAD_COUNT < CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
                 virtual_id += 1
-        self.__celery_vid = virtual_id
+                m_thread = threading.Thread(target=test_instance, args=(p_fetched_url_list.pop(0), virtual_id))
+                t_list.append(m_thread)
+                m_thread.start()
+                status.S_THREAD_COUNT += 1
 
     def __start_direct_request(self):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
@@ -84,7 +92,6 @@ class crawl_model(request_handler):
         self.__celery_vid = 100000
         if APP_STATUS.DOCKERIZED_RUN:
             self.__init_docker_request()
-            RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_CELERY_RESTART_DELAY, self.__reinit_docker_request, trigger_on_start=False)
         else:
             self.__start_direct_request()
 

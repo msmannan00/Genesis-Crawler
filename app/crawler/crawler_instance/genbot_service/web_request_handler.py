@@ -25,7 +25,6 @@ class webRequestManager:
                 return page.url, True, str(soup)
 
         except Exception as ex:
-            log.g().e(MANAGE_CRAWLER_MESSAGES.S_WEB_REQUEST_PROCESSING_ERROR + " : " + str(ex))
             return p_url, False, None
 
     def load_header(self, p_url, p_custom_proxy):
@@ -38,7 +37,6 @@ class webRequestManager:
             return True, page.headers
 
         except Exception:
-            log.g().e(MANAGE_CRAWLER_MESSAGES.S_WEB_REQUEST_PROCESSING_ERROR + " : " + str(p_url))
             return False, None
 
     # Load Header - used to get header without actually downloading the content
@@ -50,5 +48,4 @@ class webRequestManager:
             response = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, )
             return True, response
         except Exception as ex:
-            log.g().e(MANAGE_CRAWLER_MESSAGES.S_WEB_REQUEST_PROCESSING_ERROR + " : " + str(ex))
             return False, None
