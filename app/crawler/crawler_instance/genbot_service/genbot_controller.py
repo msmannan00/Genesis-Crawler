@@ -139,6 +139,7 @@ class genbot_controller(request_handler):
 
                 m_status = self.__check_content_duplication(m_parsed_model)
                 if m_status:
+                    print("::::::::::::::::::::::::::::::::::::::::xxxx2", flush=True)
                     return None, None, None
 
                 if m_redirected_url == m_redirected_requested_url or m_redirected_url != m_redirected_requested_url and self.__m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
@@ -158,6 +159,7 @@ class genbot_controller(request_handler):
 
                             elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
                         else:
+                            print("::::::::::::::::::::::::::::::::::::::::xxxx2", flush=True)
                             return None, None, None
                     else:
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
