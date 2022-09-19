@@ -61,11 +61,12 @@ class crawl_model(request_handler):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
         virtual_id = self.__celery_vid
 
-        for m_url_node in p_fetched_url_list:
+        for m_url_node in p_fetched_url_list[0:100]:
             if APP_STATUS.DOCKERIZED_RUN:
                 genbot_controller.celery_genbot_instance.apply_async(
                     args=[m_url_node, virtual_id],
                     kwargs={},
+                    priority=virtual_id,
                     queue='genbot_queue', retry=False)
                 virtual_id += 1
         self.__celery_vid = virtual_id

@@ -6,6 +6,7 @@ from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
+from crawler.crawler_instance.genbot_service import web_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
@@ -120,47 +121,56 @@ class genbot_controller(request_handler):
 
     # Web Request To Get Physical URL HTML
     def __trigger_url_request(self, p_request_model: url_model):
-        log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
-        m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
-        m_unique_file_model = unique_file_model([], [], [])
+        try:
+            log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
+            m_redirected_url, m_response, m_raw_html = web_controller.celery_web_instance.apply_async(
+                args=[p_request_model.m_url, self.__m_proxy],
+                kwargs={},
+                queue='web_queue', retry=False).get()
 
-        if m_response is True:
+            print("::::::::::::::::::::::::::::::::::::::::xxxx1", flush=True)
 
-            m_parsed_model, m_images = self.__m_html_parser.on_parse_html(m_raw_html, p_request_model)
-            m_redirected_url = helper_method.on_clean_url(m_redirected_url)
-            m_redirected_requested_url = helper_method.on_clean_url(p_request_model.m_url)
+            m_unique_file_model = unique_file_model([], [], [])
+            if m_response is True:
 
-            m_status = self.__check_content_duplication(m_parsed_model)
-            if m_status:
-                return None, None, None
+                m_parsed_model, m_images = self.__m_html_parser.on_parse_html(m_raw_html, p_request_model)
+                m_redirected_url = helper_method.on_clean_url(m_redirected_url)
+                m_redirected_requested_url = helper_method.on_clean_url(p_request_model.m_url)
 
-            if m_redirected_url == m_redirected_requested_url or m_redirected_url != m_redirected_requested_url and self.__m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
-                self.__m_url_duplication_handler.insert(m_redirected_requested_url)
+                m_status = self.__check_content_duplication(m_parsed_model)
+                if m_status:
+                    return None, None, None
 
-                if m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and m_response:
-                    if not self.__m_host_duplication_validated:
-                        status = self.validate_duplicate_host_url(p_request_model.m_url, m_raw_html)
+                if m_redirected_url == m_redirected_requested_url or m_redirected_url != m_redirected_requested_url and self.__m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
+                    self.__m_url_duplication_handler.insert(m_redirected_requested_url)
+
+                    if m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and m_response:
+                        if not self.__m_host_duplication_validated:
+                            status = self.validate_duplicate_host_url(p_request_model.m_url, m_raw_html)
+                        else:
+                            status = True
+
+                        if status:
+                            log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
+
+                            if self.__m_host_score >= 0.95:
+                                m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
+
+                            elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
+                        else:
+                            return None, None, None
                     else:
-                        status = True
+                        log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
 
-                    if status:
-                        log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
+                m_parsed_model = self.__clean_sub_url(m_parsed_model)
+                self.__m_parsed_url.append(m_redirected_requested_url)
 
-                        if self.__m_host_score >= 0.95:
-                            m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
-
-                        elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
-                    else:
-                        return None, None, None
-                else:
-                    log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
-
-            m_parsed_model = self.__clean_sub_url(m_parsed_model)
-            self.__m_parsed_url.append(m_redirected_requested_url)
-
-            return m_parsed_model, m_unique_file_model, m_raw_html
-        else:
-            log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
+                print("::::::::::::::::::::::::::::::::::::::::xxxx2", flush=True)
+                return m_parsed_model, m_unique_file_model, m_raw_html
+            else:
+                log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
+            print("::::::::::::::::::::::::::::::::::::::::xxxx2", flush=True)
+        except Exception as ex:
             return None, None, None
 
     # Wait For Crawl Manager To Provide URL From Queue
@@ -203,3 +213,4 @@ class genbot_controller(request_handler):
 def celery_genbot_instance(p_url, p_vid):
     m_crawler = genbot_controller()
     m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
+

@@ -10,6 +10,10 @@ celery_genbot = Celery(
     broker=CELERY_BROKER_URL,
     backend=CELERY_RESULT_BACKEND)
 
+celery_web = Celery(
+    "celery_web",
+    broker=CELERY_BROKER_URL,
+    backend=CELERY_RESULT_BACKEND)
 
 @celery.signals.setup_logging.connect
 def on_celery_setup_logging(**kwargs):
