@@ -83,6 +83,7 @@ services:
             TOR_CONTROL_PORT: '0.0.0.0:9053'
             TOR_CONTROL_PASSWORD: 'Imammehdi@00'
             TOR_CONTROL_COOKIE: 'true'
+            TOR_CONFIG_OVERWRITE: 'true'
 
         volumes:
             - ./tor:/data/tor
@@ -104,6 +105,8 @@ services:
             TOR_CONTROL_PORT: '0.0.0.0:9055'
             TOR_CONTROL_PASSWORD: 'Imammehdi@00'
             TOR_CONTROL_COOKIE: 'true'
+            TOR_CONFIG_OVERWRITE: 'true'
+
 
         volumes:
             - ./tor:/data/tor
@@ -125,6 +128,8 @@ services:
             TOR_CONTROL_PORT: '0.0.0.0:9057'
             TOR_CONTROL_PASSWORD: 'Imammehdi@00'
             TOR_CONTROL_COOKIE: 'true'
+            TOR_CONFIG_OVERWRITE: 'true'
+
 
         volumes:
             - ./tor:/data/tor
@@ -146,6 +151,8 @@ services:
             TOR_CONTROL_PORT: '0.0.0.0:9059'
             TOR_CONTROL_PASSWORD: 'Imammehdi@00'
             TOR_CONTROL_COOKIE: 'true'
+            TOR_CONFIG_OVERWRITE: 'true'
+
 
         volumes:
             - ./tor:/data/tor
@@ -167,6 +174,8 @@ services:
             TOR_CONTROL_PORT: '0.0.0.0:9061'
             TOR_CONTROL_PASSWORD: 'Imammehdi@00'
             TOR_CONTROL_COOKIE: 'true'
+            TOR_CONFIG_OVERWRITE: 'true'
+
 
         volumes:
             - ./tor:/data/tor

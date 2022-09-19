@@ -77,30 +77,26 @@ class genbot_controller(request_handler):
 
     def validate_duplicate_host_url(self, p_request_url, p_raw_html):
         if p_raw_html is not None:
-            keys = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_KEYS, [])
             m_duplicate_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, -1, 60 * 60 * 24 * 10])
 
             m_max_similarity = m_duplicate_score
+            mcount=0
             if m_duplicate_score == -1:
-                m_max_similarity = 0
-                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [REDIS_KEYS.RAW_HTML_CODE + p_request_url, p_raw_html, 60 * 60 * 24 * 10])
-                for key in keys:
-                    try:
-                        if str(key).startswith(REDIS_KEYS.RAW_HTML_CODE):
-                            if p_request_url not in str(key):
-                                m_raw_html_redis = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [key, None, 60*60*24*10])
-                                m_similarity = self.__html_duplication_handler.verify_structural_duplication(p_raw_html, m_raw_html_redis)
 
-                                if m_similarity > m_max_similarity:
-                                    m_max_similarity = m_similarity
-                            else:
-                                m_max_similarity = 0
-                                break
-                    except Exception:
-                        pass
+                m_max_similarity = 0
+                files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST,[REDIS_KEYS.RAW_HTML_CODE, p_raw_html, 60 * 60 * 24 * 10])
+
+                for html in files:
+                    mcount += 1
+
+                    m_similarity = self.__html_duplication_handler.verify_structural_duplication(p_raw_html, html)
+
+                    if m_similarity > m_max_similarity:
+                        m_max_similarity = m_similarity
 
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, m_max_similarity, 60 * 60 * 24 * 10])
             if m_max_similarity < 0.95:
+                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html])
                 return True
             else:
                 log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url))
@@ -125,10 +121,7 @@ class genbot_controller(request_handler):
     def __trigger_url_request(self, p_request_model: url_model):
         try:
             log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
-            m_redirected_url, m_response, m_raw_html = web_controller.celery_web_instance.apply_async(
-                args=[p_request_model.m_url, self.__m_proxy],
-                kwargs={},
-                queue='web_queue', retry=False).get()
+            m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
 
             m_unique_file_model = unique_file_model([], [], [])
             if m_response is True:

@@ -53,13 +53,15 @@ class redis_controller:
             self.__set_string(p_key, p_val, expiry)
         return self.__redis.get(p_key)
 
-    def __set_list(self, p_key, p_val):
-        self.__redis.lpush(p_key, p_val)
+    def __set_list(self, p_key, p_val, expiry=None):
+        if not self.__redis.exists(p_key) and expiry is not None:
+            self.__redis.expire(p_key, expiry)
+        self.__redis.sadd(p_key, p_val)
 
-    def __get_list(self, p_key, p_val):
+    def __get_list(self, p_key, p_val, expiry=None):
         if not self.__redis.exists(p_key):
-            self.__set_list(p_key, p_val)
-        return self.__redis.lrange(p_key, 0, -1)
+            self.__set_list(p_key, p_val, expiry)
+        return list(self.__redis.smembers(p_key))
 
     def __get_keys(self):
         return self.__redis.keys()
