@@ -96,10 +96,10 @@ class genbot_controller(request_handler):
                     if m_similarity > m_max_similarity:
                         m_max_similarity = m_similarity
 
-                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html])
+                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html, None])
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, m_max_similarity, 60 * 60 * 24 * 10])
             if m_max_similarity < 0.95:
-                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html])
+                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html, None])
                 return True
             else:
                 log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url))

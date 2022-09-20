@@ -1,6 +1,6 @@
 class REDIS_CONNECTIONS:
-    S_DATABASE_IP = 'redis_server'
-    S_DATABASE_PASSWORD = 'killprg1'
+    S_DATABASE_IP = 'localhost'
+    S_DATABASE_PASSWORD = ''
 
 
 class REDIS_KEYS:

@@ -22,7 +22,7 @@ class celery_shared_data:
             celery_shared_data.__instance = self
 
     def get_network_status(self):
-        return redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [REDIS_KEYS.S_NETWORK_MONITOR_STATUS, False])
+        return redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [REDIS_KEYS.S_NETWORK_MONITOR_STATUS, False, None])
 
     def set_network_status(self, p_status):
-        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.S_NETWORK_MONITOR_STATUS, p_status])
+        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.S_NETWORK_MONITOR_STATUS, p_status, None])

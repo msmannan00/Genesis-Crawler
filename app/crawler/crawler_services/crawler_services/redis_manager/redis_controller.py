@@ -50,18 +50,19 @@ class redis_controller:
 
     def __get_string(self, p_key, p_val, expiry=None):
         if not self.__redis.exists(p_key):
-            self.__set_string(p_key, p_val, expiry)
+            self.__set_string(p_key, p_val)
+            self.__redis.expire(p_key, expiry)
         return self.__redis.get(p_key)
 
     def __set_list(self, p_key, p_val, expiry=None):
-        if not self.__redis.exists(p_key) and expiry is not None:
-            self.__redis.expire(p_key, expiry)
         self.__redis.sadd(p_key, p_val)
+        if expiry is not None:
+            self.__redis.expire(p_key, expiry)
 
     def __get_list(self, p_key, p_val, expiry=None):
         if not self.__redis.exists(p_key):
             self.__set_list(p_key, p_val, expiry)
-        return list(self.__redis.smembers(p_key))
+        return self.__redis.smembers(p_key)
 
     def __get_keys(self):
         return self.__redis.keys()
@@ -69,9 +70,9 @@ class redis_controller:
     def invoke_trigger(self, p_commands, p_data=None):
 
         if p_commands == REDIS_COMMANDS.S_GET_INT:
-            return self.__get_int(p_data[0], p_data[1])
+            return self.__get_int(p_data[0], p_data[1], p_data[2])
         if p_commands == REDIS_COMMANDS.S_SET_INT:
-            return self.__set_int(p_data[0], p_data[1])
+            return self.__set_int(p_data[0], p_data[1], p_data[2])
         elif p_commands == REDIS_COMMANDS.S_GET_BOOL:
             return self.__get_bool(p_data[0], p_data[1])
         elif p_commands == REDIS_COMMANDS.S_SET_BOOL:
@@ -81,15 +82,15 @@ class redis_controller:
         elif p_commands == REDIS_COMMANDS.S_SET_STRING:
             return self.__set_string(p_data[0], p_data[1], p_data[2])
         elif p_commands == REDIS_COMMANDS.S_SET_LIST:
-            return self.__set_list(p_data[0], p_data[1])
+            return self.__set_list(p_data[0], p_data[1], p_data[2])
         elif p_commands == REDIS_COMMANDS.S_GET_LIST:
-            return self.__get_list(p_data[0], p_data[1])
+            return self.__get_list(p_data[0], p_data[1], p_data[2])
         elif p_commands == REDIS_COMMANDS.S_GET_KEYS:
             return self.__get_keys()
         elif p_commands == REDIS_COMMANDS.S_GET_FLOAT:
-            return self.__get_float(p_data[0], p_data[1])
+            return self.__get_float(p_data[0], p_data[1], p_data[2])
         elif p_commands == REDIS_COMMANDS.S_SET_FLOAT:
-            return self.__set_float(p_data[0], p_data[1])
+            return self.__set_float(p_data[0], p_data[1], p_data[2])
 
 
 
