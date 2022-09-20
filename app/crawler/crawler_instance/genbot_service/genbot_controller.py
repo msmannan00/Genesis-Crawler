@@ -44,7 +44,7 @@ class genbot_controller(request_handler):
         self.__m_proxy = {}
 
     def init(self, p_url):
-        self.__m_host_failure_count = int(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_INT, [REDIS_KEYS.HOST_FAILURE_COUNT + p_url, 0, 15]))
+        self.__m_host_failure_count = int(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_INT, [REDIS_KEYS.HOST_FAILURE_COUNT + p_url, 0, 60 * 60 * 24 * 5]))
         print(":::::::::::::::::::::::::::::::", flush=True)
         print(self.__m_host_failure_count, flush=True)
         print(":::::::::::::::::::::::::::::::", flush=True)
@@ -167,7 +167,7 @@ class genbot_controller(request_handler):
             else:
                 if not self.__m_host_duplication_validated:
                     self.__m_host_failure_count+=1
-                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [ REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count, 15])
+                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [ REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count, 60 * 60 * 24 * 5])
 
                 log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
         except Exception as ex:
@@ -212,7 +212,6 @@ class genbot_controller(request_handler):
 
 def genbot_instance(p_url, p_vid):
     try:
-        p_url = "4tdb2oju6nrrp77en6opmyfucvycs22y5ohuizfgjvbyjqjovltooyyd.onion"
         m_crawler = genbot_controller()
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
     except Exception:
