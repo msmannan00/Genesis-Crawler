@@ -36,6 +36,7 @@ class MANAGE_CRAWLER_MESSAGES:
     S_PARSING_STARTING = "[12] URL parsing started"
     S_DUPLICATE_CONTENT = "[14] Dupicate URL Content"
     S_DUPLICATE_HOST_CONTENT = "[15] Dupicate Host Content"
+    S_TOO_MANY_FAILURE = "[16] Too many host failure droping"
 
 
 class MANAGE_MONGO_MESSAGES:

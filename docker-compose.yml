@@ -12,7 +12,6 @@ services:
             - "8000:8000"
         depends_on:
             - mongo
-            - celery
             - tor-extended-1
             - tor-extended-2
             - tor-extended-3
@@ -39,36 +38,6 @@ services:
         networks:
             backend:
                 ipv4_address: 10.0.0.3
-
-    celery:
-        build:
-            context: ./
-            dockerfile: dockerFiles/celery_docker
-
-        environment:
-            REDISSERVER: redis://redis_server:6379
-            C_FORCE_ROOT: "true"
-        depends_on:
-            - redis_server
-            - tor-extended-1
-            - tor-extended-2
-            - tor-extended-3
-            - tor-extended-4
-            - tor-extended-5
-            - tor-extended-6
-            - tor-extended-7
-            - tor-extended-8
-            - tor-extended-9
-            - tor-extended-10
-            - tor-extended-11
-            - tor-extended-12
-        networks:
-            backend:
-                ipv4_address: 10.0.0.4
-        logging:
-            driver: local
-        volumes:
-            - ./app/:/app
 
     mongo:
         image: mongo

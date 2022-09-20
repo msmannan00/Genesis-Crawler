@@ -9,7 +9,7 @@ from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTA
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
 from crawler.crawler_instance.genbot_service import genbot_controller
-from crawler.crawler_instance.genbot_service.genbot_controller import test_instance
+from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
@@ -66,15 +66,16 @@ class crawl_model(request_handler):
         while True:
             t_list = []
 
-            if len(p_fetched_url_list) <= 0:
-                p_fetched_url_list, m_updated_url_list = self.__install_live_url()
+            if len(p_fetched_url_list) <= 500:
+                m_fetched_url_list, m_updated_url_list = self.__install_live_url()
+                p_fetched_url_list.append(m_fetched_url_list)
 
             while status.S_THREAD_COUNT >= CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
                 sleep(2)
 
             while len(p_fetched_url_list) > 0 and status.S_THREAD_COUNT < CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
                 virtual_id += 1
-                m_thread = threading.Thread(target=test_instance, args=(p_fetched_url_list.pop(0), virtual_id))
+                m_thread = threading.Thread(target=genbot_instance, args=(p_fetched_url_list.pop(0), virtual_id))
                 t_list.append(m_thread)
                 m_thread.start()
                 status.S_THREAD_COUNT += 1
@@ -86,7 +87,7 @@ class crawl_model(request_handler):
             m_live_url_list, p_fetched_url_list = self.__install_live_url()
             m_request_list = list(m_live_url_list) + p_fetched_url_list
             for m_url_node in m_request_list:
-                genbot_controller.celery_genbot_instance(m_url_node)
+                genbot_controller.genbot_instance(m_url_node, -1)
 
     def __init_crawler(self):
         self.__celery_vid = 100000
