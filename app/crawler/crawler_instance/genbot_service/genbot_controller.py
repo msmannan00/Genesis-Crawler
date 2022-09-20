@@ -45,9 +45,6 @@ class genbot_controller(request_handler):
 
     def init(self, p_url):
         self.__m_host_failure_count = int(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_INT, [REDIS_KEYS.HOST_FAILURE_COUNT + p_url, 0, 60 * 60 * 24 * 5]))
-        print(":::::::::::::::::::::::::::::::", flush=True)
-        print(self.__m_host_failure_count, flush=True)
-        print(":::::::::::::::::::::::::::::::", flush=True)
         self.__m_host_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_url, -1, 60 * 60 * 24 * 10])
         self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
         m_requested_url = helper_method.on_clean_url(p_url)
