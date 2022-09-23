@@ -81,11 +81,12 @@ class html_parse_manager(HTMLParser, ABC):
                         elif str(mime).startswith("video") and len(self.m_video_url) < 10:
                             self.m_video_url.append(p_url)
                     elif parent_domain.__eq__(host_domain) and m_host_url.endswith(".onion"):
-                        if m_host_url.__contains__("?") and self.m_query_url_count < 5:
-                            self.m_query_url_count += 1
-                            self.m_sub_url.append(helper_method.normalize_slashes(p_url))
-                        else:
-                            self.m_sub_url.append(helper_method.normalize_slashes(p_url))
+                        if "#" in p_url and p_url.count("/")>2:
+                            if m_host_url.__contains__("?") and self.m_query_url_count < 5:
+                                self.m_query_url_count += 1
+                                self.m_sub_url.append(helper_method.normalize_slashes(p_url))
+                            else:
+                                self.m_sub_url.append(helper_method.normalize_slashes(p_url))
 
     def handle_starttag(self, p_tag, p_attrs):
         if p_tag == "a":

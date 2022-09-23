@@ -38,6 +38,7 @@ class genbot_controller(request_handler):
         self.__m_tor_id = - 1
         self.__m_depth = 0
         self.__m_host_score = -1
+        self.__m_first_time = False
         self.__m_unparsed_url = []
         self.__m_parsed_url = []
         self.__m_host_duplication_validated = False
@@ -46,6 +47,8 @@ class genbot_controller(request_handler):
     def init(self, p_url):
         self.__m_host_failure_count = int(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_INT, [REDIS_KEYS.HOST_FAILURE_COUNT + p_url, 0, 60 * 60 * 24 * 5]))
         self.__m_host_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_url, -1, 60 * 60 * 24 * 10])
+        if self.__m_host_score == -1:
+            self.__m_first_time = True
 
         self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
         m_requested_url = helper_method.on_clean_url(p_url)
@@ -85,7 +88,6 @@ class genbot_controller(request_handler):
                 files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST,[REDIS_KEYS.RAW_HTML_CODE, None, 60 * 60 * 24 * 10])
                 m_max_similarity = 0
                 for html in files:
-                    print("------------------------- : " + str(len(files)))
                     m_similarity = self.__html_duplication_handler.verify_structural_duplication(p_raw_html, html)
 
                     if m_similarity > m_max_similarity:
@@ -108,8 +110,8 @@ class genbot_controller(request_handler):
                 self.__m_url_duplication_handler.insert(m_sub_url)
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
-        if self.__m_host_score < 0.95:
-            p_parsed_model.m_sub_url = m_sub_url_filtered[0:1]
+        if self.__m_first_time is False:
+            p_parsed_model.m_sub_url = m_sub_url_filtered[0:30]
         else:
             p_parsed_model.m_sub_url = m_sub_url_filtered[0:0]
 
