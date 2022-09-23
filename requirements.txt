@@ -7,6 +7,8 @@ pandas
 django
 html-similarity
 jaccard-index
+requests
+Pillow
 
 ###### Requirements with Version Specifiers ######
 logdna~=1.18.2

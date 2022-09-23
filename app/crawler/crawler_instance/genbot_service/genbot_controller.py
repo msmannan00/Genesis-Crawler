@@ -46,6 +46,7 @@ class genbot_controller(request_handler):
     def init(self, p_url):
         self.__m_host_failure_count = int(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_INT, [REDIS_KEYS.HOST_FAILURE_COUNT + p_url, 0, 60 * 60 * 24 * 5]))
         self.__m_host_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_url, -1, 60 * 60 * 24 * 10])
+
         self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
         m_requested_url = helper_method.on_clean_url(p_url)
         m_mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_INDEX, [m_requested_url], [None]])
@@ -77,17 +78,14 @@ class genbot_controller(request_handler):
 
     def validate_duplicate_host_url(self, p_request_url, p_raw_html):
         if p_raw_html is not None:
-            m_duplicate_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, -1, 60 * 60 * 24 * 10])
 
-            m_max_similarity = m_duplicate_score
-            mcount=0
-            if m_duplicate_score == -1:
+            m_max_similarity = self.__m_host_score
+            if self.__m_host_score == -1:
 
+                files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST,[REDIS_KEYS.RAW_HTML_CODE, None, 60 * 60 * 24 * 10])
                 m_max_similarity = 0
-                files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST,[REDIS_KEYS.RAW_HTML_CODE, p_raw_html, 60 * 60 * 24 * 10])
-
                 for html in files:
-                    mcount += 1
+                    print("------------------------- : " + str(len(files)))
                     m_similarity = self.__html_duplication_handler.verify_structural_duplication(p_raw_html, html)
 
                     if m_similarity > m_max_similarity:
@@ -95,11 +93,11 @@ class genbot_controller(request_handler):
 
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html, None])
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, m_max_similarity, 60 * 60 * 24 * 10])
+
             if m_max_similarity < 0.95:
-                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html, None])
                 return True
             else:
-                log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url))
+                log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url) + " : " + str(m_max_similarity))
 
         return False
 
@@ -110,8 +108,8 @@ class genbot_controller(request_handler):
                 self.__m_url_duplication_handler.insert(m_sub_url)
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
-        if self.__m_host_score >= 0.95:
-            p_parsed_model.m_sub_url = m_sub_url_filtered[0:20]
+        if self.__m_host_score < 0.95:
+            p_parsed_model.m_sub_url = m_sub_url_filtered[0:1]
         else:
             p_parsed_model.m_sub_url = m_sub_url_filtered[0:0]
 
@@ -172,11 +170,15 @@ class genbot_controller(request_handler):
 
     # Wait For Crawl Manager To Provide URL From Queue
     def start_crawler_instance(self, p_request_url, p_task_id):
+
         self.__task_id = p_task_id
         self.init(p_request_url)
         if len(self.__m_unparsed_url) > 0:
             self.__m_host_duplication_validated = True
-        if 0 <= self.__m_host_score <= 0.95 or self.__m_host_failure_count > 1:
+        if self.__m_host_score >= 0.95:
+            log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + p_request_url)
+            return
+        if self.__m_host_failure_count > 1:
             log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_TOO_MANY_FAILURE + " : " + p_request_url)
             return
 
@@ -199,9 +201,6 @@ class genbot_controller(request_handler):
             else:
                 sleep(30)
 
-        p_request_url = helper_method.on_clean_url(p_request_url)
-        mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
-
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE:
             self.start_crawler_instance(p_data[0], p_data[1])
@@ -214,4 +213,7 @@ def genbot_instance(p_url, p_vid):
     except Exception:
         pass
     finally:
+        p_request_url = helper_method.on_clean_url(p_url)
+        mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
         status.S_THREAD_COUNT -= 1
+

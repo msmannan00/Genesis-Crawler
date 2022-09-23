@@ -60,7 +60,7 @@ class redis_controller:
             self.__redis.expire(p_key, expiry)
 
     def __get_list(self, p_key, p_val, expiry=None):
-        if not self.__redis.exists(p_key):
+        if not self.__redis.exists(p_key) and p_val is not None:
             self.__set_list(p_key, p_val, expiry)
         return self.__redis.smembers(p_key)
 

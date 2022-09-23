@@ -38,10 +38,17 @@ class crawl_model(request_handler):
         m_live_url_list = list([x['m_url'] for x in mongo_response])
 
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
-        m_response = m_request_handler.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
+        while True:
+            try:
+                m_response = m_request_handler.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
+                break
+            except Exception as ex:
+                log.g().e(ex)
+                sleep(50)
 
+        m_response_text = m_response.text
         m_updated_url_list = []
-        for m_server_url in m_response.text.splitlines():
+        for m_server_url in m_response_text.splitlines():
             m_url = helper_method.on_clean_url(m_server_url)
             if helper_method.is_uri_validator(m_server_url) and m_url not in m_live_url_list:
                 log.g().s(MANAGE_CRAWLER_MESSAGES.S_INSTALLED_URL + " : " + m_url)
@@ -53,32 +60,28 @@ class crawl_model(request_handler):
 
     def __init_docker_request(self):
         m_live_url_list, m_updated_url_list = self.__install_live_url()
-        self.__start_docker_request(list(m_live_url_list) + m_updated_url_list)
+        m_list = list(m_live_url_list)
+        m_list.extend(m_updated_url_list)
+        self.__start_docker_request(m_list)
 
     def __reinit_docker_request(self):
         m_live_url_list, m_updated_url_list = self.__install_live_url()
-        self.__start_docker_request(m_updated_url_list)
+        return m_updated_url_list
 
     def __start_docker_request(self, p_fetched_url_list):
-        log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
         virtual_id = self.__celery_vid
 
         while True:
-            t_list = []
-
-            if len(p_fetched_url_list) <= 500:
-                m_fetched_url_list, m_updated_url_list = self.__install_live_url()
-                p_fetched_url_list.append(m_fetched_url_list)
-
-            while status.S_THREAD_COUNT >= CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
-                sleep(2)
-
-            while len(p_fetched_url_list) > 0 and status.S_THREAD_COUNT < CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
+            while len(p_fetched_url_list) > 0:
+                if status.S_THREAD_COUNT >= CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
+                    sleep(5)
+                    continue
                 virtual_id += 1
-                m_thread = threading.Thread(target=genbot_instance, args=(p_fetched_url_list.pop(0), virtual_id))
-                t_list.append(m_thread)
-                m_thread.start()
+                threading.Thread(target=genbot_instance, args=(p_fetched_url_list.pop(0), virtual_id)).start()
                 status.S_THREAD_COUNT += 1
+
+            p_fetched_url_list = self.__reinit_docker_request()
+            sleep(5)
 
     def __start_direct_request(self):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
@@ -94,7 +97,7 @@ class crawl_model(request_handler):
         if APP_STATUS.DOCKERIZED_RUN:
             self.__init_docker_request()
         else:
-            self.__start_direct_request()
+            self.__init_docker_request()
 
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == CRAWL_MODEL_COMMANDS.S_INIT:
