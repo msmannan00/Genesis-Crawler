@@ -5,6 +5,12 @@ from html_similarity.style_similarity import style_similarity
 from jaccard_index.jaccard import jaccard_index
 logger_1 = logging.getLogger('style_similarity')
 logger_2 = logging.getLogger('structural_similarity')
+logger = logging.getLogger('my-logger')
+logger.propagate = False
+logger_1.propagate = False
+logger_2.propagate = False
+logger = logging.getLogger()
+logger.disabled = True
 
 class html_duplication_controller:
 

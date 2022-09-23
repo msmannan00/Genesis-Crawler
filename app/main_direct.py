@@ -14,5 +14,5 @@ try:
     REDIS_CONNECTIONS.S_DATABASE_PASSWORD = ""
 
     application_controller.get_instance().invoke_triggers(APPICATION_COMMANDS.S_START_APPLICATION_DIRECT)
-except Exception:
+except Exception as ex:
     pass

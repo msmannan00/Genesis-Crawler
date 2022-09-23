@@ -139,9 +139,9 @@ class genbot_controller(request_handler):
 
                     if m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and m_response:
                         if not self.__m_host_duplication_validated:
-                            log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + "Duplication Finished")
-                            status = self.validate_duplicate_host_url(p_request_model.m_url, m_raw_html)
                             log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + "Duplication Started")
+                            status = self.validate_duplicate_host_url(p_request_model.m_url, m_raw_html)
+                            log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + "Duplication Finished")
                         else:
                             status = True
 
