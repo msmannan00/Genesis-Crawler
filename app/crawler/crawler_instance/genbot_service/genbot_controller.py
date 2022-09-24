@@ -79,11 +79,16 @@ class genbot_controller(request_handler):
             log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + str(m_score))
             return True
 
-    def validate_duplicate_host_url(self, p_request_url, p_raw_html):
+    def validate_duplicate_host_url(self, p_request_url, p_raw_html, p_full_content):
         if p_raw_html is not None:
+            m_hash_duplication_key = str(hash(p_full_content))[0:100]
+            m_hashed_duplication_status = bool(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [m_hash_duplication_key, False, 60 * 60 * 24 * 5]))
+            if m_hashed_duplication_status is True and self.__m_host_score == -1:
+                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, 1, 60 * 60 * 24 * 10])
 
             m_max_similarity = self.__m_host_score
-            if self.__m_host_score == -1:
+
+            if self.__m_host_score == -1 and m_hashed_duplication_status is False:
 
                 files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST,[REDIS_KEYS.RAW_HTML_CODE, None, 60 * 60 * 24 * 10])
                 m_max_similarity = 0
@@ -95,6 +100,16 @@ class genbot_controller(request_handler):
 
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html, None])
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, m_max_similarity, 60 * 60 * 24 * 10])
+
+                if m_max_similarity > 0.9:
+
+                    log.g().w("xxxxx : " + str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url) + " : " + str(m_max_similarity))
+
+            if m_hashed_duplication_status is False:
+                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [m_hash_duplication_key, True, 60 * 60 * 24 * 5])
+            elif self.__m_host_score == -1:
+                log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_HASH + " : " + str(p_request_url) + " : " + str(1))
+                return False
 
             if m_max_similarity < 0.90:
                 return True
@@ -140,7 +155,7 @@ class genbot_controller(request_handler):
                     if m_parsed_model.m_validity_score >= 15 and (len(m_parsed_model.m_content) > 0) and m_response:
                         if not self.__m_host_duplication_validated:
                             log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + "Duplication Started")
-                            status = self.validate_duplicate_host_url(p_request_model.m_url, m_raw_html)
+                            status = self.validate_duplicate_host_url(p_request_model.m_url, m_raw_html, m_parsed_model.m_extended_content)
                             log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + "Duplication Finished")
                         else:
                             status = True
@@ -167,6 +182,7 @@ class genbot_controller(request_handler):
                     redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [ REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count, 60 * 60 * 24 * 5])
 
                 log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
+                return None, None, None
         except Exception as ex:
             return None, None, None
 
@@ -212,8 +228,8 @@ def genbot_instance(p_url, p_vid):
     try:
         m_crawler = genbot_controller()
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
-    except Exception:
-        pass
+    except Exception as ex:
+        print("ERROR : " + str(ex))
     finally:
         p_request_url = helper_method.on_clean_url(p_url)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])

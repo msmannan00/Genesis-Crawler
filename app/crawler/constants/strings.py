@@ -37,6 +37,7 @@ class MANAGE_CRAWLER_MESSAGES:
     S_DUPLICATE_CONTENT = "[14] Dupicate URL Content"
     S_DUPLICATE_HOST_CONTENT = "[15] Dupicate Host Content"
     S_TOO_MANY_FAILURE = "[16] Too many host failure droping"
+    S_DUPLICATE_HOST_HASH = "[16] Dupicate Host Hash"
 
 
 class MANAGE_MONGO_MESSAGES:
