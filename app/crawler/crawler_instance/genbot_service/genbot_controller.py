@@ -96,7 +96,7 @@ class genbot_controller(request_handler):
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html, None])
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, m_max_similarity, 60 * 60 * 24 * 10])
 
-            if m_max_similarity < 0.95:
+            if m_max_similarity < 0.90:
                 return True
             else:
                 log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url) + " : " + str(m_max_similarity))
@@ -148,7 +148,7 @@ class genbot_controller(request_handler):
                         if status:
                             log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
 
-                            if self.__m_host_score >= 0.95:
+                            if self.__m_host_score >= 0.90:
                                 m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
 
                             elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
@@ -177,7 +177,7 @@ class genbot_controller(request_handler):
         self.init(p_request_url)
         if len(self.__m_unparsed_url) > 0:
             self.__m_host_duplication_validated = True
-        if self.__m_host_score >= 0.95:
+        if self.__m_host_score >= 0.90:
             log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + p_request_url)
             return
         if self.__m_host_failure_count > 1:
