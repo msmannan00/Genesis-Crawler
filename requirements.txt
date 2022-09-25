@@ -8,6 +8,7 @@ django
 html-similarity
 jaccard-index
 requests
+xxhash
 Pillow
 
 ###### Requirements with Version Specifiers ######
