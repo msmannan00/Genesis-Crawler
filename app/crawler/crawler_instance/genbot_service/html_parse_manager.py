@@ -297,6 +297,10 @@ class html_parse_manager(HTMLParser, ABC):
         m_content = self.__get_content() + " " + m_title + " " + m_meta_description
         m_validity_score = self.__get_validity_score(m_important_content)
         m_important_content_hidden = self.__get_meta_description_hidden(self.m_meta_content + " " + m_title + " " + m_meta_description + " " + m_important_content)
-        m_extended_content = " ".join(list(set(self.__clean_text(self.m_extended_content).split(" "))))
+
+        m_soup = BeautifulSoup(self.m_html, "html.parser")
+        xx = self.__clean_text(m_soup.get_text())
+
+        m_extended_content = " ".join(list(set(self.__clean_text(xx).split(" "))))
 
         return m_title, self.m_meta_content + m_meta_description, m_title_hidden, m_important_content, m_important_content_hidden, m_meta_keywords, m_content, m_content_type, m_sub_url, m_images, m_document, m_video, m_validity_score, m_extended_content
