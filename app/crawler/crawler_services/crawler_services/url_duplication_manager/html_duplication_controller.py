@@ -36,7 +36,7 @@ class html_duplication_controller:
         return m_max_k_score
 
     def verify_structural_duplication(self, m_doc_1, m_doc_2):
-        m_score = style_similarity(m_doc_1, m_doc_2)
+        m_score = self.__k_score * structural_similarity(m_doc_1, m_doc_2) + (1 - self.__k_score*0.2) * style_similarity(m_doc_1, m_doc_2)
         return m_score
 
     def on_insert_content(self, m_content, m_url):
