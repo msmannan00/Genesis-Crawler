@@ -24,9 +24,12 @@ class redis_controller:
     def __set_bool(self, p_key, p_val):
         self.__redis.set(p_key, int(p_val))
 
-    def __get_bool(self, p_key, p_val):
+    def __get_bool(self, p_key, p_val=None):
         if not self.__redis.exists(p_key):
-            self.__set_bool(p_key, p_val)
+            if p_val is not None:
+                self.__set_bool(p_key, p_val)
+            else:
+                return None
         return bool(int(self.__redis.get(p_key)))
 
     def __set_int(self, p_key, p_val, expiry=None):
@@ -48,10 +51,13 @@ class redis_controller:
     def __set_string(self, p_key, p_val, expiry=None):
         self.__redis.set(p_key, p_val, expiry)
 
-    def __get_string(self, p_key, p_val, expiry=None):
+    def __get_string(self, p_key, p_val=None, expiry=None):
         if not self.__redis.exists(p_key):
-            self.__set_string(p_key, p_val)
-            self.__redis.expire(p_key, expiry)
+            if p_val is not None:
+                self.__set_string(p_key, p_val)
+                self.__redis.expire(p_key, expiry)
+            else:
+                return None
         return self.__redis.get(p_key)
 
     def __set_list(self, p_key, p_val, expiry=None):

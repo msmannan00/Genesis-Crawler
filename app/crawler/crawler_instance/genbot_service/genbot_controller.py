@@ -2,6 +2,8 @@
 import json
 from time import sleep
 
+import xxhash
+
 from crawler.constants import status
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
@@ -92,16 +94,17 @@ class genbot_controller(request_handler):
 
     def validate_duplicate_host_url(self, p_request_url, p_raw_html, p_full_content):
         if p_raw_html is not None:
-            m_hash_duplication_key = str(hash(p_full_content))[0:100]
-            m_hashed_duplication_status = bool(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [m_hash_duplication_key, False, 60 * 60 * 24 * 5]))
-            if m_hashed_duplication_status is True and self.__m_host_score == -1:
+
+            m_hash_duplication_key = str(xxhash.xxh64_intdigest(p_full_content))
+            m_hashed_duplication_status = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [m_hash_duplication_key, None, 60 * 60 * 24 * 5])
+            if m_hashed_duplication_status is not None and self.__m_host_score == -1:
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, 1, 60 * 60 * 24 * 10])
 
             m_max_similarity = self.__m_host_score
 
-            if self.__m_host_score == -1 and m_hashed_duplication_status is False:
+            if self.__m_host_score == -1 and m_hashed_duplication_status is None:
 
-                files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST,[REDIS_KEYS.RAW_HTML_CODE, None, 60 * 60 * 24 * 10])
+                files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST, [REDIS_KEYS.RAW_HTML_CODE + p_request_url[7:8], None, 60 * 60 * 24 * 10])
                 m_max_similarity = 0
                 for html in files:
                     m_similarity = self.__html_duplication_handler.verify_structural_duplication(p_raw_html, html)
@@ -109,17 +112,16 @@ class genbot_controller(request_handler):
                     if m_similarity > m_max_similarity:
                         m_max_similarity = m_similarity
 
-                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html, None])
+                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_LIST, [REDIS_KEYS.RAW_HTML_CODE + p_request_url[7:8], p_raw_html, None])
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, m_max_similarity, 60 * 60 * 24 * 10])
 
                 if m_max_similarity > 0.9:
-
                     log.g().w("xxxxx : " + str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url) + " : " + str(m_max_similarity))
 
-            if m_hashed_duplication_status is False:
-                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [m_hash_duplication_key, True, 60 * 60 * 24 * 5])
+            if m_hashed_duplication_status is None:
+                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_STRING, [m_hash_duplication_key, p_request_url, 60 * 60 * 24 * 5])
             elif self.__m_host_score == -1:
-                log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_HASH + " : " + str(p_request_url) + " : " + str(1))
+                log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_HASH + " : " + str(p_request_url) + " : " + str(m_hashed_duplication_status))
                 return False
 
             if m_max_similarity < 0.90:
