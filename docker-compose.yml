@@ -27,6 +27,7 @@ services:
         networks:
             backend:
                 ipv4_address: 10.0.0.2
+        restart: on-failure
         volumes:
             - ./app/:/app
 
