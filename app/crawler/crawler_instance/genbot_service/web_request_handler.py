@@ -1,10 +1,8 @@
 from bs4 import BeautifulSoup
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
-from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
-from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 
 class webRequestManager:
@@ -16,7 +14,7 @@ class webRequestManager:
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
 
         try:
-            page = m_request_handler.get(p_url, headers=headers, timeout=(CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT), proxies=p_custom_proxy, allow_redirects=True, )
+            page = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, )
             soup = BeautifulSoup(page.content.decode('utf-8', 'ignore'), features="lxml")
             if page == "" or page.status_code != 200:
                 return p_url, False, page.status_code
@@ -44,7 +42,7 @@ class webRequestManager:
             TOR_COMMANDS.S_CREATE_SESSION, [True])
 
         try:
-            response = m_request_handler.get(p_url, headers=headers, timeout=(CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT), proxies=p_custom_proxy, allow_redirects=True, )
+            response = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, )
             return True, response
         except Exception as ex:
             return False, None

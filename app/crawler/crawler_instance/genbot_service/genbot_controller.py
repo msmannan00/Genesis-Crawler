@@ -46,6 +46,7 @@ class genbot_controller(request_handler):
         self.__m_depth = 0
         self.__m_host_score = -1
         self.__m_first_time = False
+        self.__m_Low_yield = False
         self.__m_unparsed_url = []
         self.__m_parsed_url = []
         self.__m_host_duplication_validated = False
@@ -54,6 +55,9 @@ class genbot_controller(request_handler):
     def init(self, p_url):
         self.__m_host_failure_count = int(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_INT, [REDIS_KEYS.HOST_FAILURE_COUNT + p_url, 0, 60 * 60 * 24 * 5]))
         self.__m_host_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_url, -1, 60 * 60 * 24 * 10])
+        self.__m_first_time = False
+        self.__m_Low_yield = bool(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [REDIS_KEYS.HOST_LOW_YIELD_COUNT + p_url, False, 60 * 60 * 24 * 5]))
+
         if self.__m_host_score == -1:
             self.__m_first_time = True
 
@@ -133,6 +137,7 @@ class genbot_controller(request_handler):
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
         if self.__m_first_time is False:
+
             p_parsed_model.m_sub_url = m_sub_url_filtered[0:30]
         else:
             p_parsed_model.m_sub_url = m_sub_url_filtered[0:0]
@@ -177,7 +182,10 @@ class genbot_controller(request_handler):
                         else:
                             return None, None, None
                     else:
+                        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.HOST_LOW_YIELD_COUNT + p_request_model.m_url, True, 60 * 60 * 24 * 5])
+
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
+                        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_model.m_url, 1, 60 * 60 * 24 * 10])
 
                 m_parsed_model = self.__clean_sub_url(m_parsed_model)
                 self.__m_parsed_url.append(m_redirected_requested_url)
@@ -198,13 +206,19 @@ class genbot_controller(request_handler):
 
         self.__task_id = p_task_id
         self.init(p_request_url)
+
         if len(self.__m_unparsed_url) > 0:
+            #print("::::::::::::::::::::::::: xp2 ", flush=True)
             self.__m_host_duplication_validated = True
         if self.__m_host_score >= 0.90:
-            log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + p_request_url)
+            #print("::::::::::::::::::::::::: xp3 ", flush=True)
+            #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + p_request_url)
             return
         if self.__m_host_failure_count > 1:
-            log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_TOO_MANY_FAILURE + " : " + p_request_url)
+            #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_TOO_MANY_FAILURE + " : " + p_request_url)
+            return
+        if self.__m_Low_yield is True:
+            #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_TOO_MANY_FAILURE + " : " + p_request_url)
             return
 
         self.__m_unparsed_url.append(url_model_init(p_request_url, CRAWL_SETTINGS_CONSTANTS.S_DEFAULT_DEPTH))
