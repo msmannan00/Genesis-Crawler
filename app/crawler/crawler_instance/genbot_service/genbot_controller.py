@@ -92,6 +92,11 @@ class genbot_controller(request_handler):
 
     def validate_duplicate_host_url(self, p_request_url, p_raw_html, p_full_content):
         if p_raw_html is not None:
+
+            print(":::::::::::::", flush=True)
+            print(p_request_url[7:8], flush=True)
+            print(":::::::::::::", flush=True)
+
             m_hash_duplication_key = str(hash(p_full_content))[0:100]
             m_hashed_duplication_status = bool(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [m_hash_duplication_key, False, 60 * 60 * 24 * 5]))
             if m_hashed_duplication_status is True and self.__m_host_score == -1:
@@ -101,7 +106,7 @@ class genbot_controller(request_handler):
 
             if self.__m_host_score == -1 and m_hashed_duplication_status is False:
 
-                files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST,[REDIS_KEYS.RAW_HTML_CODE, None, 60 * 60 * 24 * 10])
+                files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST, [REDIS_KEYS.RAW_HTML_CODE + p_request_url[7:8], None, 60 * 60 * 24 * 10])
                 m_max_similarity = 0
                 for html in files:
                     m_similarity = self.__html_duplication_handler.verify_structural_duplication(p_raw_html, html)
@@ -109,7 +114,7 @@ class genbot_controller(request_handler):
                     if m_similarity > m_max_similarity:
                         m_max_similarity = m_similarity
 
-                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_LIST, [REDIS_KEYS.RAW_HTML_CODE, p_raw_html, None])
+                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_LIST, [REDIS_KEYS.RAW_HTML_CODE + p_request_url[7:8], p_raw_html, None])
                 redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, m_max_similarity, 60 * 60 * 24 * 10])
 
                 if m_max_similarity > 0.9:
