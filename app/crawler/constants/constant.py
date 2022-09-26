@@ -43,8 +43,8 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_DOC_TYPES = [".pdf", ".msword", ".document", ".docx", ".doc"]
 
     # Local URL
-    S_START_URL = "https://167.86.99.31/crawl_url"
-    # S_START_URL = "https://drive.google.com/uc?export=download&id=1ZG7D2NsI-NrVyp3SDq9q4zcrgFi3jhaG"
+    # S_START_URL = "https://167.86.99.31/crawl_url"
+    S_START_URL = "https://drive.google.com/uc?export=download&id=1ZG7D2NsI-NrVyp3SDq9q4zcrgFi3jhaG"
 
     # Total Thread Instances Allowed
     S_UPDATE_STATUS_TIMEOUT = 200
@@ -60,7 +60,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_CELERY_INFO_DELAY = 60
 
     # Max Allowed Depth
-    S_MAX_ALLOWED_DEPTH = 1
+    S_MAX_ALLOWED_DEPTH = 2
     S_DEFAULT_DEPTH = 0
 
     # Max URL Timeout
@@ -89,4 +89,4 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_STATIC_PARSER_LIST_MAX_SIZE = 10
 
     # Max Thread Size
-    S_MAX_THREAD_COUNT = 100
+    S_MAX_THREAD_COUNT = 1

@@ -35,6 +35,7 @@ class html_parse_manager(HTMLParser, ABC):
         self.m_meta_keyword = STRINGS.S_EMPTY
         self.m_content_type = CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
         self.m_sub_url = []
+        self.m_sub_url_hashed = []
         self.m_image_url = []
         self.m_doc_url = []
         self.m_video_url = []
@@ -81,12 +82,13 @@ class html_parse_manager(HTMLParser, ABC):
                         elif str(mime).startswith("video") and len(self.m_video_url) < 10:
                             self.m_video_url.append(p_url)
                     elif parent_domain.__eq__(host_domain) and m_host_url.endswith(".onion"):
-                        if "#" in p_url and p_url.count("/")>2:
-                            if m_host_url.__contains__("?") and self.m_query_url_count < 5:
+                        if "#" in p_url:
+                            if p_url.count("/")>2 and m_host_url.__contains__("?") and self.m_query_url_count < 5:
                                 self.m_query_url_count += 1
-                                self.m_sub_url.append(helper_method.normalize_slashes(p_url))
-                            else:
-                                self.m_sub_url.append(helper_method.normalize_slashes(p_url))
+                                self.m_sub_url_hashed.append(helper_method.normalize_slashes(p_url))
+                        else:
+                            self.m_query_url_count += 1
+                            self.m_sub_url.append(helper_method.normalize_slashes(p_url))
 
     def handle_starttag(self, p_tag, p_attrs):
         if p_tag == "a":
@@ -284,6 +286,11 @@ class html_parse_manager(HTMLParser, ABC):
     def __get_meta_keywords(self):
         return self.m_meta_keyword
 
+    def __get_text(self):
+        m_soup = BeautifulSoup(self.m_html, "html.parser")
+        m_text = self.__clean_text(m_soup.get_text())
+        return " ".join(list(set(self.__clean_text(m_text).split(" "))))
+
     def parse_html_files(self):
         self.__generate_html()
 
@@ -297,10 +304,7 @@ class html_parse_manager(HTMLParser, ABC):
         m_content = self.__get_content() + " " + m_title + " " + m_meta_description
         m_validity_score = self.__get_validity_score(m_important_content)
         m_important_content_hidden = self.__get_meta_description_hidden(self.m_meta_content + " " + m_title + " " + m_meta_description + " " + m_important_content)
-
-        m_soup = BeautifulSoup(self.m_html, "html.parser")
-        xx = self.__clean_text(m_soup.get_text())
-
-        m_extended_content = " ".join(list(set(self.__clean_text(xx).split(" "))))
+        m_extended_content = self.__get_text()
+        m_sub_url.extend(self.m_sub_url_hashed)
 
         return m_title, self.m_meta_content + m_meta_description, m_title_hidden, m_important_content, m_important_content_hidden, m_meta_keywords, m_content, m_content_type, m_sub_url, m_images, m_document, m_video, m_validity_score, m_extended_content
