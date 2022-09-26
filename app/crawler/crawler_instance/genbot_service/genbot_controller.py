@@ -136,7 +136,6 @@ class genbot_controller(request_handler):
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
         if self.__m_first_time is False:
-
             p_parsed_model.m_sub_url = m_sub_url_filtered[0:50]
         else:
             p_parsed_model.m_sub_url = m_sub_url_filtered[0:0]
@@ -181,10 +180,9 @@ class genbot_controller(request_handler):
                         else:
                             return None, None, None
                     else:
-                        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.HOST_LOW_YIELD_COUNT + p_request_model.m_url, True, 60 * 60 * 24 * 5])
-
+                        if self.__m_first_time is True:
+                            redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.HOST_LOW_YIELD_COUNT + p_request_model.m_url, True, 60 * 60 * 24 * 5])
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
-                        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_model.m_url, 1, 60 * 60 * 24 * 10])
 
                 m_parsed_model = self.__clean_sub_url(m_parsed_model)
                 self.__m_parsed_url.append(m_redirected_requested_url)
