@@ -151,6 +151,10 @@ class genbot_controller(request_handler):
             m_unique_file_model = unique_file_model([], [], [])
             if m_response is True:
 
+                if not self.__m_host_duplication_validated:
+                    self.__m_host_failure_count = 0
+                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [ REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count, 60 * 60 * 24 * 5])
+
                 m_parsed_model, m_images = self.__m_html_parser.on_parse_html(m_raw_html, p_request_model)
                 m_redirected_url = helper_method.on_clean_url(m_redirected_url)
                 m_redirected_requested_url = helper_method.on_clean_url(p_request_model.m_url)
@@ -180,7 +184,7 @@ class genbot_controller(request_handler):
                         else:
                             return None, None, None
                     else:
-                        if self.__m_first_time is True:
+                        if not self.__m_host_duplication_validated:
                             redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.HOST_LOW_YIELD_COUNT + p_request_model.m_url, True, 60 * 60 * 24 * 5])
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
 
@@ -211,7 +215,7 @@ class genbot_controller(request_handler):
             #print("::::::::::::::::::::::::: xp3 ", flush=True)
             #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + p_request_url)
             return
-        if self.__m_host_failure_count > 1:
+        if self.__m_host_failure_count > 5:
             #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_TOO_MANY_FAILURE + " : " + p_request_url)
             return
         if self.__m_Low_yield is True:
