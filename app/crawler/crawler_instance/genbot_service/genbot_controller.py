@@ -136,7 +136,7 @@ class genbot_controller(request_handler):
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
         if self.__m_first_time is False:
-            p_parsed_model.m_sub_url = m_sub_url_filtered[0:30]
+            p_parsed_model.m_sub_url = m_sub_url_filtered[0:50]
         else:
             p_parsed_model.m_sub_url = m_sub_url_filtered[0:0]
 
