@@ -1,4 +1,4 @@
-import eventlet
+import urllib3
 from bs4 import BeautifulSoup
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
@@ -14,17 +14,17 @@ class webRequestManager:
     def load_url(self, p_url, p_custom_proxy):
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
 
-        with eventlet.Timeout(CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT):
-            try:
-                page = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT,
-                                             proxies=p_custom_proxy, allow_redirects=True, )
-                soup = BeautifulSoup(page.content.decode('utf-8', 'ignore'), features="lxml")
-                if page == "" or page.status_code != 200:
-                    return p_url, False, page.status_code
-                else:
-                    return page.url, True, str(soup)
-            except Exception as ex:
-                return p_url, False, None
+        try:
+            pool = urllib3.PoolManager()
+            page = pool.request('GET', url=p_url, timeout=5, headers=headers, proxies=p_custom_proxy, redirect=500)
+            soup = BeautifulSoup(page.content.decode('utf-8', 'ignore'), features="lxml")
+            if page == "" or page.status_code != 200:
+                return p_url, False, page.status_code
+            else:
+                return page.url, True, str(soup)
+
+        except Exception as ex:
+            return p_url, False, None
 
     def load_header(self, p_url, p_custom_proxy):
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(
@@ -43,10 +43,9 @@ class webRequestManager:
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(
             TOR_COMMANDS.S_CREATE_SESSION, [True])
 
-        with eventlet.Timeout(CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT):
-            try:
-                response = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT,
-                                                 proxies=p_custom_proxy, allow_redirects=True, )
-                return True, response
-            except Exception as ex:
-                return p_url, False, None
+        try:
+            pool = urllib3.PoolManager()
+            response = pool.request('GET', url=p_url, headers=headers, redirect=500, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy)
+            return True, response
+        except Exception as ex:
+            return False, None

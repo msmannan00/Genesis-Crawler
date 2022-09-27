@@ -1,8 +1,14 @@
-import xxhash
+import urllib3
+from bs4 import BeautifulSoup
 
-from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
-from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS
+from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
+from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 
-redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_STRING, ["assaxx", "dsaasd", 60 * 60 * 24 * 5])
-xx = m_hashed_duplication_status = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, ["assaxxs", None, 60 * 60 * 24 * 5])
-print(type(xx))
+pool = urllib3.PoolManager()
+m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
+
+ss = pool.request('GET', url="https://bbc.com", timeout=1, headers=headers)
+m_content_type = ss.headers['Content-Type'].split('/')[0]
+m_file_type = ss.headers['Content-Type'].split('/')[1]
+m_url_path = ss.headers['Content-Type'].split('/')[1]
+print(len(ss.data))

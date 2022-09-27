@@ -44,8 +44,6 @@ class file_parse_manager:
 
         m_filtered_list = []
         m_filtered_list_unique = []
-        print("::::::::::::::::::::::::::::::::xxx")
-        print("::::::::::::::::::::::::::::::::")
 
         m_list_temp = copy.copy(p_list)
         while len(m_list_temp) > 0:
@@ -84,8 +82,6 @@ class file_parse_manager:
         m_filtered_list_unique = []
         m_porn_image_count = 0
         m_list_temp = copy.copy(p_list)
-        print("::::::::::::::::::::::::::::::::")
-        print("::::::::::::::::::::::::::::::::")
 
         while len(m_list_temp) > 0:
             try:
@@ -117,19 +113,13 @@ class file_parse_manager:
                             m_file_type = m_response.headers['Content-Type'].split('/')[1]
                             m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
 
-                            print("::::::::::::::::::::::::::::::::")
-                            print("::::::::::::::::::::::::::::::::")
-                            print(len(m_response.content))
-                            print("::::::::::::::::::::::::::::::::")
-                            print("::::::::::::::::::::::::::::::::")
-
                             if len(m_file_type) > 4 or m_file_type == "gif" or m_content_type != "image" or len(
-                                    m_response.content) < 15000 or " html" in str(m_response.content):
+                                    m_response.data) < 15000 or " html" in str(m_response.data):
                                 m_list_temp.pop(0)
                                 continue
 
                             m_url_path = RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH + m_url_path
-                            helper_method.write_content_to_path(m_url_path, m_response.content)
+                            helper_method.write_content_to_path(m_url_path, m_response.data)
                             m_classifier = LiteClassifier()
                             m_classifier_response = m_classifier.classify(m_url_path)
 
