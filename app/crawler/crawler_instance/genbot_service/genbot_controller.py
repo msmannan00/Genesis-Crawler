@@ -195,7 +195,7 @@ class genbot_controller(request_handler):
             else:
                 if not self.__m_host_duplication_validated:
                     self.__m_host_failure_count+=1
-                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [ REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count, 60 * 60 * 24 * 5])
+                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [ REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count, 60 * 60 * 24 * 1])
 
                 log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
                 return None, None, None
