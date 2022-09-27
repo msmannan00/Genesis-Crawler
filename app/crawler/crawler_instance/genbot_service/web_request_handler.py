@@ -1,4 +1,3 @@
-import urllib3
 from bs4 import BeautifulSoup
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
@@ -15,8 +14,7 @@ class webRequestManager:
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
 
         try:
-            pool = urllib3.PoolManager()
-            page = pool.request('GET', url=p_url, timeout=5, headers=headers, proxies=p_custom_proxy, redirect=500)
+            page = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, )
             soup = BeautifulSoup(page.content.decode('utf-8', 'ignore'), features="lxml")
             if page == "" or page.status_code != 200:
                 return p_url, False, page.status_code
@@ -44,8 +42,7 @@ class webRequestManager:
             TOR_COMMANDS.S_CREATE_SESSION, [True])
 
         try:
-            pool = urllib3.PoolManager()
-            response = pool.request('GET', url=p_url, headers=headers, redirect=500, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy)
+            response = m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, )
             return True, response
         except Exception as ex:
             return False, None
