@@ -44,6 +44,8 @@ class file_parse_manager:
 
         m_filtered_list = []
         m_filtered_list_unique = []
+        print("::::::::::::::::::::::::::::::::xxx")
+        print("::::::::::::::::::::::::::::::::")
 
         m_list_temp = copy.copy(p_list)
         while len(m_list_temp) > 0:
@@ -82,6 +84,8 @@ class file_parse_manager:
         m_filtered_list_unique = []
         m_porn_image_count = 0
         m_list_temp = copy.copy(p_list)
+        print("::::::::::::::::::::::::::::::::")
+        print("::::::::::::::::::::::::::::::::")
 
         while len(m_list_temp) > 0:
             try:
@@ -112,6 +116,12 @@ class file_parse_manager:
                             m_content_type = m_response.headers['Content-Type'].split('/')[0]
                             m_file_type = m_response.headers['Content-Type'].split('/')[1]
                             m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
+
+                            print("::::::::::::::::::::::::::::::::")
+                            print("::::::::::::::::::::::::::::::::")
+                            print(len(m_response.content))
+                            print("::::::::::::::::::::::::::::::::")
+                            print("::::::::::::::::::::::::::::::::")
 
                             if len(m_file_type) > 4 or m_file_type == "gif" or m_content_type != "image" or len(
                                     m_response.content) < 15000 or " html" in str(m_response.content):
