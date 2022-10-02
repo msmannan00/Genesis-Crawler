@@ -18,6 +18,8 @@ from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import 
 from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
 from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_KEYS
 from crawler.crawler_services.crawler_services.url_duplication_manager.html_duplication_controller import html_duplication_controller
+from crawler.crawler_services.crawler_services.url_duplication_manager.content_duplication_controller import \
+    content_duplication_controller
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.crawler_services.helper_services.helper_method import helper_method
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
@@ -42,6 +44,7 @@ class genbot_controller(request_handler):
         self.__m_web_request_handler = webRequestManager()
         self.__html_duplication_handler = html_duplication_controller()
         self.__m_html_parser = parse_controller()
+        self.__m_content_duplication_controller = content_duplication_controller()
 
         self.__m_host_failure_count = 0
         self.__m_tor_id = - 1
@@ -83,10 +86,10 @@ class genbot_controller(request_handler):
             self.__m_unparsed_url.append(url_model(**m_url))
 
     def __check_content_duplication(self, p_parsed_model):
-        m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_extended_content, p_parsed_model.m_base_model.m_url)
+        m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_important_content_hidden, p_parsed_model.m_base_model.m_url)
 
         if m_score <= 0.7:
-            self.__html_duplication_handler.on_insert_content(p_parsed_model.m_extended_content, p_parsed_model.m_base_model.m_url)
+            self.__html_duplication_handler.on_insert_content(p_parsed_model.m_important_content_hidden, p_parsed_model.m_base_model.m_url)
             return False
         else:
             log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + str(m_score))
