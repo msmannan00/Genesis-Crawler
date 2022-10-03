@@ -30,6 +30,7 @@ from crawler.shared_data import celery_shared_data
 from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
 import os
 import sys
+from threading import Lock
 
 
 class genbot_controller(request_handler):
@@ -96,6 +97,10 @@ class genbot_controller(request_handler):
             return True
 
     def validate_duplicate_host_url(self, p_request_url, p_raw_html, p_full_content):
+
+        lock = Lock()
+        lock.acquire()
+
         if p_raw_html is not None:
 
             m_hash_duplication_key = str(xxhash.xxh64_intdigest(p_full_content))
@@ -128,6 +133,8 @@ class genbot_controller(request_handler):
                 return True
             else:
                 log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url) + " : " + str(m_max_similarity))
+
+        lock.release()
 
         return False
 
