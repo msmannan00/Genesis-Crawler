@@ -18,6 +18,8 @@ from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import 
 from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
 from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_KEYS
 from crawler.crawler_services.crawler_services.url_duplication_manager.html_duplication_controller import html_duplication_controller
+from crawler.crawler_services.crawler_services.url_duplication_manager.content_duplication_controller import \
+    content_duplication_controller
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.crawler_services.helper_services.helper_method import helper_method
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
@@ -43,6 +45,7 @@ class genbot_controller(request_handler):
         self.__m_web_request_handler = webRequestManager()
         self.__html_duplication_handler = html_duplication_controller()
         self.__m_html_parser = parse_controller()
+        self.__m_content_duplication_controller = content_duplication_controller()
 
         self.__m_host_failure_count = 0
         self.__m_tor_id = - 1
@@ -84,10 +87,10 @@ class genbot_controller(request_handler):
             self.__m_unparsed_url.append(url_model(**m_url))
 
     def __check_content_duplication(self, p_parsed_model):
-        m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_extended_content, p_parsed_model.m_base_model.m_url)
+        m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_important_content_hidden, p_parsed_model.m_base_model.m_url)
 
         if m_score <= 0.7:
-            self.__html_duplication_handler.on_insert_content(p_parsed_model.m_extended_content, p_parsed_model.m_base_model.m_url)
+            self.__html_duplication_handler.on_insert_content(p_parsed_model.m_important_content_hidden, p_parsed_model.m_base_model.m_url)
             return False
         else:
             log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + str(m_score))
@@ -158,6 +161,10 @@ class genbot_controller(request_handler):
             m_unique_file_model = unique_file_model([], [], [])
             if m_response is True:
 
+                if not self.__m_host_duplication_validated:
+                    self.__m_host_failure_count = 0
+                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [ REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count, 60 * 60 * 24 * 5])
+
                 m_parsed_model, m_images = self.__m_html_parser.on_parse_html(m_raw_html, p_request_model)
                 m_redirected_url = helper_method.on_clean_url(m_redirected_url)
                 m_redirected_requested_url = helper_method.on_clean_url(p_request_model.m_url)
@@ -187,7 +194,7 @@ class genbot_controller(request_handler):
                         else:
                             return None, None, None
                     else:
-                        if self.__m_first_time is True:
+                        if not self.__m_host_duplication_validated:
                             redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.HOST_LOW_YIELD_COUNT + p_request_model.m_url, True, 60 * 60 * 24 * 5])
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
 
@@ -198,7 +205,7 @@ class genbot_controller(request_handler):
             else:
                 if not self.__m_host_duplication_validated:
                     self.__m_host_failure_count+=1
-                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [ REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count, 60 * 60 * 24 * 5])
+                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [ REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count, 60 * 60 * 24 * 1])
 
                 log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
                 return None, None, None
@@ -218,7 +225,7 @@ class genbot_controller(request_handler):
             #print("::::::::::::::::::::::::: xp3 ", flush=True)
             #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + p_request_url)
             return
-        if self.__m_host_failure_count > 1:
+        if self.__m_host_failure_count > 5:
             #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_TOO_MANY_FAILURE + " : " + p_request_url)
             return
         if self.__m_Low_yield is True:

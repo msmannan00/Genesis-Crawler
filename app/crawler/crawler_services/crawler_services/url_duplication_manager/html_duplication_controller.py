@@ -19,16 +19,18 @@ class html_duplication_controller:
     # Initializations
 
     def __init__(self):
-        self.__m_duplication_content_handler = {}
+        self.__m_duplication_content_handler = {set()}
 
     def verify_content_duplication(self, m_content, m_url: str):
         m_max_k_score = 0
 
         try:
-            for key in self.__m_duplication_content_handler.keys():
-                m_score = jaccard_index(self.__m_duplication_content_handler[key], m_content, 3)
-                if m_score > m_max_k_score and not m_url.__eq__(key):
+            for val in self.__m_duplication_content_handler:
+                m_score = jaccard_index(val, m_content, 3)
+                if m_score > m_max_k_score and not m_url.__eq__(val):
                     m_max_k_score = m_score
+                if m_max_k_score > 0.7:
+                    break
 
         except Exception as ex:
             print(ex, flush=True)
@@ -40,4 +42,4 @@ class html_duplication_controller:
         return m_score
 
     def on_insert_content(self, m_content, m_url):
-        self.__m_duplication_content_handler[m_url] = m_content
+        self.__m_duplication_content_handler.add(m_content)

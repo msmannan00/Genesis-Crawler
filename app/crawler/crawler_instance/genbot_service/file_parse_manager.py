@@ -114,12 +114,12 @@ class file_parse_manager:
                             m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
 
                             if len(m_file_type) > 4 or m_file_type == "gif" or m_content_type != "image" or len(
-                                    m_response.content) < 15000 or " html" in str(m_response.content):
+                                    m_response.data) < 15000 or " html" in str(m_response.data):
                                 m_list_temp.pop(0)
                                 continue
 
                             m_url_path = RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH + m_url_path
-                            helper_method.write_content_to_path(m_url_path, m_response.content)
+                            helper_method.write_content_to_path(m_url_path, m_response.data)
                             m_classifier = LiteClassifier()
                             m_classifier_response = m_classifier.classify(m_url_path)
 
