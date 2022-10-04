@@ -29,7 +29,6 @@ class html_duplication_controller:
 
         try:
             for val in self.__m_duplication_content_handler:
-                sleep(0.1)
                 m_score = jaccard_index(val, m_content, 3)
                 if m_score > m_max_k_score:
                     m_max_k_score = m_score

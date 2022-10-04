@@ -39,7 +39,10 @@ services:
         networks:
             backend:
                 ipv4_address: 10.0.0.3
-
+        deploy:
+          resources:
+            limits:
+              memory: 4G
     mongo:
         image: mongo
         container_name: mongo-db
