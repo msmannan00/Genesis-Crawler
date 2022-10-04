@@ -8,11 +8,13 @@ class unique_file_model:
     m_documents = []
     m_videos = []
     m_images = []
+    m_content = []
 
-    def __init__(self, p_documents, p_videos, p_images):
+    def __init__(self, p_documents, p_videos, p_images, p_content):
         self.m_images = p_images
         self.m_documents = p_documents
         self.m_videos = p_videos
+        self.m_content = p_videos
 
 
 

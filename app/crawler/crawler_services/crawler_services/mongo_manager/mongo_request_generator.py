@@ -19,7 +19,7 @@ class mongo_request_generator(request_handler):
                 MONGODB_KEYS.S_FILTER: {'m_url': {'$eq': p_url}}, MONGODB_KEYS.S_VALUE:
                     {'$setOnInsert': {'analytics.m_failed_hits': 0, 'analytics.m_duplicate_hits': 0,
                      'analytics.m_low_yield_hits': 0},
-                     '$set': {'status.m_crawler_waiting': True, 'installed_at': time.time(), 'status.m_live': True, 'sub_url_parsed': [], 'sub_url_pending': [], 'image_url_parsed': [], 'document_url_parsed': [], 'video_url_parsed': []}}}
+                     '$set': {'status.m_crawler_waiting': True, 'installed_at': time.time(), 'status.m_live': True, 'sub_url_parsed': [], 'sub_url_pending': [], 'image_url_parsed': [], 'content': [], 'document_url_parsed': [], 'video_url_parsed': []}}}
 
     def __on_fetch_index_url(self):
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_MONGO_INDEX_MODEL,
@@ -39,7 +39,7 @@ class mongo_request_generator(request_handler):
     def __on_close_completed_index(self, p_request_model):
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_MONGO_INDEX_MODEL,
                 MONGODB_KEYS.S_FILTER: {'m_url': {'$eq': p_request_model}}, MONGODB_KEYS.S_VALUE:
-                    {'$set': {'status.m_crawler_waiting': False, 'sub_url_parsed': [], 'sub_url_pending': [], 'image_url_parsed': [], 'document_url_parsed': [], 'video_url_parsed': []}}}
+                    {'$set': {'status.m_crawler_waiting': False, 'sub_url_parsed': [], 'sub_url_pending': [], 'image_url_parsed': [], 'content': [], 'document_url_parsed': [], 'video_url_parsed': []}}}
 
     def __update_index(self, p_request_url, sub_url_parsed, sub_url_pending, p_unique_file_model: unique_file_model):
         m_cached_url = url_model_list(sub_url_pending=sub_url_pending).dict()
@@ -47,7 +47,7 @@ class mongo_request_generator(request_handler):
 
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_MONGO_INDEX_MODEL,
                 MONGODB_KEYS.S_FILTER: {'m_url': {'$eq': p_request_url}}, MONGODB_KEYS.S_VALUE:
-                    {'$set': m_cached_url, '$push': {'document_url_parsed': {'$each': p_unique_file_model.m_documents}, 'video_url_parsed': {'$each': p_unique_file_model.m_videos}, 'image_url_parsed': {'$each': p_unique_file_model.m_images}}}}
+                    {'$set': m_cached_url, '$push': {'content': {'$each': p_unique_file_model.m_content}, 'document_url_parsed': {'$each': p_unique_file_model.m_documents}, 'video_url_parsed': {'$each': p_unique_file_model.m_videos}, 'image_url_parsed': {'$each': p_unique_file_model.m_images}}}}
 
     def invoke_trigger(self, p_commands, p_data=None):
         if p_commands == MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL:

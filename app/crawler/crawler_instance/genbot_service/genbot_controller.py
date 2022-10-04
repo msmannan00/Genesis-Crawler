@@ -30,7 +30,6 @@ from crawler.crawler_instance.local_shared_model.unique_file_model import unique
 import os
 import sys
 from threading import Lock
-g_lock = Lock()
 
 
 class genbot_controller(request_handler):
@@ -71,14 +70,19 @@ class genbot_controller(request_handler):
         m_requested_url = helper_method.on_clean_url(p_url)
         m_mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_INDEX, [m_requested_url], [None]])
         m_unparsed_url = []
+        m_content_list = []
         self.__html_duplication_handler = None
         self.__html_duplication_handler = html_duplication_controller()
 
         for m_data in m_mongo_response:
             self.__m_parsed_url = m_data["sub_url_parsed"]
             m_unparsed_url = m_data["sub_url_pending"]
+            m_content_list = m_data["content"]
             self.__m_html_parser.on_static_parser_init(m_data["document_url_parsed"], m_data["image_url_parsed"], m_data["video_url_parsed"])
             break
+
+        for m_html in m_content_list:
+            self.__html_duplication_handler.on_insert_content(m_html)
 
         for m_parsed_url in self.__m_parsed_url:
             self.__m_url_duplication_handler.insert(m_parsed_url)
@@ -99,9 +103,6 @@ class genbot_controller(request_handler):
     def validate_duplicate_host_url(self, p_request_url, p_raw_html, p_full_content):
 
         if p_raw_html is not None:
-
-            g_lock.locked()
-            g_lock.acquire()
 
             m_hash_duplication_key = str(xxhash.xxh64_intdigest(p_full_content))
             m_hashed_duplication_status = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [m_hash_duplication_key, None, 60 * 60 * 24 * 5])
@@ -134,8 +135,6 @@ class genbot_controller(request_handler):
             else:
                 log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url) + " : " + str(m_max_similarity))
 
-            g_lock.release()
-
         return False
 
     def __clean_sub_url(self, p_parsed_model):
@@ -158,7 +157,7 @@ class genbot_controller(request_handler):
             log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
             m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
 
-            m_unique_file_model = unique_file_model([], [], [])
+            m_unique_file_model = unique_file_model([], [], [], [])
             if m_response is True:
 
                 if not self.__m_host_duplication_validated:
@@ -219,17 +218,12 @@ class genbot_controller(request_handler):
         self.init(p_request_url)
 
         if len(self.__m_unparsed_url) > 0:
-            #print("::::::::::::::::::::::::: xp2 ", flush=True)
             self.__m_host_duplication_validated = True
         if self.__m_host_score >= 0.90:
-            #print("::::::::::::::::::::::::: xp3 ", flush=True)
-            #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + p_request_url)
             return
         if self.__m_host_failure_count > 5:
-            #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_TOO_MANY_FAILURE + " : " + p_request_url)
             return
         if self.__m_Low_yield is True:
-            #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_TOO_MANY_FAILURE + " : " + p_request_url)
             return
 
         self.__m_unparsed_url.append(url_model_init(p_request_url, CRAWL_SETTINGS_CONSTANTS.S_DEFAULT_DEPTH))
@@ -247,6 +241,7 @@ class genbot_controller(request_handler):
                         for sub_url in m_parsed_model.m_sub_url[0:int(CRAWL_SETTINGS_CONSTANTS.S_MAX_SUBHOST_QUEUE_SIZE / (item.m_depth + 1))]:
                             self.__m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
 
+                    m_unique_file_model.m_content.append(m_parsed_model.m_important_content_hidden)
                     mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_INDEX, [helper_method.on_clean_url(helper_method.get_host_url(item.m_url)), self.__m_parsed_url, self.__m_unparsed_url, m_unique_file_model], [True]])
             else:
                 sleep(30)
