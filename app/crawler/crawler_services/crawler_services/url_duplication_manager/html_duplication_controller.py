@@ -46,5 +46,4 @@ class html_duplication_controller:
         return m_score
 
     def on_insert_content(self, m_content):
-        pass
-        # self.__m_duplication_content_handler.add(m_content)
+        self.__m_duplication_content_handler.add(m_content)
