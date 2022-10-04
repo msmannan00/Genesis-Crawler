@@ -154,6 +154,7 @@ class file_parse_manager:
                 log.g().e(str(ex))
                 m_list_temp.pop(0)
 
+        self.__m_images = []
         return image_model_list(m_images=m_filtered_list), m_porn_image_count, m_filtered_list_unique
 
     def parse_static_files(self, p_images, p_documents, p_videos, p_content_type, p_request_model: url_model, p_proxy_queue):
