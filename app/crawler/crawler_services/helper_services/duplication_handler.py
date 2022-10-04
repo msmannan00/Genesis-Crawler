@@ -8,7 +8,7 @@ class duplication_handler:
 
     # Initializations
     def __init__(self):
-        self.__m_bloom_filter = BloomFilter(10000000, 0.01)
+        self.__m_bloom_filter = BloomFilter(50000, 0.01)
 
     # Helper Methods
     def validate_duplicate(self, p_key):

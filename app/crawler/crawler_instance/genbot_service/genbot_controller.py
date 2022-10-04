@@ -16,7 +16,6 @@ from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller im
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_COMMANDS
 from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
 from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_KEYS
-from crawler.crawler_services.crawler_services.url_duplication_manager.content_duplication_controller import content_duplication_controller
 from crawler.crawler_services.crawler_services.url_duplication_manager.html_duplication_controller import html_duplication_controller
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.crawler_services.helper_services.helper_method import helper_method
@@ -42,7 +41,6 @@ class genbot_controller(request_handler):
         self.__m_web_request_handler = webRequestManager()
         self.__html_duplication_handler = html_duplication_controller()
         self.__m_html_parser = parse_controller()
-        self.__m_content_duplication_controller = content_duplication_controller()
 
         self.__m_host_failure_count = 0
         self.__m_tor_id = - 1

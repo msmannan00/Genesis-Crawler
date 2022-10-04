@@ -42,7 +42,7 @@ services:
         deploy:
           resources:
             limits:
-              memory: 8G
+              memory: 4G
     mongo:
         image: mongo
         container_name: mongo-db
