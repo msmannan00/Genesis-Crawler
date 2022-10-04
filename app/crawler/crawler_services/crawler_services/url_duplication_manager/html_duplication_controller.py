@@ -22,7 +22,7 @@ class html_duplication_controller:
     # Initializations
 
     def __init__(self):
-        self.__m_duplication_content_handler = {set()}
+        self.__m_duplication_content_handler = {""}
 
     def verify_content_duplication(self, m_content):
         m_max_k_score = 0
