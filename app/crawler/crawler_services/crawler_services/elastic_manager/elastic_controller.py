@@ -24,6 +24,11 @@ class elastic_controller(request_handler):
 
     def __post_data(self, p_commands, p_data):
         try:
+            if "http://invest" in str(p_data):
+                print("::::::::::::::::::::::::::::::", flush=True)
+                print(p_data, flush=True)
+                print("::::::::::::::::::::::::::::::", flush=True)
+
             m_json_data = json.dumps(p_data)
             m_post_object = {'pRequestCommand': p_commands, "pRequestData": m_json_data}
             m_response = requests.post(ELASTIC_CONNECTIONS.S_DATABASE_IP, data=m_post_object)

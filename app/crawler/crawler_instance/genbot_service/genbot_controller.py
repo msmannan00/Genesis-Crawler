@@ -109,7 +109,6 @@ class genbot_controller(request_handler):
             m_max_similarity = self.__m_host_score
 
             if self.__m_host_score == -1 and m_hashed_duplication_status is None:
-
                 files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST, [REDIS_KEYS.RAW_HTML_CODE + p_request_url[7:8], None, 60 * 60 * 24 * 10])
                 m_max_similarity = 0
                 for html in files:
@@ -182,8 +181,15 @@ class genbot_controller(request_handler):
                         if m_content_duplocation_status:
                             log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
 
-                            if self.__m_host_score >= 0.90:
+                            if self.__m_host_score>90:
                                 m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
+
+                            if str(json.dumps(m_parsed_model.dict())).startswith("http://invest"):
+                                print("::::::::::::::::::::::::::::::", flush=True)
+                                print(m_redirected_requested_url, flush=True)
+                                print("::::::::::::::::::::::::::::::", flush=True)
+                                print(p_request_model.m_url, flush=True)
+                                print("::::::::::::::::::::::::::::::", flush=True)
 
                             elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
                         else:
@@ -213,10 +219,10 @@ class genbot_controller(request_handler):
         self.__task_id = p_task_id
         self.init(p_request_url)
 
-        if len(self.__m_unparsed_url) > 0:
-            self.__m_host_duplication_validated = True
         if self.__m_host_score >= 0.90:
             return
+        elif self.__m_host_score != -1:
+            self.__m_host_duplication_validated = True
         if self.__m_host_failure_count > 5:
             return
         if self.__m_Low_yield is True:
@@ -250,8 +256,8 @@ def genbot_instance(p_url, p_vid):
     try:
         m_crawler = genbot_controller()
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
-    except Exception:
-        pass
+    except Exception as ex:
+        print(ex, flush=True)
     finally:
         p_request_url = helper_method.on_clean_url(p_url)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
