@@ -198,11 +198,14 @@ class genbot_controller(request_handler):
                         if not self.__m_host_duplication_validated:
                             redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.HOST_LOW_YIELD_COUNT + p_request_model.m_url, True, 60 * 60 * 24 * 5])
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
+                        return None, None, None
 
-                m_parsed_model = self.__clean_sub_url(m_parsed_model)
-                self.__m_parsed_url.append(m_redirected_requested_url)
+                    m_parsed_model = self.__clean_sub_url(m_parsed_model)
+                    self.__m_parsed_url.append(m_redirected_requested_url)
 
-                return m_parsed_model, m_unique_file_model, m_raw_html
+                    return m_parsed_model, m_unique_file_model, m_raw_html
+                else:
+                    return None, None, None
             else:
                 if not self.__m_host_duplication_validated:
                     self.__m_host_failure_count += 1
