@@ -269,7 +269,7 @@ class html_parse_manager(HTMLParser, ABC):
         m_rank = (((len(p_important_content) + len(self.m_title)) > 150) or len(self.m_sub_url) >= 3) * 10 + (
                 len(self.m_sub_url) > 0 or self.m_all_url_count > 5) * 5
 
-        return m_rank
+        return 115
 
     def __get_content_type(self):
         if len(self.m_content) > 0:

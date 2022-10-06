@@ -128,9 +128,8 @@ class genbot_controller(request_handler):
 
         g_lock = self.__get_lock(p_request_url[7:8])
         try:
-            g_lock.locked()
-            g_lock.acquire()
-            print("xxxxxxxxxxxxxxxxxxxxx1111")
+            g_lock_global.locked()
+            g_lock_global.acquire()
             if p_raw_html is not None:
                 m_hash_duplication_key = str(xxhash.xxh64_intdigest(p_full_content))
                 m_hashed_duplication_status = redis_controller.get_instance().invoke_trigger(
@@ -169,10 +168,9 @@ class genbot_controller(request_handler):
             return False
         except Exception as ex:
             print("error : " + str(ex), flush=True)
-            print("xxxxxxxxxxxxxxxxxxxxx2222")
             pass
         finally:
-            g_lock.release()
+            g_lock_global.release()
 
     def __clean_sub_url(self, p_parsed_model):
         m_sub_url_filtered = []
