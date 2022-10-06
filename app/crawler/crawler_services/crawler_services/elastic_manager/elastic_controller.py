@@ -24,7 +24,6 @@ class elastic_controller(request_handler):
 
     def __post_data(self, p_commands, p_data):
         try:
-
             m_json_data = json.dumps(p_data)
             m_post_object = {'pRequestCommand': p_commands, "pRequestData": m_json_data}
             m_response = requests.post(ELASTIC_CONNECTIONS.S_DATABASE_IP, data=m_post_object)

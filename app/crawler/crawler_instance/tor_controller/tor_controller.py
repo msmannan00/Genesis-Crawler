@@ -2,8 +2,11 @@
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3 import Retry
+
+from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
+from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS, TOR_PROXIES
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
@@ -39,8 +42,14 @@ class tor_controller(request_handler):
         return m_request_handler, headers
 
     def __on_proxy(self):
-        self.m_queue_index += 1
-        return TOR_PROXIES[self.m_queue_index % len(TOR_PROXIES)], self.m_queue_index % len(TOR_PROXIES)
+        if not APP_STATUS.DOCKERIZED_RUN:
+            return {
+                "http": "socks5h://127.0.0.1:" + "9150",
+                "https": "socks5h://127.0.0.1:" + "9150"
+            }, 100
+        else:
+            self.m_queue_index += 1
+            return TOR_PROXIES[self.m_queue_index % len(TOR_PROXIES)], self.m_queue_index % len(TOR_PROXIES)
 
     # Request Triggers
     def invoke_trigger(self, p_command, p_data=None):

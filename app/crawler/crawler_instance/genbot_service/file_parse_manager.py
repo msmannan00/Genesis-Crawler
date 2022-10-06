@@ -8,8 +8,11 @@ import time
 
 from PIL import Image
 from gevent import sleep
+
+from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
 from crawler.constants.strings import PARSE_STRINGS, MANAGE_CRAWLER_MESSAGES
+from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.local_shared_model.image_model import image_model_init, image_model_list, image_model
 from crawler.crawler_instance.genbot_service.web_request_handler import webRequestManager
@@ -18,7 +21,9 @@ from crawler.crawler_instance.local_shared_model.url_model import url_model
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.shared_data import celery_shared_data
-from libs.nudenet.lite_classifier import LiteClassifier
+
+if APP_STATUS.DOCKERIZED_RUN:
+    from libs.nudenet.lite_classifier import LiteClassifier
 
 
 class file_parse_manager:
@@ -83,7 +88,7 @@ class file_parse_manager:
         m_porn_image_count = 0
         m_list_temp = copy.copy(p_list)
 
-        while len(m_list_temp) > 0:
+        while len(m_list_temp) > 0 and APP_STATUS.DOCKERIZED_RUN:
             try:
                 if celery_shared_data.get_instance().get_network_status():
                     m_url = m_list_temp.__getitem__(0)

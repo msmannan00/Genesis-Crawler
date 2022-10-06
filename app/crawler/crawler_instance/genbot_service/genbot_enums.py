@@ -1,4 +1,5 @@
 import enum
+from threading import Lock
 
 
 class ICRAWL_CONTROLLER_COMMANDS(enum.Enum):
@@ -24,3 +25,7 @@ class CRAWL_STATUS_TYPE:
     S_LOW_YIELD = "low yield url"
     S_DUPLICATE = "duplicate url"
     S_FETCH_ERROR = "timeout"
+
+
+CRAWL_HOST_LOCKS = [Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock()]
+
