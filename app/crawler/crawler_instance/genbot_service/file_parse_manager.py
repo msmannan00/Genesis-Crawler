@@ -151,7 +151,7 @@ class file_parse_manager:
                     continue
                 m_list_temp.pop(0)
             except Exception as ex:
-                log.g().e(str(ex))
+                # log.g().e(str(ex))
                 m_list_temp.pop(0)
 
         return image_model_list(m_images=m_filtered_list), m_porn_image_count, m_filtered_list_unique

@@ -24,9 +24,32 @@ services:
             - tor-extend-10
             - tor-extend-11
             - tor-extend-12
+            - tor-extend-13
+            - tor-extend-14
+            - tor-extend-15
+            - tor-extend-16
+            - tor-extend-17
+            - tor-extend-18
+            - tor-extend-19
+            - tor-extend-20
+            - tor-extend-21
+            - tor-extend-22
+            - tor-extend-23
+            - tor-extend-24
+            - tor-extend-25
+            - tor-extend-26
+            - tor-extend-27
+            - tor-extend-28
+            - tor-extend-29
+            - tor-extend-30
         networks:
             backend:
                 ipv4_address: 10.0.0.2
+        deploy:
+          resources:
+            limits:
+              memory: 8G
+
         restart: always
         volumes:
             - ./app/:/app
@@ -39,10 +62,6 @@ services:
         networks:
             backend:
                 ipv4_address: 10.0.0.3
-        deploy:
-          resources:
-            limits:
-              memory: 4G
     mongo:
         image: mongo
         container_name: mongo-db
@@ -56,6 +75,10 @@ services:
         networks:
             backend:
                 ipv4_address: 10.0.0.5
+        deploy:
+          resources:
+            limits:
+              memory: 4G
 
     tor-extend-1:
         container_name: tor_instace_1
@@ -297,6 +320,366 @@ services:
         networks:
             backend:
                 ipv4_address: 10.0.0.17
+
+    tor-extend-13:
+        container_name: tor_instace_13
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9076'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9077'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9076:9076/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.18
+
+    tor-extend-14:
+        container_name: tor_instace_14
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9078'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9079'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9078:9078/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.19
+
+    tor-extend-15:
+        container_name: tor_instace_15
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9080'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9081'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9080:9080/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.20
+
+    tor-extend-16:
+        container_name: tor_instace_16
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9082'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9083'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9082:9082/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.21
+
+    tor-extend-17:
+        container_name: tor_instace_17
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9084'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9085'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9084:9084/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.22
+
+    tor-extend-18:
+        container_name: tor_instace_18
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9086'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9087'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9086:9086/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.23
+
+    tor-extend-19:
+        container_name: tor_instace_19
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9088'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9089'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9088:9088/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.24
+
+    tor-extend-20:
+        container_name: tor_instace_20
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9090'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9091'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9090:9090/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.25
+
+    tor-extend-21:
+        container_name: tor_instace_21
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9092'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9093'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9092:9092/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.26
+
+    tor-extend-22:
+        container_name: tor_instace_22
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9094'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9095'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9094:9094/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.27
+
+    tor-extend-23:
+        container_name: tor_instace_23
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9096'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9097'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9096:9096/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.28
+
+    tor-extend-24:
+        container_name: tor_instace_24
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:9098'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:9099'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "9098:9098/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.29
+
+    tor-extend-25:
+        container_name: tor_instace_25
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:10000'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:10001'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "10000:10000/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.30
+
+    tor-extend-26:
+        container_name: tor_instace_26
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:10002'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:10003'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "10002:10002/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.31
+
+    tor-extend-27:
+        container_name: tor_instace_27
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:10004'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:10005'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "10004:10004/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.32
+
+    tor-extend-28:
+        container_name: tor_instace_28
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:10006'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:10007'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "10006:10006/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.33
+
+    tor-extend-29:
+        container_name: tor_instace_29
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:10008'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:10009'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "10008:10008/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.34
+
+    tor-extend-30:
+        container_name: tor_instace_30
+        image: barneybuffet/tor:latest
+        environment:
+            TOR_PROXY: 'true'
+            TOR_PROXY_PORT: '0.0.0.0:10010'
+            TOR_PROXY_ACCEPT: 'accept 10.0.0.0/24'
+            TOR_CONTROL: 'false'
+            TOR_CONTROL_PORT: '0.0.0.0:10011'
+            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+            TOR_CONTROL_COOKIE: 'true'
+        volumes:
+            - ./tor:/data/tor
+        ports:
+            - "10010:10010/tcp"
+        restart: unless-stopped
+        networks:
+            backend:
+                ipv4_address: 10.0.0.35
 
 networks:
   backend:

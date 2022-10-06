@@ -1,18 +1,16 @@
 # Local Imports
 
-from libs.pyprobables.probables import BloomFilter
-
 
 class duplication_handler:
-    __m_bloom_filter = None
+    __m_bloom_filter = {''}
 
     # Initializations
     def __init__(self):
-        self.__m_bloom_filter = BloomFilter(50000, 0.1)
+        pass
 
     # Helper Methods
     def validate_duplicate(self, p_key):
-        if self.__m_bloom_filter.check(p_key) is False:
+        if p_key in self.__m_bloom_filter is False:
             return False
         else:
             return True
