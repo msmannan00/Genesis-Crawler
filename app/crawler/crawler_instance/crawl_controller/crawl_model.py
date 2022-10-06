@@ -44,8 +44,8 @@ class crawl_model(request_handler):
             except Exception as ex:
                 log.g().e(ex)
                 sleep(50)
-
         m_response_text = m_response.text
+
         m_updated_url_list = []
         for m_server_url in m_response_text.splitlines():
             m_url = helper_method.on_clean_url(m_server_url)
@@ -72,10 +72,10 @@ class crawl_model(request_handler):
         while True:
             while len(p_fetched_url_list) > 0:
                 if status.S_THREAD_COUNT >= CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
-                    sleep(10)
                     continue
                 virtual_id += 1
-                threading.Thread(target=genbot_instance, args=(p_fetched_url_list.pop(0), virtual_id)).start()
+                xx = threading.Thread(target=genbot_instance, args=(p_fetched_url_list.pop(0), virtual_id))
+                xx.start()
                 status.S_THREAD_COUNT += 1
 
             p_fetched_url_list = self.__reinit_docker_request()

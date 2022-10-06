@@ -1,6 +1,6 @@
 # Local Imports
-import gc
 import json
+from threading import Lock
 from time import sleep
 
 from crawler.constants import status
@@ -30,8 +30,7 @@ from crawler.crawler_instance.local_shared_model.unique_file_model import unique
 import os
 import sys
 import xxhash
-gc.enable()
-
+g_lock_global = Lock()
 
 class genbot_controller(request_handler):
     hashseed = os.getenv('PYTHONHASHSEED')
@@ -131,6 +130,7 @@ class genbot_controller(request_handler):
         try:
             g_lock.locked()
             g_lock.acquire()
+            print("xxxxxxxxxxxxxxxxxxxxx1111")
             if p_raw_html is not None:
                 m_hash_duplication_key = str(xxhash.xxh64_intdigest(p_full_content))
                 m_hashed_duplication_status = redis_controller.get_instance().invoke_trigger(
@@ -169,6 +169,7 @@ class genbot_controller(request_handler):
             return False
         except Exception as ex:
             print("error : " + str(ex), flush=True)
+            print("xxxxxxxxxxxxxxxxxxxxx2222")
             pass
         finally:
             g_lock.release()
