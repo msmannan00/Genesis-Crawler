@@ -22,13 +22,13 @@ class html_duplication_controller:
     # Initializations
 
     def __init__(self):
-        self.__m_duplication_content_handler = {""}
+        self.__m_duplication_content_handler = []
 
     def verify_content_duplication(self, m_content):
         m_max_k_score = 0
 
         try:
-            for val in self.__m_duplication_content_handler:
+            for val in self.__m_duplication_content_handler[0:2]:
                 m_score = jaccard_index(val, m_content, 3)
                 if m_score > m_max_k_score:
                     m_max_k_score = m_score
@@ -46,4 +46,4 @@ class html_duplication_controller:
         return m_score
 
     def on_insert_content(self, m_content):
-        self.__m_duplication_content_handler.add(m_content)
+        self.__m_duplication_content_handler.append(m_content)

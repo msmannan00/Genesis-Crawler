@@ -75,10 +75,6 @@ services:
         networks:
             backend:
                 ipv4_address: 10.0.0.5
-        deploy:
-          resources:
-            limits:
-              memory: 4G
 
     tor-extend-1:
         container_name: tor_instace_1

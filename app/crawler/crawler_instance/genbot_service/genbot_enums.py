@@ -26,6 +26,4 @@ class CRAWL_STATUS_TYPE:
     S_DUPLICATE = "duplicate url"
     S_FETCH_ERROR = "timeout"
 
-
 CRAWL_HOST_LOCKS = [Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock(), Lock()]
-
