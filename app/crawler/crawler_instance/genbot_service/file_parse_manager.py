@@ -88,7 +88,7 @@ class file_parse_manager:
         m_porn_image_count = 0
         m_list_temp = copy.copy(p_list)
 
-        while len(m_list_temp) > 0 and APP_STATUS.DOCKERIZED_RUN:
+        while len(m_list_temp) > 0:
             try:
                 if celery_shared_data.get_instance().get_network_status():
                     m_url = m_list_temp.__getitem__(0)

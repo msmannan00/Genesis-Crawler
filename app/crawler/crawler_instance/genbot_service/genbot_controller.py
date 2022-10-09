@@ -294,7 +294,7 @@ class genbot_controller(request_handler):
 
 
 def genbot_instance(p_url, p_vid):
-    p_url = "http://marketw65ecz2k3b53ji6mb3xhtbvumcmxjkqt37345tdnxxalok6wad.onion/"
+    p_url = "http://loliporns5lm2t3lvojm6k7jjhduhpsty43g7izoerx475jtuticpiqd.onion/"
     m_crawler = genbot_controller()
     try:
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
