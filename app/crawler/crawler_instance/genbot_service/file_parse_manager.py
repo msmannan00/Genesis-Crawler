@@ -136,16 +136,12 @@ class file_parse_manager:
 
                             log.g().s(MANAGE_CRAWLER_MESSAGES.S_FILE_PARSED + " : " + m_url)
                             if m_classifier_response[m_url_path]['unsafe'] > 0.5:
-                                print("FFFFF1", flush=True)
-                                print("FFFFF1", flush=True)
                                 m_porn_image_count += 1
                                 self.__m_images[m_url] = 'a'
                                 m_filtered_list.append(image_model_init(m_url, 'a'))
                                 m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'a').dict())))
 
                             else:
-                                print("FFFFF2", flush=True)
-                                print("FFFFF2", flush=True)
                                 self.__m_images[m_url] = 'g'
                                 m_filtered_list.append(image_model_init(m_url, 'g'))
                                 m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'g').dict())))
