@@ -119,12 +119,12 @@ class file_parse_manager:
                             m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
 
                             if len(m_file_type) > 4 or m_file_type == "gif" or m_content_type != "image" or len(
-                                    m_response.data) < 15000 or " html" in str(m_response.data):
+                                    m_response.content) < 15000:
                                 m_list_temp.pop(0)
                                 continue
 
                             m_url_path = RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH + m_url_path
-                            helper_method.write_content_to_path(m_url_path, m_response.data)
+                            helper_method.write_content_to_path(m_url_path, m_response.content)
                             m_classifier = LiteClassifier()
                             m_classifier_response = m_classifier.classify(m_url_path)
 
@@ -136,12 +136,16 @@ class file_parse_manager:
 
                             log.g().s(MANAGE_CRAWLER_MESSAGES.S_FILE_PARSED + " : " + m_url)
                             if m_classifier_response[m_url_path]['unsafe'] > 0.5:
+                                print("FFFFF1", flush=True)
+                                print("FFFFF1", flush=True)
                                 m_porn_image_count += 1
                                 self.__m_images[m_url] = 'a'
                                 m_filtered_list.append(image_model_init(m_url, 'a'))
                                 m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'a').dict())))
 
                             else:
+                                print("FFFFF2", flush=True)
+                                print("FFFFF2", flush=True)
                                 self.__m_images[m_url] = 'g'
                                 m_filtered_list.append(image_model_init(m_url, 'g'))
                                 m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'g').dict())))
@@ -156,7 +160,7 @@ class file_parse_manager:
                     continue
                 m_list_temp.pop(0)
             except Exception as ex:
-                # log.g().e(str(ex))
+                log.g().e(str(ex))
                 m_list_temp.pop(0)
 
         return image_model_list(m_images=m_filtered_list), m_porn_image_count, m_filtered_list_unique
