@@ -219,11 +219,12 @@ class genbot_controller(request_handler):
 
 
                     if m_parsed_model.m_validity_score >= 0 and (len(m_parsed_model.m_content) > 0) and m_response:
-                        if not self.__m_host_duplication_validated:
-                            m_content_duplocation_status = self.validate_duplicate_host_url(p_request_model.m_url, m_raw_html, m_parsed_model.m_important_content_hidden)
-                        else:
-                            m_content_duplocation_status = True
+                        #if not self.__m_host_duplication_validated:
+                        #    m_content_duplocation_status = self.validate_duplicate_host_url(p_request_model.m_url, m_raw_html, m_parsed_model.m_important_content_hidden)
+                        #else:
+                        #    m_content_duplocation_status = True
 
+                        m_content_duplocation_status = True
                         if m_content_duplocation_status:
 
                             if self.__m_first_time is False:
