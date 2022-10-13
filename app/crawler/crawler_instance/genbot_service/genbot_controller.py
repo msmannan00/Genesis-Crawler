@@ -1,8 +1,7 @@
 # Local Imports
 import json
-from threading import Lock
-from time import sleep
 
+from time import sleep
 from crawler.constants import status
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
@@ -11,8 +10,7 @@ from crawler.crawler_instance.local_shared_model.url_model import url_model, url
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, \
-    ELASTIC_REQUEST_COMMANDS
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_COMMANDS
 from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
@@ -138,8 +136,8 @@ class genbot_controller(request_handler):
                 if self.__m_host_score == -1 and m_hashed_duplication_status is None:
 
                     try:
-                        #g_lock_global.locked()
-                        #g_lock_global.acquire()
+                        g_lock_global.locked()
+                        g_lock_global.acquire()
 
                         files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST, [REDIS_KEYS.RAW_HTML_CODE + p_request_url[7:8], None, 60 * 60 * 24 * 10])
                         m_max_similarity = 0
@@ -156,7 +154,7 @@ class genbot_controller(request_handler):
                         pass
                     finally:
                         pass
-                        #g_lock_global.release()
+                        g_lock_global.release()
 
                 if m_hashed_duplication_status is None:
                     redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_STRING, [m_hash_duplication_key, p_request_url, 60 * 60 * 24 * 5])
