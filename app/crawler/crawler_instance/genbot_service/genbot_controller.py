@@ -261,10 +261,10 @@ class genbot_controller(request_handler):
         self.__task_id = p_task_id
         self.init(p_request_url)
 
-        if self.__m_host_score >= 0.90:
-            return
-        if self.__m_host_failure_count > 5:
-            return
+        #if self.__m_host_score >= 0.90:
+        #    return
+        #if self.__m_host_failure_count > 5:
+        #    return
         if self.__m_Low_yield is True:
             return
 
