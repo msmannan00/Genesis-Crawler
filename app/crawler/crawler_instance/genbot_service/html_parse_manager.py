@@ -105,7 +105,8 @@ class html_parse_manager(HTMLParser, ABC):
                         m_temp_base_url = m_temp_base_url + "/"
                     m_url = urljoin(m_temp_base_url, value[1])
                     m_url = helper_method.on_clean_url(helper_method.normalize_slashes(m_url))
-                    self.m_image_url.append(m_url)
+                    if m_url.__contains__(".jpg") or m_url.__contains__(".jpeg") or m_url.__contains__(".png") or m_url.__contains__(".jpg"):
+                        self.m_image_url.append(m_url)
 
         elif p_tag == 'title':
             self.rec = PARSE_TAGS.S_TITLE
@@ -312,5 +313,8 @@ class html_parse_manager(HTMLParser, ABC):
         m_important_content_hidden = self.__get_meta_description_hidden(self.m_meta_content + " " + m_title + " " + m_meta_description + " " + m_important_content)
         m_extended_content = self.__get_text()
         m_sub_url.extend(self.m_sub_url_hashed)
+
+        m_document = []
+        m_video = []
 
         return m_title, self.m_meta_content + m_meta_description, m_title_hidden, m_important_content, m_important_content_hidden, m_meta_keywords, m_content, m_content_type, m_sub_url, m_images, m_document, m_video, m_validity_score, m_extended_content

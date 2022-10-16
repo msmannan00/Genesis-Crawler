@@ -87,13 +87,12 @@ class file_parse_manager:
         m_filtered_list_unique = []
         m_porn_image_count = 0
         m_list_temp = copy.copy(p_list)
-
-        while len(m_list_temp) > 0:
+        # m_list_temp = []
+        while len(m_list_temp[0:30]) > 0:
             try:
                 if celery_shared_data.get_instance().get_network_status():
                     m_url = m_list_temp.__getitem__(0)
-                    if (p_request_model.m_depth == 0 and len(m_filtered_list) >= 15) or (
-                            p_request_model.m_depth == 1 and len(m_filtered_list) >= 5) or m_porn_image_count > 5:
+                    if len(m_filtered_list) >= 5:
                         break
 
                     if self.__m_duplication_url_handler.validate_duplicate(m_url) is False:
@@ -119,7 +118,7 @@ class file_parse_manager:
                             m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
 
                             if len(m_file_type) > 4 or m_file_type == "gif" or m_content_type != "image" or len(
-                                    m_response.content) < 15000:
+                                    m_response.content) < 10000:
                                 m_list_temp.pop(0)
                                 continue
 
@@ -138,6 +137,7 @@ class file_parse_manager:
 
                             os.remove(m_url_path)
                             self.__m_duplication_url_handler.insert(m_url)
+                            log.g().s(MANAGE_CRAWLER_MESSAGES.S_FILE_PARSED + " : " + m_url)
 
                     elif m_url in self.__m_images:
                         m_filtered_list.append(image_model_init(m_url, self.__m_images[m_url]))

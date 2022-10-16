@@ -290,9 +290,9 @@ def genbot_instance(p_url, p_vid):
     try:
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
         m_crawler.flush()
-    #except Exception as ex:
-    #    print("error : " + str(ex), flush=True)
-    #    m_crawler.flush()
+    except Exception as ex:
+        print("error : " + str(ex), flush=True)
+        m_crawler.flush()
     finally:
         p_request_url = helper_method.on_clean_url(p_url)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
