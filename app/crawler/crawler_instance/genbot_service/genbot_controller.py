@@ -1,6 +1,5 @@
 # Local Imports
 import json
-
 from time import sleep
 from crawler.constants import status
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
@@ -23,8 +22,6 @@ from crawler.crawler_instance.genbot_service.web_request_handler import webReque
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.shared_data import celery_shared_data
-from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
-
 import os
 import sys
 import xxhash
@@ -192,11 +189,10 @@ class genbot_controller(request_handler):
 
     # Web Request To Get Physical URL HTML
     def __trigger_url_request(self, p_request_model: url_model):
-        #try:
+        try:
             log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
             m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
 
-            m_unique_file_model = unique_file_model([], [], [])
             if m_response is True:
 
 
@@ -244,9 +240,9 @@ class genbot_controller(request_handler):
 
                 log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
                 return None, None, None
-        #except Exception as ex:
-        #    print(ex, flush=True)
-        #    return None, None, None
+        except Exception as ex:
+            print(ex, flush=True)
+            return None, None, None
 
     # Wait For Crawl Manager To Provide URL From Queue
     def start_crawler_instance(self, p_request_url, p_task_id):
