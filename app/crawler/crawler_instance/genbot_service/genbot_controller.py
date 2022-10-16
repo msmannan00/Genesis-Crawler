@@ -192,7 +192,7 @@ class genbot_controller(request_handler):
 
     # Web Request To Get Physical URL HTML
     def __trigger_url_request(self, p_request_model: url_model):
-        try:
+        #try:
             log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
             m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
 
@@ -222,16 +222,9 @@ class genbot_controller(request_handler):
                         #else:
                         #    m_content_duplocation_status = True
 
-                        m_content_duplocation_status = True
-                        if m_content_duplocation_status:
-
-                            if self.__m_first_time is False:
-                                m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
-
-                            elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
-                            log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
-                        else:
-                            return None, None, None
+                        m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
+                        elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
+                        log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
                     else:
                         if not self.__m_host_duplication_validated:
                             redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.HOST_LOW_YIELD_COUNT + p_request_model.m_url, True, 60 * 60 * 24 * 5])
@@ -251,9 +244,9 @@ class genbot_controller(request_handler):
 
                 log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
                 return None, None, None
-        except Exception as ex:
-            print(ex, flush=True)
-            return None, None, None
+        #except Exception as ex:
+        #    print(ex, flush=True)
+        #    return None, None, None
 
     # Wait For Crawl Manager To Provide URL From Queue
     def start_crawler_instance(self, p_request_url, p_task_id):
@@ -297,9 +290,9 @@ def genbot_instance(p_url, p_vid):
     try:
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
         m_crawler.flush()
-    except Exception as ex:
-        print("error : " + str(ex), flush=True)
-        m_crawler.flush()
+    #except Exception as ex:
+    #    print("error : " + str(ex), flush=True)
+    #    m_crawler.flush()
     finally:
         p_request_url = helper_method.on_clean_url(p_url)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])

@@ -125,8 +125,6 @@ class file_parse_manager:
 
                             m_url_path = RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH + m_url_path
                             helper_method.write_content_to_path(m_url_path, m_response.content)
-                            m_classifier = LiteClassifier()
-                            m_classifier_response = m_classifier.classify(m_url_path)
 
                             width, height = Image.open(m_url_path).size
                             if width < 250 and height < 250:
@@ -134,17 +132,9 @@ class file_parse_manager:
                                 m_list_temp.pop(0)
                                 continue
 
-                            log.g().s(MANAGE_CRAWLER_MESSAGES.S_FILE_PARSED + " : " + m_url)
-                            if m_classifier_response[m_url_path]['unsafe'] > 0.5:
-                                m_porn_image_count += 1
-                                self.__m_images[m_url] = 'a'
-                                m_filtered_list.append(image_model_init(m_url, 'a'))
-                                m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'a').dict())))
-
-                            else:
-                                self.__m_images[m_url] = 'g'
-                                m_filtered_list.append(image_model_init(m_url, 'g'))
-                                m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'g').dict())))
+                            self.__m_images[m_url] = 'g'
+                            m_filtered_list.append(image_model_init(m_url, 'g'))
+                            m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'g').dict())))
 
                             os.remove(m_url_path)
                             self.__m_duplication_url_handler.insert(m_url)
@@ -154,6 +144,7 @@ class file_parse_manager:
                 else:
                     sleep(30)
                     continue
+                sleep(5)
                 m_list_temp.pop(0)
             except Exception as ex:
                 log.g().e(str(ex))

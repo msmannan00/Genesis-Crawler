@@ -274,9 +274,12 @@ class html_parse_manager(HTMLParser, ABC):
     def __get_content_type(self):
         try:
             if len(self.m_content) > 0:
-                self.m_content_type = topic_classifier_controller.get_instance().invoke_trigger(
-                    TOPIC_CLASSFIER_COMMANDS.S_PREDICT_CLASSIFIER, [self.m_title, self.m_important_content, self.m_content])
+                self.m_content_type = topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_PREDICT_CLASSIFIER, [self.m_title, self.m_important_content, self.m_content])
+                if self.m_content_type is None:
+                    return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
+
                 return self.m_content_type
+            return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
         except Exception:
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
 
