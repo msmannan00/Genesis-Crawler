@@ -12,41 +12,8 @@ services:
             - "8000:8000"
         depends_on:
             - mongo
-            - tor-extend-1
             - tor-extend-2
-            - tor-extend-3
-            - tor-extend-4
-            - tor-extend-5
-            - tor-extend-6
-            - tor-extend-7
-            - tor-extend-8
-            - tor-extend-9
-            - tor-extend-10
-            - tor-extend-11
-            - tor-extend-12
-            - tor-extend-13
-            - tor-extend-14
-            - tor-extend-15
-            - tor-extend-16
-            - tor-extend-17
-            - tor-extend-18
-            - tor-extend-19
-            - tor-extend-20
-            - tor-extend-21
-            - tor-extend-22
-            - tor-extend-23
-            - tor-extend-24
-            - tor-extend-25
-            - tor-extend-26
-            - tor-extend-27
-            - tor-extend-28
-            - tor-extend-29
-            - tor-extend-30
 
-
-        networks:
-            backend:
-                ipv4_address: 172.0.0.2
         deploy:
           resources:
             limits:
@@ -61,9 +28,7 @@ services:
         logging:
             driver: none
         command: redis-server --requirepass killprg1
-        networks:
-            backend:
-                ipv4_address: 172.0.0.3
+
     mongo:
         image: mongo
         container_name: mongo-db
@@ -74,60 +39,58 @@ services:
             - ./data/db:/data/db
         ports:
             - "27017:27017"
-        networks:
-            backend:
-                ipv4_address: 172.0.0.5
-
 
     tor-extend-1:
         container_name: tor_instace_1
         image: barneybuffet/tor:latest
         environment:
             TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9152'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
+            TOR_PROXY_PORT: '9052'
+            TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 172.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
             TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9153'
+            TOR_CONTROL_PORT: '9053'
             TOR_CONTROL_PASSWORD: 'Imammehdi@00'
             TOR_CONTROL_COOKIE: 'true'
+
         volumes:
             - ./tor:/data/tor
         ports:
-            - "9152:9152/tcp"
+            - "9052:9053/tcp"
         restart: unless-stopped
         networks:
-            backend:
-                ipv4_address: 172.0.0.10
+            static-network:
+                ipv4_address: 192.168.0.10
 
     tor-extend-2:
         container_name: tor_instace_2
         image: barneybuffet/tor:latest
         environment:
             TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9154'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
+            TOR_PROXY_PORT: '9054'
+            TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 172.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
             TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9155'
+            TOR_CONTROL_PORT: '9055'
             TOR_CONTROL_PASSWORD: 'Imammehdi@00'
             TOR_CONTROL_COOKIE: 'true'
+
         volumes:
             - ./tor:/data/tor
         ports:
-            - "9154:9154/tcp"
+            - "9054:9054/tcp"
         restart: unless-stopped
         networks:
-            backend:
-                ipv4_address: 172.0.0.11
+            static-network:
+                ipv4_address: 192.168.0.11
 
     tor-extend-3:
         container_name: tor_instace_3
         image: barneybuffet/tor:latest
         environment:
             TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9156'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
+            TOR_PROXY_PORT: '9156'
+            TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
             TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9157'
+            TOR_CONTROL_PORT: '9157'
             TOR_CONTROL_PASSWORD: 'Imammehdi@00'
             TOR_CONTROL_COOKIE: 'true'
         volumes:
@@ -136,553 +99,553 @@ services:
             - "9156:9156/tcp"
         restart: unless-stopped
         networks:
-            backend:
-                ipv4_address: 172.0.0.12
+            static-network:
+                ipv4_address: 192.168.0.12
 
     tor-extend-4:
-        container_name: tor_instace_4
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9158'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9159'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9158:9158/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.13
+            container_name: tor_instace_4
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9158'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9159'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9158:9158/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.13
 
     tor-extend-5:
-        container_name: tor_instace_5
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9160'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9161'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9160:9160/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.14
+            container_name: tor_instace_5
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9160'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9161'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9160:9160/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.14
 
     tor-extend-6:
-        container_name: tor_instace_6
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9162'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9163'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9162:9162/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.15
+            container_name: tor_instace_6
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9162'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9163'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9162:9162/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.15
 
     tor-extend-7:
-        container_name: tor_instace_7
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9164'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9165'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9164:9164/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.16
+            container_name: tor_instace_7
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9164'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9165'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9164:9164/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.16
 
     tor-extend-8:
-        container_name: tor_instace_8
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9166'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9167'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9166:9166/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.17
+            container_name: tor_instace_8
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9166'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9167'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9166:9166/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.17
 
     tor-extend-9:
-        container_name: tor_instace_9
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9168'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9169'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9168:9168/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.18
+            container_name: tor_instace_9
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9168'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9169'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9168:9168/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.18
 
     tor-extend-10:
-        container_name: tor_instace_10
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9170'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9171'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9170:9170/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.19
+            container_name: tor_instace_10
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9170'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9171'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9170:9170/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.19
 
     tor-extend-11:
-        container_name: tor_instace_11
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9172'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9173'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9172:9172/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.20
+            container_name: tor_instace_11
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9172'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9173'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9172:9172/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.20
 
     tor-extend-12:
-        container_name: tor_instace_12
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9174'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9175'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9174:9174/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.21
+            container_name: tor_instace_12
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9174'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9175'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9174:9174/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.21
 
     tor-extend-13:
-        container_name: tor_instace_13
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9176'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9177'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9176:9176/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.22
+            container_name: tor_instace_13
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9176'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9177'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9176:9176/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.22
 
     tor-extend-14:
-        container_name: tor_instace_14
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9178'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9179'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9178:9178/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.23
+            container_name: tor_instace_14
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9178'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9179'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9178:9178/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.23
 
     tor-extend-15:
-        container_name: tor_instace_15
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9180'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9181'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9180:9180/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.24
+            container_name: tor_instace_15
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9180'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9181'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9180:9180/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.24
 
     tor-extend-16:
-        container_name: tor_instace_16
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9182'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9183'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9182:9182/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.25
+            container_name: tor_instace_16
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9182'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9183'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9182:9182/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.25
 
     tor-extend-17:
-        container_name: tor_instace_17
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9184'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9185'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9184:9184/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.26
+            container_name: tor_instace_17
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9184'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9185'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9184:9184/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.26
 
     tor-extend-18:
-        container_name: tor_instace_18
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9186'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9187'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9186:9186/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.27
+            container_name: tor_instace_18
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9186'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9187'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9186:9186/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.27
 
     tor-extend-19:
-        container_name: tor_instace_19
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9188'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9189'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9188:9188/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.28
+            container_name: tor_instace_19
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9188'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9189'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9188:9188/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.28
 
     tor-extend-20:
-        container_name: tor_instace_20
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9190'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9191'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9190:9190/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.29
+            container_name: tor_instace_20
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9190'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9191'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9190:9190/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.29
 
     tor-extend-21:
-        container_name: tor_instace_21
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9192'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9193'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9192:9192/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.30
+            container_name: tor_instace_21
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9192'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9193'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9192:9192/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.30
 
     tor-extend-22:
-        container_name: tor_instace_22
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9194'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9195'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9194:9194/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.31
+            container_name: tor_instace_22
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9194'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9195'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9194:9194/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.31
 
     tor-extend-23:
-        container_name: tor_instace_23
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9196'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9197'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9196:9196/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.32
+            container_name: tor_instace_23
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9196'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9197'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9196:9196/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.32
 
     tor-extend-24:
-        container_name: tor_instace_24
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9198'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9199'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9198:9198/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.33
+            container_name: tor_instace_24
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9198'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9199'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9198:9198/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.33
 
     tor-extend-25:
-        container_name: tor_instace_25
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9200'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9201'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9200:9200/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.34
+            container_name: tor_instace_25
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9200'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9201'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9200:9200/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.34
 
     tor-extend-26:
-        container_name: tor_instace_26
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9202'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9203'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9202:9202/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.35
+            container_name: tor_instace_26
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9202'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9203'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9202:9202/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.35
 
     tor-extend-27:
-        container_name: tor_instace_27
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9204'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9205'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9204:9204/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.36
+            container_name: tor_instace_27
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9204'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9205'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9204:9204/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.36
 
     tor-extend-28:
-        container_name: tor_instace_28
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9206'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9207'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9206:9206/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.37
+            container_name: tor_instace_28
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9206'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9207'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9206:9206/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.37
 
     tor-extend-29:
-        container_name: tor_instace_29
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9208'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9209'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9208:9208/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.38
+            container_name: tor_instace_29
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9208'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9209'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9208:9208/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.38
 
     tor-extend-30:
-        container_name: tor_instace_30
-        image: barneybuffet/tor:latest
-        environment:
-            TOR_PROXY: 'true'
-            TOR_PROXY_PORT: '0.0.0.0:9210'
-            TOR_PROXY_ACCEPT: 'accept 0.0.0.0,accept 127.0.0.0,accept 172.0.0.0/24'
-            TOR_CONTROL: 'false'
-            TOR_CONTROL_PORT: '0.0.0.0:9211'
-            TOR_CONTROL_PASSWORD: 'Imammehdi@00'
-            TOR_CONTROL_COOKIE: 'true'
-        volumes:
-            - ./tor:/data/tor
-        ports:
-            - "9210:9210/tcp"
-        restart: unless-stopped
-        networks:
-            backend:
-                ipv4_address: 172.0.0.39
+            container_name: tor_instace_30
+            image: barneybuffet/tor:latest
+            environment:
+                TOR_PROXY: 'true'
+                TOR_PROXY_PORT: '9210'
+                TOR_PROXY_ACCEPT: 'accept 127.0.0.1,accept 192.168.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+                TOR_CONTROL: 'false'
+                TOR_CONTROL_PORT: '9211'
+                TOR_CONTROL_PASSWORD: 'Imammehdi@00'
+                TOR_CONTROL_COOKIE: 'true'
+            volumes:
+                - ./tor:/data/tor
+            ports:
+                - "9210:9210/tcp"
+            restart: unless-stopped
+            networks:
+                static-network:
+                    ipv4_address: 192.168.0.39
 
 networks:
-  backend:
-    driver: bridge
+  static-network:
     ipam:
-      driver: default
       config:
-      - subnet: 172.0.0.0/24
+        - subnet: 192.168.0.0/24
+          gateway: 192.168.0.1
+
