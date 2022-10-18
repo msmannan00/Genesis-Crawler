@@ -111,7 +111,7 @@ class genbot_controller(request_handler):
     def __check_content_duplication(self, p_parsed_model):
         m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_important_content_hidden)
 
-        if m_score <= 0.7:
+        if m_score <= 0.80:
             self.__html_duplication_handler.on_insert_content(p_parsed_model.m_important_content_hidden)
             return False
         else:
@@ -180,10 +180,7 @@ class genbot_controller(request_handler):
                 self.__m_url_duplication_handler.insert(m_sub_url)
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
-        if self.__m_first_time is False:
-            p_parsed_model.m_sub_url = m_sub_url_filtered[0:50]
-        else:
-            p_parsed_model.m_sub_url = m_sub_url_filtered[0:0]
+        p_parsed_model.m_sub_url = m_sub_url_filtered[0:50]
 
         return p_parsed_model
 
@@ -204,6 +201,7 @@ class genbot_controller(request_handler):
                 m_redirected_url = helper_method.on_clean_url(m_redirected_url)
                 m_redirected_requested_url = helper_method.on_clean_url(p_request_model.m_url)
 
+                m_parsed_model = self.__clean_sub_url(m_parsed_model)
                 m_status = self.__check_content_duplication(m_parsed_model)
                 if m_status:
                     return None, None, None
@@ -227,7 +225,6 @@ class genbot_controller(request_handler):
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
                         return None, None, None
 
-                    m_parsed_model = self.__clean_sub_url(m_parsed_model)
                     self.__m_parsed_url.append(m_redirected_requested_url)
 
                     return m_parsed_model, m_unique_file_model, m_raw_html
