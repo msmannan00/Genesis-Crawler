@@ -277,8 +277,8 @@ class genbot_controller(request_handler):
         if p_command == ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE:
             self.start_crawler_instance(p_data[0], p_data[1])
 
-
 def genbot_instance(p_url, p_vid):
+    # p_url = "https://bbcnewsd73hkzno2ini43t4gblxvycyac5aw4gnv7t2rccijh7745uqd.onion/"
     m_crawler = genbot_controller()
     try:
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
