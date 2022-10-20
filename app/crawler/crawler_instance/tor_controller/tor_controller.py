@@ -33,12 +33,10 @@ class tor_controller(request_handler):
     def __init__(self):
         tor_controller.__instance = self
         self.m_queue_index = 0
-        m_thread = threading.Thread(target=self.__on_init)
-        m_thread.start()
+        self.__on_init()
 
     def __on_init(self):
         for connection_controller in TOR_CONTROL_PROXIES:
-            sleep(10)
             m_temp_controller = Controller(stem.socket.ControlPort(connection_controller["proxy"], connection_controller["port"]))
             m_temp_controller.authenticate("Imammehdi@00")
             self.__m_controller.append(m_temp_controller)
