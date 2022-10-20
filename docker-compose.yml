@@ -94,12 +94,14 @@ services:
         container_name: tor_instace_1
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor1
         restart:  "no"
         ports:
           - "0.0.0.0:9152:9152"
           - "0.0.0.0:9153:9153"
         environment:
+          PUID: "20002"
+          PGID: "20003"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -120,12 +122,14 @@ services:
         container_name: tor_instace_2
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor2
         restart:  "no"
         ports:
           - "0.0.0.0:9154:9154"
           - "0.0.0.0:9155:9155"
         environment:
+          PUID: "20004"
+          PGID: "20005"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -146,12 +150,14 @@ services:
         container_name: tor_instace_3
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor3
         restart:  "no"
         ports:
           - "0.0.0.0:9156:9156"
           - "0.0.0.0:9157:9157"
         environment:
+          PUID: "20006"
+          PGID: "20007"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -169,15 +175,17 @@ services:
                 ipv4_address: 172.0.0.12
 
     tor-extend-4:
-        container_name: tor_instace_4
+        container_name: tor_instace_42
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor4
         restart:  "no"
         ports:
           - "0.0.0.0:9158:9158"
           - "0.0.0.0:9159:9159"
         environment:
+          PUID: "20008"
+          PGID: "20009"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -198,12 +206,14 @@ services:
         container_name: tor_instace_5
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor5
         restart:  "no"
         ports:
           - "0.0.0.0:9160:9160"
           - "0.0.0.0:9161:9161"
         environment:
+          PUID: "20010"
+          PGID: "20011"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -224,12 +234,14 @@ services:
         container_name: tor_instace_6
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor6
         restart:  "no"
         ports:
           - "0.0.0.0:9162:9162"
           - "0.0.0.0:9163:9163"
         environment:
+          PUID: "20012"
+          PGID: "20013"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -250,12 +262,14 @@ services:
         container_name: tor_instace_7
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor7
         restart:  "no"
         ports:
           - "0.0.0.0:9164:9164"
           - "0.0.0.0:9165:9165"
         environment:
+          PUID: "20014"
+          PGID: "20015"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -276,12 +290,14 @@ services:
         container_name: tor_instace_8
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor8
         restart:  "no"
         ports:
           - "0.0.0.0:9166:9166"
           - "0.0.0.0:9167:9167"
         environment:
+          PUID: "20016"
+          PGID: "20017"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -302,12 +318,14 @@ services:
         container_name: tor_instace_9
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor9
         restart:  "no"
         ports:
           - "0.0.0.0:9168:9168"
           - "0.0.0.0:9169:9169"
         environment:
+          PUID: "20018"
+          PGID: "20019"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -328,12 +346,14 @@ services:
         container_name: tor_instace_10
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor10
         restart:  "no"
         ports:
           - "0.0.0.0:9170:9170"
           - "0.0.0.0:9171:9171"
         environment:
+          PUID: "20030"
+          PGID: "20031"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -354,12 +374,14 @@ services:
         container_name: tor_instace_11
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor11
         restart:  "no"
         ports:
           - "0.0.0.0:9172:9172"
           - "0.0.0.0:9173:9173"
         environment:
+          PUID: "20032"
+          PGID: "20033"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -380,12 +402,14 @@ services:
         container_name: tor_instace_12
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor12
         restart:  "no"
         ports:
           - "0.0.0.0:9174:9174"
           - "0.0.0.0:9175:9175"
         environment:
+          PUID: "20034"
+          PGID: "20035"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -406,12 +430,14 @@ services:
         container_name: tor_instace_13
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor13
         restart:  "no"
         ports:
           - "0.0.0.0:9176:9176"
           - "0.0.0.0:9177:9177"
         environment:
+          PUID: "20036"
+          PGID: "20037"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -432,12 +458,14 @@ services:
         container_name: tor_instace_14
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor14
         restart:  "no"
         ports:
           - "0.0.0.0:9178:9178"
           - "0.0.0.0:9179:9179"
         environment:
+          PUID: "20038"
+          PGID: "20039"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -458,12 +486,14 @@ services:
         container_name: tor_instace_15
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor15
         restart:  "no"
         ports:
           - "0.0.0.0:9180:9180"
           - "0.0.0.0:9181:9181"
         environment:
+          PUID: "20040"
+          PGID: "20041"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -484,12 +514,14 @@ services:
         container_name: tor_instace_16
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor16
         restart:  "no"
         ports:
           - "0.0.0.0:9182:9182"
           - "0.0.0.0:9183:9183"
         environment:
+          PUID: "20042"
+          PGID: "20043"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -510,12 +542,14 @@ services:
         container_name: tor_instace_17
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor17
         restart:  "no"
         ports:
           - "0.0.0.0:9184:9184"
           - "0.0.0.0:9185:9185"
         environment:
+          PUID: "20044"
+          PGID: "20045"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -536,12 +570,14 @@ services:
         container_name: tor_instace_18
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor18
         restart:  "no"
         ports:
           - "0.0.0.0:9186:9186"
           - "0.0.0.0:9187:9187"
         environment:
+          PUID: "20046"
+          PGID: "20047"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -562,12 +598,14 @@ services:
         container_name: tor_instace_19
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor19
         restart:  "no"
         ports:
           - "0.0.0.0:9188:9188"
           - "0.0.0.0:9189:9189"
         environment:
+          PUID: "20048"
+          PGID: "20049"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -588,12 +626,14 @@ services:
         container_name: tor_instace_20
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor20
         restart:  "no"
         ports:
           - "0.0.0.0:9190:9190"
           - "0.0.0.0:9191:9191"
         environment:
+          PUID: "20050"
+          PGID: "20051"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -614,12 +654,14 @@ services:
         container_name: tor_instace_21
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor21
         restart:  "no"
         ports:
           - "0.0.0.0:9192:9192"
           - "0.0.0.0:9193:9193"
         environment:
+          PUID: "20052"
+          PGID: "20053"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -640,12 +682,14 @@ services:
         container_name: tor_instace_22
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor22
         restart:  "no"
         ports:
           - "0.0.0.0:9194:9194"
           - "0.0.0.0:9195:9195"
         environment:
+          PUID: "20054"
+          PGID: "20055"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -666,12 +710,14 @@ services:
         container_name: tor_instace_23
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor23
         restart:  "no"
         ports:
           - "0.0.0.0:9196:9196"
           - "0.0.0.0:9197:9197"
         environment:
+          PUID: "20056"
+          PGID: "20057"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -692,12 +738,14 @@ services:
         container_name: tor_instace_24
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor24
         restart:  "no"
         ports:
           - "0.0.0.0:9198:9198"
           - "0.0.0.0:9199:9199"
         environment:
+          PUID: "20058"
+          PGID: "20059"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -718,12 +766,14 @@ services:
         container_name: tor_instace_25
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/25
         restart:  "no"
         ports:
           - "0.0.0.0:9200:9200"
           - "0.0.0.0:9201:9201"
         environment:
+          PUID: "20060"
+          PGID: "20061"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -744,12 +794,14 @@ services:
         container_name: tor_instace_26
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor26
         restart:  "no"
         ports:
           - "0.0.0.0:9202:9202"
           - "0.0.0.0:9203:9203"
         environment:
+          PUID: "20062"
+          PGID: "20063"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -770,12 +822,14 @@ services:
         container_name: tor_instace_27
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor27
         restart:  "no"
         ports:
           - "0.0.0.0:9204:9204"
           - "0.0.0.0:9205:9205"
         environment:
+          PUID: "20064"
+          PGID: "20065"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -796,12 +850,14 @@ services:
         container_name: tor_instace_28
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor28
         restart:  "no"
         ports:
           - "0.0.0.0:9206:9206"
           - "0.0.0.0:9207:9207"
         environment:
+          PUID: "20066"
+          PGID: "20067"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -822,12 +878,14 @@ services:
         container_name: tor_instace_29
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor29
         restart:  "no"
         ports:
           - "0.0.0.0:9208:9208"
           - "0.0.0.0:9209:9209"
         environment:
+          PUID: "20068"
+          PGID: "20069"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
@@ -848,12 +906,14 @@ services:
         container_name: tor_instace_30
         image: barneybuffet/tor:latest
         volumes:
-          - ~/Documents/docker/tor_test:/tor
+          - ~/Documents/docker/tor_test:/tor30
         restart:  "no"
         ports:
           - "0.0.0.0:9210:9210"
           - "0.0.0.0:9211:9211"
         environment:
+          PUID: "20070"
+          PGID: "20071"
           TOR_CONFIG_OVERWRITE: "true"
           TOR_LOG_CONFIG: "true"
           TOR_PROXYL: "true"
