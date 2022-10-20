@@ -1,18 +1,26 @@
 # Local Imports
+from time import sleep
+
 import requests
+import stem as stem
 from requests.adapters import HTTPAdapter
+from stem.control import Controller
 from urllib3 import Retry
 
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
-from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS, TOR_PROXIES
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+
+from crawler.crawler_instance.tor_controller.tor_enums import TOR_CONTROL_PROXIES
+from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
+from stem import Signal
 
 
 class tor_controller(request_handler):
     __instance = None
+    __m_controller = []
 
     # Initializations
     @staticmethod
@@ -24,6 +32,30 @@ class tor_controller(request_handler):
     def __init__(self):
         tor_controller.__instance = self
         self.m_queue_index = 0
+        self.__on_init()
+
+    def __on_init(self):
+        for connection_controller in TOR_CONTROL_PROXIES:
+            print(":::::::::::::1", flush=True)
+            sleep(10)
+            m_temp_controller = Controller(stem.socket.ControlPort(connection_controller["proxy"], connection_controller["port"]))
+            print(":::::::::::::2", flush=True)
+            m_temp_controller.authenticate("Imammehdi@00")
+            print(":::::::::::::3", flush=True)
+            self.__m_controller.append(m_temp_controller)
+            print(":::::::::::::4", flush=True)
+            RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_TOR_NEW_CIRCUIT_INVOKE_DELAY, self.__invoke_new_circuit, False, m_temp_controller)
+            print(":::::::::::::5", flush=True)
+
+
+    def __invoke_new_circuit(self, m_temp_controller):
+        print(":::::::::::::6", flush=True)
+        try:
+            m_temp_controller.signal(Signal.NEWNYM)
+        except Exception as ex:
+            print(ex, flush=True)
+            pass
+        print(":::::::::::::7", flush=True)
 
     # Tor Helper Methods
     def __on_create_session(self, p_tor_based):

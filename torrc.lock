@@ -1,1 +1,0 @@
-Only run init once. Delete this file to re-init torrc on container start up.

@@ -15,5 +15,4 @@ RUN pip3 install -r /tmp/requirements.txt
 # copy source files
 COPY app ./app
 WORKDIR /app
-ulimit -n 90000
 ENTRYPOINT ["bash","-c","./start_app.sh"]
