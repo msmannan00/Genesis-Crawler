@@ -1,4 +1,5 @@
 # Local Imports
+import threading
 from time import sleep
 
 import requests
@@ -32,30 +33,24 @@ class tor_controller(request_handler):
     def __init__(self):
         tor_controller.__instance = self
         self.m_queue_index = 0
-        self.__on_init()
+        m_thread = threading.Thread(target=self.__on_init)
+        m_thread.start()
 
     def __on_init(self):
         for connection_controller in TOR_CONTROL_PROXIES:
-            print(":::::::::::::1", flush=True)
             sleep(10)
             m_temp_controller = Controller(stem.socket.ControlPort(connection_controller["proxy"], connection_controller["port"]))
-            print(":::::::::::::2", flush=True)
             m_temp_controller.authenticate("Imammehdi@00")
-            print(":::::::::::::3", flush=True)
             self.__m_controller.append(m_temp_controller)
-            print(":::::::::::::4", flush=True)
             RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_TOR_NEW_CIRCUIT_INVOKE_DELAY, self.__invoke_new_circuit, False, m_temp_controller)
-            print(":::::::::::::5", flush=True)
 
 
     def __invoke_new_circuit(self, m_temp_controller):
-        print(":::::::::::::6", flush=True)
         try:
             m_temp_controller.signal(Signal.NEWNYM)
         except Exception as ex:
             print(ex, flush=True)
             pass
-        print(":::::::::::::7", flush=True)
 
     # Tor Helper Methods
     def __on_create_session(self, p_tor_based):

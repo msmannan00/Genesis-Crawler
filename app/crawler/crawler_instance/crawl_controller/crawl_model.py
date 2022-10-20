@@ -74,8 +74,8 @@ class crawl_model(request_handler):
                 if status.S_THREAD_COUNT >= CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
                     continue
                 virtual_id += 1
-                xx = threading.Thread(target=genbot_instance, args=(p_fetched_url_list.pop(0), virtual_id))
-                xx.start()
+                m_thread = threading.Thread(target=genbot_instance, args=(p_fetched_url_list.pop(0), virtual_id))
+                m_thread.start()
                 status.S_THREAD_COUNT += 1
 
             p_fetched_url_list = self.__reinit_docker_request()
