@@ -9,7 +9,6 @@ html-similarity
 jaccard-index
 requests
 xxhash
-Pillow
 
 ###### Requirements with Version Specifiers ######
 logdna~=1.18.2

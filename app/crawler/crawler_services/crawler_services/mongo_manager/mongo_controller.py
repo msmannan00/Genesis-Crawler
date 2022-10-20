@@ -47,7 +47,7 @@ class mongo_controller(request_handler):
 
     def __read(self, p_data):
         try:
-            documents = self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].find(p_data[MONGODB_KEYS.S_FILTER], p_data[MONGODB_KEYS.S_VALUE])
+            documents = self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].find(p_data[MONGODB_KEYS.S_FILTER], p_data[MONGODB_KEYS.S_VALUE], allow_disk_use=True)
             if MONGODB_PROPERTIES.S_SORT in p_data:
                 m_sort_query = p_data[MONGODB_PROPERTIES.S_SORT]
                 documents.sort(m_sort_query[0], m_sort_query[1])

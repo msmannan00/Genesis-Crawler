@@ -12,7 +12,37 @@ services:
             - "8000:8000"
         depends_on:
             - mongo
+            - redis_server
             - tor-extend-1
+            - tor-extend-2
+            - tor-extend-3
+            - tor-extend-4
+            - tor-extend-5
+            - tor-extend-6
+            - tor-extend-7
+            - tor-extend-8
+            - tor-extend-9
+            - tor-extend-10
+            - tor-extend-11
+            - tor-extend-12
+            - tor-extend-13
+            - tor-extend-14
+            - tor-extend-15
+            - tor-extend-16
+            - tor-extend-17
+            - tor-extend-18
+            - tor-extend-19
+            - tor-extend-20
+            - tor-extend-21
+            - tor-extend-22
+            - tor-extend-23
+            - tor-extend-24
+            - tor-extend-25
+            - tor-extend-26
+            - tor-extend-27
+            - tor-extend-28
+            - tor-extend-29
+            - tor-extend-30
         deploy:
           resources:
             limits:
@@ -21,10 +51,14 @@ services:
         restart: always
         volumes:
             - ./app/:/app
+        ulimits:
+          nproc: 65535
+          nofile:
+            soft: 26677
+            hard: 46677
         networks:
             backend:
                 ipv4_address: 172.0.0.2
-
     redis_server:
         image: redis
         logging:
@@ -33,6 +67,10 @@ services:
         networks:
             backend:
                 ipv4_address: 172.0.0.3
+        deploy:
+          resources:
+            limits:
+              memory: 4G
 
     mongo:
         image: mongocamp/mongodb:5.0.9
@@ -47,6 +85,10 @@ services:
         networks:
             backend:
                 ipv4_address: 172.0.0.4
+        deploy:
+          resources:
+            limits:
+              memory: 4G
 
     tor-extend-1:
         container_name: tor_instace_1
