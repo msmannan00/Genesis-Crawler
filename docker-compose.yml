@@ -46,7 +46,7 @@ services:
         deploy:
           resources:
             limits:
-              memory: 8G
+              memory: 6G
 
         restart: always
         volumes:
@@ -70,7 +70,7 @@ services:
         deploy:
           resources:
             limits:
-              memory: 4G
+              memory: 2G
 
     mongo:
         image: mongocamp/mongodb:5.0.9
