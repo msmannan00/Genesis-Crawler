@@ -75,6 +75,7 @@ class crawl_model(request_handler):
                     continue
                 virtual_id += 1
                 m_thread = threading.Thread(target=genbot_instance, args=(p_fetched_url_list.pop(0), virtual_id))
+                m_thread.daemon = True
                 m_thread.start()
                 status.S_THREAD_COUNT += 1
 

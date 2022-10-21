@@ -12,8 +12,6 @@ from crawler.crawler_services.crawler_services.elastic_manager.elastic_controlle
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_COMMANDS
-from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
-from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_KEYS
 from crawler.crawler_services.crawler_services.url_duplication_manager.html_duplication_controller import html_duplication_controller
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.crawler_services.helper_services.helper_method import helper_method
@@ -24,7 +22,6 @@ from crawler.crawler_shared_directory.request_manager.request_handler import req
 from crawler.shared_data import celery_shared_data
 import os
 import sys
-import xxhash
 
 class genbot_controller(request_handler):
     hashseed = os.getenv('PYTHONHASHSEED')
@@ -39,43 +36,13 @@ class genbot_controller(request_handler):
         self.__html_duplication_handler = html_duplication_controller()
         self.__m_html_parser = parse_controller()
 
-        self.__m_host_failure_count = 0
         self.__m_tor_id = - 1
         self.__m_depth = 0
-        self.__m_host_score = -1
-        self.__m_first_time = False
-        self.__m_Low_yield = False
         self.__m_unparsed_url = []
         self.__m_parsed_url = []
-        self.__m_host_duplication_validated = False
-        self.__m_proxy = {}
-
-    def flush(self):
-        self.__task_id = None
-        self.__m_url_duplication_handler = None
-        self.__m_web_request_handler = None
-        self.__html_duplication_handler = None
-        self.__m_html_parser = None
-
-        self.__m_host_failure_count = 0
-        self.__m_tor_id = - 1
-        self.__m_depth = 0
-        self.__m_host_score = -1
-        self.__m_first_time = False
-        self.__m_Low_yield = False
-        self.__m_unparsed_url = []
-        self.__m_parsed_url = []
-        self.__m_host_duplication_validated = False
         self.__m_proxy = {}
 
     def init(self, p_url):
-        self.__m_host_failure_count = int(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_INT, [REDIS_KEYS.HOST_FAILURE_COUNT + p_url, 0, 60 * 60 * 24 * 5]))
-        self.__m_host_score = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_FLOAT,[REDIS_KEYS.RAW_HTML_SCORE + p_url, -1, 60 * 60 * 24 * 10])
-        self.__m_first_time = False
-        self.__m_Low_yield = bool(redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [REDIS_KEYS.HOST_LOW_YIELD_COUNT + p_url, False, 60 * 60 * 24 * 5]))
-
-        if self.__m_host_score == -1:
-            self.__m_first_time = True
 
         m_requested_url = helper_method.on_clean_url(p_url)
         m_mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_INDEX, [m_requested_url], [None]])
@@ -118,61 +85,6 @@ class genbot_controller(request_handler):
             log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + str(m_score))
             return True
 
-    def validate_duplicate_host_url(self, p_request_url, p_raw_html, p_full_content):
-
-        try:
-            g_lock_global = self.__get_lock(p_request_url[7:8])
-            if p_raw_html is not None:
-                m_hash_duplication_key = str(xxhash.xxh64_intdigest(p_full_content))
-                m_hashed_duplication_status = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_STRING, [m_hash_duplication_key, None, 60 * 60 * 24 * 5])
-                if m_hashed_duplication_status is not None and self.__m_host_score == -1:
-                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, 1, 60 * 60 * 24 * 10])
-
-                m_max_similarity = self.__m_host_score
-
-                if self.__m_host_score == -1 and m_hashed_duplication_status is None:
-
-                    try:
-                        g_lock_global.locked()
-                        g_lock_global.acquire()
-
-                        files = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_LIST, [REDIS_KEYS.RAW_HTML_CODE + p_request_url[7:8], None, 60 * 60 * 24 * 10])
-                        m_max_similarity = 0
-                        for html in files:
-                            m_similarity = self.__html_duplication_handler.verify_structural_duplication(p_raw_html, html)
-
-                            if m_similarity > m_max_similarity:
-                                m_max_similarity = m_similarity
-
-
-                        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_LIST, [REDIS_KEYS.RAW_HTML_CODE + p_request_url[7:8], p_raw_html, None])
-                        redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, m_max_similarity, 60 * 60 * 24 * 10])
-                    except Exception:
-                        pass
-                    finally:
-                        pass
-                        g_lock_global.release()
-
-                if m_hashed_duplication_status is None:
-                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_STRING, [m_hash_duplication_key, p_request_url, 60 * 60 * 24 * 5])
-                elif self.__m_host_score == -1:
-                    log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_HASH + " SIM : " + str(p_request_url) + " : " + str(m_hashed_duplication_status))
-
-                    return False
-
-                if m_max_similarity < 0.90:
-                    return True
-                else:
-                    log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_HOST_CONTENT + " : " + str(p_request_url) + " : " + str(m_max_similarity))
-            else:
-                redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_FLOAT, [REDIS_KEYS.RAW_HTML_SCORE + p_request_url, 1, 60 * 60 * 24 * 10])
-
-            return False
-        except Exception as ex:
-            print("error : " + str(ex), flush=True)
-            pass
-
-
     def __clean_sub_url(self, p_parsed_model):
         m_sub_url_filtered = []
         for m_sub_url in p_parsed_model.m_sub_url:
@@ -192,11 +104,6 @@ class genbot_controller(request_handler):
 
             if m_response is True:
 
-
-                if not self.__m_host_duplication_validated:
-                    self.__m_host_failure_count = 0
-                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count,60 * 60 * 24 * 5])
-
                 m_parsed_model, m_images = self.__m_html_parser.on_parse_html(m_raw_html, p_request_model)
                 m_redirected_url = helper_method.on_clean_url(m_redirected_url)
                 m_redirected_requested_url = helper_method.on_clean_url(p_request_model.m_url)
@@ -211,17 +118,11 @@ class genbot_controller(request_handler):
 
 
                     if m_parsed_model.m_validity_score >= 0 and (len(m_parsed_model.m_content) > 0) and m_response:
-                        #if not self.__m_host_duplication_validated:
-                        #    m_content_duplocation_status = self.validate_duplicate_host_url(p_request_model.m_url, m_raw_html, m_parsed_model.m_important_content_hidden)
-                        #else:
-                        #    m_content_duplocation_status = True
 
                         m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
                         elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
                         log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
                     else:
-                        if not self.__m_host_duplication_validated:
-                            redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.HOST_LOW_YIELD_COUNT + p_request_model.m_url, True, 60 * 60 * 24 * 5])
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
                         return None, None, None
 
@@ -231,10 +132,6 @@ class genbot_controller(request_handler):
                 else:
                     return None, None, None
             else:
-                if not self.__m_host_duplication_validated:
-                    self.__m_host_failure_count += 1
-                    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_INT, [REDIS_KEYS.HOST_FAILURE_COUNT + p_request_model.m_url, self.__m_host_failure_count,60 * 60 * 24 * 1])
-
                 log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
                 return None, None, None
         except Exception as ex:
@@ -247,19 +144,11 @@ class genbot_controller(request_handler):
         self.__task_id = p_task_id
         self.init(p_request_url)
 
-        #if self.__m_host_score >= 0.90:
-        #    return
-        #if self.__m_host_failure_count > 5:
-        #    return
-        if self.__m_Low_yield is True:
-            return
-
         self.__m_unparsed_url.append(url_model_init(p_request_url, CRAWL_SETTINGS_CONSTANTS.S_DEFAULT_DEPTH))
         while len(self.__m_unparsed_url) > 0:
             if celery_shared_data.get_instance().get_network_status():
                 item = self.__m_unparsed_url.pop(0)
                 m_parsed_model, m_unique_file_model, m_raw_html = self.__trigger_url_request(item)
-                self.__m_host_duplication_validated = True
 
                 if m_parsed_model is None or not celery_shared_data.get_instance().get_network_status():
                     continue
@@ -278,14 +167,11 @@ class genbot_controller(request_handler):
             self.start_crawler_instance(p_data[0], p_data[1])
 
 def genbot_instance(p_url, p_vid):
-    # p_url = "https://bbcnewsd73hkzno2ini43t4gblxvycyac5aw4gnv7t2rccijh7745uqd.onion/"
     m_crawler = genbot_controller()
     try:
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
-        m_crawler.flush()
     except Exception as ex:
         print("error : " + str(ex), flush=True)
-        m_crawler.flush()
     finally:
         p_request_url = helper_method.on_clean_url(p_url)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
