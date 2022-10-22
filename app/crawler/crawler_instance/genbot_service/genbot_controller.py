@@ -90,10 +90,10 @@ class genbot_controller(request_handler):
                 m_redirected_url = helper_method.on_clean_url(m_redirected_url)
                 m_redirected_requested_url = helper_method.on_clean_url(p_request_model.m_url)
 
-                m_parsed_model = self.__clean_sub_url(m_parsed_model)
-                m_status = self.__check_content_duplication(m_parsed_model)
-                if m_status:
-                    return None, None, None
+                #m_parsed_model = self.__clean_sub_url(m_parsed_model)
+                #m_status = self.__check_content_duplication(m_parsed_model)
+                #if m_status:
+                #    return None, None, None
 
                 if (m_redirected_url.replace("https", "http")) == m_redirected_requested_url.replace("https","http") or (m_redirected_url.replace("https", "http")) != m_redirected_requested_url.replace("https", "http") and self.__m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
                     self.__m_url_duplication_handler.insert(m_redirected_requested_url)
@@ -101,7 +101,7 @@ class genbot_controller(request_handler):
 
                     if m_parsed_model.m_validity_score >= 0 and (len(m_parsed_model.m_content) > 0) and m_response:
 
-                        m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
+                        # m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
                         # elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
                         log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
                     else:
@@ -110,7 +110,7 @@ class genbot_controller(request_handler):
 
                     self.__m_parsed_url.append(m_redirected_requested_url)
 
-                    return m_parsed_model, m_unique_file_model, m_raw_html
+                    return m_parsed_model, None, m_raw_html
                 else:
                     return None, None, None
             else:

@@ -1,4 +1,9 @@
 import gc
+import ssl
+from socket import socket
+from urllib.request import Request, urlopen
+
+import socks
 
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
@@ -14,16 +19,28 @@ class webRequestManager:
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
 
         try:
-            with m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, ) as page:
-                pass
-                # soup = page.content
+            import urllib.request
+
+
+            print(str(p_custom_proxy["http"]), flush=True)
+
+            IP_ADDR, PORT = str(p_custom_proxy["http"]).split(":")
+
+            print(IP_ADDR, flush=True)
+            print(int(PORT), flush=True)
+
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            request = Request(p_url)
+            socks.set_default_proxy(socks.SOCKS5, IP_ADDR, int(PORT))
+            socket.socket = socks.socksocket
+            response = urlopen(request, context=ctx)
+            mystr = response.read()
 
             m_request_handler.close()
             gc.collect()
-            if page == "" or page.status_code != 200:
-                return p_url, False, page.status_code
-            else:
-                return page.url, True, str("")
+            return p_url, True, str(mystr)
 
         except Exception as ex:
             m_request_handler.close()

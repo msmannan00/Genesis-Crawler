@@ -307,7 +307,7 @@ class html_parse_manager(HTMLParser, ABC):
         m_title_hidden = STRINGS.S_EMPTY
         m_important_content = self.__get_important_content() + " " + m_meta_description + " " + m_title + " " + self.m_meta_content
         m_meta_keywords = self.__get_meta_keywords()
-        m_content_type = self.__get_content_type()
+        m_content_type = "g"
         m_content = self.__get_content() + " " + m_title + " " + m_meta_description
         m_validity_score = self.__get_validity_score(m_important_content)
         m_important_content_hidden = self.__get_meta_description_hidden(self.m_meta_content + " " + m_title + " " + m_meta_description + " " + m_important_content)
