@@ -14,7 +14,6 @@ from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.local_shared_model.image_model import image_model_init, image_model_list, image_model
 from crawler.crawler_instance.genbot_service.web_request_handler import webRequestManager
 from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
-from crawler.crawler_instance.local_shared_model.url_model import url_model
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.shared_data import celery_shared_data
@@ -75,7 +74,7 @@ class file_parse_manager:
 
         return m_filtered_list, m_filtered_list_unique
 
-    def __is_image_favourable(self, p_list, p_request_model: url_model, p_proxy_queue):
+    def __is_image_favourable(self, p_list, p_proxy_queue):
         m_filtered_list = []
         m_filtered_list_unique = []
         m_porn_image_count = 0
@@ -143,10 +142,10 @@ class file_parse_manager:
 
         return image_model_list(m_images=m_filtered_list), m_porn_image_count, m_filtered_list_unique
 
-    def parse_static_files(self, p_images, p_documents, p_videos, p_content_type, p_request_model: url_model, p_proxy_queue):
+    def parse_static_files(self, p_images, p_documents, p_videos, p_content_type, p_proxy_queue):
         m_documents, m_documents_unique = self.__is_static_url_valid(p_documents, p_proxy_queue)
         m_videos, m_videos_unique = self.__is_static_url_valid(p_videos, p_proxy_queue)
-        m_images, m_porn_image_count, m_image_unique = self.__is_image_favourable(p_images, p_request_model, p_proxy_queue)
+        m_images, m_porn_image_count, m_image_unique = self.__is_image_favourable(p_images, p_proxy_queue)
 
         m_unique_file_model = unique_file_model(m_documents_unique, m_videos_unique, m_image_unique)
 
