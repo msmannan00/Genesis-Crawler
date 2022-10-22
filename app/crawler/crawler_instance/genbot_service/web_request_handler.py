@@ -15,19 +15,20 @@ class webRequestManager:
 
         try:
             with m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, ) as page:
-                soup = page.content
+                pass
+                # soup = page.content
 
+            m_request_handler.close()
+            gc.collect()
             if page == "" or page.status_code != 200:
                 return p_url, False, page.status_code
             else:
-                return page.url, True, str(soup)
+                return page.url, True, str("")
 
         except Exception as ex:
-            return p_url, False, None
-        finally:
             m_request_handler.close()
-            del m_request_handler
             gc.collect()
+            return p_url, False, None
 
     def load_header(self, p_url, p_custom_proxy):
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(
@@ -36,13 +37,14 @@ class webRequestManager:
         try:
             headers = {TOR_KEYS.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT}
             with m_request_handler.head(p_url, headers=headers, timeout=(CRAWL_SETTINGS_CONSTANTS.S_HEADER_TIMEOUT, 27), proxies=p_custom_proxy, allow_redirects=True, verify=False) as page:
+                m_request_handler.close()
+                gc.collect()
                 return True, page.headers
+
         except Exception:
-            return False, None
-        finally:
             m_request_handler.close()
-            del m_request_handler
             gc.collect()
+            return False, None
 
     # Load Header - used to get header without actually downloading the content
     def download_image(self, p_url, p_custom_proxy):
@@ -51,10 +53,10 @@ class webRequestManager:
 
         try:
             with m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, ) as response:
+                m_request_handler.close()
+                gc.collect()
                 return True, response
         except Exception as ex:
-            return False, None
-        finally:
             m_request_handler.close()
-            del m_request_handler
             gc.collect()
+            return False, None

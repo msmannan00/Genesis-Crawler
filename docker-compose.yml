@@ -64,6 +64,7 @@ services:
         logging:
             driver: none
         command: redis-server --requirepass killprg1
+        restart: always
         networks:
             backend:
                 ipv4_address: 172.0.0.3
@@ -82,6 +83,7 @@ services:
             - ./data/db:/data/db
         ports:
             - "27017:27017"
+        restart: always
         networks:
             backend:
                 ipv4_address: 172.0.0.4
@@ -95,7 +97,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor1
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9152:9152"
           - "0.0.0.0:9153:9153"
@@ -123,7 +125,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor2
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9154:9154"
           - "0.0.0.0:9155:9155"
@@ -151,7 +153,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor3
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9156:9156"
           - "0.0.0.0:9157:9157"
@@ -179,7 +181,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor4
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9158:9158"
           - "0.0.0.0:9159:9159"
@@ -207,7 +209,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor5
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9160:9160"
           - "0.0.0.0:9161:9161"
@@ -235,7 +237,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor6
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9162:9162"
           - "0.0.0.0:9163:9163"
@@ -263,7 +265,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor7
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9164:9164"
           - "0.0.0.0:9165:9165"
@@ -291,7 +293,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor8
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9166:9166"
           - "0.0.0.0:9167:9167"
@@ -319,7 +321,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor9
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9168:9168"
           - "0.0.0.0:9169:9169"
@@ -347,7 +349,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor10
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9170:9170"
           - "0.0.0.0:9171:9171"
@@ -375,7 +377,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor11
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9172:9172"
           - "0.0.0.0:9173:9173"
@@ -403,7 +405,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor12
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9174:9174"
           - "0.0.0.0:9175:9175"
@@ -431,7 +433,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor13
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9176:9176"
           - "0.0.0.0:9177:9177"
@@ -459,7 +461,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor14
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9178:9178"
           - "0.0.0.0:9179:9179"
@@ -487,7 +489,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor15
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9180:9180"
           - "0.0.0.0:9181:9181"
@@ -515,7 +517,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor16
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9182:9182"
           - "0.0.0.0:9183:9183"
@@ -543,7 +545,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor17
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9184:9184"
           - "0.0.0.0:9185:9185"
@@ -571,7 +573,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor18
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9186:9186"
           - "0.0.0.0:9187:9187"
@@ -599,7 +601,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor19
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9188:9188"
           - "0.0.0.0:9189:9189"
@@ -627,7 +629,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor20
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9190:9190"
           - "0.0.0.0:9191:9191"
@@ -655,7 +657,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor21
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9192:9192"
           - "0.0.0.0:9193:9193"
@@ -683,7 +685,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor22
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9194:9194"
           - "0.0.0.0:9195:9195"
@@ -711,7 +713,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor23
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9196:9196"
           - "0.0.0.0:9197:9197"
@@ -739,7 +741,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor24
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9198:9198"
           - "0.0.0.0:9199:9199"
@@ -767,7 +769,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/25
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9200:9200"
           - "0.0.0.0:9201:9201"
@@ -795,7 +797,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor26
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9202:9202"
           - "0.0.0.0:9203:9203"
@@ -823,7 +825,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor27
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9204:9204"
           - "0.0.0.0:9205:9205"
@@ -851,7 +853,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor28
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9206:9206"
           - "0.0.0.0:9207:9207"
@@ -879,7 +881,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor29
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9208:9208"
           - "0.0.0.0:9209:9209"
@@ -907,7 +909,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor30
-        restart:  "no"
+        
         ports:
           - "0.0.0.0:9210:9210"
           - "0.0.0.0:9211:9211"

@@ -1,13 +1,16 @@
 # Local Imports
 import copy
 import json
+import os
 import random
 import string
 import time
 
+from PIL import Image
 from gevent import sleep
-from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
 from crawler.constants.strings import PARSE_STRINGS, MANAGE_CRAWLER_MESSAGES
+from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.local_shared_model.image_model import image_model_init, image_model_list, image_model
 from crawler.crawler_instance.genbot_service.web_request_handler import webRequestManager
 from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
@@ -105,9 +108,18 @@ class file_parse_manager:
 
                             m_content_type = m_response.headers['Content-Type'].split('/')[0]
                             m_file_type = m_response.headers['Content-Type'].split('/')[1]
-                            # m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
 
                             if len(m_file_type) > 4 or m_file_type == "gif" or m_content_type != "image" or len(m_response.content) < 10000:
+                                m_list_temp.pop(0)
+                                continue
+
+                            m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
+                            m_url_path = RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH + m_url_path
+                            helper_method.write_content_to_path(m_url_path, m_response.content)
+
+                            width, height = Image.open(m_url_path).size
+                            if width < 250 and height < 250:
+                                os.remove(m_url_path)
                                 m_list_temp.pop(0)
                                 continue
 
@@ -115,7 +127,6 @@ class file_parse_manager:
                             m_filtered_list.append(image_model_init(m_url, 'g'))
                             m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'g').dict())))
 
-                            # os.remove(m_url_path)
                             self.__m_duplication_url_handler.insert(m_url)
                             log.g().s(MANAGE_CRAWLER_MESSAGES.S_FILE_PARSED + " : " + m_url)
 

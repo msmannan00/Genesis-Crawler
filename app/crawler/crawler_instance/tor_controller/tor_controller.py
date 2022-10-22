@@ -22,6 +22,7 @@ from stem import Signal
 class tor_controller(request_handler):
     __instance = None
     __m_controller = []
+    __m_session = None
 
     # Initializations
     @staticmethod
@@ -33,6 +34,7 @@ class tor_controller(request_handler):
     def __init__(self):
         tor_controller.__instance = self
         self.m_queue_index = 0
+        self.m_request_index = 0
         self.__on_init()
 
     def __on_init(self):
@@ -42,6 +44,16 @@ class tor_controller(request_handler):
             self.__m_controller.append(m_temp_controller)
             RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_TOR_NEW_CIRCUIT_INVOKE_DELAY, self.__invoke_new_circuit, False, m_temp_controller)
 
+        self.__session = requests.Session()
+        retries = Retry(total=1, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
+        adapter = requests.adapters.HTTPAdapter(pool_connections=100, pool_maxsize=100, max_retries=retries)
+        self.__session.mount('http://', adapter)
+
+        for connection_controller in TOR_CONTROL_PROXIES:
+            m_temp_controller = Controller(stem.socket.ControlPort(connection_controller["proxy"], connection_controller["port"]))
+            m_temp_controller.authenticate("Imammehdi@00")
+            self.__m_controller.append(m_temp_controller)
+            RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_TOR_NEW_CIRCUIT_INVOKE_DELAY, self.__invoke_new_circuit, False, m_temp_controller)
 
     def __invoke_new_circuit(self, m_temp_controller):
         try:
@@ -52,19 +64,15 @@ class tor_controller(request_handler):
 
     # Tor Helper Methods
     def __on_create_session(self, p_tor_based):
-        m_request_handler = requests.Session()
-        retries = Retry(total=1, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
-        m_request_handler.mount("http://", HTTPAdapter(max_retries=retries))
-
         if p_tor_based:
             headers = {
-                TOR_KEYS.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT,
+                TOR_KEYS.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT, 'Cache-Control': 'no-cache'
             }
         else:
             headers = {
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36', 'Cache-Control': 'no-cache'
             }
-        return m_request_handler, headers
+        return self.__session, headers
 
     def __on_proxy(self):
         if not APP_STATUS.DOCKERIZED_RUN:
