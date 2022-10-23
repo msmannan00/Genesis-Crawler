@@ -40,7 +40,7 @@ class tor_controller(request_handler):
     def __on_init(self):
         self.__session = requests.Session()
         retries = Retry(total=1, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
-        adapter = requests.adapters.HTTPAdapter(pool_connections=100, pool_maxsize=100, max_retries=retries)
+        adapter = requests.adapters.HTTPAdapter(pool_connections=1000, pool_maxsize=1000, max_retries=retries)
         self.__session.mount('http://', adapter)
 
         for connection_controller in TOR_CONTROL_PROXIES:

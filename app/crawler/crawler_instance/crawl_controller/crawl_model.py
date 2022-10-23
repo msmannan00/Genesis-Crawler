@@ -78,6 +78,7 @@ class crawl_model(request_handler):
                 m_thread.daemon = True
                 m_thread.start()
                 status.S_THREAD_COUNT += 1
+                sleep(0.1)
 
             p_fetched_url_list = self.__reinit_docker_request()
 
