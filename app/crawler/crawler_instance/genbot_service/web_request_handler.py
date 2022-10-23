@@ -51,7 +51,7 @@ class webRequestManager:
             TOR_COMMANDS.S_CREATE_SESSION, [True])
 
         try:
-            with m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, ) as response:
+            with m_request_handler.get(p_url, headers=headers, timeout=(30,30), proxies=p_custom_proxy, allow_redirects=True, ) as response:
                 m_request_handler.close()
                 gc.collect()
                 return True, response

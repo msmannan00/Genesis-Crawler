@@ -38,12 +38,6 @@ class tor_controller(request_handler):
         self.__on_init()
 
     def __on_init(self):
-        for connection_controller in TOR_CONTROL_PROXIES:
-            m_temp_controller = Controller(stem.socket.ControlPort(connection_controller["proxy"], connection_controller["port"]))
-            m_temp_controller.authenticate("Imammehdi@00")
-            self.__m_controller.append(m_temp_controller)
-            RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_TOR_NEW_CIRCUIT_INVOKE_DELAY, self.__invoke_new_circuit, False, m_temp_controller)
-
         self.__session = requests.Session()
         retries = Retry(total=1, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
         adapter = requests.adapters.HTTPAdapter(pool_connections=100, pool_maxsize=100, max_retries=retries)
