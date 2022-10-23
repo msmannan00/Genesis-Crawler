@@ -24,7 +24,6 @@ class genbot_controller(request_handler):
         self.__html_duplication_handler = html_duplication_controller()
         self.__m_html_parser = parse_controller()
 
-        self.__m_first_time = False
         self.__m_tor_id = - 1
         self.__m_depth = 0
         self.__m_unparsed_url = []
