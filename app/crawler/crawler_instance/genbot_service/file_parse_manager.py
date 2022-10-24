@@ -47,7 +47,7 @@ class file_parse_manager:
         m_filtered_list = []
         m_filtered_list_unique = []
 
-        m_list_temp = copy.copy(p_list)
+        m_list_temp = copy.deepcopy(p_list)
         while len(m_list_temp) > 0:
             if celery_shared_data.get_instance().get_network_status():
                 try:
@@ -83,8 +83,7 @@ class file_parse_manager:
         m_filtered_list = []
         m_filtered_list_unique = []
         m_porn_image_count = 0
-        p_list = []
-        m_list_temp = copy.copy(p_list[0:10])
+        m_list_temp = copy.deepcopy(p_list[0:10])
 
         while len(m_list_temp) > 0 and APP_STATUS.DOCKERIZED_RUN and len(m_filtered_list_unique)<2:
             try:

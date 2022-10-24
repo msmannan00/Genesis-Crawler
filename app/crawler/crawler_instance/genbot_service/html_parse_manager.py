@@ -70,7 +70,6 @@ class html_parse_manager(HTMLParser, ABC):
                 if validators.url(p_url):
                     suffix = ''.join(pathlib.Path(p_url).suffixes)
                     m_host_url = helper_method.get_host_url(p_url)
-                    m_parent_url = helper_method.get_host_url(self.m_base_url)
                     parent_domain = helper_method.on_clean_url(self.m_base_url).split(".")[0]
                     host_domain = helper_method.on_clean_url(p_url).split(".")[0]
 
@@ -85,10 +84,14 @@ class html_parse_manager(HTMLParser, ABC):
                         if "#" in p_url:
                             if p_url.count("/")>2 and m_host_url.__contains__("?") and self.m_query_url_count < 5:
                                 self.m_query_url_count += 1
-                                self.m_sub_url_hashed.append(helper_method.normalize_slashes(p_url))
+                                p_url = helper_method.normalize_slashes(p_url)
+                                if p_url not in self.m_sub_url_hashed:
+                                    self.m_sub_url_hashed.append(p_url)
                         else:
                             self.m_query_url_count += 1
-                            self.m_sub_url.append(helper_method.normalize_slashes(p_url))
+                            p_url = helper_method.normalize_slashes(p_url)
+                            if p_url not in self.m_sub_url:
+                                self.m_sub_url.append(p_url)
 
     def handle_starttag(self, p_tag, p_attrs):
         if p_tag == "a":

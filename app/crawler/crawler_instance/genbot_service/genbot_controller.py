@@ -109,12 +109,6 @@ class genbot_controller(request_handler):
                 self.__m_url_duplication_handler.insert(m_sub_url)
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
-        print(":::::::::::::::::::::::::::::::::::::::::::")
-        print(":::::::::::::::::::::::::::::::::::::::::::")
-        print((50/(1+(p_parsed_model.m_base_model.m_depth*4))))
-        print(":::::::::::::::::::::::::::::::::::::::::::")
-        print(":::::::::::::::::::::::::::::::::::::::::::")
-
         p_parsed_model.m_sub_url = m_sub_url_filtered[0:int(50/(1+(p_parsed_model.m_base_model.m_depth*4)))]
 
         return p_parsed_model
@@ -150,7 +144,7 @@ class genbot_controller(request_handler):
                     if m_parsed_model.m_validity_score >= 0 and (len(m_parsed_model.m_content) > 0) and m_response:
 
                         m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
-                        m_final_doc = copy.copy(m_parsed_model)
+                        m_final_doc = copy.deepcopy(m_parsed_model)
                         m_final_doc.m_sub_url = []
                         elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_final_doc.dict())], [True]])
                         log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
@@ -177,7 +171,7 @@ class genbot_controller(request_handler):
         from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
         from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_COMMANDS
 
-        self.__task_id = p_task_id
+        self.__task_id = "dirlink_" + str(p_task_id)
         self.init(p_request_url)
         m_host_crawled = False
         m_failure_count = 0
@@ -218,7 +212,6 @@ def genbot_instance(p_url, p_vid):
     from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS
     from crawler.constants import status
     import gc
-    p_url = "https://bbcnewsd73hkzno2ini43t4gblxvycyac5aw4gnv7t2rccijh7745uqd.onion/"
     m_crawler = genbot_controller()
     try:
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
