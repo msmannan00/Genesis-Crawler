@@ -1,4 +1,5 @@
 # Local Imports
+import copy
 from time import sleep
 
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
@@ -110,11 +111,11 @@ class genbot_controller(request_handler):
 
         print(":::::::::::::::::::::::::::::::::::::::::::")
         print(":::::::::::::::::::::::::::::::::::::::::::")
-        print((50/(p_parsed_model.m_base_model.m_depth*p_parsed_model.m_base_model.m_depth)))
+        print((50/(1+(p_parsed_model.m_base_model.m_depth*4))))
         print(":::::::::::::::::::::::::::::::::::::::::::")
         print(":::::::::::::::::::::::::::::::::::::::::::")
 
-        p_parsed_model.m_sub_url = m_sub_url_filtered[0:(50/(p_parsed_model.m_base_model.m_depth*p_parsed_model.m_base_model.m_depth))]
+        p_parsed_model.m_sub_url = m_sub_url_filtered[0:int(50/(1+(p_parsed_model.m_base_model.m_depth*4)))]
 
         return p_parsed_model
 
@@ -149,7 +150,7 @@ class genbot_controller(request_handler):
                     if m_parsed_model.m_validity_score >= 0 and (len(m_parsed_model.m_content) > 0) and m_response:
 
                         m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
-                        elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_parsed_model.dict())], [True]])
+                        elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [copy.copy(m_parsed_model)], [True]])
                         log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
                     else:
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
@@ -218,7 +219,6 @@ def genbot_instance(p_url, p_vid):
     p_url = "https://bbcnewsd73hkzno2ini43t4gblxvycyac5aw4gnv7t2rccijh7745uqd.onion/"
     m_crawler = genbot_controller()
     try:
-        p_url = "https://bbcnewsd73hkzno2ini43t4gblxvycyac5aw4gnv7t2rccijh7745uqd.onion/"
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
         m_crawler.flush()
         gc.collect()
