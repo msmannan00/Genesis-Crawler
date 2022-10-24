@@ -1,4 +1,6 @@
 # Local Imports
+from time import sleep
+
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
@@ -167,13 +169,21 @@ class genbot_controller(request_handler):
 
         self.__task_id = p_task_id
         self.init(p_request_url)
+        m_host_crawled = False
+        m_failure_count = 0
 
         self.__m_unparsed_url.append(url_model_init(p_request_url, CRAWL_SETTINGS_CONSTANTS.S_DEFAULT_DEPTH))
         while len(self.__m_unparsed_url) > 0:
             item = self.__m_unparsed_url.pop(0)
             m_parsed_model, m_unique_file_model, m_raw_html = self.__trigger_url_request(item)
 
-            if m_parsed_model is None:
+            if m_parsed_model is None and not m_host_crawled:
+                if m_failure_count>5:
+                    return
+
+                sleep(10)
+                m_failure_count += 1
+                self.__m_unparsed_url.__add__(item)
                 continue
 
             if item.m_depth < CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH and len(self.__m_unparsed_url) < CRAWL_SETTINGS_CONSTANTS.S_MAX_HOST_QUEUE_SIZE:
@@ -182,6 +192,7 @@ class genbot_controller(request_handler):
 
                 m_unique_file_model.m_content.append(m_parsed_model.m_important_content_hidden)
                 mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_INDEX, [helper_method.on_clean_url(helper_method.get_host_url(item.m_url)), self.__m_parsed_url, self.__m_unparsed_url, m_unique_file_model], [True]])
+            m_host_crawled = True
 
     def invoke_trigger(self, p_command, p_data=None):
         from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
@@ -197,7 +208,7 @@ def genbot_instance(p_url, p_vid):
     from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS
     from crawler.constants import status
     import gc
-
+    p_url = "https://bbcnewsd73hkzno2ini43t4gblxvycyac5aw4gnv7t2rccijh7745uqd.onion/"
     m_crawler = genbot_controller()
     try:
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])

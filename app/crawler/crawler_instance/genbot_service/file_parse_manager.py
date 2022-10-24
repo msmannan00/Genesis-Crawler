@@ -83,6 +83,7 @@ class file_parse_manager:
         m_filtered_list = []
         m_filtered_list_unique = []
         m_porn_image_count = 0
+        p_list = []
         m_list_temp = copy.copy(p_list[0:10])
 
         while len(m_list_temp) > 0 and APP_STATUS.DOCKERIZED_RUN and len(m_filtered_list_unique)<2:
@@ -131,12 +132,10 @@ class file_parse_manager:
                             if m_classifier_response[m_url_path]['unsafe'] > 0.5:
                                 m_porn_image_count += 1
                                 self.__m_images[m_url] = 'a'
-                                m_filtered_list.append(image_model_init(m_url, 'a'))
                                 m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'a').dict())))
 
                             else:
                                 self.__m_images[m_url] = 'g'
-                                m_filtered_list.append(image_model_init(m_url, 'g'))
                                 m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'g').dict())))
 
                             os.remove(m_url_path)
@@ -151,7 +150,7 @@ class file_parse_manager:
             except Exception as ex:
                 log.g().e(str(ex))
                 m_list_temp.pop(0)
-
+        m_filtered_list[:0] = m_filtered_list_unique
         return image_model_list(m_images=m_filtered_list), m_porn_image_count, m_filtered_list_unique
 
 

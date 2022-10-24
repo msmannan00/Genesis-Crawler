@@ -10,7 +10,6 @@ from crawler.crawler_instance.local_shared_model.url_model import url_model
 class parse_controller:
 
     m_static_parser = None
-    m_html_parser = None
 
     def __init__(self):
         self.m_static_parser = file_parse_manager()
@@ -25,9 +24,9 @@ class parse_controller:
 
     def __on_html_parser_invoke(self, p_base_url, p_html):
 
-        self.m_html_parser = html_parse_manager(p_base_url, p_html)
-        self.m_html_parser.feed(p_html)
-        return self.m_html_parser.parse_html_files()
+        m_html_parser = html_parse_manager(p_base_url, p_html)
+        m_html_parser.feed(p_html)
+        return m_html_parser.parse_html_files()
 
     def __on_static_parser_invoke(self, p_images, p_documents, p_videos, p_content_type, p_proxy_queue):
         return self.m_static_parser.parse_static_files(p_images, p_documents, p_videos, p_content_type, p_proxy_queue)
