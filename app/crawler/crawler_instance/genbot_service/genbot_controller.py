@@ -2,6 +2,7 @@
 from time import sleep
 
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
+from crawler.crawler_instance.local_shared_model.index_model import index_model
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
@@ -98,7 +99,7 @@ class genbot_controller(request_handler):
             log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + str(m_score))
             return True
 
-    def __clean_sub_url(self, p_parsed_model):
+    def __clean_sub_url(self, p_parsed_model:index_model):
         from crawler.crawler_services.helper_services.helper_method import helper_method
 
         m_sub_url_filtered = []
@@ -107,7 +108,13 @@ class genbot_controller(request_handler):
                 self.__m_url_duplication_handler.insert(m_sub_url)
                 m_sub_url_filtered.append(helper_method.on_clean_url(m_sub_url))
 
-        p_parsed_model.m_sub_url = m_sub_url_filtered[0:50]
+        print(":::::::::::::::::::::::::::::::::::::::::::")
+        print(":::::::::::::::::::::::::::::::::::::::::::")
+        print((50/(p_parsed_model.m_base_model.m_depth*p_parsed_model.m_base_model.m_depth)))
+        print(":::::::::::::::::::::::::::::::::::::::::::")
+        print(":::::::::::::::::::::::::::::::::::::::::::")
+
+        p_parsed_model.m_sub_url = m_sub_url_filtered[0:(50/(p_parsed_model.m_base_model.m_depth*p_parsed_model.m_base_model.m_depth))]
 
         return p_parsed_model
 
@@ -211,6 +218,7 @@ def genbot_instance(p_url, p_vid):
     p_url = "https://bbcnewsd73hkzno2ini43t4gblxvycyac5aw4gnv7t2rccijh7745uqd.onion/"
     m_crawler = genbot_controller()
     try:
+        p_url = "https://bbcnewsd73hkzno2ini43t4gblxvycyac5aw4gnv7t2rccijh7745uqd.onion/"
         m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
         m_crawler.flush()
         gc.collect()
