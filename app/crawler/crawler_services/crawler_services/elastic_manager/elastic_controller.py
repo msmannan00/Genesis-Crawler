@@ -28,8 +28,6 @@ class elastic_controller(request_handler):
         m_counter = 0
         while True:
             try:
-                p_data.m_sub_url = []
-                json.dumps(p_data.dict())
                 m_json_data = json.dumps(p_data)
                 m_post_object = {'pRequestCommand': p_commands, "pRequestData": m_json_data}
                 session = requests.Session()
