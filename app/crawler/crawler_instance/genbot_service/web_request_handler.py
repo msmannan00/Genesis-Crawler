@@ -31,9 +31,9 @@ class webRequestManager:
             gc.collect()
             del  m_request_handler
             if m_html == "" or m_status != 200:
-                return p_url, False, m_status
+                return str(p_url), False, m_status
             else:
-                return m_url_redirect, True, str(m_html)
+                return str(m_url_redirect), True, str(m_html)
 
         except Exception as ex:
             gc.collect()

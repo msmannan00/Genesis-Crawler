@@ -84,7 +84,7 @@ class file_parse_manager:
         m_filtered_list_unique = []
         m_porn_image_count = 0
         m_list_temp = copy.deepcopy(p_list[0:10])
-
+        m_list_temp = []
         while len(m_list_temp) > 0 and APP_STATUS.DOCKERIZED_RUN and len(m_filtered_list_unique)<2:
             try:
                 if celery_shared_data.get_instance().get_network_status():

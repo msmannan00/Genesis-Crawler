@@ -198,7 +198,7 @@ class genbot_controller(request_handler):
                     self.__m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
 
                 m_unique_file_model.m_content.append(m_parsed_model.m_important_content_hidden)
-                # mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_INDEX, [helper_method.on_clean_url(helper_method.get_host_url(item.m_url)), self.__m_parsed_url, self.__m_unparsed_url, m_unique_file_model], [True]])
+                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_INDEX, [helper_method.on_clean_url(helper_method.get_host_url(item.m_url)), self.__m_parsed_url, self.__m_unparsed_url, m_unique_file_model], [True]])
             m_host_crawled = True
             self.__m_unparsed_url.pop(0)
 
@@ -223,10 +223,10 @@ def genbot_instance(p_url, p_vid):
         gc.collect()
         p_request_url = helper_method.on_clean_url(p_url)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
-    #except Exception as ex:
-    #    print("error : " + str(ex), flush=True)
-    #    m_crawler.flush()
-    #    gc.collect()
+    except Exception as ex:
+        print("error : " + str(ex), flush=True)
+        m_crawler.flush()
+        gc.collect()
     finally:
         status.S_THREAD_COUNT -= 1
         m_crawler.flush()

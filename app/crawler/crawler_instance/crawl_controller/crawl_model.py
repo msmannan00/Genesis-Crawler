@@ -50,7 +50,6 @@ class crawl_model(request_handler):
                 m_thread.daemon = True
                 m_thread.start()
                 status.S_HOTLINK_THREAD_COUNT += 1
-                sleep(1)
 
             p_fetched_url_list = self.__install_hotlink_url()
 
@@ -120,17 +119,16 @@ class crawl_model(request_handler):
                 m_thread.daemon = True
                 m_thread.start()
                 status.S_THREAD_COUNT += 1
-                sleep(0.1)
 
             p_fetched_url_list = self.__reinit_docker_request()
 
     def __init_crawler(self):
         self.__celery_vid = 100000
         if APP_STATUS.DOCKERIZED_RUN:
-            # threading.Thread(target=self.__init_docker_request).start()
+            threading.Thread(target=self.__init_docker_request).start()
             threading.Thread(target=self.__init_hotlink_request).start()
         else:
-            # threading.Thread(target=self.__init_direct_request).start()
+            threading.Thread(target=self.__init_direct_request).start()
             threading.Thread(target=self.__init_hotlink_request).start()
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == CRAWL_MODEL_COMMANDS.S_INIT:
