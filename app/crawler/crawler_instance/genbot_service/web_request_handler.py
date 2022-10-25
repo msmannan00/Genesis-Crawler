@@ -1,4 +1,8 @@
+import asyncio
 import gc
+from asyncio import open_connection
+
+import aiohttp
 
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
@@ -10,24 +14,48 @@ class webRequestManager:
     def __init__(self):
         pass
 
+    async def main(self):
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://python.org') as response:
+                print("Status:", response.status)
+                print("Content-type:", response.headers['content-type'])
+
+                html = await response.text()
+                print("Body:", html[:15], "...")
+
+    async def fetch(self):
+        reader, writer = await open_connection(
+            proxy_url='socks5://user:password@127.0.0.1:1080',
+            host='check-host.net',
+            port=80
+        )
+        request = (b"GET /ip HTTP/1.1\r\n"
+                   b"Host: check-host.net\r\n"
+                   b"Connection: close\r\n\r\n")
+
+        writer.write(request)
+        return await reader.read(-1)
+
     def load_url(self, p_url, p_custom_proxy):
-        m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
+        asyncio.run(self.main())
+        ''' m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
 
         try:
             with m_request_handler.get(p_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies=p_custom_proxy, allow_redirects=True, ) as page:
-                soup = page.content
+                soup = page.text
 
             m_request_handler.close()
             gc.collect()
+            del  m_request_handler
             if page == "" or page.status_code != 200:
                 return p_url, False, page.status_code
             else:
                 return page.url, True, str(soup)
 
         except Exception as ex:
-            m_request_handler.close()
             gc.collect()
-            return p_url, False, None
+            return p_url, False, None '''
 
     def load_header(self, p_url, p_custom_proxy):
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(

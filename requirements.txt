@@ -10,6 +10,7 @@ jaccard-index
 requests
 xxhash
 stem
+aiohttp_socks
 
 ###### Requirements with Version Specifiers ######
 logdna~=1.18.2

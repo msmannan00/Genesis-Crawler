@@ -127,10 +127,10 @@ class crawl_model(request_handler):
     def __init_crawler(self):
         self.__celery_vid = 100000
         if APP_STATUS.DOCKERIZED_RUN:
-            threading.Thread(target=self.__init_docker_request).start()
+            # threading.Thread(target=self.__init_docker_request).start()
             threading.Thread(target=self.__init_hotlink_request).start()
         else:
-            threading.Thread(target=self.__init_direct_request).start()
+            # threading.Thread(target=self.__init_direct_request).start()
             threading.Thread(target=self.__init_hotlink_request).start()
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == CRAWL_MODEL_COMMANDS.S_INIT:

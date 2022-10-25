@@ -62,12 +62,13 @@ class genbot_controller(request_handler):
         from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
         from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 
-        m_requested_url = helper_method.on_clean_url(p_url)
+        self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
+
+        '''m_requested_url = helper_method.on_clean_url(p_url)
         m_mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_INDEX, [m_requested_url], [None]])
         m_unparsed_url = []
         m_content_list = []
 
-        self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
         self.__html_duplication_handler = None
         self.__html_duplication_handler = html_duplication_controller()
 
@@ -85,7 +86,7 @@ class genbot_controller(request_handler):
             self.__m_url_duplication_handler.insert(m_parsed_url)
 
         for m_url in m_unparsed_url:
-            self.__m_unparsed_url.append(url_model(**m_url))
+            self.__m_unparsed_url.append(url_model(**m_url))'''
 
 
     def __check_content_duplication(self, p_parsed_model):
@@ -181,12 +182,15 @@ class genbot_controller(request_handler):
             item = self.__m_unparsed_url.__getitem__(0)
             m_parsed_model, m_unique_file_model, m_raw_html = self.__trigger_url_request(item)
 
-            if m_parsed_model is None and not m_host_crawled:
-                if m_failure_count>5:
-                    return
-
+            if m_parsed_model is None:
+                if not m_host_crawled:
+                    if m_failure_count>5:
+                        return
+                    else:
+                        m_failure_count += 1
+                else:
+                    self.__m_unparsed_url.pop(0)
                 sleep(10)
-                m_failure_count += 1
                 continue
 
             if item.m_depth < CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH and len(self.__m_unparsed_url) < CRAWL_SETTINGS_CONSTANTS.S_MAX_HOST_QUEUE_SIZE:
@@ -194,7 +198,7 @@ class genbot_controller(request_handler):
                     self.__m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
 
                 m_unique_file_model.m_content.append(m_parsed_model.m_important_content_hidden)
-                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_INDEX, [helper_method.on_clean_url(helper_method.get_host_url(item.m_url)), self.__m_parsed_url, self.__m_unparsed_url, m_unique_file_model], [True]])
+                # mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_INDEX, [helper_method.on_clean_url(helper_method.get_host_url(item.m_url)), self.__m_parsed_url, self.__m_unparsed_url, m_unique_file_model], [True]])
             m_host_crawled = True
             self.__m_unparsed_url.pop(0)
 
@@ -219,10 +223,10 @@ def genbot_instance(p_url, p_vid):
         gc.collect()
         p_request_url = helper_method.on_clean_url(p_url)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
-    except Exception as ex:
-        print("error : " + str(ex), flush=True)
-        m_crawler.flush()
-        gc.collect()
+    #except Exception as ex:
+    #    print("error : " + str(ex), flush=True)
+    #    m_crawler.flush()
+    #    gc.collect()
     finally:
         status.S_THREAD_COUNT -= 1
         m_crawler.flush()

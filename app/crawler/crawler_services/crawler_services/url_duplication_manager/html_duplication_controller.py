@@ -28,7 +28,7 @@ class html_duplication_controller:
         m_max_k_score = 0
 
         try:
-            for val in self.__m_duplication_content_handler[0:2]:
+            for val in self.__m_duplication_content_handler:
                 m_score = jaccard_index(val, m_content, 3)
                 if m_score > m_max_k_score:
                     m_max_k_score = m_score
@@ -46,4 +46,5 @@ class html_duplication_controller:
         return m_score
 
     def on_insert_content(self, m_content):
-        self.__m_duplication_content_handler.append(m_content)
+        if len(self.__m_duplication_content_handler)<2:
+            self.__m_duplication_content_handler.append(m_content)
