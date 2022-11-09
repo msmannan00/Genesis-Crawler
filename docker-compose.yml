@@ -90,7 +90,7 @@ services:
         deploy:
           resources:
             limits:
-              memory: 2G
+              memory: 10G
 
     tor-extend-1:
         container_name: tor_instace_1

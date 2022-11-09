@@ -49,6 +49,8 @@ class tor_controller(request_handler):
                 m_temp_controller.authenticate("Imammehdi@00")
                 self.__m_controller.append(m_temp_controller)
                 RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_TOR_NEW_CIRCUIT_INVOKE_DELAY, self.__invoke_new_circuit, False, m_temp_controller)
+                self.__invoke_new_circuit(m_temp_controller)
+
 
     def __invoke_new_circuit(self, m_temp_controller):
         try:

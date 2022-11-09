@@ -47,13 +47,13 @@ class CRAWL_SETTINGS_CONSTANTS:
     # S_START_URL = "https://drive.google.com/uc?export=download&id=1ZG7D2NsI-NrVyp3SDq9q4zcrgFi3jhaG"
 
     # Total Thread Instances Allowed
-    S_UPDATE_STATUS_TIMEOUT = 200
+    S_UPDATE_STATUS_TIMEOUT = 250
     S_UPDATE_NETWORK_STATUS_TIMEOUT = 60
     S_UPDATE_STATUS_URL = "https://167.86.99.31/update_status/?pRequest=m_crawler"
 
     # Time Delay to Invoke New Url Requests
     S_ICRAWL_IMAGE_INVOKE_DELAY = 2
-    S_TOR_NEW_CIRCUIT_INVOKE_DELAY = 3600
+    S_TOR_NEW_CIRCUIT_INVOKE_DELAY = 1800
     S_LOCAL_FILE_CRAWLER_INVOKE_DELAY = 1
     S_LOCAL_FILE_CRAWLER_INVOKE_DELAY_LONG = 10
     S_CELERY_RESTART_DELAY = 3600
@@ -64,7 +64,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_DEFAULT_DEPTH = 0
 
     # Max URL Timeout
-    S_URL_TIMEOUT = 60
+    S_URL_TIMEOUT = 200
     S_HEADER_TIMEOUT = 30
 
     # Max Host Queue Size
@@ -89,4 +89,4 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_STATIC_PARSER_LIST_MAX_SIZE = 10
 
     # Max Thread Size
-    S_MAX_THREAD_COUNT = 300
+    S_MAX_THREAD_COUNT = 500

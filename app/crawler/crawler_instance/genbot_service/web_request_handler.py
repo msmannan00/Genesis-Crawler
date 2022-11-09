@@ -1,10 +1,8 @@
 import asyncio
 import gc
-from asyncio import open_connection
-
 import aiohttp
-from aiohttp_socks import ProxyConnector
 
+from aiohttp_socks import ProxyConnector
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
@@ -17,13 +15,16 @@ class webRequestManager:
 
     async def fetch(self, p_url, p_proxy, headers):
             connector = ProxyConnector.from_url('socks5://'+p_proxy.split('//')[1])
-            async with aiohttp.ClientSession(connector=connector, headers=headers) as session:
+            async with aiohttp.ClientSession(connector=connector) as session:
                 async with session.get(p_url, allow_redirects=True, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT) as response:
                     return await response.text(), response.status, response.url
 
 
     def load_url(self, p_url, p_custom_proxy):
         try:
+            #if not p_url.endswith("/"):
+            #    p_url += "/"
+
             m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
             m_html, m_status, m_url_redirect = asyncio.run(self.fetch(p_url, p_custom_proxy["http"], headers))
 

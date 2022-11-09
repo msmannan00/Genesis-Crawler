@@ -64,7 +64,7 @@ class genbot_controller(request_handler):
 
         self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
 
-        '''m_requested_url = helper_method.on_clean_url(p_url)
+        m_requested_url = helper_method.on_clean_url(p_url)
         m_mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_INDEX, [m_requested_url], [None]])
         m_unparsed_url = []
         m_content_list = []
@@ -82,12 +82,11 @@ class genbot_controller(request_handler):
         for m_html in m_content_list:
             self.__html_duplication_handler.on_insert_content(m_html)
 
-        for m_parsed_url in self.__m_parsed_url:
-            self.__m_url_duplication_handler.insert(m_parsed_url)
+        #for m_parsed_url in self.__m_parsed_url:
+        #    self.__m_url_duplication_handler.insert(m_parsed_url)
 
-        for m_url in m_unparsed_url:
-            self.__m_unparsed_url.append(url_model(**m_url))'''
-
+        #for m_url in m_unparsed_url:
+        #    self.__m_unparsed_url.append(url_model(**m_url))
 
     def __check_content_duplication(self, p_parsed_model):
         from crawler.crawler_shared_directory.log_manager.log_controller import log
@@ -124,7 +123,7 @@ class genbot_controller(request_handler):
             from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
             import json
 
-            log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
+            # log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
             m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
 
             if m_response is True:
@@ -188,10 +187,7 @@ class genbot_controller(request_handler):
                         return
                     else:
                         m_failure_count += 1
-                else:
-                    self.__m_unparsed_url.pop(0)
-                sleep(10)
-                continue
+                        continue
 
             if item.m_depth < CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH and len(self.__m_unparsed_url) < CRAWL_SETTINGS_CONSTANTS.S_MAX_HOST_QUEUE_SIZE:
                 for sub_url in m_parsed_model.m_sub_url[0:int(CRAWL_SETTINGS_CONSTANTS.S_MAX_SUBHOST_QUEUE_SIZE / (item.m_depth + 1))]:

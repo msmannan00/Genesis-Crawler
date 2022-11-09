@@ -84,8 +84,8 @@ class file_parse_manager:
         m_filtered_list_unique = []
         m_porn_image_count = 0
         m_list_temp = copy.deepcopy(p_list[0:10])
-        m_list_temp = []
-        while len(m_list_temp) > 0 and APP_STATUS.DOCKERIZED_RUN and len(m_filtered_list_unique)<2:
+
+        while len(m_list_temp) > 0 and len(m_filtered_list_unique)<2:
             try:
                 if celery_shared_data.get_instance().get_network_status():
                     m_url = m_list_temp.__getitem__(0)
@@ -106,18 +106,22 @@ class file_parse_manager:
                         self.__m_images[m_url] = 0
 
                         if m_status:
-                            key = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+                            # key = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
                             m_content_type = m_response.headers['Content-Type'].split('/')[0]
                             m_file_type = m_response.headers['Content-Type'].split('/')[1]
-                            m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
+                            # m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
 
                             if len(m_file_type) > 4 or m_file_type == "gif" or m_content_type != "image" or len(
                                     m_response.content) < 15000 or " html" in str(m_response.content):
                                 m_list_temp.pop(0)
                                 continue
 
-                            m_url_path = RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH + m_url_path
+                            self.__m_images[m_url] = 'g'
+                            m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'g').dict())))
+                            log.g().s(MANAGE_CRAWLER_MESSAGES.S_FILE_PARSED + " : " + m_url)
+
+                            '''m_url_path = RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH + m_url_path
                             helper_method.write_content_to_path(m_url_path, m_response.content)
                             m_classifier_response = m_classifier.classify(m_url_path)
 
@@ -137,7 +141,7 @@ class file_parse_manager:
                                 self.__m_images[m_url] = 'g'
                                 m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'g').dict())))
 
-                            os.remove(m_url_path)
+                            os.remove(m_url_path)'''
                             self.__m_duplication_url_handler.insert(m_url)
 
                     elif m_url in self.__m_images:
