@@ -47,7 +47,11 @@ class mongo_request_generator(request_handler):
 
         return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_MONGO_INDEX_MODEL,
                 MONGODB_KEYS.S_FILTER: {'m_url': {'$eq': p_request_url}}, MONGODB_KEYS.S_VALUE:
-                    {'$set': m_cached_url, '$push': {'content': {'$each': p_unique_file_model.m_content}, 'document_url_parsed': {'$each': p_unique_file_model.m_documents}, 'video_url_parsed': {'$each': p_unique_file_model.m_videos}, 'image_url_parsed': {'$each': p_unique_file_model.m_images}}}}
+                    {'$set': m_cached_url, '$push': {
+                                                     'document_url_parsed': {'$each': []},
+                                                     'video_url_parsed': {'$each': []},
+                                                     'image_url_parsed': {'$each': []}}}}
+                    # {'$set': m_cached_url, '$push': {'content': {'$each': p_unique_file_model.m_content}, 'document_url_parsed': {'$each': p_unique_file_model.m_documents}, 'video_url_parsed': {'$each': p_unique_file_model.m_videos}, 'image_url_parsed': {'$each': p_unique_file_model.m_images}}}}
 
     def invoke_trigger(self, p_commands, p_data=None):
         if p_commands == MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL:

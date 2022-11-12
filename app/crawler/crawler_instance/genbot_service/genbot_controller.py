@@ -183,13 +183,14 @@ class genbot_controller(request_handler):
 
             if m_parsed_model is None:
                 if not m_host_crawled:
-                    if m_failure_count>5:
+                    if m_failure_count>3:
                         return
                     else:
                         m_failure_count += 1
+                        sleep(5)
                         continue
 
-            if item.m_depth < CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH and len(self.__m_unparsed_url) < CRAWL_SETTINGS_CONSTANTS.S_MAX_HOST_QUEUE_SIZE:
+            if m_parsed_model is not None and item.m_depth < CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH and len(self.__m_unparsed_url) < CRAWL_SETTINGS_CONSTANTS.S_MAX_HOST_QUEUE_SIZE:
                 for sub_url in m_parsed_model.m_sub_url[0:int(CRAWL_SETTINGS_CONSTANTS.S_MAX_SUBHOST_QUEUE_SIZE / (item.m_depth + 1))]:
                     self.__m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
 
