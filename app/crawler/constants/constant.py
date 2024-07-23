@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_TYPE
+
 
 class RAW_PATH_CONSTANTS:
     S_SIGWIN_PATH = str(Path(__file__).parent.parent.parent.parent.parent) + "/cygwin64/bin/bash.exe --login"
@@ -43,6 +45,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_DOC_TYPES = [".pdf", ".msword", ".document", ".docx", ".doc"]
 
     # Local URL
+    S_CRAWL_TYPE = CRAWL_TYPE.S_DEEP
     S_START_URL = "http://167.86.99.31/crawl_url"
     # S_START_URL = "https://drive.google.com/uc?export=download&id=1ZG7D2NsI-NrVyp3SDq9q4zcrgFi3jhaG"
 
@@ -89,4 +92,4 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_STATIC_PARSER_LIST_MAX_SIZE = 10
 
     # Max Thread Size
-    S_MAX_THREAD_COUNT = 100
+    S_MAX_THREAD_COUNT = 270
