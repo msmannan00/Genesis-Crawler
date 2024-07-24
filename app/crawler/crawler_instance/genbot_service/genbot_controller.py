@@ -66,7 +66,6 @@ class genbot_controller(request_handler):
 
         m_requested_url = helper_method.on_clean_url(p_url)
         m_mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_INDEX, [m_requested_url], [None]])
-        m_unparsed_url = []
         m_content_list = []
 
         self.__html_duplication_handler = None
@@ -74,19 +73,12 @@ class genbot_controller(request_handler):
 
         for m_data in m_mongo_response:
             self.__m_parsed_url = m_data["sub_url_parsed"]
-            m_unparsed_url = m_data["sub_url_pending"]
             m_content_list = m_data["content"]
             self.__m_html_parser.on_static_parser_init(m_data["document_url_parsed"], m_data["image_url_parsed"], m_data["video_url_parsed"])
             break
 
         for m_html in m_content_list:
             self.__html_duplication_handler.on_insert_content(m_html)
-
-        #for m_parsed_url in self.__m_parsed_url:
-        #    self.__m_url_duplication_handler.insert(m_parsed_url)
-
-        #for m_url in m_unparsed_url:
-        #    self.__m_unparsed_url.append(url_model(**m_url))
 
     def __check_content_duplication(self, p_parsed_model):
         from crawler.crawler_shared_directory.log_manager.log_controller import log
@@ -146,7 +138,7 @@ class genbot_controller(request_handler):
                         m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
                         m_final_doc = copy.deepcopy(m_parsed_model)
                         m_final_doc.m_sub_url = []
-                        elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_final_doc.dict())], [True]])
+                        # elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_final_doc.dict())], [True]])
                         log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
                     else:
                         log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))

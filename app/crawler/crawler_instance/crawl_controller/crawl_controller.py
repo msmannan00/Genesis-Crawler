@@ -1,15 +1,12 @@
 # Local Imports
 
-from eventlet import sleep
 from raven.transport import requests
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, NETWORK_MONITOR
 from crawler.constants.keys import REDIS_KEYS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
-from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_CONTROLLER_COMMANDS, CRAWL_MODEL_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_model import crawl_model
-from crawler.crawler_instance.tor_controller.tor_enums import TOR_STATUS
 from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
 from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS
 from crawler.crawler_services.helper_services.scheduler import RepeatedTimer

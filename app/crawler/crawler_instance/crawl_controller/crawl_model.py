@@ -135,7 +135,6 @@ class crawl_model(request_handler):
                 multiprocessing.Process(target=self.__init_hotlink_request).start()
         else:
             multiprocessing.Process(target=self.__init_direct_request).start()
-            #multiprocessing.Process(target=self.__init_hotlink_request).start()
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == CRAWL_MODEL_COMMANDS.S_INIT:
             self.__init_crawler()
