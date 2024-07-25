@@ -127,6 +127,7 @@ class crawl_model(request_handler):
 
             p_fetched_url_list = self.__reinit_docker_request()
 
+
     def __init_crawler(self):
         self.__celery_vid = 100000
         if APP_STATUS.DOCKERIZED_RUN:

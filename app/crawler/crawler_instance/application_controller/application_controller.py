@@ -3,6 +3,7 @@ from abc import ABC
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_CONTROLLER_COMMANDS
+from crawler.crawler_instance.custom_filter_controller.custom_filter_controller import custom_filter_controller
 from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
 from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_controller import crawl_controller
@@ -35,6 +36,7 @@ class application_controller(request_handler, ABC):
     # External Reuqest Callbacks
     def __on_start(self):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_APPLICATION_STARTING)
+        custom_filter_controller.get_instance().init_filter()
         self.__initializations()
         self.__m_crawl_controller.invoke_trigger(CRAWL_CONTROLLER_COMMANDS.S_RUN_CRAWLER)
 

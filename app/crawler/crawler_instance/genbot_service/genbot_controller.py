@@ -1,14 +1,13 @@
 # Local Imports
 import asyncio
 import copy
-import threading
 from time import sleep
 
+from crawler.crawler_instance.custom_filter_controller.custom_filter_controller import custom_filter_controller
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
 from crawler.crawler_instance.local_shared_model.index_model import index_model
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
-lock = threading.Lock()
 
 class genbot_controller(request_handler):
     import os
@@ -140,7 +139,7 @@ class genbot_controller(request_handler):
                         m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images)
                         m_final_doc = copy.deepcopy(m_parsed_model)
                         m_final_doc.m_sub_url = []
-                        self.thread_safe_append(m_redirected_url)
+                        custom_filter_controller.get_instance().write_data(m_redirected_url)
                         # elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_final_doc.dict())], [True]])
                         log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
                     else:
@@ -158,12 +157,6 @@ class genbot_controller(request_handler):
         except Exception as ex:
             print(ex, flush=True)
             return None, None, None
-
-    def thread_safe_append(self, p_url):
-        file_path = './filtered_url.txt'
-        with lock:
-            with open(file_path, 'a') as file:
-                file.write(p_url + '\n')
 
     # Wait For Crawl Manager To Provide URL From Queue
     def start_crawler_instance(self, p_request_url, p_task_id):
