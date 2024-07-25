@@ -1,6 +1,9 @@
 #!/bin/bash
 
-tor_instances=30
+tor_instances=1
+
+# Get the directory of the script
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
 stop_all_containers() {
     docker stop $(docker ps -aq)
@@ -20,23 +23,26 @@ generate_main_docker_compose() {
         echo "    command: tail -f /dev/null"
         echo "  api:"
         echo "    build:"
-        echo "      context: .."
-        echo "      dockerfile: dockerFiles/api_docker"
+        echo "      context: $SCRIPT_DIR"
+        echo "      dockerfile: $SCRIPT_DIR/dockerFiles/api_docker"
         echo "    ports:"
         echo "      - '8000:8000'"
         echo "    depends_on:"
         echo "      - mongo"
         echo "      - redis_server"
-        for ((i=1; i<=$tor_instances; i++)); do
+        for ((i=1; i<=tor_instances; i++)); do
             echo "      - 'tor-extend-$i'"
         done
+        echo "    environment:"
+        echo "      - S_TOR_INSTANCE_COUNT=$tor_instances"
+        echo "      - TOR_INSTANCES=$tor_instances"  # Added line
         echo "    deploy:"
         echo "      resources:"
         echo "        limits:"
         echo "          memory: 50G"
         echo "    restart: always"
         echo "    volumes:"
-        echo "      - ./app/:/app"
+        echo "      - $SCRIPT_DIR/app/:/app"
         echo "    ulimits:"
         echo "      nproc: 65535"
         echo "      nofile:"
@@ -61,7 +67,7 @@ generate_main_docker_compose() {
         echo "    logging:"
         echo "      driver: none"
         echo "    volumes:"
-        echo "      - ./data/db:/data/db"
+        echo "      - $SCRIPT_DIR/data/db:/data/db"
         echo "    ports:"
         echo "      - '27017:27017'"
         echo "    restart: always"
@@ -82,7 +88,7 @@ generate_tor_docker_compose() {
     {
         echo "version: '3.8'"
         echo "services:"
-        for ((i=1; i<=$tor_instances; i++)); do
+        for ((i=1; i<=tor_instances; i++)); do
             puid=$((20000 + 2 * i))
             pgid=$((20001 + 2 * i))
             port1=$((9180 + 2 * i))
@@ -120,7 +126,7 @@ generate_tor_docker_compose() {
         echo "  backend:"
         echo "    ipam:"
         echo "      config:"
-        echo "        - subnet: 172.0.0.0/16"
+        echo "        - subnet: 172.0.0.0/24"
     } > docker-compose.tor.yml
 }
 
@@ -132,7 +138,7 @@ restart_tor_services() {
     while true; do
         sleep 600  # 10 minutes
         echo "Restarting Tor services..."
-        docker-compose -f docker-compose.tor.yml restart
+        docker-compose -f docker-compose.tor.yml restart -d
     done
 }
 
@@ -140,5 +146,5 @@ stop_all_containers
 remove_docker_networks
 generate_main_docker_compose
 generate_tor_docker_compose
-run_docker_composes
 restart_tor_services &
+run_docker_composes

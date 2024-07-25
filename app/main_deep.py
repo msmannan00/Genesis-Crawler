@@ -1,3 +1,5 @@
+import sys
+
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_instance.application_controller.application_controller import application_controller
 from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS

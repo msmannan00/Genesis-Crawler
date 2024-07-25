@@ -5,50 +5,24 @@ services:
     command: tail -f /dev/null
   api:
     build:
-      context: ..
-      dockerfile: dockerFiles/api_docker
+      context: /home/morgan-freeman/Workspace/Genesis-Crawler
+      dockerfile: /home/morgan-freeman/Workspace/Genesis-Crawler/dockerFiles/api_docker
     ports:
       - '8000:8000'
     depends_on:
       - mongo
       - redis_server
       - 'tor-extend-1'
-      - 'tor-extend-2'
-      - 'tor-extend-3'
-      - 'tor-extend-4'
-      - 'tor-extend-5'
-      - 'tor-extend-6'
-      - 'tor-extend-7'
-      - 'tor-extend-8'
-      - 'tor-extend-9'
-      - 'tor-extend-10'
-      - 'tor-extend-11'
-      - 'tor-extend-12'
-      - 'tor-extend-13'
-      - 'tor-extend-14'
-      - 'tor-extend-15'
-      - 'tor-extend-16'
-      - 'tor-extend-17'
-      - 'tor-extend-18'
-      - 'tor-extend-19'
-      - 'tor-extend-20'
-      - 'tor-extend-21'
-      - 'tor-extend-22'
-      - 'tor-extend-23'
-      - 'tor-extend-24'
-      - 'tor-extend-25'
-      - 'tor-extend-26'
-      - 'tor-extend-27'
-      - 'tor-extend-28'
-      - 'tor-extend-29'
-      - 'tor-extend-30'
+    environment:
+      - S_TOR_INSTANCE_COUNT=1
+      - TOR_INSTANCES=1
     deploy:
       resources:
         limits:
           memory: 50G
     restart: always
     volumes:
-      - ./app/:/app
+      - /home/morgan-freeman/Workspace/Genesis-Crawler/app/:/app
     ulimits:
       nproc: 65535
       nofile:
@@ -73,7 +47,7 @@ services:
     logging:
       driver: none
     volumes:
-      - ./data/db:/data/db
+      - /home/morgan-freeman/Workspace/Genesis-Crawler/data/db:/data/db
     ports:
       - '27017:27017'
     restart: always
