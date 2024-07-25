@@ -1,48 +1,26 @@
-# Local Imports
 from urllib.parse import urlparse
 from gensim.parsing.preprocessing import STOPWORDS
 
 
-class helper_method:
+class HelperMethod:
 
-    # Extract URL Host
     @staticmethod
     def get_host_url(p_url):
-        m_parsed_uri = urlparse(p_url)
-        m_host_url = '{uri.scheme}://{uri.netloc}/'.format(uri=m_parsed_uri)
-        if m_host_url.endswith("/"):
-            m_host_url = m_host_url[:-1]
-        return m_host_url
+        parsed_uri = urlparse(p_url)
+        host_url = f"{parsed_uri.scheme}://{parsed_uri.netloc}"
+        return host_url
 
-    # URL Cleaner
     @staticmethod
     def on_clean_url(p_url):
-        if p_url.startswith("http://www.") or p_url.startswith("https://www.") or p_url.startswith("www."):
-            p_url = p_url.replace("www.", "", 1)
+        p_url = p_url.lstrip("www.")
+        return p_url.rstrip("/ ")
 
-        while p_url.endswith("/") or p_url.endswith(" "):
-            p_url = p_url[:-1]
-
-        return p_url
-
-    # Remove Extra Slashes
     @staticmethod
     def normalize_slashes(p_url):
-        p_url = str(p_url)
-        segments = p_url.split('/')
-        correct_segments = []
-        for segment in segments:
-            if segment != '':
-                correct_segments.append(segment)
-        normalized_url = '/'.join(correct_segments)
-        normalized_url = normalized_url.replace("http:/", "http://")
-        normalized_url = normalized_url.replace("https:/", "https://")
-        normalized_url = normalized_url.replace("ftp:/", "ftp://")
-        return normalized_url
+        p_url = '/'.join(filter(None, str(p_url).split('/')))
+        p_url = p_url.replace("http:/", "http://").replace("https:/", "https://").replace("ftp:/", "ftp://")
+        return p_url
 
     @staticmethod
     def is_stop_word(p_word):
-        if p_word in STOPWORDS:
-            return True
-        else:
-            return False
+        return p_word in STOPWORDS

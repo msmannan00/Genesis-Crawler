@@ -46,7 +46,7 @@ class CRAWL_SETTINGS_CONSTANTS:
 
     # Local URL
     S_CRAWL_TYPE = CRAWL_TYPE.S_DEEP
-    S_START_URL = "https://ahmia.fi/onions"
+    S_START_URL = "https://drive.google.com/uc?export=download&id=19-5Q4VwzLM6nLRVhtoZLG_ZynQ3_ThV7"
     # S_START_URL = "https://drive.google.com/uc?export=download&id=1ZG7D2NsI-NrVyp3SDq9q4zcrgFi3jhaG"
 
     # Total Thread Instances Allowed

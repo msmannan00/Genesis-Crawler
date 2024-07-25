@@ -1,4 +1,5 @@
 # Local Imports
+import asyncio
 import copy
 import gc
 import json
@@ -52,7 +53,7 @@ class genbot_hot_controller(request_handler):
         try:
 
             #log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
-            m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
+            m_redirected_url, m_response, m_raw_html = asyncio.run(self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy))
 
             if m_response is True:
                 m_parsed_model, m_images = self.__m_html_parser.on_parse_html(m_raw_html, p_request_model)

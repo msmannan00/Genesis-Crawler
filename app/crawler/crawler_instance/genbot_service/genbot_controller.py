@@ -1,4 +1,5 @@
 # Local Imports
+import asyncio
 import copy
 from time import sleep
 
@@ -116,7 +117,7 @@ class genbot_controller(request_handler):
             import json
 
             # log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
-            m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
+            m_redirected_url, m_response, m_raw_html = asyncio.run(self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy))
 
             if m_response is True:
 
@@ -135,7 +136,7 @@ class genbot_controller(request_handler):
 
                     if m_parsed_model.m_validity_score >= 0 and (len(m_parsed_model.m_content) > 0) and m_response:
 
-                        m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
+                        m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images)
                         m_final_doc = copy.deepcopy(m_parsed_model)
                         m_final_doc.m_sub_url = []
                         # elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_final_doc.dict())], [True]])

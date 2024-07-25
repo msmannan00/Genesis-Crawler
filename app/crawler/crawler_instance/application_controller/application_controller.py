@@ -3,8 +3,6 @@ from abc import ABC
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_CONTROLLER_COMMANDS
-from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
-from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
 from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_controller import crawl_controller
@@ -41,7 +39,7 @@ class application_controller(request_handler, ABC):
         self.__m_crawl_controller.invoke_trigger(CRAWL_CONTROLLER_COMMANDS.S_RUN_CRAWLER)
 
     # External Reuqest Manager
-    def invoke_triggers(self, p_command):
+    def  invoke_triggers(self, p_command):
         if p_command == APPICATION_COMMANDS.S_START_APPLICATION_DIRECT:
             return self.__on_start()
 

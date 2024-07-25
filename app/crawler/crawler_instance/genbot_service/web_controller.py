@@ -1,4 +1,6 @@
 # Local Imports
+import asyncio
+
 from crawler.celery_manager import celery_genbot
 from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
 from crawler.crawler_instance.genbot_service.web_request_handler import webRequestManager
@@ -12,7 +14,7 @@ class web_controller(request_handler):
 
     # Wait For Crawl Manager To Provide URL From Queue
     def start_crawler_instance(self, p_request_url, p_proxy):
-        return self.__m_web_request_handler.load_url(p_request_url, p_proxy)
+        return asyncio.run(self.__m_web_request_handler.load_url(p_request_url, p_proxy))
 
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE:
