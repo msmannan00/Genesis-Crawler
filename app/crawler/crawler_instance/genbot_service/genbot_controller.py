@@ -1,13 +1,14 @@
 # Local Imports
 import asyncio
 import copy
+import threading
 from time import sleep
 
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
 from crawler.crawler_instance.local_shared_model.index_model import index_model
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
-
+lock = threading.Lock()
 
 class genbot_controller(request_handler):
     import os
@@ -94,7 +95,7 @@ class genbot_controller(request_handler):
             return True
 
     def __clean_sub_url(self, p_parsed_model:index_model):
-        from crawler.crawler_services.helper_services.helper_method import helper_method
+        from crawler.crawler_instance.helper_services.helper_method import helper_method
 
         m_sub_url_filtered = []
         for m_sub_url in p_parsed_model.m_sub_url:
@@ -112,8 +113,8 @@ class genbot_controller(request_handler):
             from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
             from crawler.crawler_shared_directory.log_manager.log_controller import log
             from crawler.crawler_instance.helper_services.helper_method import helper_method
-            from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
-            from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
+            #from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
+            #from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
             import json
 
             # log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
@@ -139,6 +140,7 @@ class genbot_controller(request_handler):
                         m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images)
                         m_final_doc = copy.deepcopy(m_parsed_model)
                         m_final_doc.m_sub_url = []
+                        self.thread_safe_append(m_redirected_url)
                         # elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_final_doc.dict())], [True]])
                         log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
                     else:
@@ -156,6 +158,12 @@ class genbot_controller(request_handler):
         except Exception as ex:
             print(ex, flush=True)
             return None, None, None
+
+    def thread_safe_append(self, p_url):
+        file_path = './filtered_url.txt'
+        with lock:
+            with open(file_path, 'a') as file:
+                file.write(p_url + '\n')
 
     # Wait For Crawl Manager To Provide URL From Queue
     def start_crawler_instance(self, p_request_url, p_task_id):

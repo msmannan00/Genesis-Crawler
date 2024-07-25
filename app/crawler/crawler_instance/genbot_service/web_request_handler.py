@@ -17,7 +17,6 @@ class webRequestManager:
 
     async def load_url(self, url, custom_proxy):
         handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
-        url = "http://cpsexxklpu7kgwu4h4noa6ewlwinszoo6gw463elubo4y2lc3u6nfnyd.onion/"
         while True:
             html, status, url_redirect = await self.fetch(url, custom_proxy["http"])
             final_status = status
@@ -26,7 +25,7 @@ class webRequestManager:
                 url = url_redirect
                 await asyncio.sleep(5)
                 continue
-            await asyncio.sleep(10)
+            await asyncio.sleep(5)
             break
         if final_status != 200:
             handler.close()

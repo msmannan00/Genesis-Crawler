@@ -63,6 +63,7 @@ class crawl_model(request_handler):
             m_request_list = list(m_live_url_list) + p_fetched_url_list
             for m_url_node in m_request_list:
                 genbot_instance(m_url_node, -1)
+                print("")
 
     def __reinit_docker_request(self):
         m_live_url_list, m_updated_url_list = self.__install_live_url()
@@ -100,7 +101,7 @@ class crawl_model(request_handler):
         m_response_text = m_response.text
 
         m_updated_url_list = []
-        for m_server_url in str(m_response_text).split("<br>"):
+        for m_server_url in str(m_response_text).split("\n"):
             m_url = helper_method.on_clean_url(m_server_url)
             if helper_method.is_uri_validator(m_server_url) and m_url not in m_live_url_list:
                 log.g().s(MANAGE_CRAWLER_MESSAGES.S_INSTALLED_URL + " : " + m_url)

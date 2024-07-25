@@ -1,4 +1,6 @@
 import re
+from gettext import find
+
 import nltk
 from nltk import PorterStemmer
 from crawler.constants.constant import SPELL_CHECK_CONSTANTS
@@ -8,10 +10,9 @@ from crawler.crawler_instance.helper_services.helper_method import helper_method
 # Precompile regular expressions and nltk download
 NON_ALPHANUMERIC_REGEXP = re.compile('[^A-Za-z0-9]+')
 try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
     nltk.download('punkt')
-
+except Exception as ex:
+    pass
 class spell_checker_handler:
     __instance = None
 
