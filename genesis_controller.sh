@@ -1,8 +1,6 @@
 #!/bin/bash
 
 tor_instances=1
-
-# Get the directory of the script
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
 stop_all_containers() {
@@ -136,9 +134,14 @@ run_docker_composes() {
 
 restart_tor_services() {
     while true; do
-        sleep 600  # 10 minutes
+        if ! docker info > /dev/null 2>&1; then
+            echo "Docker is not running. Exiting..."
+            exit 1
+        fi
+
+        sleep 600
         echo "Restarting Tor services..."
-        docker-compose -f docker-compose.tor.yml restart -d
+        docker-compose -f docker-compose.tor.yml restart
     done
 }
 
