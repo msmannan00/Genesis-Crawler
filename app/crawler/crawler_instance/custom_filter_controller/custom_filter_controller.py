@@ -1,15 +1,17 @@
 from eventlet.hubs import threading
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 import csv
+import re
 from bs4 import BeautifulSoup
-
 from crawler.crawler_shared_directory.log_manager.log_controller import log
-
 
 class custom_filter_controller:
     __instance = None
     __S_CUSTOM_FILTER_HASH = set()
     lock = threading.Lock()
+
+    # Keywords indicating possible data leaks
+    leak_keywords = ["leak", "breach", "confidential", "exposed", "unauthorized access", "data spill", "hack"]
 
     # Load company data from CSV
     def load_company_data(self, csv_file):
@@ -20,7 +22,7 @@ class custom_filter_controller:
                 companies.append(row)
         return companies
 
-    # Initializations
+    # Singleton pattern implementation
     @staticmethod
     def get_instance():
         if custom_filter_controller.__instance is None:
@@ -41,26 +43,44 @@ class custom_filter_controller:
 
     def validate_custom_html_filter(self, p_base_url, p_html, m_validity_score):
         soup = BeautifulSoup(p_html, 'html.parser')
-        plain_text = soup.get_text(separator=' ')
+        plain_text = soup.get_text(separator=' ').lower()
+        found_domains = set()
+        # Check if any leak-related keywords are present
+        leak_indicator_found = any(keyword in plain_text for keyword in self.leak_keywords)
+
+        #if not leak_indicator_found:
+        #    return m_validity_score  # Early return if no leak indicators are found
 
         for company in self.companies:
-            name_found = company['name'].lower() in plain_text.lower()
-            domain_found = len(company['domain']) > 2 and company['domain'].lower() in plain_text.lower()
-            linkedin_found = len(company['linkedin url']) > 2 and company['linkedin url'].lower() in plain_text.lower()
+            domain_regex = rf"\b{re.escape(company['domain'].lower())}\b"
+            patterns = []
+            if len(company['name'].split()) >= 3:
+                patterns.append(re.escape(company['name'].lower()))
+            if re.search(domain_regex, plain_text):
+                patterns.append(domain_regex)
+            if len(company['linkedin url']) > 2:
+                patterns.append(re.escape(company['linkedin url'].lower()))
 
-            if name_found or domain_found or linkedin_found:
-                self.write_data(p_base_url, company)
-                print("match is found")
-                log.g().s("CUSTOM FILTER : " + "Match Fuund : " + p_base_url)
+            for pattern in patterns:
+                if pattern and re.search(pattern, plain_text) and len(company['domain'])>5:
+                    found_domains.add(company['domain'])
+                    print("Match found for", company['name'])
+                    log.g().s("CUSTOM FILTER : " + "Match Found : " + p_base_url)
+                    break
 
-                return m_validity_score
+        if found_domains:
+            self.write_data(p_base_url, found_domains)
+            return m_validity_score
 
         return m_validity_score
 
-    def write_data(self, p_url, company_info):
+    def write_data(self, p_url, domains):
+        domain_list = ','.join(domains)
         if p_url not in self.__S_CUSTOM_FILTER_HASH:
             self.__S_CUSTOM_FILTER_HASH.add(p_url)
-            file_path = './filtered_url.txt'
+            file_path = 'filtered_url.txt'
             with self.lock:
-                with open(file_path, 'a') as file:
-                    file.write(f"{p_url},{company_info['name']},{company_info['domain']},{company_info['year founded']},{company_info['industry']},{company_info['size range']},{company_info['locality']},{company_info['country']},{company_info['linkedin url']},{company_info['current employee estimate']},{company_info['total employee estimate']}\n")
+                with open(file_path, 'a') as file:  # 'a' mode will create the file if it doesn't exist
+                    file.write(f"{p_url},{domain_list}\n")
+
+
