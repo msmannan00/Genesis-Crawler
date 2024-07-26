@@ -16,6 +16,7 @@ class webRequestManager:
                 return await response.text(), response.status, response.url
 
     async def load_url(self, url, custom_proxy):
+        url = "https://bbc.com"
         handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
         while True:
             html, status, url_redirect = await self.fetch(url, custom_proxy["http"])
