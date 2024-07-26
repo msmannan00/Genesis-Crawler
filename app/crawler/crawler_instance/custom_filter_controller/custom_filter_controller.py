@@ -3,6 +3,9 @@ from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 import csv
 from bs4 import BeautifulSoup
 
+from crawler.crawler_shared_directory.log_manager.log_controller import log
+
+
 class custom_filter_controller:
     __instance = None
     __S_CUSTOM_FILTER_HASH = set()
@@ -48,6 +51,8 @@ class custom_filter_controller:
             if name_found or domain_found or linkedin_found:
                 self.write_data(p_base_url, company)
                 print("match is found")
+                log.g().s("CUSTOM FILTER : " + "Match Fuund : " + p_base_url)
+
                 return m_validity_score
 
         return m_validity_score
