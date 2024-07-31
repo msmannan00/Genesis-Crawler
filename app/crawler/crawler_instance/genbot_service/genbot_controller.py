@@ -7,6 +7,7 @@ from crawler.crawler_instance.custom_filter_controller.custom_filter_controller 
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
 from crawler.crawler_instance.local_shared_model.index_model import index_model
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
+from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
 class genbot_controller(request_handler):
@@ -216,7 +217,7 @@ def genbot_instance(p_url, p_vid):
         p_request_url = helper_method.on_clean_url(p_url)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
     except Exception as ex:
-        print("Genbot Controller Error : " + str(p_url) + " : " + str(ex), flush=True)
+        log.g().e(str(ex))
         m_crawler.flush()
         gc.collect()
     finally:
