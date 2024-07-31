@@ -116,7 +116,7 @@ class genbot_controller(request_handler):
             #from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
             import json
 
-            # log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
+            log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
             m_redirected_url, m_response, m_raw_html = asyncio.run(self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy))
 
             if m_response is True:
@@ -149,6 +149,7 @@ class genbot_controller(request_handler):
 
                     return m_parsed_model, m_unique_file_model, m_raw_html
                 else:
+                    log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
                     return None, None, None
             else:
                 log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
