@@ -1,3 +1,5 @@
+import os
+
 from eventlet.hubs import threading
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 import csv
@@ -37,6 +39,8 @@ class custom_filter_controller:
             self.companies = self.load_company_data('custom_client_dataset.csv')
 
     def init_filter(self):
+        if not os.path.exists("filtered_url.txt"):
+            open("filtered_url.txt", 'a').close()
         with open("filtered_url.txt", 'r') as file:
             for line in file:
                 self.__S_CUSTOM_FILTER_HASH.add(line.strip())
@@ -44,28 +48,38 @@ class custom_filter_controller:
     def validate_custom_html_filter(self, p_base_url, p_html, m_validity_score):
         soup = BeautifulSoup(p_html, 'html.parser')
         plain_text = soup.get_text(separator=' ').lower()
+
+        # Extract URLs from the HTML and add to plain_text
+        urls = [a['href'].lower() for a in soup.find_all('a', href=True)]
+        plain_text += ' ' + ' '.join(urls)
+
         found_domains = set()
+
         # Check if any leak-related keywords are present
         leak_indicator_found = any(keyword in plain_text for keyword in self.leak_keywords)
 
-        #if not leak_indicator_found:
+        # if not leak_indicator_found:
         #    return m_validity_score  # Early return if no leak indicators are found
 
         for company in self.companies:
             domain_regex = rf"\b{re.escape(company['domain'].lower())}\b"
             patterns = []
-            if len(company['name'].split()) >= 3:
-                patterns.append(re.escape(company['name'].lower()))
+
             if re.search(domain_regex, plain_text):
                 patterns.append(domain_regex)
             if len(company['linkedin url']) > 2:
                 patterns.append(re.escape(company['linkedin url'].lower()))
 
             for pattern in patterns:
-                if pattern and re.search(pattern, plain_text) and len(company['domain'])>5:
+                if pattern and re.search(pattern, plain_text) and len(company['domain']) > 5:
                     found_domains.add(company['domain'])
                     print("Match found for", company['name'])
                     log.g().s("CUSTOM FILTER : " + "Match Found : " + p_base_url)
+
+                    # Write match information to filtered_url.txt
+                    with open("filtered_url.txt", 'a') as file:
+                        file.write(f"{p_base_url},{company['name']},{company['domain']},{','.join(urls)}\n")
+
                     break
 
         if found_domains:
