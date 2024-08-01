@@ -56,6 +56,7 @@ class webRequestManager:
             gc.collect()
             return False, None
 
+    # Load Header - used to get header without actually downloading the content
     def download_image(self, p_url, p_custom_proxy):
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(
             TOR_COMMANDS.S_CREATE_SESSION, [True])

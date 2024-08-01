@@ -22,8 +22,8 @@ class TOR_CONSTANTS:
 
 
 class TOR_CONNECTION_CONSTANTS:
-    S_TOR_CONNECTION_PORT = 9182
-    S_TOR_CONTROL_PORT = 9183
+    S_TOR_CONNECTION_PORT = 9052
+    S_TOR_CONTROL_PORT = 9053
 
 
 class SPELL_CHECK_CONSTANTS:
@@ -43,7 +43,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_DOC_TYPES = [".pdf", ".msword", ".document", ".docx", ".doc"]
 
     # Local URL
-    S_START_URL = "https://drive.google.com/uc?export=download&id=19-5Q4VwzLM6nLRVhtoZLG_ZynQ3_ThV7"
+    S_START_URL = "http://167.86.99.31/crawl_url"
     # S_START_URL = "https://drive.google.com/uc?export=download&id=1ZG7D2NsI-NrVyp3SDq9q4zcrgFi3jhaG"
 
     # Total Thread Instances Allowed
@@ -69,7 +69,7 @@ class CRAWL_SETTINGS_CONSTANTS:
 
     # Max Host Queue Size
     S_MAX_HOST_QUEUE_SIZE = 100
-    S_MAX_SUBHOST_QUEUE_SIZE = 15
+    S_MAX_SUBHOST_QUEUE_SIZE = 500
     S_MAX_CRAWL_SIZE = 100
 
     # Max URL Size
@@ -89,4 +89,4 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_STATIC_PARSER_LIST_MAX_SIZE = 10
 
     # Max Thread Size
-    S_MAX_THREAD_COUNT = 150
+    S_MAX_THREAD_COUNT = 100
