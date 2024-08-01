@@ -7,6 +7,8 @@ from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
+from crawler.crawler_shared_directory.log_manager.log_controller import log
+
 
 class webRequestManager:
 
@@ -24,13 +26,12 @@ class webRequestManager:
         try:
             #if not p_url.endswith("/"):
             #    p_url += "/"
-
             m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
             m_html, m_status, m_url_redirect = asyncio.run(self.fetch(p_url, p_custom_proxy["http"], headers))
 
             m_request_handler.close()
             gc.collect()
-            del  m_request_handler
+            del m_request_handler
             if m_html == "" or m_status != 200:
                 return str(p_url), False, m_status
             else:
@@ -56,7 +57,6 @@ class webRequestManager:
             gc.collect()
             return False, None
 
-    # Load Header - used to get header without actually downloading the content
     def download_image(self, p_url, p_custom_proxy):
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(
             TOR_COMMANDS.S_CREATE_SESSION, [True])
