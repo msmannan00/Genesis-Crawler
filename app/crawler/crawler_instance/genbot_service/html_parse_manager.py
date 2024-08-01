@@ -27,7 +27,6 @@ class html_parse_manager(HTMLParser, ABC):
         super().__init__()
         self.m_html = m_html
         self.m_base_url = m_base_url
-        self.complete_text = ""
 
         self.m_title = STRINGS.S_EMPTY
         self.m_meta_description = STRINGS.S_EMPTY
@@ -39,6 +38,7 @@ class html_parse_manager(HTMLParser, ABC):
         self.m_sub_url = []
         self.m_sub_url_hashed = []
         self.m_image_url = []
+        self.m_raw_html = ""
         self.m_doc_url = []
         self.m_video_url = []
 
@@ -241,8 +241,8 @@ class html_parse_manager(HTMLParser, ABC):
 
     def __generate_html(self):
         m_soup = BeautifulSoup(self.m_html, "html.parser")
-        self.complete_text = m_soup.get_text()
-        self.m_content = self.__clean_text(self.complete_text)
+        self.m_raw_html = self.m_html
+        self.m_content = self.__clean_text(m_soup.get_text())
 
     # ----------------- Data Recievers -----------------
 
@@ -313,13 +313,13 @@ class html_parse_manager(HTMLParser, ABC):
         m_title_hidden = STRINGS.S_EMPTY
         m_important_content = self.__get_important_content() + " " + m_meta_description + " " + m_title + " " + self.m_meta_content
         m_meta_keywords = self.__get_meta_keywords()
-        m_content_type = self.__get_content_type()
+        m_content_type = self.m_content_type
         m_content = self.__get_content() + " " + m_title + " " + m_meta_description
         m_validity_score = self.__get_validity_score(m_important_content)
         m_important_content_hidden = self.__get_meta_description_hidden(self.m_meta_content + " " + m_title + " " + m_meta_description + " " + m_important_content)
         m_extended_content = self.__get_text()
         m_sub_url.extend(self.m_sub_url_hashed)
-        m_validity_score = custom_filter_controller.get_instance().validate_custom_html_filter(self.m_base_url, self.complete_text, m_validity_score)
+        m_validity_score = custom_filter_controller.get_instance().validate_custom_html_filter(self.m_base_url, self.m_raw_html, m_validity_score)
 
         m_document = []
         m_video = []

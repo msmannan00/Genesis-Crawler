@@ -1,6 +1,6 @@
 # Local Imports
+import requests
 
-from raven.transport import requests
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, NETWORK_MONITOR
 from crawler.constants.keys import REDIS_KEYS

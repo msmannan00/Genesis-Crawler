@@ -83,7 +83,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor1
-        
+
         ports:
           - "0.0.0.0:9152:9152"
           - "0.0.0.0:9153:9153"
@@ -113,7 +113,7 @@ services:
         image: barneybuffet/tor:latest
         volumes:
           - ~/Documents/docker/tor_test:/tor2
-        
+
         ports:
           - "0.0.0.0:9154:9154"
           - "0.0.0.0:9155:9155"

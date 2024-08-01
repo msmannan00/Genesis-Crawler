@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_TYPE
-
 
 class RAW_PATH_CONSTANTS:
     S_SIGWIN_PATH = str(Path(__file__).parent.parent.parent.parent.parent) + "/cygwin64/bin/bash.exe --login"
@@ -45,7 +43,6 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_DOC_TYPES = [".pdf", ".msword", ".document", ".docx", ".doc"]
 
     # Local URL
-    S_CRAWL_TYPE = CRAWL_TYPE.S_DEEP
     S_START_URL = "https://drive.google.com/uc?export=download&id=19-5Q4VwzLM6nLRVhtoZLG_ZynQ3_ThV7"
     # S_START_URL = "https://drive.google.com/uc?export=download&id=1ZG7D2NsI-NrVyp3SDq9q4zcrgFi3jhaG"
 

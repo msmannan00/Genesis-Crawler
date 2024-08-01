@@ -1,14 +1,19 @@
 # Local Imports
-import asyncio
 import copy
 import json
+import os
+import random
+import string
 import time
+
+from PIL import Image
 from gevent import sleep
 from crawler.constants.app_status import APP_STATUS
-from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
 from crawler.constants.strings import PARSE_STRINGS, MANAGE_CRAWLER_MESSAGES
-from crawler.crawler_instance.genbot_service.web_request_handler import webRequestManager
+from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.local_shared_model.image_model import image_model_init, image_model_list, image_model
+from crawler.crawler_instance.genbot_service.web_request_handler import webRequestManager
 from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.crawler_shared_directory.log_manager.log_controller import log
@@ -37,7 +42,7 @@ class file_parse_manager:
             self.__m_duplication_url_handler.insert(m_image_model.m_url)
             self.__m_images[m_image_model.m_url] = m_image_model.m_type
 
-    def __is_static_url_valid(self, p_list):
+    def __is_static_url_valid(self, p_list, p_proxy_queue):
 
         m_filtered_list = []
         m_filtered_list_unique = []
@@ -50,7 +55,7 @@ class file_parse_manager:
                     if self.__m_duplication_url_handler.validate_duplicate(m_url) is False:
                         self.__m_duplication_url_handler.insert(m_url)
 
-                        m_response, m_header = asyncio.run(self.m_web_request_hander.load_header(m_url))
+                        m_response, m_header = self.m_web_request_hander.load_header(m_url, p_proxy_queue)
                         if not m_response and not celery_shared_data.get_instance().get_network_status():
                             continue
 
@@ -74,7 +79,7 @@ class file_parse_manager:
 
         return m_filtered_list, m_filtered_list_unique
 
-    def __is_image_favourable(self, p_list):
+    def __is_image_favourable(self, p_list, p_proxy_queue):
         m_filtered_list = []
         m_filtered_list_unique = []
         m_porn_image_count = 0
@@ -92,7 +97,7 @@ class file_parse_manager:
                             m_list_temp.pop(0)
                             continue
 
-                        m_status, m_response = asyncio.run(self.m_web_request_hander.download_image(m_url))
+                        m_status, m_response = self.m_web_request_hander.download_image(m_url, p_proxy_queue)
                         if not m_status:
                             if celery_shared_data.get_instance().get_network_status():
                                 m_list_temp.pop(0)
@@ -152,10 +157,10 @@ class file_parse_manager:
         return image_model_list(m_images=m_filtered_list), m_porn_image_count, m_filtered_list_unique
 
 
-    def parse_static_files(self, p_images, p_documents, p_videos, p_content_type):
-        m_documents, m_documents_unique = self.__is_static_url_valid(p_documents)
-        m_videos, m_videos_unique = self.__is_static_url_valid(p_videos)
-        m_images, m_porn_image_count, m_image_unique = self.__is_image_favourable(p_images)
+    def parse_static_files(self, p_images, p_documents, p_videos, p_content_type, p_proxy_queue):
+        m_documents, m_documents_unique = self.__is_static_url_valid(p_documents, p_proxy_queue)
+        m_videos, m_videos_unique = self.__is_static_url_valid(p_videos, p_proxy_queue)
+        m_images, m_porn_image_count, m_image_unique = self.__is_image_favourable(p_images, p_proxy_queue)
 
         m_unique_file_model = unique_file_model(m_documents_unique, m_videos_unique, m_image_unique)
 

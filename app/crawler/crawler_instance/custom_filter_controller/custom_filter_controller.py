@@ -36,7 +36,9 @@ class custom_filter_controller:
             raise Exception(MANAGE_CRAWLER_MESSAGES.S_SINGLETON_EXCEPTION)
         else:
             custom_filter_controller.__instance = self
-            self.companies = self.load_company_data('custom_client_dataset.csv')
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            csv_path = os.path.join(script_dir, 'custom_client_dataset.csv')
+            self.companies = self.load_company_data(csv_path)
 
     def init_filter(self):
         if not os.path.exists("filtered_url.txt"):
@@ -49,17 +51,9 @@ class custom_filter_controller:
         soup = BeautifulSoup(p_html, 'html.parser')
         plain_text = soup.get_text(separator=' ').lower()
 
-        # Extract URLs from the HTML and add to plain_text
         urls = [a['href'].lower() for a in soup.find_all('a', href=True)]
         plain_text += ' ' + ' '.join(urls)
-
         found_domains = set()
-
-        # Check if any leak-related keywords are present
-        leak_indicator_found = any(keyword in plain_text for keyword in self.leak_keywords)
-
-        # if not leak_indicator_found:
-        #    return m_validity_score  # Early return if no leak indicators are found
 
         for company in self.companies:
             domain_regex = rf"\b{re.escape(company['domain'].lower())}\b"
@@ -75,11 +69,6 @@ class custom_filter_controller:
                     found_domains.add(company['domain'])
                     print("Match found for", company['name'])
                     log.g().s("CUSTOM FILTER : " + "Match Found : " + p_base_url)
-
-                    # Write match information to filtered_url.txt
-                    with open("filtered_url.txt", 'a') as file:
-                        file.write(f"{p_base_url},{company['name']},{company['domain']},{','.join(urls)}\n")
-
                     break
 
         if found_domains:
@@ -92,7 +81,9 @@ class custom_filter_controller:
         domain_list = ','.join(domains)
         if p_url not in self.__S_CUSTOM_FILTER_HASH:
             self.__S_CUSTOM_FILTER_HASH.add(p_url)
-            file_path = 'filtered_url.txt'
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            data_path = os.path.join(script_dir, 'filtered_url.txt')
+            file_path = data_path
             with self.lock:
                 with open(file_path, 'a') as file:  # 'a' mode will create the file if it doesn't exist
                     file.write(f"{p_url},{domain_list}\n")

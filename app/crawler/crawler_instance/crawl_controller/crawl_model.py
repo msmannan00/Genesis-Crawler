@@ -8,7 +8,7 @@ from crawler.constants import status
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
-from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS, CRAWL_TYPE
+from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
 from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
 from crawler.crawler_instance.genbot_service.genbot_hot_controller import genbot_hot_instance
 from crawler.crawler_instance.helper_services.helper_method import helper_method
@@ -115,15 +115,15 @@ class crawl_model(request_handler):
         virtual_id = self.__celery_vid
         while True:
             while len(p_fetched_url_list) > 0:
-                if status.S_THREAD_COUNT >= CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT*2:
-                    sleep(0.5)
+                if status.S_THREAD_COUNT >= CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
+                    sleep(0.1)
                     continue
                 virtual_id += 1
+                status.S_THREAD_COUNT += 1
                 m_thread = threading.Thread(target=genbot_instance, args=(p_fetched_url_list.pop(0), virtual_id))
                 m_thread.daemon = True
                 m_thread.start()
-                status.S_THREAD_COUNT += 1
-                sleep(0.5)
+                sleep(0.1)
 
             p_fetched_url_list = self.__reinit_docker_request()
 
@@ -131,12 +131,10 @@ class crawl_model(request_handler):
     def __init_crawler(self):
         self.__celery_vid = 100000
         if APP_STATUS.DOCKERIZED_RUN:
-            if CRAWL_SETTINGS_CONSTANTS.S_CRAWL_TYPE == CRAWL_TYPE.S_DEEP:
-                multiprocessing.Process(target=self.__init_docker_request).start()
-            else:
-                multiprocessing.Process(target=self.__init_hotlink_request).start()
+            multiprocessing.Process(target=self.__init_docker_request).start()
         else:
             multiprocessing.Process(target=self.__init_direct_request).start()
+
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == CRAWL_MODEL_COMMANDS.S_INIT:
             self.__init_crawler()
