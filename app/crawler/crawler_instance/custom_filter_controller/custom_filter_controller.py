@@ -53,28 +53,6 @@ class custom_filter_controller:
                 self.__S_CUSTOM_FILTER_HASH.add(line.strip())
 
     def validate_custom_html_filter(self, p_base_url, p_html, m_validity_score):
-        p_html = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Company List</title>
-        </head>
-        <body>
-            <h1>Company List</h1>
-            <ul>
-                <li>
-                    <a href="http://dxc.technology">DXC Technology</a> - <a href="http://linkedin.com/company/dxctechnology">LinkedIn</a>
-                </li>
-                <li>
-                    <a href="http://miami.edu">University of Miami</a> - <a href="http://linkedin.com/company/university-of-miami">LinkedIn</a>
-                </li>
-            </ul>
-            <p>Text mentioning broward.edu and linkedin.com/company/broward-college.</p>
-            <p>Text mentioning foxnews.com and linkedin.com/company/fox-news-channel.</p>
-        </body>
-        </html>
-        """
-
         # Now, this HTML can be passed to the validate_custom_html_filter method
 
         soup = BeautifulSoup(p_html, 'html.parser')
