@@ -62,6 +62,7 @@ class custom_filter_controller:
         found_domains = set()
 
         for key in self.company_hashes:
+            if len(key)>0 and key in plain_text:
                 found_domains.add(self.company_hashes[key]['domain'])
                 log.g().s("CUSTOM FILTER : " + "Match Found : " + p_base_url)
 
