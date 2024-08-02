@@ -25,7 +25,7 @@ class genbot_controller(request_handler):
         self.__task_id = None
         self.__m_url_duplication_handler = duplication_handler()
         self.__m_web_request_handler = webRequestManager()
-        self.__html_duplication_handler = html_duplication_controller()
+        #self.__html_duplication_handler = html_duplication_controller()
         self.__m_html_parser = parse_controller()
 
         self.__m_tor_id = - 1
@@ -38,13 +38,13 @@ class genbot_controller(request_handler):
         self.__task_id = None
         self.__m_url_duplication_handler = None
         self.__m_web_request_handler = None
-        self.__html_duplication_handler = None
+        #self.__html_duplication_handler = None
         self.__m_html_parser = None
 
         del self.__task_id
         del self.__m_url_duplication_handler
         del self.__m_web_request_handler
-        del self.__html_duplication_handler
+        #del self.__html_duplication_handler
         del self.__m_html_parser
 
         self.__m_tor_id = - 1
@@ -69,8 +69,8 @@ class genbot_controller(request_handler):
         m_unparsed_url = []
         m_content_list = []
 
-        self.__html_duplication_handler = None
-        self.__html_duplication_handler = html_duplication_controller()
+        #self.__html_duplication_handler = None
+        #self.__html_duplication_handler = html_duplication_controller()
 
         for m_data in m_mongo_response:
             self.__m_parsed_url = m_data["sub_url_parsed"]
@@ -79,8 +79,8 @@ class genbot_controller(request_handler):
             self.__m_html_parser.on_static_parser_init(m_data["document_url_parsed"], m_data["image_url_parsed"], m_data["video_url_parsed"])
             break
 
-        for m_html in m_content_list:
-            self.__html_duplication_handler.on_insert_content(m_html)
+        #for m_html in m_content_list:
+        #    self.__html_duplication_handler.on_insert_content(m_html)
 
         #for m_parsed_url in self.__m_parsed_url:
         #    self.__m_url_duplication_handler.insert(m_parsed_url)
@@ -91,14 +91,14 @@ class genbot_controller(request_handler):
     def __check_content_duplication(self, p_parsed_model):
         from crawler.crawler_shared_directory.log_manager.log_controller import log
         from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
-        m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_important_content_hidden)
+        #m_score = self.__html_duplication_handler.verify_content_duplication(p_parsed_model.m_important_content_hidden)
 
-        if m_score <= 0.80:
-            self.__html_duplication_handler.on_insert_content(p_parsed_model.m_important_content_hidden)
-            return False
-        else:
-            log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + str(m_score))
-            return True
+        #if m_score <= 0.80:
+        #    self.__html_duplication_handler.on_insert_content(p_parsed_model.m_important_content_hidden)
+        #    return False
+        #else:
+        log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + str(m_score))
+        return True
 
     def __clean_sub_url(self, p_parsed_model:index_model):
         from crawler.crawler_services.helper_services.helper_method import helper_method
@@ -133,10 +133,10 @@ class genbot_controller(request_handler):
                 m_redirected_requested_url = helper_method.on_clean_url(p_request_model.m_url)
 
                 m_parsed_model = self.__clean_sub_url(m_parsed_model)
-                m_status = self.__check_content_duplication(m_parsed_model)
-                if m_status:
+                #m_status = self.__check_content_duplication(m_parsed_model)
+                #if m_status:
                     #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + m_redirected_requested_url)
-                    return None, None, None
+                #    return None, None, None
 
                 if (m_redirected_url.replace("https", "http")) == m_redirected_requested_url.replace("https","http") or (m_redirected_url.replace("https", "http")) != m_redirected_requested_url.replace("https", "http") and self.__m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
                     self.__m_url_duplication_handler.insert(m_redirected_requested_url)
