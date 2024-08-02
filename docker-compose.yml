@@ -31,8 +31,11 @@ services:
         deploy:
           resources:
             limits:
+              cpus: '9.0'
               memory: 50G
-
+            reservations:
+              cpus: '9.0'
+              memory: 50G
         restart: always
         volumes:
             - ./app/:/app

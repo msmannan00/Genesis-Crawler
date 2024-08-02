@@ -14,8 +14,6 @@ from crawler.constants.strings import STRINGS
 from crawler.crawler_instance.custom_filter_controller.custom_filter_controller import custom_filter_controller
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.genbot_service.genbot_enums import PARSE_TAGS
-from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
-from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
 from crawler.crawler_services.helper_services.spell_check_handler import spell_checker_handler
 
 
@@ -79,9 +77,11 @@ class html_parse_manager(HTMLParser, ABC):
                         mime = mimetypes.MimeTypes().guess_type(p_url)[0]
                     if mime is not None and mime != "text/html":
                         if suffix in CRAWL_SETTINGS_CONSTANTS.S_DOC_TYPES and len(self.m_doc_url) < 10:
-                            self.m_doc_url.append(p_url)
+                            pass
+                            #self.m_doc_url.append(p_url)
                         elif str(mime).startswith("video") and len(self.m_video_url) < 10:
-                            self.m_video_url.append(p_url)
+                            pass
+                            #self.m_video_url.append(p_url)
                     elif parent_domain.__eq__(host_domain) and m_host_url.endswith(".onion"):
                         if "#" in p_url:
                             if p_url.count("/")>2 and m_host_url.__contains__("?") and self.m_query_url_count < 5:
@@ -111,7 +111,8 @@ class html_parse_manager(HTMLParser, ABC):
                     m_url = urljoin(m_temp_base_url, value[1])
                     m_url = helper_method.on_clean_url(helper_method.normalize_slashes(m_url))
                     if m_url.__contains__(".jpg") or m_url.__contains__(".jpeg") or m_url.__contains__(".png") or m_url.__contains__(".jpg"):
-                        self.m_image_url.append(m_url)
+                        pass
+                        #self.m_image_url.append(m_url)
 
         elif p_tag == 'title':
             self.rec = PARSE_TAGS.S_TITLE
@@ -278,20 +279,8 @@ class html_parse_manager(HTMLParser, ABC):
 
         return m_rank
 
-    def __get_content_type(self):
-        try:
-            if len(self.m_content) > 0:
-                self.m_content_type = topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_PREDICT_CLASSIFIER, [self.m_title, self.m_important_content, self.m_content])
-                if self.m_content_type is None:
-                    return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
-
-                return self.m_content_type
-            return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
-        except Exception:
-            return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
-
     def __get_static_file(self):
-        return self.m_sub_url, self.m_image_url, self.m_doc_url, self.m_video_url
+        return self.m_sub_url, [], [], []
 
     def __get_content(self):
         return self.m_content

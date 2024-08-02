@@ -116,16 +116,17 @@ class crawl_model(request_handler):
         while True:
             while len(p_fetched_url_list) > 0:
                 if status.S_THREAD_COUNT >= CRAWL_SETTINGS_CONSTANTS.S_MAX_THREAD_COUNT:
-                    sleep(0.1)
+                    sleep(5)
                     continue
                 virtual_id += 1
                 status.S_THREAD_COUNT += 1
                 m_thread = threading.Thread(target=genbot_instance, args=(p_fetched_url_list.pop(0), virtual_id))
                 m_thread.daemon = True
                 m_thread.start()
-                sleep(0.1)
+                sleep(0.5)
 
             p_fetched_url_list = self.__reinit_docker_request()
+            break
 
 
     def __init_crawler(self):

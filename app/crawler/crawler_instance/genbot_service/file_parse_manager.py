@@ -47,7 +47,7 @@ class file_parse_manager:
         m_filtered_list = []
         m_filtered_list_unique = []
 
-        m_list_temp = copy.deepcopy(p_list)
+        m_list_temp = []
         while len(m_list_temp) > 0:
             if celery_shared_data.get_instance().get_network_status():
                 try:
@@ -83,9 +83,9 @@ class file_parse_manager:
         m_filtered_list = []
         m_filtered_list_unique = []
         m_porn_image_count = 0
-        m_list_temp = copy.deepcopy(p_list[0:10])
+        m_list_temp = []
 
-        while len(m_list_temp) > 0 and len(m_filtered_list_unique)<2:
+        while len(m_list_temp) > 0:
             try:
                 if celery_shared_data.get_instance().get_network_status():
                     m_url = m_list_temp.__getitem__(0)

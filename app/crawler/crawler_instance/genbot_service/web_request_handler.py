@@ -39,9 +39,12 @@ class webRequestManager:
 
         except Exception as ex:
             gc.collect()
+            #log.g().e(ex)
             return p_url, False, None
 
     def load_header(self, p_url, p_custom_proxy):
+        if True:
+          return False, None        
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(
             TOR_COMMANDS.S_CREATE_SESSION, [True])
 
@@ -58,6 +61,9 @@ class webRequestManager:
             return False, None
 
     def download_image(self, p_url, p_custom_proxy):
+        if True:
+          return False, None        
+        
         m_request_handler, headers = tor_controller.get_instance().invoke_trigger(
             TOR_COMMANDS.S_CREATE_SESSION, [True])
 

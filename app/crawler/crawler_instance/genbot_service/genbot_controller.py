@@ -123,7 +123,7 @@ class genbot_controller(request_handler):
             # from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
             import json
 
-            log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
+            #log.g().i(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_PARSING_STARTING + " : " + p_request_model.m_url)
             m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_request_model.m_url, self.__m_proxy)
 
             if m_response is True:
@@ -135,13 +135,14 @@ class genbot_controller(request_handler):
                 m_parsed_model = self.__clean_sub_url(m_parsed_model)
                 m_status = self.__check_content_duplication(m_parsed_model)
                 if m_status:
+                    #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + m_redirected_requested_url)
                     return None, None, None
 
                 if (m_redirected_url.replace("https", "http")) == m_redirected_requested_url.replace("https","http") or (m_redirected_url.replace("https", "http")) != m_redirected_requested_url.replace("https", "http") and self.__m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
                     self.__m_url_duplication_handler.insert(m_redirected_requested_url)
 
 
-                    if m_parsed_model.m_validity_score >= 0 and (len(m_parsed_model.m_content) > 0) and m_response:
+                    if m_parsed_model.m_validity_score >= 0 and m_response:
 
                         m_parsed_model, m_unique_file_model = self.__m_html_parser.on_parse_files(m_parsed_model, m_images, self.__m_proxy)
                         m_final_doc = copy.deepcopy(m_parsed_model)
@@ -149,19 +150,19 @@ class genbot_controller(request_handler):
                         # elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_final_doc.dict())], [True]])
                         log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_requested_url)
                     else:
-                        log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
+                        #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOW_YIELD_URL + " : " + m_redirected_requested_url + " : " + str(m_parsed_model.m_validity_score))
                         return None, None, None
 
                     self.__m_parsed_url.append(m_redirected_requested_url)
-
                     return m_parsed_model, m_unique_file_model, m_raw_html
                 else:
+                    #log.g().w(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_DUPLICATE_CONTENT + " : " + m_redirected_requested_url)
                     return None, None, None
             else:
-                log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
+                #log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
                 return None, None, None
         except Exception as ex:
-            print(ex, flush=True)
+            #print(ex, flush=True)
             return None, None, None
 
     # Wait For Crawl Manager To Provide URL From Queue
@@ -182,13 +183,9 @@ class genbot_controller(request_handler):
             m_parsed_model, m_unique_file_model, m_raw_html = self.__trigger_url_request(item)
 
             if m_parsed_model is None:
-                if not m_host_crawled:
-                    if m_failure_count>3:
-                        return
-                    else:
-                        m_failure_count += 1
-                        sleep(5)
-                        continue
+                if m_failure_count > 3:
+                    return
+                m_failure_count += 1
 
             if m_parsed_model is not None and item.m_depth < CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH and len(self.__m_unparsed_url) < CRAWL_SETTINGS_CONSTANTS.S_MAX_HOST_QUEUE_SIZE:
                 for sub_url in m_parsed_model.m_sub_url[0:int(CRAWL_SETTINGS_CONSTANTS.S_MAX_SUBHOST_QUEUE_SIZE / (item.m_depth + 1))]:
