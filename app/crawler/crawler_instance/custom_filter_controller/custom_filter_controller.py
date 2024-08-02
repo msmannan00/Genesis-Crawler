@@ -67,7 +67,7 @@ class custom_filter_controller:
                 print("Match found for", self.company_hashes[key]['name'])
                 log.g().s("CUSTOM FILTER : " + "Match Found : " + p_base_url)
 
-        if found_domains:
+        if len(found_domains)>0:
             self.write_data(p_base_url, found_domains)
             return m_validity_score
 
