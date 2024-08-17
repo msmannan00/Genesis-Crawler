@@ -1,8 +1,12 @@
 import asyncio
 import gc
+from _weakref import ProxyType
+
 import aiohttp
 
 from aiohttp_socks import ProxyConnector
+from raven.transport import requests
+
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
@@ -14,30 +18,37 @@ class webRequestManager:
         pass
 
     async def fetch(self, p_url, p_proxy, headers):
-            connector = ProxyConnector.from_url('socks5://'+p_proxy.split('//')[1])
-            async with aiohttp.ClientSession(connector=connector) as session:
-                async with session.get(p_url, allow_redirects=True, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT) as response:
-                    return await response.text(), response.status, response.url
+        try:
+            # Manually setting up the proxy connector with the correct SOCKS5 protocol
+            connector = ProxyConnector(
+                proxy_type=ProxyType.SOCKS5,
+                host="127.0.0.1",
+                port=9150,  # Port for Tor SOCKS proxy
+                rdns=True  # This is important for resolving DNS via the proxy
+            )
 
+            async with aiohttp.ClientSession(connector=connector) as session:
+                async with session.get(p_url, headers=headers, timeout=aiohttp.ClientTimeout(total=30)) as response:
+                    response.raise_for_status()
+                    text = await response.text()
+                    return text, response.status, str(response.url)
+        except Exception as ex:
+            return str(ex), None, None
 
     def load_url(self, p_url, p_custom_proxy):
         try:
-            #if not p_url.endswith("/"):
-            #    p_url += "/"
-
+            p_url = "https://bbc.com"
             m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
             m_html, m_status, m_url_redirect = asyncio.run(self.fetch(p_url, p_custom_proxy["http"], headers))
 
             m_request_handler.close()
-            gc.collect()
-            del  m_request_handler
+            del m_request_handler
             if m_html == "" or m_status != 200:
                 return str(p_url), False, m_status
             else:
                 return str(m_url_redirect), True, str(m_html)
 
-        except Exception as ex:
-            gc.collect()
+        except Exception:
             return p_url, False, None
 
     def load_header(self, p_url, p_custom_proxy):

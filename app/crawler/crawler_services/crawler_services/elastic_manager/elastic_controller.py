@@ -1,10 +1,8 @@
 # Local Imports
 import json
-
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3 import Retry
-
 from crawler.constants.strings import MANAGE_ELASTIC_MESSAGES, MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS
 from crawler.crawler_shared_directory.log_manager.log_controller import log
@@ -36,19 +34,26 @@ class elastic_controller(request_handler):
                 session.mount('http://', adapter)
                 session.mount('https://', adapter)
                 m_response = session.post(ELASTIC_CONNECTIONS.S_DATABASE_IP, data=m_post_object)
+
+                if m_response.status_code != 200:
+                    log.g().e(MANAGE_CRAWLER_MESSAGES.S_ELASTIC_ERROR + " : HTTP Status Code " + str(m_response.status_code))
+                    return False, None
+
                 m_data = json.loads(m_response.text)
                 m_status = m_data[0]
                 m_data = m_data[1]
+
                 if not m_status:
                     log.g().e(MANAGE_ELASTIC_MESSAGES.S_REQUEST_FAILURE + " : " + str(m_data))
                 elif m_data:
                     log.g().s(MANAGE_ELASTIC_MESSAGES.S_REQUEST_SUCCESS + " : " + str(m_data))
                     m_data = m_data['hits']['hits']
                 return m_status, m_data
+
             except Exception as ex:
-                m_counter+=1
+                m_counter += 1
                 log.g().e(MANAGE_CRAWLER_MESSAGES.S_ELASTIC_ERROR + " : " + str(ex))
-                if m_counter>5:
+                if m_counter > 5:
                     return False, None
 
     def invoke_trigger(self, p_commands, p_data=None):

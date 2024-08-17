@@ -21,7 +21,7 @@ class PARSE_STRINGS:
 
 
 class MANAGE_CRAWLER_MESSAGES:
-    S_APPLICATION_STARTING = "[0] ----------------------- APPLICATION STARTING -----------------------"
+    S_APPLICATION_STARTING = "[0] APPLICATION STARTING"
     S_WEB_REQUEST_PROCESSING_ERROR = "[1] Error Fetching response from server"
     S_FILE_PARSED = "[2] Successfully Parsed File"
     S_LOW_YIELD_URL = "[3] Low Yield URL"

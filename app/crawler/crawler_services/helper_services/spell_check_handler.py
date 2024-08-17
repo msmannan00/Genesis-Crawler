@@ -1,13 +1,32 @@
 # Local Imports
+import logging
 import re
+import warnings
 import nltk
-
 from nltk import PorterStemmer
 from crawler.constants.constant import SPELL_CHECK_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES, STRINGS
 from crawler.crawler_services.helper_services.helper_method import helper_method
+import os
+import sys
+warnings.filterwarnings("ignore")
+logging.getLogger("nltk").setLevel(logging.CRITICAL)
 
-nltk.download('punkt')
+def ensure_punkt_installed():
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        with open(os.devnull, 'w') as fnull:
+            sys.stdout = fnull
+            sys.stderr = fnull
+            try:
+                nltk.download('punkt', quiet=True)
+            finally:
+                # Restore stdout and stderr
+                sys.stdout = sys.__stdout__
+                sys.stderr = sys.__stderr__
+
+ensure_punkt_installed()
 
 class spell_checker_handler:
     __instance = None

@@ -3,7 +3,6 @@ import mimetypes
 import pathlib
 import re
 import validators
-
 from urllib.parse import urljoin
 from abc import ABC
 from html.parser import HTMLParser
@@ -13,8 +12,6 @@ from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import STRINGS
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.genbot_service.genbot_enums import PARSE_TAGS
-from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
-from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
 from crawler.crawler_services.helper_services.spell_check_handler import spell_checker_handler
 
 
@@ -33,7 +30,6 @@ class html_parse_manager(HTMLParser, ABC):
         self.m_important_content = STRINGS.S_EMPTY
         self.m_content = STRINGS.S_EMPTY
         self.m_meta_keyword = STRINGS.S_EMPTY
-        self.m_content_type = CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
         self.m_sub_url = []
         self.m_sub_url_hashed = []
         self.m_image_url = []
@@ -249,9 +245,6 @@ class html_parse_manager(HTMLParser, ABC):
     def __get_meta_description(self):
         return helper_method.strip_special_character(self.m_important_content)
 
-    def __get_title_hidden(self, p_title_hidden):
-        return self.__clean_text(p_title_hidden)
-
     def __get_meta_description_hidden(self, p_description_hidden):
         return self.__clean_text(p_description_hidden)
 
@@ -273,19 +266,7 @@ class html_parse_manager(HTMLParser, ABC):
         m_rank = (((len(p_important_content) + len(self.m_title)) > 150) or len(self.m_sub_url) >= 3) * 10 + (
                 len(self.m_sub_url) > 0 or self.m_all_url_count > 5) * 5
 
-        return m_rank
-
-    def __get_content_type(self):
-        try:
-            if len(self.m_content) > 0:
-                self.m_content_type = topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_PREDICT_CLASSIFIER, [self.m_title, self.m_important_content, self.m_content])
-                if self.m_content_type is None:
-                    return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
-
-                return self.m_content_type
-            return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
-        except Exception:
-            return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
+        return 30
 
     def __get_static_file(self):
         return self.m_sub_url, self.m_image_url, self.m_doc_url, self.m_video_url
@@ -307,10 +288,8 @@ class html_parse_manager(HTMLParser, ABC):
         m_sub_url, m_images, m_document, m_video = self.__get_static_file()
         m_title = self.__get_title()
         m_meta_description = self.__get_meta_description()
-        m_title_hidden = STRINGS.S_EMPTY
         m_important_content = self.__get_important_content() + " " + m_meta_description + " " + m_title + " " + self.m_meta_content
         m_meta_keywords = self.__get_meta_keywords()
-        m_content_type = self.m_content_type
         m_content = self.__get_content() + " " + m_title + " " + m_meta_description
         m_validity_score = self.__get_validity_score(m_important_content)
         m_important_content_hidden = self.__get_meta_description_hidden(self.m_meta_content + " " + m_title + " " + m_meta_description + " " + m_important_content)
@@ -320,4 +299,4 @@ class html_parse_manager(HTMLParser, ABC):
         m_document = []
         m_video = []
 
-        return m_title, self.m_meta_content + m_meta_description, m_title_hidden, m_important_content, m_important_content_hidden, m_meta_keywords, m_content, m_content_type, m_sub_url, m_images, m_document, m_video, m_validity_score, m_extended_content
+        return m_title, self.m_meta_content + m_meta_description, m_important_content, m_important_content_hidden, m_meta_keywords, m_content, m_sub_url, m_images, m_document, m_video, m_validity_score, m_extended_content

@@ -1,18 +1,11 @@
 # Local Imports
+import asyncio
 import copy
-import json
-import os
-import random
-import string
-import time
-
-from PIL import Image
 from gevent import sleep
 from crawler.constants.app_status import APP_STATUS
-from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import PARSE_STRINGS, MANAGE_CRAWLER_MESSAGES
-from crawler.crawler_instance.helper_services.helper_method import helper_method
-from crawler.crawler_instance.local_shared_model.image_model import image_model_init, image_model_list, image_model
+from crawler.crawler_instance.local_shared_model.image_model import image_model
 from crawler.crawler_instance.genbot_service.web_request_handler import webRequestManager
 from crawler.crawler_instance.local_shared_model.unique_file_model import unique_file_model
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
@@ -55,7 +48,7 @@ class file_parse_manager:
                     if self.__m_duplication_url_handler.validate_duplicate(m_url) is False:
                         self.__m_duplication_url_handler.insert(m_url)
 
-                        m_response, m_header = self.m_web_request_hander.load_header(m_url, p_proxy_queue)
+                        m_response, m_header = asyncio.run(self.m_web_request_hander.load_header(m_url))
                         if not m_response and not celery_shared_data.get_instance().get_network_status():
                             continue
 
@@ -79,94 +72,10 @@ class file_parse_manager:
 
         return m_filtered_list, m_filtered_list_unique
 
-    def __is_image_favourable(self, p_list, p_proxy_queue):
-        m_filtered_list = []
-        m_filtered_list_unique = []
-        m_porn_image_count = 0
-        m_list_temp = copy.deepcopy(p_list[0:10])
-
-        while len(m_list_temp) > 0 and len(m_filtered_list_unique)<2:
-            try:
-                if celery_shared_data.get_instance().get_network_status():
-                    m_url = m_list_temp.__getitem__(0)
-
-                    if self.__m_duplication_url_handler.validate_duplicate(m_url) is False:
-
-                        time.sleep(CRAWL_SETTINGS_CONSTANTS.S_ICRAWL_IMAGE_INVOKE_DELAY)
-                        if m_url.startswith("data") or m_url.endswith("gif"):
-                            m_list_temp.pop(0)
-                            continue
-
-                        m_status, m_response = self.m_web_request_hander.download_image(m_url, p_proxy_queue)
-                        if not m_status:
-                            if celery_shared_data.get_instance().get_network_status():
-                                m_list_temp.pop(0)
-                            continue
-
-                        self.__m_images[m_url] = 0
-
-                        if m_status:
-                            # key = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
-
-                            m_content_type = m_response.headers['Content-Type'].split('/')[0]
-                            m_file_type = m_response.headers['Content-Type'].split('/')[1]
-                            # m_url_path = key + "." + m_response.headers['Content-Type'].split('/')[1]
-
-                            if len(m_file_type) > 4 or m_file_type == "gif" or m_content_type != "image" or len(
-                                    m_response.content) < 15000 or " html" in str(m_response.content):
-                                m_list_temp.pop(0)
-                                continue
-
-                            self.__m_images[m_url] = 'g'
-                            m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'g').dict())))
-                            log.g().s(MANAGE_CRAWLER_MESSAGES.S_FILE_PARSED + " : " + m_url)
-
-                            '''m_url_path = RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH + m_url_path
-                            helper_method.write_content_to_path(m_url_path, m_response.content)
-                            m_classifier_response = m_classifier.classify(m_url_path)
-
-                            width, height = Image.open(m_url_path).size
-                            if width < 250 and height < 250:
-                                os.remove(m_url_path)
-                                m_list_temp.pop(0)
-                                continue
-
-                            log.g().s(MANAGE_CRAWLER_MESSAGES.S_FILE_PARSED + " : " + m_url)
-                            if m_classifier_response[m_url_path]['unsafe'] > 0.5:
-                                m_porn_image_count += 1
-                                self.__m_images[m_url] = 'a'
-                                m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'a').dict())))
-
-                            else:
-                                self.__m_images[m_url] = 'g'
-                                m_filtered_list_unique.append(json.loads(json.dumps(image_model_init(m_url, 'g').dict())))
-
-                            os.remove(m_url_path)'''
-                            self.__m_duplication_url_handler.insert(m_url)
-
-                    elif m_url in self.__m_images:
-                        m_filtered_list.append(image_model_init(m_url, self.__m_images[m_url]))
-                else:
-                    sleep(30)
-                    continue
-                m_list_temp.pop(0)
-            except Exception as ex:
-                log.g().e(str(ex))
-                m_list_temp.pop(0)
-        m_filtered_list[:0] = m_filtered_list_unique
-        return image_model_list(m_images=m_filtered_list), m_porn_image_count, m_filtered_list_unique
-
-
-    def parse_static_files(self, p_images, p_documents, p_videos, p_content_type, p_proxy_queue):
+    def parse_static_files(self, p_images, p_documents, p_videos, p_proxy_queue):
         m_documents, m_documents_unique = self.__is_static_url_valid(p_documents, p_proxy_queue)
         m_videos, m_videos_unique = self.__is_static_url_valid(p_videos, p_proxy_queue)
-        m_images, m_porn_image_count, m_image_unique = self.__is_image_favourable(p_images, p_proxy_queue)
 
-        m_unique_file_model = unique_file_model(m_documents_unique, m_videos_unique, m_image_unique)
+        m_unique_file_model = unique_file_model(m_documents_unique, m_videos_unique, p_images)
 
-        if m_porn_image_count > 0:
-            m_content_type = 'adult'
-        else:
-            m_content_type = p_content_type
-
-        return m_images, m_documents, m_videos, m_content_type, m_unique_file_model
+        return p_images, m_documents, m_videos, m_unique_file_model
