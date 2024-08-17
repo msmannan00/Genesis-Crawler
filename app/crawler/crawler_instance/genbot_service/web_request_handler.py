@@ -1,7 +1,8 @@
 import asyncio
-from aiohttp import ClientSession
-from aiohttp_socks import ProxyConnector
+import gc
+import aiohttp
 
+from aiohttp_socks import ProxyConnector
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
@@ -9,53 +10,63 @@ from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 
 class webRequestManager:
 
-    async def fetch(self, url, proxy):
-        connector = ProxyConnector.from_url(f"socks5://{proxy.split('//')[1]}")
-        async with ClientSession(connector=connector) as session:
-            async with session.get(url, allow_redirects=True, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT) as response:
-                return await response.text(), response.status, response.url
+    def __init__(self):
+        pass
 
-    async def load_url(self, url, custom_proxy):
-        handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
-        while True:
-            html, status, url_redirect = await self.fetch(url, custom_proxy["http"])
-            final_status = status
-            final_html = html
-            if url_redirect and url_redirect != url:
-                url = url_redirect
-                await asyncio.sleep(5)
-                continue
-            await asyncio.sleep(5)
-            break
-        if final_status != 200:
-            handler.close()
-            return str(url), False, final_status
-        handler.close()
-        return str(url), True, final_html
+    async def fetch(self, p_url, p_proxy, headers):
+            connector = ProxyConnector.from_url('socks5://'+p_proxy.split('//')[1])
+            async with aiohttp.ClientSession(connector=connector) as session:
+                async with session.get(p_url, allow_redirects=True, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT) as response:
+                    return await response.text(), response.status, response.url
 
-    async def load_header(self, url):
-        handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
-        headers = {TOR_KEYS.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT}
+
+    def load_url(self, p_url, p_custom_proxy):
         try:
-            async with ClientSession(headers=headers) as session:
-                async with session.head(url, allow_redirects=True, timeout=(CRAWL_SETTINGS_CONSTANTS.S_HEADER_TIMEOUT, 27)) as response:
-                    return True, response.headers
-        except Exception:
-            return False, None
-        finally:
-            handler.close()
+            #if not p_url.endswith("/"):
+            #    p_url += "/"
 
-    async def download_image(self, url):
-        handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
+            m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
+            m_html, m_status, m_url_redirect = asyncio.run(self.fetch(p_url, p_custom_proxy["http"], headers))
+
+            m_request_handler.close()
+            gc.collect()
+            del  m_request_handler
+            if m_html == "" or m_status != 200:
+                return str(p_url), False, m_status
+            else:
+                return str(m_url_redirect), True, str(m_html)
+
+        except Exception as ex:
+            gc.collect()
+            return p_url, False, None
+
+    def load_header(self, p_url, p_custom_proxy):
+        m_request_handler, headers = tor_controller.get_instance().invoke_trigger(
+            TOR_COMMANDS.S_CREATE_SESSION, [True])
+
         try:
-            async with ClientSession(headers=headers) as session:
-                async with session.get(url, allow_redirects=True, timeout=(30, 30)) as response:
-                    return True, response
+            headers = {TOR_KEYS.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT}
+            with m_request_handler.head(p_url, headers=headers, timeout=(CRAWL_SETTINGS_CONSTANTS.S_HEADER_TIMEOUT, 27), proxies=p_custom_proxy, allow_redirects=True, verify=False) as page:
+                m_request_handler.close()
+                gc.collect()
+                return True, page.headers
+
         except Exception:
+            m_request_handler.close()
+            gc.collect()
             return False, None
-        finally:
-            handler.close()
 
+    # Load Header - used to get header without actually downloading the content
+    def download_image(self, p_url, p_custom_proxy):
+        m_request_handler, headers = tor_controller.get_instance().invoke_trigger(
+            TOR_COMMANDS.S_CREATE_SESSION, [True])
 
-    async def handle_requests(self, tasks):
-        return await asyncio.gather(*tasks)
+        try:
+            with m_request_handler.get(p_url, headers=headers, timeout=(30,30), proxies=p_custom_proxy, allow_redirects=True, ) as response:
+                m_request_handler.close()
+                gc.collect()
+                return True, response
+        except Exception as ex:
+            m_request_handler.close()
+            gc.collect()
+            return False, None

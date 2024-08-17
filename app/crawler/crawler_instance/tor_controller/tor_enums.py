@@ -27,7 +27,7 @@ class TOR_STATUS:
 TOR_PROXIES = [
     {
         "http": "socks5h://172.0.0.10:" + "9152",
-        "https": "socks5h://172.0.0.10:" + "9152"
+        "https": "socks5h://172.0.0.10:" + "9052"
     },
     {
         "http": "socks5h://172.0.0.11:" + "9154",

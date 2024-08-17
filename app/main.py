@@ -1,9 +1,4 @@
-import sys
-
-from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_instance.application_controller.application_controller import application_controller
 from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
-from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_TYPE
 
-CRAWL_SETTINGS_CONSTANTS.S_CRAWL_TYPE = CRAWL_TYPE.S_DEEP
 application_controller.get_instance().invoke_triggers(APPICATION_COMMANDS.S_START_APPLICATION_DOCKERISED)

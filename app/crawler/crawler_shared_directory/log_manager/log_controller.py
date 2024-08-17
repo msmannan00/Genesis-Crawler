@@ -3,7 +3,7 @@ import sys
 import logging
 import os
 import datetime
-#from logdna import LogDNAHandler
+from logdna import LogDNAHandler
 from termcolor import colored
 
 from crawler.constants.constant import LOG_CONSTANTS
@@ -23,8 +23,8 @@ class log:
         self.__server_instance = logging.getLogger('genesis_logs')
         self.__server_instance.setLevel(logging.DEBUG)
         options = {'hostname': 'genesis_logs', 'ip': '10.0.1.1', 'mac': 'C0:FF:EE:C0:FF:EE', 'index_meta': True}
-        #handler = LogDNAHandler(key, options)
-        #self.__server_instance.addHandler(handler)
+        handler = LogDNAHandler(key, options)
+        self.__server_instance.addHandler(handler)
 
         self.__server_instance.warning("Warning message", {'app': 'bloop'})
         self.__server_instance.info("Info message")

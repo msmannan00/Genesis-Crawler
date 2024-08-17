@@ -11,7 +11,6 @@ from bs4 import BeautifulSoup
 from thefuzz import fuzz
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import STRINGS
-from crawler.crawler_instance.custom_filter_controller.custom_filter_controller import custom_filter_controller
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.genbot_service.genbot_enums import PARSE_TAGS
 from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
@@ -311,13 +310,12 @@ class html_parse_manager(HTMLParser, ABC):
         m_title_hidden = STRINGS.S_EMPTY
         m_important_content = self.__get_important_content() + " " + m_meta_description + " " + m_title + " " + self.m_meta_content
         m_meta_keywords = self.__get_meta_keywords()
-        m_content_type = self.__get_content_type()
+        m_content_type = self.m_content_type
         m_content = self.__get_content() + " " + m_title + " " + m_meta_description
         m_validity_score = self.__get_validity_score(m_important_content)
         m_important_content_hidden = self.__get_meta_description_hidden(self.m_meta_content + " " + m_title + " " + m_meta_description + " " + m_important_content)
         m_extended_content = self.__get_text()
         m_sub_url.extend(self.m_sub_url_hashed)
-        m_validity_score = custom_filter_controller.get_instance().validate_custom_html_filter(self.m_content, m_validity_score)
 
         m_document = []
         m_video = []
