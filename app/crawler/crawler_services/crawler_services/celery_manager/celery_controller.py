@@ -1,15 +1,35 @@
-import warnings
 import logging
+import warnings
 from celery import Celery
 import subprocess
 import sys
 import os
+import redis
+from logging.config import dictConfig
+from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_CONNECTIONS, ELASTIC_LOGGING, \
+    CELERY_COMMANDS
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
+from crawler.constants.app_status import APP_STATUS
 
-app = Celery('crawler', broker='redis://localhost:6379/0')
 
+# Apply the custom logging configuration
+dictConfig(ELASTIC_LOGGING.logging_config)
+logger = logging.getLogger(__name__)
+
+# Celery setup
+celery = Celery('crawler', broker=CELERY_CONNECTIONS.conn)
+
+celery.conf.worker_task_log_format = None
+celery.conf.task_acks_late = True
+celery.conf.worker_prefetch_multiplier = 1
+celery.conf.update(
+    worker_log_color=True,
+    worker_redirect_stdouts=True,  # Ensure stdout is redirected to logs
+    worker_redirect_stdouts_level='DEBUG',
+    worker_log_format="[%(asctime)s: %(levelname)s/%(processName)s] %(message)s",
+)
 
 class celery_controller:
     __instance = None
@@ -26,37 +46,30 @@ class celery_controller:
         else:
             celery_controller.__instance = self
             warnings.filterwarnings("ignore")
-            logging.getLogger('celery').setLevel(logging.DEBUG)
-            self.clear_redis_database()
-            app.conf.worker_task_log_format = None
-            app.conf.task_acks_late = True
-            app.conf.worker_prefetch_multiplier = 1
-            app.conf.update(
-                worker_log_color=True,
-                worker_redirect_stdouts_level='DEBUG',
-                worker_log_format="[%(asctime)s: %(levelname)s/%(processName)s] %(message)s",
-            )
+            logger.info("Initializing Celery controller...")
+            self.__clear_redis_database()
+            self.__clear_queue()
+            if not APP_STATUS.DOCKERIZED_RUN:
+                self.__start_worker()
 
-            self.clear_queue()
-            self.start_worker()
-
-    def clear_redis_database(self):
+    def __clear_redis_database(self):
         try:
-            subprocess.run(['redis-cli', 'FLUSHALL'], check=True)
-            print("Redis database cleared.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error clearing Redis database: {e}")
+            r = redis.Redis(host='redis_server', port=6379, password='killprg1')
+            r.flushall()
+            logger.info("Redis database cleared.")
+        except redis.RedisError as e:
+            logger.error(f"Error clearing Redis database: {e}")
 
-    def clear_queue(self):
+    def __clear_queue(self):
         try:
-            queue_purged = app.control.purge()
-            print(f"Queue cleared. {queue_purged} tasks removed.")
+            queue_purged = celery.control.purge()
+            logger.info(f"Queue cleared. {queue_purged} tasks removed.")
         except Exception as e:
-            print(f"Error clearing queue: {e}")
+            logger.error(f"Error clearing queue: {e}")
 
-    def start_worker(self, concurrency=14):
+    def __start_worker(self, concurrency=1):
         subprocess.Popen([
-            'celery', '-A', 'celery_controller', 'worker',
+            'celery', '-A', 'crawler.crawler_services.crawler_services.celery_manager', 'worker',
             '--loglevel=DEBUG',
             f'--concurrency={concurrency}',
             '--without-gossip',
@@ -64,17 +77,19 @@ class celery_controller:
             '--without-heartbeat',
             '--pool=gevent'
         ])
+        logger.info("Started Celery worker with custom settings.")
 
-    def run_task(self, url, virtual_id):
-        print(f"Dispatching simple_task with url: {url} and virtual_id: {virtual_id}")
+    def __run_task(self, url, virtual_id):
         simple_task.delay(url, virtual_id)
 
+    def invoke_trigger(self, p_commands, p_data=None):
+        if p_commands == CELERY_COMMANDS.S_START_TASK:
+            self.__run_task(p_data[0], p_data[1])
 
-@app.task(name='celery_controller.simple_task')
+# Define Celery tasks
+@celery.task(name='celery_controller.simple_task')
 def simple_task(url, virtual_id):
     genbot_instance(url, virtual_id)
 
-
 if __name__ == "__main__":
     manager = celery_controller.get_instance()
-    print("Celery worker with queue cleared and multiple processes started.")

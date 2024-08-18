@@ -1,10 +1,5 @@
-import asyncio
 import gc
-import aiohttp
-
-from aiohttp_socks import ProxyConnector
 from raven.transport import requests
-
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
@@ -17,8 +12,11 @@ class webRequestManager:
 
     def fetch(self, p_url, p_proxy, headers):
         try:
-            proxy_host = p_proxy.get('host', 'localhost')
-            proxy_port = p_proxy.get('port', 9150)
+            proxy_url = next(iter(p_proxy.values()))
+            ip_port = proxy_url.split('//')[1]
+            ip, port = ip_port.split(':')
+            proxy_host = p_proxy.get('host', ip)
+            proxy_port = p_proxy.get('port', port)
 
             proxies = {
                 "http": f"socks5h://{proxy_host}:{proxy_port}",

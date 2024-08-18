@@ -5,13 +5,10 @@ import os
 import datetime
 from logdna import LogDNAHandler
 from termcolor import colored
-
 from crawler.constants.constant import LOG_CONSTANTS
 
 if sys.platform == "win32":
     os.system('color')
-else:
-    pass
 
 
 class log:
@@ -21,7 +18,7 @@ class log:
     def __configure_logs(self):
         key = LOG_CONSTANTS.S_LOGS_KEY
         self.__server_instance = logging.getLogger('genesis_logs')
-        self.__server_instance.setLevel(logging.DEBUG)
+        self.__server_instance.setLevel(logging.INFO)  # Set the logging level to INFO
         options = {'hostname': 'genesis_logs', 'ip': '10.0.1.1', 'mac': 'C0:FF:EE:C0:FF:EE', 'index_meta': True}
         handler = LogDNAHandler(key, options)
         self.__server_instance.addHandler(handler)
@@ -29,7 +26,6 @@ class log:
         self.__server_instance.warning("Warning message", {'app': 'bloop'})
         self.__server_instance.info("Info message")
 
-    # Initializations
     @staticmethod
     def g():
         if log.__server_instance is None:
@@ -47,34 +43,28 @@ class log:
     # Info Logs
     def i(self, p_log):
         filter_log = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " : " + self.get_caller_class() + " : " + str(p_log[0:120]))
-
-        # self.__server_instance.debug(filter_log)
+        self.__server_instance.info(filter_log)
         print(colored(filter_log, 'cyan'))
 
-    # Success Logs
     def s(self, p_log):
         filter_log = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " : " + self.get_caller_class() + " : " + str(p_log[0:120]))
-
-        # self.__server_instance.info(filter_log)
+        self.__server_instance.info(filter_log)
         print(colored(filter_log, 'green'))
 
     # Warning Logs
     def w(self, p_log):
         filter_log = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " : " + self.get_caller_class() + " : " + str(p_log[0:120]))
-
-        # self.__server_instance.warning(filter_log)
+        self.__server_instance.warning(filter_log)
         print(colored(filter_log, 'yellow'))
 
     # Error Logs
     def e(self, p_log):
         filter_log = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " : " + self.get_caller_class() + " : " + str(p_log[0:120]))
-
-        # self.__server_instance.error(filter_log)
+        self.__server_instance.error(filter_log)
         print(colored(filter_log, 'blue'))
 
-    # Error Logs
+    # Critical Logs
     def c(self, p_log):
         filter_log = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") + " : " + self.get_caller_class() + " : " + str(p_log[0:120]))
-
-        # self.__server_instance.critical(filter_log)
+        self.__server_instance.critical(filter_log)
         print(colored(filter_log, 'red'))

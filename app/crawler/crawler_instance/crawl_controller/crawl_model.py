@@ -9,13 +9,13 @@ from crawler.crawler_instance.genbot_service.genbot_controller import genbot_ins
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
+from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_COMMANDS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS, MONGO_CRUD
 from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
-from crawler.crawler_services.crawler_services.celery_manager import celery_controller
-
+from crawler.crawler_services.crawler_services.celery_manager.celery_controller import celery_controller
 
 class crawl_model(request_handler):
 
@@ -86,14 +86,14 @@ class crawl_model(request_handler):
             p_fetched_url_list.extend(self.__reinit_docker_request())
         while len(p_fetched_url_list) > 0:
             self.__celery_vid += 1
-            celery_controller.get_instance().run_task(p_fetched_url_list.pop(0), self.__celery_vid)
+            celery_controller.get_instance().invoke_trigger(CELERY_COMMANDS.S_START_TASK, [p_fetched_url_list.pop(0), self.__celery_vid])
 
     def __init_crawler(self):
         self.__celery_vid = 100000
         if APP_STATUS.DOCKERIZED_RUN:
             self.__init_docker_request()
         else:
-            self.__init_docker_request()
+            self.__init_direct_request()
 
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == CRAWL_MODEL_COMMANDS.S_INIT:

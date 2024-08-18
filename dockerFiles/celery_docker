@@ -9,9 +9,6 @@ ENV PYTHONUNBUFFERED=1
 RUN python3 -m ensurepip && pip install --upgrade pip
 RUN pip install celery kombu==5.2.3 importlib-metadata==4.8.3
 
-# Install Celery and Flower
-RUN pip install celery flower
-
 # Copy the requirements file and install dependencies
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
@@ -20,3 +17,5 @@ RUN pip install -r /tmp/requirements.txt
 COPY app /app
 WORKDIR /app
 
+# Ensure the start script is executable and define the entry point
+RUN chmod +x ./start_app.sh
