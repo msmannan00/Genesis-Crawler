@@ -5,92 +5,96 @@ services:
       command: tail -f /dev/null
 
     api:
-        build:
-            context: ./
-            dockerfile: dockerFiles/api_docker
-        ports:
-            - "8000:8000"
-        depends_on:
-            - mongo
-            - redis_server
-            - tor-extend-1
-            - tor-extend-2
-            - tor-extend-3
-            - tor-extend-4
-            - tor-extend-5
-            - tor-extend-6
-            - tor-extend-7
-            - tor-extend-8
-            - tor-extend-9
-            - tor-extend-10
-            - tor-extend-11
-            - tor-extend-12
-            - tor-extend-13
-            - tor-extend-14
-            - tor-extend-15
-            - tor-extend-16
-            - tor-extend-17
-            - tor-extend-18
-            - tor-extend-19
-            - tor-extend-20
-            - tor-extend-21
-            - tor-extend-22
-            - tor-extend-23
-            - tor-extend-24
-            - tor-extend-25
-            - tor-extend-26
-            - tor-extend-27
-            - tor-extend-28
-            - tor-extend-29
-            - tor-extend-30
-        deploy:
-          resources:
-            limits:
-              memory: 50G
+      build:
+        context: ./
+        dockerfile: dockerFiles/api_docker
+      ports:
+        - "8000:8000"
+      depends_on:
+        - mongo
+        - redis_server
+      restart: always
+      volumes:
+        - ./app/:/app
+      ulimits:
+        nproc: 65535
+        nofile:
+          soft: 26677
+          hard: 46677
+      networks:
+        backend:
+          ipv4_address: 172.0.0.2
 
-        restart: always
-        volumes:
-            - ./app/:/app
-        ulimits:
-          nproc: 65535
-          nofile:
-            soft: 26677
-            hard: 46677
-        networks:
-            backend:
-                ipv4_address: 172.0.0.2
+    celery_worker:
+      build:
+        context: ./
+        dockerfile: dockerFiles/api_docker
+      command: celery -A app.celery_controller worker --loglevel=info --concurrency=4
+      depends_on:
+        - redis_server
+      restart: always
+      volumes:
+        - ./app/:/app
+      networks:
+        backend:
+          ipv4_address: 172.0.0.50
+
+    celery_beat:
+      build:
+        context: ./
+        dockerfile: dockerFiles/api_docker
+      command: celery -A app.celery_controller beat --loglevel=info
+      depends_on:
+        - redis_server
+      restart: always
+      volumes:
+        - ./app/:/app
+      networks:
+        backend:
+          ipv4_address: 172.0.0.51
+
+    flower:
+      build:
+        context: ./
+        dockerfile: dockerFiles/api_docker
+      command: celery -A app.celery_controller flower --port=5555 --broker=redis://redis_server:6379/0
+      depends_on:
+        - redis_server
+      ports:
+        - "5555:5555"
+      restart: always
+      networks:
+        backend:
+          ipv4_address: 172.0.0.52
+
     redis_server:
-        image: redis
-        logging:
-            driver: none
-        command: redis-server --requirepass killprg1
-        restart: always
-        networks:
-            backend:
-                ipv4_address: 172.0.0.3
-        deploy:
-          resources:
-            limits:
-              memory: 2G
+      image: redis
+      logging:
+        driver: none
+      command: redis-server --requirepass killprg1
+      restart: always
+      networks:
+        backend:
+          ipv4_address: 172.0.0.3
+      deploy:
+        resources:
+          limits:
+            memory: 2G
 
     mongo:
-        image: mongocamp/mongodb:5.0.9
-        container_name: mongo-db
-        command: mongod --quiet --logpath /dev/null
-        logging:
-            driver: none
-        volumes:
-            - ./data/db:/data/db
-        ports:
-            - "27017:27017"
-        restart: always
-        networks:
-            backend:
-                ipv4_address: 172.0.0.4
-        deploy:
-          resources:
-            limits:
-              memory: 50G
+      image: mongocamp/mongodb:5.0.9
+      container_name: mongo-db
+      command: mongod --quiet --logpath /dev/null
+      logging:
+        driver: none
+      volumes:
+        - ./data/db:/data/db
+      ports:
+        - "27017:27017"
+      restart: always
+      networks:
+        backend:
+          ipv4_address: 172.0.0.4
 
     tor-extend-1:
         container_name: tor_instace_1
