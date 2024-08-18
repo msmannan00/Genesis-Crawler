@@ -51,12 +51,7 @@ class CRAWL_SETTINGS_CONSTANTS:
     S_UPDATE_STATUS_URL = "http://167.86.99.31/update_status/?pRequest=m_crawler"
 
     # Time Delay to Invoke New Url Requests
-    S_ICRAWL_IMAGE_INVOKE_DELAY = 2
     S_TOR_NEW_CIRCUIT_INVOKE_DELAY = 1800
-    S_LOCAL_FILE_CRAWLER_INVOKE_DELAY = 1
-    S_LOCAL_FILE_CRAWLER_INVOKE_DELAY_LONG = 10
-    S_CELERY_RESTART_DELAY = 3600
-    S_CELERY_INFO_DELAY = 60
 
     # Max Allowed Depth
     S_MAX_ALLOWED_DEPTH = 2
@@ -69,7 +64,6 @@ class CRAWL_SETTINGS_CONSTANTS:
     # Max Host Queue Size
     S_MAX_HOST_QUEUE_SIZE = 100
     S_MAX_SUBHOST_QUEUE_SIZE = 500
-    S_MAX_CRAWL_SIZE = 100
 
     # Max URL Size
     S_MAX_URL_SIZE = 480
@@ -79,10 +73,6 @@ class CRAWL_SETTINGS_CONSTANTS:
 
     # User Agent
     S_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0'
-
-    # Crawl Catagory
-    S_THREAD_CATEGORY_GENERAL = "general"
-    S_THREAD_CATEGORY_UNKNOWN = "unknown"
 
     # Max Static Images
     S_STATIC_PARSER_LIST_MAX_SIZE = 10

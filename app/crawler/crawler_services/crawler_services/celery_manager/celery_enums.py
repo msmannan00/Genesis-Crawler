@@ -4,8 +4,10 @@ import enum
 class CELERY_CONNECTIONS:
     conn = 'redis://:killprg1@redis_server:6379/0'
 
+
 class CELERY_COMMANDS(enum.Enum):
     S_START_TASK = 1
+
 
 class ELASTIC_LOGGING:
     logging_config = {
@@ -42,5 +44,15 @@ class ELASTIC_LOGGING:
                 'handlers': ['console'],
                 'propagate': False,
             },
+            'pymongo': {
+                'level': 'WARNING',  # Suppress pymongo logs
+                'handlers': ['console'],
+                'propagate': False,
+            },
+            'urllib3': {
+                'level': 'WARNING',  # Suppress urllib3 logs
+                'handlers': ['console'],
+                'propagate': False,
+            }
         },
     }
