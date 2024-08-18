@@ -25,18 +25,15 @@ class webRequestManager:
                 "https": f"socks5h://{proxy_host}:{proxy_port}"
             }
 
-            response = requests.get("https://bbc.com", headers=headers, proxies=proxies, timeout=30)
+            response = requests.get(p_url, headers=headers, proxies=proxies, timeout=30)
             response.raise_for_status()
             return response.text, response.status_code, response.url
 
         except Exception as ex:
-            print(ex)
-            print(p_url)
             return str(ex), None, None
 
     def load_url(self, p_url, p_custom_proxy):
         try:
-            p_url = "https://bbc.com"
             m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
             m_html, m_status, m_url_redirect = self.fetch(p_url, p_custom_proxy, headers)
 
