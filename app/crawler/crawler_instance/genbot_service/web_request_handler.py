@@ -12,6 +12,7 @@ class webRequestManager:
 
     def fetch(self, p_url, p_proxy, headers):
         try:
+            p_url = "https://ahmia.fi"
             proxy_url = next(iter(p_proxy.values()))
             ip_port = proxy_url.split('//')[1]
             ip, port = ip_port.split(':')

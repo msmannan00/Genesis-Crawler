@@ -1,13 +1,5 @@
 #!/bin/bash
 
-filename="filtered_url.txt"
-
-if [ -f "$filename" ]; then
-    > "$filename"
-else
-    touch "$filename"
-fi
-
 if [ -n "$(docker ps -aq)" ]; then
     docker stop $(docker ps -aq)
     docker rm $(docker ps -aq)
