@@ -2,7 +2,6 @@
 import asyncio
 import copy
 from gevent import sleep
-from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import PARSE_STRINGS, MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.local_shared_model.image_model import image_model
@@ -12,9 +11,6 @@ from crawler.crawler_services.helper_services.duplication_handler import duplica
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.shared_data import celery_shared_data
 
-if APP_STATUS.DOCKERIZED_RUN:
-    from libs.nudenet.lite_classifier import LiteClassifier
-    m_classifier = LiteClassifier()
 
 class file_parse_manager:
     __m_duplication_url_handler = None
@@ -48,7 +44,7 @@ class file_parse_manager:
                     if self.__m_duplication_url_handler.validate_duplicate(m_url) is False:
                         self.__m_duplication_url_handler.insert(m_url)
 
-                        m_response, m_header = asyncio.run(self.m_web_request_hander.load_header(m_url))
+                        m_response, m_header = asyncio.run(self.m_web_request_hander.load_header(m_url, p_proxy_queue))
                         if not m_response and not celery_shared_data.get_instance().get_network_status():
                             continue
 

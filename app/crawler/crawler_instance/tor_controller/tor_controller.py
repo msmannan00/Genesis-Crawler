@@ -73,10 +73,12 @@ class tor_controller(request_handler):
 
     def __on_proxy(self):
         if not APP_STATUS.DOCKERIZED_RUN:
-            return {
-                "http": "socks5h://127.0.0.1:" + "9150",
-                "https": "socks5h://127.0.0.1:" + "9150"
-            }, 100
+            proxies = {
+                "http": "socks5h://localhost:9150",
+                "https": "socks5h://localhost:9150"
+            }
+
+            return proxies, 100
         else:
             self.m_queue_index += 1
             return TOR_PROXIES[self.m_queue_index % len(TOR_PROXIES)], self.m_queue_index % len(TOR_PROXIES)

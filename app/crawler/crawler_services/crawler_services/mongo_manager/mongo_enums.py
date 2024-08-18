@@ -17,7 +17,7 @@ class MONGODB_COLLECTIONS:
 class MONGO_CONNECTIONS:
     S_DATABASE_NAME = 'genbot-crawler'
     S_DATABASE_PORT = 27017
-    S_DATABASE_IP = 'mongo'
+    S_DATABASE_IP = 'localhost'
 
 
 class MONGO_CRUD(enum.Enum):

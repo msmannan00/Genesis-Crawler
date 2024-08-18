@@ -1,1 +1,1 @@
-from .celery_controller import celery_manager
+from .celery_controller import celery_controller

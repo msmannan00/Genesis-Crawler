@@ -1,7 +1,5 @@
 import asyncio
 import gc
-from _weakref import ProxyType
-
 import aiohttp
 
 from aiohttp_socks import ProxyConnector
@@ -17,29 +15,30 @@ class webRequestManager:
     def __init__(self):
         pass
 
-    async def fetch(self, p_url, p_proxy, headers):
+    def fetch(self, p_url, p_proxy, headers):
         try:
-            # Manually setting up the proxy connector with the correct SOCKS5 protocol
-            connector = ProxyConnector(
-                proxy_type=ProxyType.SOCKS5,
-                host="127.0.0.1",
-                port=9150,  # Port for Tor SOCKS proxy
-                rdns=True  # This is important for resolving DNS via the proxy
-            )
+            proxy_host = p_proxy.get('host', 'localhost')
+            proxy_port = p_proxy.get('port', 9150)
 
-            async with aiohttp.ClientSession(connector=connector) as session:
-                async with session.get(p_url, headers=headers, timeout=aiohttp.ClientTimeout(total=30)) as response:
-                    response.raise_for_status()
-                    text = await response.text()
-                    return text, response.status, str(response.url)
+            proxies = {
+                "http": f"socks5h://{proxy_host}:{proxy_port}",
+                "https": f"socks5h://{proxy_host}:{proxy_port}"
+            }
+
+            response = requests.get("https://bbc.com", headers=headers, proxies=proxies, timeout=30)
+            response.raise_for_status()
+            return response.text, response.status_code, response.url
+
         except Exception as ex:
+            print(ex)
+            print(p_url)
             return str(ex), None, None
 
     def load_url(self, p_url, p_custom_proxy):
         try:
             p_url = "https://bbc.com"
             m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
-            m_html, m_status, m_url_redirect = asyncio.run(self.fetch(p_url, p_custom_proxy["http"], headers))
+            m_html, m_status, m_url_redirect = self.fetch(p_url, p_custom_proxy, headers)
 
             m_request_handler.close()
             del m_request_handler
@@ -48,7 +47,8 @@ class webRequestManager:
             else:
                 return str(m_url_redirect), True, str(m_html)
 
-        except Exception:
+        except Exception as ex:
+            print(ex)
             return p_url, False, None
 
     def load_header(self, p_url, p_custom_proxy):
