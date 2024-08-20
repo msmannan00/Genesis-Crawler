@@ -33,17 +33,17 @@ This command will build and start the following services:
 
 You can run the webcrawler in two ways:
 
-Direct Execution:
+#### Direct Execution:
     
-    Navigate to the Genesis-Crawler/app/ directory.
-    Run the webcrawler directly using:
+- Navigate to the Genesis-Crawler/app/ directory.
+- Run the webcrawler directly using:
     
 ```
 python main_direct.py
 ```
-Using Docker:
+#### Using Docker:
 
-    The webcrawler can also be started using Docker, which utilizes the start_app.sh script:
+- The webcrawler can also be started using Docker, which utilizes the start_app.sh script:
 
 ```
 docker-compose up --build
