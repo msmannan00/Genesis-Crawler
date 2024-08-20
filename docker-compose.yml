@@ -1,391 +1,391 @@
 services:
 
-    force-attach:
-      image: bash
-      command: tail -f /dev/null
+  force-attach:
+    image: bash
+    command: tail -f /dev/null
 
-    api:
-      build:
-        context: ./
-        dockerfile: dockerFiles/api_docker
-      ports:
-        - "8000:8000"
-      depends_on:
-        - mongo
-        - redis_server
-        - tor-extend-1
-        - tor-extend-2
-        - tor-extend-3
-        - tor-extend-4
-        - tor-extend-5
-        - tor-extend-6
-        - tor-extend-7
-        - tor-extend-8
-        - tor-extend-9
-        - tor-extend-10
-      restart: always
-      volumes:
-        - ./app/:/app
-      ulimits:
-        nproc: 65535
-        nofile:
-          soft: 26677
-          hard: 46677
-      networks:
-        backend:
-          ipv4_address: 172.18.0.2
-      entrypoint: ["bash", "-c", "./start_app.sh"]
+  api:
+    build:
+      context: ./
+      dockerfile: dockerFiles/api_docker
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+      - redis_server
+      - tor-extend-1
+      - tor-extend-2
+      - tor-extend-3
+      - tor-extend-4
+      - tor-extend-5
+      - tor-extend-6
+      - tor-extend-7
+      - tor-extend-8
+      - tor-extend-9
+      - tor-extend-10
+    restart: always
+    volumes:
+      - ./app/:/app
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 26677
+        hard: 46677
+    networks:
+      backend:
+        ipv4_address: 172.18.0.2
+    entrypoint: [ "bash", "-c", "./start_app.sh" ]
 
-    redis_server:
-      image: redis
-      logging:
-        driver: none
-      command: redis-server --requirepass killprg1
-      restart: always
-      networks:
-        backend:
-          ipv4_address: 172.18.0.3
-      deploy:
-        resources:
-          limits:
-            memory: 2G
+  redis_server:
+    image: redis
+    logging:
+      driver: none
+    command: redis-server --requirepass killprg1
+    restart: always
+    networks:
+      backend:
+        ipv4_address: 172.18.0.3
+    deploy:
+      resources:
+        limits:
+          memory: 2G
 
-    celery_worker:
-      build:
-        context: .
-        dockerfile: dockerFiles/api_docker
-      command: celery -A crawler.crawler_services.crawler_services.celery_manager worker --loglevel=INFO --concurrency=1
-      depends_on:
-        - redis_server
-      restart: always
-      volumes:
-        - ./app:/app
-      networks:
-        backend:
-          ipv4_address: 172.18.0.4
+  celery_worker:
+    build:
+      context: .
+      dockerfile: dockerFiles/api_docker
+    command: celery -A crawler.crawler_services.crawler_services.celery_manager worker --loglevel=INFO --concurrency=1
+    depends_on:
+      - redis_server
+    restart: always
+    volumes:
+      - ./app:/app
+    networks:
+      backend:
+        ipv4_address: 172.18.0.4
 
-    celery_beat:
-      build:
-        context: .
-        dockerfile: dockerFiles/api_docker
-      command: celery -A crawler.crawler_services.crawler_services.celery_manager beat --loglevel=info
-      depends_on:
-        - redis_server
-      restart: always
-      volumes:
-        - ./app:/app
-      networks:
-        backend:
-          ipv4_address: 172.18.0.5
+  celery_beat:
+    build:
+      context: .
+      dockerfile: dockerFiles/api_docker
+    command: celery -A crawler.crawler_services.crawler_services.celery_manager beat --loglevel=info
+    depends_on:
+      - redis_server
+    restart: always
+    volumes:
+      - ./app:/app
+    networks:
+      backend:
+        ipv4_address: 172.18.0.5
 
-    flower:
-      build:
-        context: .
-        dockerfile: dockerFiles/api_docker
-      command: celery -A crawler.crawler_services.crawler_services.celery_manager flower --port=5555 --broker=redis://:killprg1@redis_server:6379/0
-      depends_on:
-        - redis_server
-      ports:
-        - "5555:5555"
-      restart: always
-      networks:
-        backend:
-          ipv4_address: 172.18.0.6
+  flower:
+    build:
+      context: .
+      dockerfile: dockerFiles/api_docker
+    command: celery -A crawler.crawler_services.crawler_services.celery_manager flower --port=5555 --broker=redis://:killprg1@redis_server:6379/0
+    depends_on:
+      - redis_server
+    ports:
+      - "5555:5555"
+    restart: always
+    networks:
+      backend:
+        ipv4_address: 172.18.0.6
 
-    mongo:
-      image: mongocamp/mongodb:5.0.9
-      container_name: mongo-db
-      command: mongod --quiet --logpath /dev/null
-      logging:
-        driver: none
-      volumes:
-        - ./data/db:/data/db
-      ports:
-        - "27017:27017"
-      restart: always
-      networks:
-        backend:
-          ipv4_address: 172.18.0.7
+  mongo:
+    image: mongocamp/mongodb:5.0.9
+    container_name: mongo-db
+    command: mongod --quiet --logpath /dev/null
+    logging:
+      driver: none
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - "27017:27017"
+    restart: always
+    networks:
+      backend:
+        ipv4_address: 172.18.0.7
 
-    tor-extend-1:
-        container_name: tor_instace_1
-        image: barneybuffet/tor:latest
-        volumes:
-          - ~/Documents/docker/tor_test:/tor1
+  tor-extend-1:
+    container_name: tor_instace_1
+    image: barneybuffet/tor:latest
+    volumes:
+      - ~/Documents/docker/tor_test:/tor1
 
-        ports:
-          - "0.0.0.0:9152:9152"
-          - "0.0.0.0:9153:9153"
-        environment:
-          PUID: "20002"
-          PGID: "20003"
-          TOR_CONFIG_OVERWRITE: "true"
-          TOR_LOG_CONFIG: "true"
-          TOR_PROXYL: "true"
-          TOR_PROXY_PORT: "0.0.0.0:9152"
-          TOR_PROXY_SOCKET: "true"
-          TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
-          TOR_CONTROL: "true"
-          TOR_CONTROL_PORT: "0.0.0.0:9153"
-          TOR_CONTROL_SOCKET: "true"
-          TOR_CONTROL_PASSWORD: "Imammehdi@00"
-          TOR_CONTROL_COOKIE: "true"
-          TOR_RELAY: "false"
-        networks:
-            backend:
-                ipv4_address: 172.18.0.10
+    ports:
+      - "0.0.0.0:9152:9152"
+      - "0.0.0.0:9153:9153"
+    environment:
+      PUID: "20002"
+      PGID: "20003"
+      TOR_CONFIG_OVERWRITE: "true"
+      TOR_LOG_CONFIG: "true"
+      TOR_PROXYL: "true"
+      TOR_PROXY_PORT: "0.0.0.0:9152"
+      TOR_PROXY_SOCKET: "true"
+      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_CONTROL: "true"
+      TOR_CONTROL_PORT: "0.0.0.0:9153"
+      TOR_CONTROL_SOCKET: "true"
+      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_COOKIE: "true"
+      TOR_RELAY: "false"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.10
 
-    tor-extend-2:
-        container_name: tor_instace_2
-        image: barneybuffet/tor:latest
-        volumes:
-          - ~/Documents/docker/tor_test:/tor2
+  tor-extend-2:
+    container_name: tor_instace_2
+    image: barneybuffet/tor:latest
+    volumes:
+      - ~/Documents/docker/tor_test:/tor2
 
-        ports:
-          - "0.0.0.0:9154:9154"
-          - "0.0.0.0:9155:9155"
-        environment:
-          PUID: "20004"
-          PGID: "20005"
-          TOR_CONFIG_OVERWRITE: "true"
-          TOR_LOG_CONFIG: "true"
-          TOR_PROXYL: "true"
-          TOR_PROXY_PORT: "0.0.0.0:9154"
-          TOR_PROXY_SOCKET: "true"
-          TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
-          TOR_CONTROL: "true"
-          TOR_CONTROL_PORT: "0.0.0.0:9155"
-          TOR_CONTROL_SOCKET: "true"
-          TOR_CONTROL_PASSWORD: "Imammehdi@00"
-          TOR_CONTROL_COOKIE: "true"
-          TOR_RELAY: "false"
-        networks:
-            backend:
-                ipv4_address: 172.18.0.11
+    ports:
+      - "0.0.0.0:9154:9154"
+      - "0.0.0.0:9155:9155"
+    environment:
+      PUID: "20004"
+      PGID: "20005"
+      TOR_CONFIG_OVERWRITE: "true"
+      TOR_LOG_CONFIG: "true"
+      TOR_PROXYL: "true"
+      TOR_PROXY_PORT: "0.0.0.0:9154"
+      TOR_PROXY_SOCKET: "true"
+      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_CONTROL: "true"
+      TOR_CONTROL_PORT: "0.0.0.0:9155"
+      TOR_CONTROL_SOCKET: "true"
+      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_COOKIE: "true"
+      TOR_RELAY: "false"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.11
 
-    tor-extend-3:
-        container_name: tor_instace_3
-        image: barneybuffet/tor:latest
-        volumes:
-          - ~/Documents/docker/tor_test:/tor3
+  tor-extend-3:
+    container_name: tor_instace_3
+    image: barneybuffet/tor:latest
+    volumes:
+      - ~/Documents/docker/tor_test:/tor3
 
-        ports:
-          - "0.0.0.0:9156:9156"
-          - "0.0.0.0:9157:9157"
-        environment:
-          PUID: "20006"
-          PGID: "20007"
-          TOR_CONFIG_OVERWRITE: "true"
-          TOR_LOG_CONFIG: "true"
-          TOR_PROXYL: "true"
-          TOR_PROXY_PORT: "0.0.0.0:9156"
-          TOR_PROXY_SOCKET: "true"
-          TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
-          TOR_CONTROL: "true"
-          TOR_CONTROL_PORT: "0.0.0.0:9157"
-          TOR_CONTROL_SOCKET: "true"
-          TOR_CONTROL_PASSWORD: "Imammehdi@00"
-          TOR_CONTROL_COOKIE: "true"
-          TOR_RELAY: "false"
-        networks:
-            backend:
-                ipv4_address: 172.18.0.12
+    ports:
+      - "0.0.0.0:9156:9156"
+      - "0.0.0.0:9157:9157"
+    environment:
+      PUID: "20006"
+      PGID: "20007"
+      TOR_CONFIG_OVERWRITE: "true"
+      TOR_LOG_CONFIG: "true"
+      TOR_PROXYL: "true"
+      TOR_PROXY_PORT: "0.0.0.0:9156"
+      TOR_PROXY_SOCKET: "true"
+      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_CONTROL: "true"
+      TOR_CONTROL_PORT: "0.0.0.0:9157"
+      TOR_CONTROL_SOCKET: "true"
+      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_COOKIE: "true"
+      TOR_RELAY: "false"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.12
 
-    tor-extend-4:
-        container_name: tor_instace_42
-        image: barneybuffet/tor:latest
-        volumes:
-          - ~/Documents/docker/tor_test:/tor4
+  tor-extend-4:
+    container_name: tor_instace_42
+    image: barneybuffet/tor:latest
+    volumes:
+      - ~/Documents/docker/tor_test:/tor4
 
-        ports:
-          - "0.0.0.0:9158:9158"
-          - "0.0.0.0:9159:9159"
-        environment:
-          PUID: "20008"
-          PGID: "20009"
-          TOR_CONFIG_OVERWRITE: "true"
-          TOR_LOG_CONFIG: "true"
-          TOR_PROXYL: "true"
-          TOR_PROXY_PORT: "0.0.0.0:9158"
-          TOR_PROXY_SOCKET: "true"
-          TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
-          TOR_CONTROL: "true"
-          TOR_CONTROL_PORT: "0.0.0.0:9159"
-          TOR_CONTROL_SOCKET: "true"
-          TOR_CONTROL_PASSWORD: "Imammehdi@00"
-          TOR_CONTROL_COOKIE: "true"
-          TOR_RELAY: "false"
-        networks:
-            backend:
-                ipv4_address: 172.18.0.13
+    ports:
+      - "0.0.0.0:9158:9158"
+      - "0.0.0.0:9159:9159"
+    environment:
+      PUID: "20008"
+      PGID: "20009"
+      TOR_CONFIG_OVERWRITE: "true"
+      TOR_LOG_CONFIG: "true"
+      TOR_PROXYL: "true"
+      TOR_PROXY_PORT: "0.0.0.0:9158"
+      TOR_PROXY_SOCKET: "true"
+      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_CONTROL: "true"
+      TOR_CONTROL_PORT: "0.0.0.0:9159"
+      TOR_CONTROL_SOCKET: "true"
+      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_COOKIE: "true"
+      TOR_RELAY: "false"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.13
 
-    tor-extend-5:
-        container_name: tor_instace_5
-        image: barneybuffet/tor:latest
-        volumes:
-          - ~/Documents/docker/tor_test:/tor5
+  tor-extend-5:
+    container_name: tor_instace_5
+    image: barneybuffet/tor:latest
+    volumes:
+      - ~/Documents/docker/tor_test:/tor5
 
-        ports:
-          - "0.0.0.0:9160:9160"
-          - "0.0.0.0:9161:9161"
-        environment:
-          PUID: "20010"
-          PGID: "20011"
-          TOR_CONFIG_OVERWRITE: "true"
-          TOR_LOG_CONFIG: "true"
-          TOR_PROXYL: "true"
-          TOR_PROXY_PORT: "0.0.0.0:9160"
-          TOR_PROXY_SOCKET: "true"
-          TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
-          TOR_CONTROL: "true"
-          TOR_CONTROL_PORT: "0.0.0.0:9161"
-          TOR_CONTROL_SOCKET: "true"
-          TOR_CONTROL_PASSWORD: "Imammehdi@00"
-          TOR_CONTROL_COOKIE: "true"
-          TOR_RELAY: "false"
-        networks:
-            backend:
-                ipv4_address: 172.18.0.14
+    ports:
+      - "0.0.0.0:9160:9160"
+      - "0.0.0.0:9161:9161"
+    environment:
+      PUID: "20010"
+      PGID: "20011"
+      TOR_CONFIG_OVERWRITE: "true"
+      TOR_LOG_CONFIG: "true"
+      TOR_PROXYL: "true"
+      TOR_PROXY_PORT: "0.0.0.0:9160"
+      TOR_PROXY_SOCKET: "true"
+      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_CONTROL: "true"
+      TOR_CONTROL_PORT: "0.0.0.0:9161"
+      TOR_CONTROL_SOCKET: "true"
+      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_COOKIE: "true"
+      TOR_RELAY: "false"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.14
 
-    tor-extend-6:
-        container_name: tor_instace_6
-        image: barneybuffet/tor:latest
-        volumes:
-          - ~/Documents/docker/tor_test:/tor6
+  tor-extend-6:
+    container_name: tor_instace_6
+    image: barneybuffet/tor:latest
+    volumes:
+      - ~/Documents/docker/tor_test:/tor6
 
-        ports:
-          - "0.0.0.0:9162:9162"
-          - "0.0.0.0:9163:9163"
-        environment:
-          PUID: "20012"
-          PGID: "20013"
-          TOR_CONFIG_OVERWRITE: "true"
-          TOR_LOG_CONFIG: "true"
-          TOR_PROXYL: "true"
-          TOR_PROXY_PORT: "0.0.0.0:9162"
-          TOR_PROXY_SOCKET: "true"
-          TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
-          TOR_CONTROL: "true"
-          TOR_CONTROL_PORT: "0.0.0.0:9163"
-          TOR_CONTROL_SOCKET: "true"
-          TOR_CONTROL_PASSWORD: "Imammehdi@00"
-          TOR_CONTROL_COOKIE: "true"
-          TOR_RELAY: "false"
-        networks:
-            backend:
-                ipv4_address: 172.18.0.15
+    ports:
+      - "0.0.0.0:9162:9162"
+      - "0.0.0.0:9163:9163"
+    environment:
+      PUID: "20012"
+      PGID: "20013"
+      TOR_CONFIG_OVERWRITE: "true"
+      TOR_LOG_CONFIG: "true"
+      TOR_PROXYL: "true"
+      TOR_PROXY_PORT: "0.0.0.0:9162"
+      TOR_PROXY_SOCKET: "true"
+      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_CONTROL: "true"
+      TOR_CONTROL_PORT: "0.0.0.0:9163"
+      TOR_CONTROL_SOCKET: "true"
+      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_COOKIE: "true"
+      TOR_RELAY: "false"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.15
 
-    tor-extend-7:
-        container_name: tor_instace_7
-        image: barneybuffet/tor:latest
-        volumes:
-          - ~/Documents/docker/tor_test:/tor7
+  tor-extend-7:
+    container_name: tor_instace_7
+    image: barneybuffet/tor:latest
+    volumes:
+      - ~/Documents/docker/tor_test:/tor7
 
-        ports:
-          - "0.0.0.0:9164:9164"
-          - "0.0.0.0:9165:9165"
-        environment:
-          PUID: "20014"
-          PGID: "20015"
-          TOR_CONFIG_OVERWRITE: "true"
-          TOR_LOG_CONFIG: "true"
-          TOR_PROXYL: "true"
-          TOR_PROXY_PORT: "0.0.0.0:9164"
-          TOR_PROXY_SOCKET: "true"
-          TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
-          TOR_CONTROL: "true"
-          TOR_CONTROL_PORT: "0.0.0.0:9165"
-          TOR_CONTROL_SOCKET: "true"
-          TOR_CONTROL_PASSWORD: "Imammehdi@00"
-          TOR_CONTROL_COOKIE: "true"
-          TOR_RELAY: "false"
-        networks:
-            backend:
-                ipv4_address: 172.18.0.16
+    ports:
+      - "0.0.0.0:9164:9164"
+      - "0.0.0.0:9165:9165"
+    environment:
+      PUID: "20014"
+      PGID: "20015"
+      TOR_CONFIG_OVERWRITE: "true"
+      TOR_LOG_CONFIG: "true"
+      TOR_PROXYL: "true"
+      TOR_PROXY_PORT: "0.0.0.0:9164"
+      TOR_PROXY_SOCKET: "true"
+      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_CONTROL: "true"
+      TOR_CONTROL_PORT: "0.0.0.0:9165"
+      TOR_CONTROL_SOCKET: "true"
+      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_COOKIE: "true"
+      TOR_RELAY: "false"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.16
 
-    tor-extend-8:
-        container_name: tor_instace_8
-        image: barneybuffet/tor:latest
-        volumes:
-          - ~/Documents/docker/tor_test:/tor8
+  tor-extend-8:
+    container_name: tor_instace_8
+    image: barneybuffet/tor:latest
+    volumes:
+      - ~/Documents/docker/tor_test:/tor8
 
-        ports:
-          - "0.0.0.0:9166:9166"
-          - "0.0.0.0:9167:9167"
-        environment:
-          PUID: "20016"
-          PGID: "20017"
-          TOR_CONFIG_OVERWRITE: "true"
-          TOR_LOG_CONFIG: "true"
-          TOR_PROXYL: "true"
-          TOR_PROXY_PORT: "0.0.0.0:9166"
-          TOR_PROXY_SOCKET: "true"
-          TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
-          TOR_CONTROL: "true"
-          TOR_CONTROL_PORT: "0.0.0.0:9167"
-          TOR_CONTROL_SOCKET: "true"
-          TOR_CONTROL_PASSWORD: "Imammehdi@00"
-          TOR_CONTROL_COOKIE: "true"
-          TOR_RELAY: "false"
-        networks:
-            backend:
-                ipv4_address: 172.18.0.17
+    ports:
+      - "0.0.0.0:9166:9166"
+      - "0.0.0.0:9167:9167"
+    environment:
+      PUID: "20016"
+      PGID: "20017"
+      TOR_CONFIG_OVERWRITE: "true"
+      TOR_LOG_CONFIG: "true"
+      TOR_PROXYL: "true"
+      TOR_PROXY_PORT: "0.0.0.0:9166"
+      TOR_PROXY_SOCKET: "true"
+      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_CONTROL: "true"
+      TOR_CONTROL_PORT: "0.0.0.0:9167"
+      TOR_CONTROL_SOCKET: "true"
+      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_COOKIE: "true"
+      TOR_RELAY: "false"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.17
 
-    tor-extend-9:
-        container_name: tor_instace_9
-        image: barneybuffet/tor:latest
-        volumes:
-          - ~/Documents/docker/tor_test:/tor9
+  tor-extend-9:
+    container_name: tor_instace_9
+    image: barneybuffet/tor:latest
+    volumes:
+      - ~/Documents/docker/tor_test:/tor9
 
-        ports:
-          - "0.0.0.0:9168:9168"
-          - "0.0.0.0:9169:9169"
-        environment:
-          PUID: "20018"
-          PGID: "20019"
-          TOR_CONFIG_OVERWRITE: "true"
-          TOR_LOG_CONFIG: "true"
-          TOR_PROXYL: "true"
-          TOR_PROXY_PORT: "0.0.0.0:9168"
-          TOR_PROXY_SOCKET: "true"
-          TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
-          TOR_CONTROL: "true"
-          TOR_CONTROL_PORT: "0.0.0.0:9169"
-          TOR_CONTROL_SOCKET: "true"
-          TOR_CONTROL_PASSWORD: "Imammehdi@00"
-          TOR_CONTROL_COOKIE: "true"
-          TOR_RELAY: "false"
-        networks:
-            backend:
-                ipv4_address: 172.18.0.18
+    ports:
+      - "0.0.0.0:9168:9168"
+      - "0.0.0.0:9169:9169"
+    environment:
+      PUID: "20018"
+      PGID: "20019"
+      TOR_CONFIG_OVERWRITE: "true"
+      TOR_LOG_CONFIG: "true"
+      TOR_PROXYL: "true"
+      TOR_PROXY_PORT: "0.0.0.0:9168"
+      TOR_PROXY_SOCKET: "true"
+      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_CONTROL: "true"
+      TOR_CONTROL_PORT: "0.0.0.0:9169"
+      TOR_CONTROL_SOCKET: "true"
+      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_COOKIE: "true"
+      TOR_RELAY: "false"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.18
 
-    tor-extend-10:
-        container_name: tor_instace_10
-        image: barneybuffet/tor:latest
-        volumes:
-          - ~/Documents/docker/tor_test:/tor10
+  tor-extend-10:
+    container_name: tor_instace_10
+    image: barneybuffet/tor:latest
+    volumes:
+      - ~/Documents/docker/tor_test:/tor10
 
-        ports:
-          - "0.0.0.0:9170:9170"
-          - "0.0.0.0:9171:9171"
-        environment:
-          PUID: "20030"
-          PGID: "20031"
-          TOR_CONFIG_OVERWRITE: "true"
-          TOR_LOG_CONFIG: "true"
-          TOR_PROXYL: "true"
-          TOR_PROXY_PORT: "0.0.0.0:9170"
-          TOR_PROXY_SOCKET: "true"
-          TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
-          TOR_CONTROL: "true"
-          TOR_CONTROL_PORT: "0.0.0.0:9171"
-          TOR_CONTROL_SOCKET: "true"
-          TOR_CONTROL_PASSWORD: "Imammehdi@00"
-          TOR_CONTROL_COOKIE: "true"
-          TOR_RELAY: "false"
-        networks:
-            backend:
-                ipv4_address: 172.18.0.19
+    ports:
+      - "0.0.0.0:9170:9170"
+      - "0.0.0.0:9171:9171"
+    environment:
+      PUID: "20030"
+      PGID: "20031"
+      TOR_CONFIG_OVERWRITE: "true"
+      TOR_LOG_CONFIG: "true"
+      TOR_PROXYL: "true"
+      TOR_PROXY_PORT: "0.0.0.0:9170"
+      TOR_PROXY_SOCKET: "true"
+      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_CONTROL: "true"
+      TOR_CONTROL_PORT: "0.0.0.0:9171"
+      TOR_CONTROL_SOCKET: "true"
+      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_COOKIE: "true"
+      TOR_RELAY: "false"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.19
 
 networks:
   backend:
@@ -393,4 +393,4 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.18.0.0/24
+        - subnet: 172.18.0.0/24

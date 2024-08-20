@@ -17,84 +17,85 @@ from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_services.crawler_services.celery_manager.celery_controller import celery_controller
 
+
 class crawl_model(request_handler):
 
-    def __init__(self):
-        self.__init_image_cache()
-        self.__celery_vid = 100000
+  def __init__(self):
+    self.__init_image_cache()
+    self.__celery_vid = 100000
 
-    # Insert To Database - Insert URL to database after parsing them
-    def __init_image_cache(self):
-        if not os.path.isdir(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH):
-            os.makedirs(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
-        else:
-            helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
+  # Insert To Database - Insert URL to database after parsing them
+  def __init_image_cache(self):
+    if not os.path.isdir(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH):
+      os.makedirs(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
+    else:
+      helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
 
-    def __init_docker_request(self):
-        m_live_url_list, m_updated_url_list = self.__install_live_url()
-        m_list = list(m_live_url_list)
-        m_list.extend(m_updated_url_list)
-        self.__start_docker_request(m_list)
+  def __init_docker_request(self):
+    m_live_url_list, m_updated_url_list = self.__install_live_url()
+    m_list = list(m_live_url_list)
+    m_list.extend(m_updated_url_list)
+    self.__start_docker_request(m_list)
 
-    def __init_direct_request(self):
-        log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
+  def __init_direct_request(self):
+    log.g().i(MANAGE_CRAWLER_MESSAGES.S_REINITIALIZING_CRAWLABLE_URL)
 
-        while True:
-            m_live_url_list, p_fetched_url_list = self.__install_live_url()
-            m_request_list = list(m_live_url_list) + p_fetched_url_list
-            for m_url_node in m_request_list:
-                genbot_instance(m_url_node, -1)
+    while True:
+      m_live_url_list, p_fetched_url_list = self.__install_live_url()
+      m_request_list = list(m_live_url_list) + p_fetched_url_list
+      for m_url_node in m_request_list:
+        genbot_instance(m_url_node, -1)
 
-    def __reinit_docker_request(self):
-        m_live_url_list, m_updated_url_list = self.__install_live_url()
-        return m_updated_url_list
+  def __reinit_docker_request(self):
+    m_live_url_list, m_updated_url_list = self.__install_live_url()
+    return m_updated_url_list
 
-    # Start Crawler Manager
-    def __install_live_url(self):
-        mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_CRAWLABLE_URL_DATA, [None], [None]])
-        m_live_url_list = list([x['m_url'] for x in mongo_response])
-        m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [False])
-        while True:
-            try:
-                m_response = m_request_handler.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
-                break
-            except Exception as ex:
-                log.g().e(ex)
-                sleep(50)
-        m_response_text = m_response.text
+  # Start Crawler Manager
+  def __install_live_url(self):
+    mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_CRAWLABLE_URL_DATA, [None], [None]])
+    m_live_url_list = list([x['m_url'] for x in mongo_response])
+    m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [False])
+    while True:
+      try:
+        m_response = m_request_handler.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
+        break
+      except Exception as ex:
+        log.g().e(ex)
+        sleep(50)
+    m_response_text = m_response.text
 
-        m_updated_url_list = []
-        for m_server_url in m_response_text.splitlines():
-            m_url = helper_method.on_clean_url(m_server_url)
-            if helper_method.is_uri_validator(m_server_url) and m_url not in m_live_url_list:
-                log.g().s(MANAGE_CRAWLER_MESSAGES.S_INSTALLED_URL + " : " + m_url)
-                mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [m_url], [True]])
-                m_updated_url_list.append(m_url)
+    m_updated_url_list = []
+    for m_server_url in m_response_text.splitlines():
+      m_url = helper_method.on_clean_url(m_server_url)
+      if helper_method.is_uri_validator(m_server_url) and m_url not in m_live_url_list:
+        log.g().s(MANAGE_CRAWLER_MESSAGES.S_INSTALLED_URL + " : " + m_url)
+        mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [m_url], [True]])
+        m_updated_url_list.append(m_url)
 
-        mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL, [list(m_live_url_list)], [None]])
-        return m_live_url_list, m_updated_url_list
+    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL, [list(m_live_url_list)], [None]])
+    return m_live_url_list, m_updated_url_list
 
-    def __start_docker_request(self, p_fetched_url_list):
-        self.reinit_timer = RepeatedTimer(
-            CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT,
-            self.reinit_list_periodically,True,
-            p_fetched_url_list
-        )
+  def __start_docker_request(self, p_fetched_url_list):
+    self.reinit_timer = RepeatedTimer(
+      CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT,
+      self.reinit_list_periodically, True,
+      p_fetched_url_list
+    )
 
-    def reinit_list_periodically(self, p_fetched_url_list):
-        if not p_fetched_url_list:
-            p_fetched_url_list.extend(self.__reinit_docker_request())
-        while len(p_fetched_url_list) > 0:
-            self.__celery_vid += 1
-            celery_controller.get_instance().invoke_trigger(CELERY_COMMANDS.S_START_TASK, [p_fetched_url_list.pop(0), self.__celery_vid])
+  def reinit_list_periodically(self, p_fetched_url_list):
+    if not p_fetched_url_list:
+      p_fetched_url_list.extend(self.__reinit_docker_request())
+    while len(p_fetched_url_list) > 0:
+      self.__celery_vid += 1
+      celery_controller.get_instance().invoke_trigger(CELERY_COMMANDS.S_START_TASK, [p_fetched_url_list.pop(0), self.__celery_vid])
 
-    def __init_crawler(self):
-        self.__celery_vid = 100000
-        if APP_STATUS.DOCKERIZED_RUN:
-            self.__init_docker_request()
-        else:
-            self.__init_direct_request()
+  def __init_crawler(self):
+    self.__celery_vid = 100000
+    if APP_STATUS.DOCKERIZED_RUN:
+      self.__init_docker_request()
+    else:
+      self.__init_direct_request()
 
-    def invoke_trigger(self, p_command, p_data=None):
-        if p_command == CRAWL_MODEL_COMMANDS.S_INIT:
-            self.__init_crawler()
+  def invoke_trigger(self, p_command, p_data=None):
+    if p_command == CRAWL_MODEL_COMMANDS.S_INIT:
+      self.__init_crawler()

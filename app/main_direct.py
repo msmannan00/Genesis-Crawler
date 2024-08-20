@@ -9,14 +9,14 @@ from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import 
 from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS
 
 try:
-    MONGO_CONNECTIONS.S_DATABASE_IP = "localhost"
-    TOR_STRINGS.S_SOCKS_HTTPS_PROXY = "socks5h://127.0.0.1:"
-    TOR_STRINGS.S_SOCKS_HTTP_PROXY = "socks5h://127.0.0.1:"
-    REDIS_CONNECTIONS.S_DATABASE_IP = "localhost"
-    REDIS_CONNECTIONS.S_DATABASE_PASSWORD = ""
-    MONGO_CONNECTIONS.S_DATABASE_PORT = 27017
-    ELASTIC_CONNECTIONS.S_DATABASE_IP = "http://0.0.0.0:8070/crawl_index/"
+  MONGO_CONNECTIONS.S_DATABASE_IP = "localhost"
+  TOR_STRINGS.S_SOCKS_HTTPS_PROXY = "socks5h://127.0.0.1:"
+  TOR_STRINGS.S_SOCKS_HTTP_PROXY = "socks5h://127.0.0.1:"
+  REDIS_CONNECTIONS.S_DATABASE_IP = "localhost"
+  REDIS_CONNECTIONS.S_DATABASE_PASSWORD = ""
+  MONGO_CONNECTIONS.S_DATABASE_PORT = 27017
+  ELASTIC_CONNECTIONS.S_DATABASE_IP = "http://0.0.0.0:8070/crawl_index/"
 
-    application_controller.get_instance().invoke_triggers(APPICATION_COMMANDS.S_START_APPLICATION_DIRECT)
+  application_controller.get_instance().invoke_triggers(APPICATION_COMMANDS.S_START_APPLICATION_DIRECT)
 except Exception as ex:
-    pass
+  pass
