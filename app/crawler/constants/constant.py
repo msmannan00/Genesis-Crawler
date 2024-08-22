@@ -46,7 +46,7 @@ class CRAWL_SETTINGS_CONSTANTS:
   S_START_URL = "https://drive.google.com/uc?export=download&id=19-5Q4VwzLM6nLRVhtoZLG_ZynQ3_ThV7"
 
   # Total Thread Instances Allowed
-  S_UPDATE_STATUS_TIMEOUT = 250
+  S_UPDATE_STATUS_TIMEOUT = 86400
   S_UPDATE_NETWORK_STATUS_TIMEOUT = 60
   S_UPDATE_STATUS_URL = "http://167.86.99.31/update_status/?pRequest=m_crawler"
 
