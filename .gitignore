@@ -4,3 +4,4 @@ data
 tor_proxy
 global_raw
 env/*
+venv/*
