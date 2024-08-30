@@ -32,12 +32,13 @@ class MANAGE_CRAWLER_MESSAGES:
   S_ELASTIC_ERROR = "[8] Elastic Commands Failed"
   S_SINGLETON_EXCEPTION = "[9] This class is a singleton"
   S_LOCAL_URL_PARSED_FAILED = "[10] Error during loading Local URL"
-  S_INTERNET_CONNECTION_ISSUE = "[11] internet connection issue ..."
-  S_PARSING_STARTING = "[12] URL parsing started"
+  S_LEAK_URL_PARSED_FAILED = "[11] Leak url custom script validation failed"
+  S_INTERNET_CONNECTION_ISSUE = "[12] internet connection issue ..."
+  S_PARSING_STARTING = "[13] URL parsing started"
   S_DUPLICATE_CONTENT = "[14] Dupicate URL Content"
   S_DUPLICATE_HOST_CONTENT = "[15] Dupicate Host Content"
   S_TOO_MANY_FAILURE = "[16] Too many host failure droping"
-  S_DUPLICATE_HOST_HASH = "[16] Dupicate Host Hash"
+  S_DUPLICATE_HOST_HASH = "[17] Dupicate Host Hash"
 
 
 class MANAGE_MONGO_MESSAGES:

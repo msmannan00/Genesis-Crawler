@@ -1,19 +1,30 @@
 # Local Imports
 import os
 import re
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 from gensim.parsing.preprocessing import STOPWORDS
 
 
 class helper_method:
 
   @staticmethod
-  def get_host_url(p_url):
+  def get_host_name(p_url):
     m_parsed_uri = urlparse(p_url)
-    m_host_url = '{uri.scheme}://{uri.netloc}/'.format(uri=m_parsed_uri)
-    if m_host_url.endswith("/"):
-      m_host_url = m_host_url[:-1]
-    return m_host_url
+    m_netloc = m_parsed_uri.netloc
+
+    if m_netloc.startswith('www.'):
+      m_netloc = m_netloc[4:]
+
+    netloc_parts = m_netloc.split('.')
+
+    if len(netloc_parts) > 2:
+      m_host_name = netloc_parts[-2]
+    elif len(netloc_parts) == 2:
+      m_host_name = netloc_parts[0]
+    else:
+      m_host_name = m_netloc
+
+    return m_host_name
 
   @staticmethod
   def strip_special_character(p_text):
@@ -34,13 +45,18 @@ class helper_method:
 
   @staticmethod
   def on_clean_url(p_url):
-    if p_url.startswith("http://www.") or p_url.startswith("https://www.") or p_url.startswith("www."):
-      p_url = p_url.replace("www.", "", 1)
+    parsed_url = urlparse(p_url)
+    netloc = parsed_url.netloc.replace("www.", "", 1)
+    cleaned_url = urlunparse((
+      parsed_url.scheme,
+      netloc.lower(),
+      parsed_url.path.rstrip('/ '),
+      parsed_url.params,
+      parsed_url.query,
+      parsed_url.fragment
+    ))
 
-    while p_url.endswith("/") or p_url.endswith(" "):
-      p_url = p_url[:-1]
-
-    return p_url
+    return cleaned_url
 
   # Remove Extra Slashes
   @staticmethod

@@ -4,7 +4,6 @@ from pathlib import Path
 class RAW_PATH_CONSTANTS:
   S_SIGWIN_PATH = str(Path(__file__).parent.parent.parent.parent.parent) + "/cygwin64/bin/bash.exe --login"
   S_PROJECT_PATH = str(Path(__file__).parent.parent)
-  S_CRAWLER_IMAGE_CACHE_PATH = str(Path(__file__).parent.parent.parent) + "/global_raw/crawler_image_cache/"
 
 
 class NETWORK_MONITOR:
@@ -44,9 +43,11 @@ class CRAWL_SETTINGS_CONSTANTS:
 
   # Local URL
   S_START_URL = "https://drive.google.com/uc?export=download&id=19-5Q4VwzLM6nLRVhtoZLG_ZynQ3_ThV7"
+  S_PARSERS_URL = "https://drive.usercontent.google.com/download?id=1OMkk1X-OQpH2tXyD3VmQ77cJQ-BxrUTZ&export=download&authuser=0&confirm=t&uuid=b3c07c03-8755-4acd-b307-b1b78a0ee7ba&at=AO7h07cHHGXbls9nafAROAZTZSDU%3A1725023431358"
 
   # Total Thread Instances Allowed
   S_UPDATE_STATUS_TIMEOUT = 86400
+  S_UPDATE_PARSERS_TIMEOUT = 86400
   S_UPDATE_NETWORK_STATUS_TIMEOUT = 60
   S_UPDATE_STATUS_URL = "http://167.86.99.31/update_status/?pRequest=m_crawler"
 
@@ -79,3 +80,7 @@ class CRAWL_SETTINGS_CONSTANTS:
 
   # Max Thread Size
   S_MAX_THREAD_COUNT = 1
+
+  # Max Thread Size
+  S_LEAK_FILE_VERIFICATION_ALLOWED = False
+  S_GENERIC_FILE_VERIFICATION_ALLOWED = False

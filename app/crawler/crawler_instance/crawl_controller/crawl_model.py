@@ -1,8 +1,11 @@
 # Local Imports
 import os
+import shutil
+import zipfile
 from time import sleep
+
 from crawler.constants.app_status import APP_STATUS
-from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
 from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
@@ -16,20 +19,42 @@ from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_services.crawler_services.celery_manager.celery_controller import celery_controller
+from crawler.shared_data import celery_shared_data
 
 
 class crawl_model(request_handler):
 
   def __init__(self):
-    self.__init_image_cache()
     self.__celery_vid = 100000
 
-  # Insert To Database - Insert URL to database after parsing them
-  def __init_image_cache(self):
-    if not os.path.isdir(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH):
-      os.makedirs(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
-    else:
-      helper_method.clear_folder(RAW_PATH_CONSTANTS.S_CRAWLER_IMAGE_CACHE_PATH)
+  def init_parsers(self):
+    zip_url = CRAWL_SETTINGS_CONSTANTS.S_PARSERS_URL
+    zip_path = "downloaded_file.zip"
+    extract_dir = os.path.join(os.getcwd(), 'raw')
+
+    try:
+      m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [False])
+      m_response = m_request_handler.get(zip_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
+
+      if m_response.status_code == 200:
+        with open(zip_path, "wb") as file:
+          for chunk in m_response.iter_content(chunk_size=1024):
+            if chunk:
+              file.write(chunk)
+
+        if os.path.exists(extract_dir):
+          shutil.rmtree(extract_dir)
+        os.makedirs(extract_dir)
+
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+          zip_ref.extractall(extract_dir)
+
+    except Exception as e:
+      log.g().e(e)
+
+    finally:
+      if os.path.exists(zip_path):
+        os.remove(zip_path)
 
   def __init_docker_request(self):
     m_live_url_list, m_updated_url_list = self.__install_live_url()
@@ -60,8 +85,8 @@ class crawl_model(request_handler):
         m_response = m_request_handler.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
         break
       except Exception as ex:
+        sleep(1000)
         log.g().e(ex)
-        sleep(50)
     m_response_text = m_response.text
 
     m_updated_url_list = []
@@ -76,21 +101,21 @@ class crawl_model(request_handler):
     return m_live_url_list, m_updated_url_list
 
   def __start_docker_request(self, p_fetched_url_list):
-    self.reinit_timer = RepeatedTimer(
-      CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT,
-      self.reinit_list_periodically, True,
-      p_fetched_url_list
-    )
+    RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT, self.reinit_list_periodically, True, p_fetched_url_list)
 
   def reinit_list_periodically(self, p_fetched_url_list):
-    if not p_fetched_url_list:
-      p_fetched_url_list.extend(self.__reinit_docker_request())
-    while len(p_fetched_url_list) > 0:
-      self.__celery_vid += 1
-      celery_controller.get_instance().invoke_trigger(CELERY_COMMANDS.S_START_TASK, [p_fetched_url_list.pop(0), self.__celery_vid])
+    if celery_shared_data.get_instance().get_network_status:
+      if not p_fetched_url_list:
+        p_fetched_url_list.extend(self.__reinit_docker_request())
+      while len(p_fetched_url_list) > 0:
+        self.__celery_vid += 1
+        celery_controller.get_instance().invoke_trigger(CELERY_COMMANDS.S_START_TASK, [p_fetched_url_list.pop(0), self.__celery_vid])
 
   def __init_crawler(self):
     self.__celery_vid = 100000
+    # self.init_parsers()
+    # RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_PARSERS_TIMEOUT, self.reinit_list_periodically, False, self.init_parsers)
+
     if APP_STATUS.DOCKERIZED_RUN:
       self.__init_docker_request()
     else:

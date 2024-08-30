@@ -1,31 +1,49 @@
-# Local Imports
 from pydantic import BaseModel
+from typing import List
 from crawler.crawler_instance.local_shared_model.url_model import url_model
 
-
 class index_model(BaseModel):
-  m_base_model: url_model
-  m_title: str
-  m_meta_description: str
-  m_important_content: str
-  m_content_type: str
-  m_important_content_hidden: str
-  m_meta_keywords: str
-  m_content: str
-  m_extended_content: str
-  m_sub_url: list
-  m_images: list = []
-  m_document: list
-  m_video: list
-  m_validity_score: int
-  m_user_crawled: bool = False
+    m_base_model: url_model
+    m_title: str
+    m_meta_description: str
+    m_meta_keywords: List[str]
+    m_content: str
+    m_important_content: str
+    m_content_tokens: List[str]
+    m_keywords: List[str]
+    m_images: List[str]
+    m_document: List[str]
+    m_video: List[str]
+    m_validity_score: int
+    m_content_summary: str
 
-
-def index_model_init(p_base_model, p_title, p_meta_description, p_important_content, p_important_content_hidden, p_meta_keywords, p_content, p_sub_url, p_document, p_video, p_validity_score, p_extended_content):
-  return index_model(**{'m_base_model': p_base_model, "m_title": p_title, "m_meta_description": p_meta_description, "m_important_content": p_important_content, "m_important_content_hidden": p_important_content_hidden, "m_meta_keywords": p_meta_keywords, "m_content": p_content, "m_sub_url": p_sub_url, "m_document": p_document, "m_video": p_video, "m_content_type": "all", "m_validity_score": p_validity_score, "m_extended_content": p_extended_content})
-
-
-def index_image_model_init(p_base_model, p_title, p_meta_description, p_important_content, p_important_content_hidden, p_meta_keywords, p_content, p_sub_url, p_images, p_document, p_video, p_validity_score, p_extended_content):
-  m_json = {'m_images': p_images, 'm_base_model': p_base_model, "m_title": p_title, "m_meta_description": p_meta_description, "m_important_content": p_important_content, "m_important_content_hidden": p_important_content_hidden, "m_meta_keywords": p_meta_keywords, "m_content": p_content, "m_sub_url": p_sub_url, "m_document": p_document, "m_video": p_video, "m_content_type": "all", "m_validity_score": p_validity_score, "m_extended_content": p_extended_content}
-
-  return index_model(**m_json)
+def index_model_init(
+    p_base_model: url_model,
+    m_title: str,
+    m_meta_description: str,
+    m_meta_keywords: List[str],
+    m_content: str,
+    m_important_content: str,
+    m_content_tokens: List[str],
+    m_keywords: List[str],
+    m_images: List[str],
+    m_document: List[str],
+    m_video: List[str],
+    m_validity_score: int,
+    m_content_summary: str
+) -> index_model:
+    return index_model(
+        m_base_model=p_base_model,
+        m_title=m_title,
+        m_meta_description=m_meta_description,
+        m_meta_keywords=m_meta_keywords,
+        m_content=m_content,
+        m_important_content=m_important_content,
+        m_content_tokens=m_content_tokens,
+        m_keywords=m_keywords,
+        m_images=m_images,
+        m_document=m_document,
+        m_video=m_video,
+        m_validity_score=m_validity_score,
+        m_content_summary=m_content_summary,
+    )

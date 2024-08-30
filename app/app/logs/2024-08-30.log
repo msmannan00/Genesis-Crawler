@@ -1,0 +1,21 @@
+2024-08-30 19:26:28,127 - genesis_logs - WARNING - Warning message
+2024-08-30 19:26:28,128 - genesis_logs - INFO - Info message
+2024-08-30 19:26:28,128 - genesis_logs - INFO - 30/08/2024 19:26:28 : application_controller : [0] APPLICATION STARTING
+2024-08-30 19:26:28,129 - genesis_logs - INFO - 30/08/2024 19:26:28 : crawl_model : [4] Re-initializing Crawlable URL
+2024-08-30 19:26:34,720 - genesis_logs - INFO - 30/08/2024 19:26:34 : genbot_controller : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+2024-08-30 19:27:39,966 - genesis_logs - WARNING - Warning message
+2024-08-30 19:27:39,967 - genesis_logs - INFO - Info message
+2024-08-30 19:27:39,967 - genesis_logs - INFO - 30/08/2024 19:27:39 : application_controller : [0] APPLICATION STARTING
+2024-08-30 19:27:39,968 - genesis_logs - INFO - 30/08/2024 19:27:39 : crawl_model : [4] Re-initializing Crawlable URL
+2024-08-30 19:27:54,990 - genesis_logs - INFO - 30/08/2024 19:27:54 : genbot_controller : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+2024-08-30 19:28:10,375 - genesis_logs - INFO - 30/08/2024 19:28:10 : genbot_controller : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+2024-08-30 19:28:10,376 - genesis_logs - INFO - 30/08/2024 19:28:10 : genbot_controller : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+30/08/2024 19:32:06 : application_controller : [0] APPLICATION STARTING
+30/08/2024 19:32:06 : crawl_model : [4] Re-initializing Crawlable URL
+30/08/2024 19:32:12 : genbot_controller : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 30/08/2024 19:34:57 : log : [0] APPLICATION STARTING
+INFO - 30/08/2024 19:34:57 : log : [4] Re-initializing Crawlable URL
+INFO - 30/08/2024 19:35:03 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 30/08/2024 19:35:15 : log : [0] APPLICATION STARTING
+INFO - 30/08/2024 19:35:15 : log : [4] Re-initializing Crawlable URL
+INFO - 30/08/2024 19:35:21 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
