@@ -1,8 +1,7 @@
 # Local Imports
 import os
-import shutil
-import zipfile
 from time import sleep
+import requests
 
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
@@ -10,11 +9,13 @@ from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
 from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
 from crawler.crawler_instance.helper_services.helper_method import helper_method
+from crawler.crawler_instance.helper_services.web_request_handler import webRequestManager
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_COMMANDS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS, MONGO_CRUD
+from crawler.crawler_services.helper_services.crypto_handler import crypto_handler
 from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
@@ -28,33 +29,57 @@ class crawl_model(request_handler):
     self.__celery_vid = 100000
 
   def init_parsers(self):
-    zip_url = CRAWL_SETTINGS_CONSTANTS.S_PARSERS_URL
-    zip_path = "downloaded_file.zip"
-    extract_dir = os.path.join(os.getcwd(), 'raw')
+    zip_path = "data.zip"
+    extract_dir = os.path.join(os.getcwd(), CRAWL_SETTINGS_CONSTANTS.S_PARSE_EXTRACTION_DIR)
+    web_request_manager = webRequestManager()
 
     try:
-      m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [False])
-      m_response = m_request_handler.get(zip_url, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
+      file_content, status_or_error = web_request_manager.request_server(CRAWL_SETTINGS_CONSTANTS.S_PARSERS_URL)
 
-      if m_response.status_code == 200:
+      if status_or_error == 200:
         with open(zip_path, "wb") as file:
-          for chunk in m_response.iter_content(chunk_size=1024):
-            if chunk:
-              file.write(chunk)
+          file.write(file_content)
 
-        if os.path.exists(extract_dir):
-          shutil.rmtree(extract_dir)
-        os.makedirs(extract_dir)
-
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-          zip_ref.extractall(extract_dir)
+        helper_method.extract_zip(zip_path, extract_dir, delete_after=True)
 
     except Exception as e:
       log.g().e(e)
 
-    finally:
-      if os.path.exists(zip_path):
-        os.remove(zip_path)
+  # Start Crawler Manager
+  def __install_live_url(self):
+    web_request_manager = webRequestManager()
+    m_proxy, m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
+    mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ,[MONGODB_COMMANDS.S_GET_CRAWLABLE_URL_DATA, [None], [None]])
+    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE,[MONGODB_COMMANDS.S_RESET_CRAWLABLE_URL, [None], [False]])
+    m_live_url_list = list([x['m_url'] for x in mongo_response])
+
+    while True:
+      try:
+        m_html, m_status = web_request_manager.request_server(CRAWL_SETTINGS_CONSTANTS.S_START_URL, m_proxy)
+        if isinstance(m_html, bytes):
+          m_html = m_html.decode('utf-8')
+        if m_status == 200:
+          break
+      except Exception as ex:
+        sleep(1)
+        log.g().e(ex)
+
+    m_response_text = m_html
+
+    m_response_list = m_response_text.splitlines()
+    m_updated_url_list = []
+
+    for m_server_url in m_response_list:
+      m_url = helper_method.on_clean_url(m_server_url)
+
+      mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_SET_CRAWLABLE_URL, [m_server_url], [False]])
+      if helper_method.is_uri_validator(m_server_url) and m_url not in m_live_url_list:
+        log.g().s(MANAGE_CRAWLER_MESSAGES.S_INSTALLED_URL + " : " + m_url)
+        mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [m_url], [True]])
+        m_updated_url_list.append(m_url)
+
+    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL, [list(m_live_url_list)], [None]])
+    return m_live_url_list, m_updated_url_list
 
   def __init_docker_request(self):
     m_live_url_list, m_updated_url_list = self.__install_live_url()
@@ -75,31 +100,6 @@ class crawl_model(request_handler):
     m_live_url_list, m_updated_url_list = self.__install_live_url()
     return m_updated_url_list
 
-  # Start Crawler Manager
-  def __install_live_url(self):
-    mongo_response = mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_READ, [MONGODB_COMMANDS.S_GET_CRAWLABLE_URL_DATA, [None], [None]])
-    m_live_url_list = list([x['m_url'] for x in mongo_response])
-    m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [False])
-    while True:
-      try:
-        m_response = m_request_handler.get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, headers=headers, timeout=CRAWL_SETTINGS_CONSTANTS.S_URL_TIMEOUT, proxies={}, allow_redirects=True)
-        break
-      except Exception as ex:
-        sleep(1000)
-        log.g().e(ex)
-    m_response_text = m_response.text
-
-    m_updated_url_list = []
-    for m_server_url in m_response_text.splitlines():
-      m_url = helper_method.on_clean_url(m_server_url)
-      if helper_method.is_uri_validator(m_server_url) and m_url not in m_live_url_list:
-        log.g().s(MANAGE_CRAWLER_MESSAGES.S_INSTALLED_URL + " : " + m_url)
-        mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [m_url], [True]])
-        m_updated_url_list.append(m_url)
-
-    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL, [list(m_live_url_list)], [None]])
-    return m_live_url_list, m_updated_url_list
-
   def __start_docker_request(self, p_fetched_url_list):
     RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_STATUS_TIMEOUT, self.reinit_list_periodically, True, p_fetched_url_list)
 
@@ -113,13 +113,13 @@ class crawl_model(request_handler):
 
   def __init_crawler(self):
     self.__celery_vid = 100000
-    # self.init_parsers()
-    # RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_PARSERS_TIMEOUT, self.reinit_list_periodically, False, self.init_parsers)
+    self.init_parsers()
+    RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_PARSERS_TIMEOUT, self.reinit_list_periodically, False, self.init_parsers)
 
     if APP_STATUS.DOCKERIZED_RUN:
-      self.__init_docker_request()
+     self.__init_docker_request()
     else:
-      self.__init_direct_request()
+     self.__init_direct_request()
 
   def invoke_trigger(self, p_command, p_data=None):
     if p_command == CRAWL_MODEL_COMMANDS.S_INIT:

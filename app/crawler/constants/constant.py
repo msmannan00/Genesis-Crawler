@@ -39,11 +39,19 @@ class CLASSIFIER_CONSTANTS:
 
 class CRAWL_SETTINGS_CONSTANTS:
   # Allowed Extentions
-  S_DOC_TYPES = [".pdf", ".msword", ".document", ".docx", ".doc"]
-
+  S_DOC_TYPES = [
+    '.pdf', '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx',
+    '.odt', '.ods', '.odp', '.txt', '.rtf', '.csv', '.md', '.tex',
+    '.epub', '.mobi', '.html', '.htm', '.xml', '.json', '.yaml', '.yml',
+    '.log', '.pages', '.key', '.numbers',
+    '.zip', '.tar', '.gz', '.rar', '.7z', '.bz2', '.xz', '.iso',
+    '.dmg', '.tgz', '.tbz2', '.z', '.lz', '.lha', '.lzh',
+    '.ps', '.eps', '.svg', '.odg', '.pub', '.wps', '.xps', '.pdfa', '.pdfx',
+  ]
   # Local URL
-  S_START_URL = "https://drive.google.com/uc?export=download&id=19-5Q4VwzLM6nLRVhtoZLG_ZynQ3_ThV7"
-  S_PARSERS_URL = "https://drive.usercontent.google.com/download?id=1OMkk1X-OQpH2tXyD3VmQ77cJQ-BxrUTZ&export=download&authuser=0&confirm=t&uuid=b3c07c03-8755-4acd-b307-b1b78a0ee7ba&at=AO7h07cHHGXbls9nafAROAZTZSDU%3A1725023431358"
+  S_START_URL = "http://localhost:8080/feeder"
+  S_PARSERS_URL = "http://localhost:8080/parser"
+  S_PARSE_EXTRACTION_DIR = "raw/parsers"
 
   # Total Thread Instances Allowed
   S_UPDATE_STATUS_TIMEOUT = 86400
@@ -62,24 +70,8 @@ class CRAWL_SETTINGS_CONSTANTS:
   S_URL_TIMEOUT = 60
   S_HEADER_TIMEOUT = 30
 
-  # Max Host Queue Size
-  S_MAX_HOST_QUEUE_SIZE = 100
-  S_MAX_SUBHOST_QUEUE_SIZE = 500
-
-  # Max URL Size
-  S_MAX_URL_SIZE = 480
-
-  # Min Image Content Size
-  S_MIN_CONTENT_LENGTH = 50000
-
   # User Agent
   S_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0'
-
-  # Max Static Images
-  S_STATIC_PARSER_LIST_MAX_SIZE = 10
-
-  # Max Thread Size
-  S_MAX_THREAD_COUNT = 1
 
   # Max Thread Size
   S_LEAK_FILE_VERIFICATION_ALLOWED = False

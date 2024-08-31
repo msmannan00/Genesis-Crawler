@@ -3,8 +3,6 @@ import copy
 from asyncio import sleep
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
@@ -13,7 +11,7 @@ from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import 
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
-from crawler.crawler_instance.genbot_service.web_request_handler import webRequestManager
+from crawler.crawler_instance.helper_services.web_request_handler import webRequestManager
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_shared_directory.log_manager.log_controller import log
@@ -54,7 +52,7 @@ class genbot_controller(request_handler):
         m_parsed_model = self.__m_html_parser.on_parse_html(m_raw_html, p_request_model)
         m_leak_data_model, m_sub_url = self.__m_html_parser.on_parse_leaks(m_raw_html, m_redirected_url)
 
-        if helper_method.get_host_name(m_redirected_url).__eq__(helper_method.get_host_name(p_request_model.m_url)) and self.m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
+        if m_leak_data_model is not None and helper_method.get_host_name(m_redirected_url).__eq__(helper_method.get_host_name(p_request_model.m_url)) and self.m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
           self.m_url_duplication_handler.insert(m_redirected_url)
           m_paresed_request_data = {"m_parsed_model":m_parsed_model.model_dump(),  "m_leak_data_model":m_leak_data_model.dict()}
           m_paresed_request_data = copy.deepcopy(m_paresed_request_data)
@@ -107,7 +105,6 @@ class genbot_controller(request_handler):
 
 def genbot_instance(p_url, p_vid):
   m_crawler = genbot_controller()
-  p_url = "http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/"
   try:
     m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
     p_request_url = helper_method.on_clean_url(p_url)

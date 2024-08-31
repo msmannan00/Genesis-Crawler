@@ -40,7 +40,7 @@ class parse_controller:
         if not self.leak_extractor_instance:
             class_name = helper_method.get_host_name(p_data_url)  # Get the host name
             try:
-                module_path = f"raw.{class_name}"
+                module_path = f"raw.parsers.{class_name}"
 
                 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
                 if parent_dir not in sys.path:
@@ -49,7 +49,7 @@ class parse_controller:
                 module = importlib.import_module(module_path)
                 class_ = getattr(module, class_name)
                 self.leak_extractor_instance: leak_extractor_interface = class_()
-            except Exception:
+            except Exception as ex:
                 return None, False
 
         data_model, m_sub_url = self.leak_extractor_instance.parse_leak_data(p_html, p_data_url)

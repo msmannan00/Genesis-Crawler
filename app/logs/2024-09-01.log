@@ -1,0 +1,750 @@
+INFO - 01/09/2024 00:00:04 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:00:15 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:00:26 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:00:52 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:01:37 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:04:14 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:06:04 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:07:07 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:09:00 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:09:32 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:10:20 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:11:03 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:12:18 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:13:02 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:14:36 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:16:11 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:16:29 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:17:51 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:18:30 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:18:37 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:21:00 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:21:11 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:22:02 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:22:39 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:22:49 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:26:16 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:53:17 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:55:23 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:57:09 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:59:01 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 00:59:31 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:01:38 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:01:48 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:02:28 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:05:14 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:05:32 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:07:48 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:08:04 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:08:31 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:12:57 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:16:50 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:17:53 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:17:53 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:18:56 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:18:56 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:22:42 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:24:59 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:26:18 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:26:26 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:39:01 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:39:01 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:39:37 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:39:37 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:40:10 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:40:10 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:40:43 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:40:43 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:41:11 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:41:11 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:43:54 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:43:57 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:52:10 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:52:10 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:53:06 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:53:06 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:55:11 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:55:11 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:56:14 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:56:14 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:56:24 : log : dirlink_-1 : 100 : [13] URL parsing started : http://2222222226sthrmgdlzeor4pj3p6l4iey2ycytmsz3iy7irquqzwd7qd.onion
+INFO - 01/09/2024 01:56:32 : log : dirlink_-1 : 100 : [13] URL parsing started : http://2222222226sthrmgdlzeor4pj3p6l4iey2ycytmsz3iy7irquqzwd7qd.onion
+INFO - 01/09/2024 01:57:50 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:57:50 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:57:54 : log : dirlink_-1 : 100 : [13] URL parsing started : http://2222222226sthrmgdlzeor4pj3p6l4iey2ycytmsz3iy7irquqzwd7qd.onion
+INFO - 01/09/2024 01:58:34 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:58:34 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:58:53 : log : dirlink_-1 : 100 : [13] URL parsing started : http://2222222226sthrmgdlzeor4pj3p6l4iey2ycytmsz3iy7irquqzwd7qd.onion
+INFO - 01/09/2024 01:59:38 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 01:59:38 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 01:59:42 : log : dirlink_-1 : 100 : [13] URL parsing started : http://2222222226sthrmgdlzeor4pj3p6l4iey2ycytmsz3iy7irquqzwd7qd.onion
+INFO - 01/09/2024 02:01:43 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:01:43 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:01:43 : log : dirlink_-1 : 100 : [13] URL parsing started : http://2222222226sthrmgdlzeor4pj3p6l4iey2ycytmsz3iy7irquqzwd7qd.onion
+INFO - 01/09/2024 02:02:24 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:02:24 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:02:24 : log : dirlink_-1 : 100 : [13] URL parsing started : http://2222222226sthrmgdlzeor4pj3p6l4iey2ycytmsz3iy7irquqzwd7qd.onion
+INFO - 01/09/2024 02:04:29 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:04:29 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:22:01 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:22:01 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:24:58 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:24:58 : log : [4] Re-initializing Crawlable URL
+SUCCESS - 01/09/2024 02:29:05 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 01/09/2024 02:30:47 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:30:47 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:31:55 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:31:55 : log : [4] Re-initializing Crawlable URL
+SUCCESS - 01/09/2024 02:31:55 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 01/09/2024 02:35:14 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:35:14 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:36:11 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:36:11 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:37:18 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:37:18 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:38:17 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:38:17 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:38:55 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:38:55 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:49:20 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:49:20 : log : [4] Re-initializing Crawlable URL
+ERROR - 01/09/2024 02:49:20 : log : [3] Something unexpected happened while updating : update only works with $ operators
+INFO - 01/09/2024 02:50:36 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:50:36 : log : [4] Re-initializing Crawlable URL
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:36 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:37 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:38 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:39 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:40 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:41 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:42 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+ERROR - 01/09/2024 02:50:43 : log : [3] Something unexpected happened while updating : update only works with $ operators
+INFO - 01/09/2024 02:50:56 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:50:56 : log : [4] Re-initializing Crawlable URL
+ERROR - 01/09/2024 02:50:56 : log : [3] Something unexpected happened while updating : update only works with $ operators
+INFO - 01/09/2024 02:51:24 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:51:24 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:52:06 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:52:06 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:52:20 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:52:20 : log : [4] Re-initializing Crawlable URL
+ERROR - 01/09/2024 02:52:36 : log : [3] Something unexpected happened while updating : upsert must be True or False, was: upsert=None
+INFO - 01/09/2024 02:53:15 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:53:15 : log : [4] Re-initializing Crawlable URL
+ERROR - 01/09/2024 02:53:29 : log : [3] Something unexpected happened while updating : upsert must be True or False, was: upsert=None
+INFO - 01/09/2024 02:53:53 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:53:53 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:54:36 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:54:36 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:55:37 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:55:37 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 02:56:05 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 02:56:05 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 03:03:49 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 03:03:49 : log : [4] Re-initializing Crawlable URL
+SUCCESS - 01/09/2024 03:04:03 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 01/09/2024 03:04:14 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 01/09/2024 03:05:38 : log : [0] APPLICATION STARTING
+INFO - 01/09/2024 03:05:38 : log : [4] Re-initializing Crawlable URL
+INFO - 01/09/2024 03:05:53 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion

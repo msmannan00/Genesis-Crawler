@@ -57,7 +57,7 @@ class mongo_controller(request_handler):
       log.g().e(MANAGE_MONGO_MESSAGES.S_READ_FAILURE + " : " + str(ex))
       return str(ex)
 
-  def __update(self, p_data, upsert):
+  def __update(self, p_data, upsert=True):
     try:
       self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].update_many(p_data[MONGODB_KEYS.S_FILTER], p_data[MONGODB_KEYS.S_VALUE], upsert=upsert)
       return True, MANAGE_MONGO_MESSAGES.S_UPDATE_SUCCESS

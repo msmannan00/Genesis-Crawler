@@ -1,6 +1,8 @@
 # Local Imports
 import os
 import re
+import shutil
+import zipfile
 from urllib.parse import urlparse, urlunparse
 from gensim.parsing.preprocessing import STOPWORDS
 
@@ -25,6 +27,18 @@ class helper_method:
       m_host_name = m_netloc
 
     return m_host_name
+
+  @staticmethod
+  def extract_zip(from_path, to_path, delete_after=False):
+    if os.path.exists(to_path):
+      shutil.rmtree(to_path)
+    os.makedirs(to_path)
+
+    with zipfile.ZipFile(from_path, 'r') as zip_ref:
+      zip_ref.extractall(to_path)
+
+    if delete_after:
+      os.remove(from_path)
 
   @staticmethod
   def strip_special_character(p_text):

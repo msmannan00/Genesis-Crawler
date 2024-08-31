@@ -12,6 +12,7 @@ import re
 
 from app.crawler.crawler_instance.local_shared_model.index_model import index_model, index_model_init
 from app.crawler.crawler_instance.local_shared_model.url_model import url_model
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 
 nltk.download('punkt')
@@ -60,37 +61,26 @@ class html_parse_manager(HTMLParser, ABC):
 
     def extract_sub_urls(self) -> Tuple[List[str], List[str]]:
         """Extract unique and cleaned images and documents (excluding videos) from the HTML."""
-        seen_urls = set()  # Set to keep track of unique URLs
+        seen_urls = set()
 
-        # Extract images and ensure uniqueness
         images = []
         for img in self.soup.find_all('img'):
             if 'src' in img.attrs:
                 img_url = urljoin(self.base_url, img['src'])
-                cleaned_img_url = helper_method.on_clean_url(img_url)  # Clean the URL
+                cleaned_img_url = helper_method.on_clean_url(img_url)
                 if cleaned_img_url not in seen_urls:
                     seen_urls.add(cleaned_img_url)
                     images.append(cleaned_img_url)
 
-        # Extract documents and ensure uniqueness
         documents = []
         for a in self.soup.find_all('a', href=True):
             href = a['href']
-            if href.endswith((
-                    # Document formats
-                    '.pdf', '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx',
-                    '.odt', '.ods', '.odp', '.txt', '.rtf', '.csv', '.md', '.tex',
-                    '.epub', '.mobi', '.html', '.htm', '.xml', '.json', '.yaml', '.yml',
-                    '.log', '.pages', '.key', '.numbers',
-
-                    '.zip', '.tar', '.gz', '.rar', '.7z', '.bz2', '.xz', '.iso',
-                    '.dmg', '.tgz', '.tbz2', '.z', '.lz', '.lha', '.lzh',
-
-                    '.ps', '.eps', '.svg', '.odg', '.pub', '.wps', '.xps', '.pdfa', '.pdfx',
-            )) or 'download' in a.get('rel', []):
+            # Check if the href ends with allowed document types
+            if any(href.endswith(ext) for ext in CRAWL_SETTINGS_CONSTANTS.S_DOC_TYPES) or 'download' in a.get('rel', []):
                 doc_url = urljoin(self.base_url, href)
                 cleaned_doc_url = helper_method.on_clean_url(doc_url)
                 if cleaned_doc_url not in seen_urls:
+                    seen_urls.add(cleaned_doc_url)
                     seen_urls.add(cleaned_doc_url)
                     documents.append(cleaned_doc_url)
 

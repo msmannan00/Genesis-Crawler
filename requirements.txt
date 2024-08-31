@@ -16,6 +16,8 @@ elasticsearch
 pymongo
 celery
 redis
+fernet
+python-dotenv
 BloomFilter
 schedule
 numpy

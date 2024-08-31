@@ -1,4 +1,7 @@
 # Local Imports
+import os
+import shutil
+import zipfile
 from urllib.parse import urlparse
 from gensim.parsing.preprocessing import STOPWORDS
 

@@ -33,6 +33,24 @@ class mongo_request_generator(request_handler):
     return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_MONGO_INDEX_MODEL,
             MONGODB_KEYS.S_FILTER: {"status.m_live": {"$eq": False}, "m_url": {"$nin": p_skip_url}}}
 
+  def __on_reset_live_status(self):
+    return {
+      MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_MONGO_INDEX_MODEL,
+      MONGODB_KEYS.S_FILTER: {},
+      MONGODB_KEYS.S_VALUE: {
+        '$set': {'status.m_live': False}
+      }
+    }
+
+  def __on_set_live_status(self, p_url):
+    return {
+      MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_MONGO_INDEX_MODEL,
+      MONGODB_KEYS.S_FILTER: {'m_url': {'$eq': p_url}},
+      MONGODB_KEYS.S_VALUE: {
+        '$set': {'status.m_live': True}
+      }
+    }
+
   def __on_close_completed_index(self, p_request_model):
     return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_MONGO_INDEX_MODEL,
             MONGODB_KEYS.S_FILTER: {'m_url': {'$eq': p_request_model}}, MONGODB_KEYS.S_VALUE:
@@ -54,6 +72,10 @@ class mongo_request_generator(request_handler):
       return self.__on_install_index(p_data[0])
     elif p_commands == MONGODB_COMMANDS.S_GET_CRAWLABLE_URL_DATA:
       return self.__on_fetch_index_url()
+    elif p_commands == MONGODB_COMMANDS.S_RESET_CRAWLABLE_URL:
+      return self.__on_reset_live_status()
+    elif p_commands == MONGODB_COMMANDS.S_SET_CRAWLABLE_URL:
+      return self.__on_set_live_status(p_data[0])
     elif p_commands == MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL:
       return self.__on_remove_dead_index(p_data[0])
     elif p_commands == MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE:
