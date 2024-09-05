@@ -1,8 +1,10 @@
 # Local Imports
-import copy
+import json
 from asyncio import sleep
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
@@ -53,10 +55,9 @@ class genbot_controller(request_handler):
         m_leak_data_model, m_sub_url = self.__m_html_parser.on_parse_leaks(m_raw_html, m_redirected_url)
 
         if m_leak_data_model is not None and helper_method.get_host_name(m_redirected_url).__eq__(helper_method.get_host_name(p_request_model.m_url)) and self.m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
-          self.m_url_duplication_handler.insert(m_redirected_url)
-          m_paresed_request_data = {"m_parsed_model":m_parsed_model.model_dump(),  "m_leak_data_model":m_leak_data_model.dict()}
-          m_paresed_request_data = copy.deepcopy(m_paresed_request_data)
-          # elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, [json.dumps(m_paresed_request_data)], [True]])
+
+          m_paresed_request_data = {"m_generic_model":json.dumps(m_parsed_model.model_dump()),  "m_leak_data_model":json.dumps(m_leak_data_model.model_dump())}
+          elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, json.dumps(m_paresed_request_data), [True]])
 
           log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_url)
           self.m_parsed_url.append(m_redirected_url)

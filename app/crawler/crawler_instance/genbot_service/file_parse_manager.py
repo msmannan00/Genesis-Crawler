@@ -42,13 +42,13 @@ class file_parse_manager:
         Only removes duplicate URLs in the current model context.
         """
     for card in model.cards_data:
-      card.weblink = self.__remove_duplicate_urls(card.weblink)
-      card.url = self.__remove_duplicate_urls(card.url)
-      card.dumplink = self.__remove_duplicate_urls(card.dumplink)
+      card.m_weblink = self.__remove_duplicate_urls(card.m_weblink)
+      card.m_url = self.__remove_duplicate_urls(card.m_url)
+      card.m_dumplink = self.__remove_duplicate_urls(card.m_dumplink)
 
-      card.weblink = self.__validate_and_filter_urls(card.weblink)
-      card.url = self.__validate_and_filter_urls(card.url)
-      card.dumplink = self.__validate_and_filter_urls(card.dumplink)
+      card.m_weblink = self.__validate_and_filter_urls(card.m_weblink)
+      card.m_url = self.__validate_and_filter_urls(card.m_url)
+      card.m_dumplink = self.__validate_and_filter_urls(card.m_dumplink)
 
     return model
 

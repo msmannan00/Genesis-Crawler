@@ -28,6 +28,8 @@ class log:
       'index_meta': True
     }
     handler = LogDNAHandler(key, options)
+
+    self.__server_instance.propagate = False
     self.__server_instance.addHandler(handler)
 
     self.log_directory = os.path.join(os.getcwd(), 'logs')
@@ -61,10 +63,13 @@ class log:
 
   # Info Logs
   def i(self, p_log):
-    filter_log = self.__format_log_message("INFO", p_log)
-    self.__server_instance.info(filter_log)
-    self.__write_to_file(filter_log)
-    print(colored(filter_log, 'cyan'))
+    try:
+      filter_log = self.__format_log_message("INFO", p_log)
+      self.__server_instance.info(filter_log)
+      self.__write_to_file(filter_log)
+      print(colored(filter_log, 'cyan', attrs=['bold']))
+    except Exception:
+      pass
 
   # Success Logs
   def s(self, p_log):

@@ -7,18 +7,8 @@ class post_leak_model_tuner:
     __instance = None
 
     def __init__(self):
-        if post_leak_model_tuner.__instance is not None:
-            raise Exception("This class is a singleton!")
-        else:
-            post_leak_model_tuner.__instance = self
-            self.local_cards_data: List[card_extraction_model] = []
-            self.local_sub_links: Set[str] = set()
-
-    @staticmethod
-    def get_instance():
-        if post_leak_model_tuner.__instance is None:
-            post_leak_model_tuner()
-        return post_leak_model_tuner.__instance
+        self.local_cards_data: List[card_extraction_model] = []
+        self.local_sub_links: Set[str] = set()
 
     def process(self, data_model: leak_data_model, sub_links: Set[str]) -> Tuple[leak_data_model, Set[str]]:
         unique_cards = self.update_cards_data(data_model.cards_data)
@@ -31,13 +21,13 @@ class post_leak_model_tuner:
     def update_cards_data(self, new_cards_data: List[card_extraction_model]) -> List[card_extraction_model]:
         # Create a set of tuples representing existing card data keys to check uniqueness
         existing_card_keys = set(
-            (card.title, tuple(card.url), tuple(card.text)) for card in self.local_cards_data
+            (card.m_title, tuple(card.m_url), tuple(card.m_content)) for card in self.local_cards_data
         )
         unique_new_cards = []
 
         for card_data in new_cards_data:
             # Convert lists to tuples to use as keys in the set
-            unique_key = (card_data.title, tuple(card_data.url), tuple(card_data.text))
+            unique_key = (card_data.m_title, card_data.m_url, card_data.m_content)
             if unique_key not in existing_card_keys:
                 self.local_cards_data.append(card_data)
                 unique_new_cards.append(card_data)

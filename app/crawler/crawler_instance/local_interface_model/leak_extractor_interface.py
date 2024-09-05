@@ -10,7 +10,7 @@ class leak_extractor_interface(ABC):
         pass
 
     @abstractmethod
-    def extract_cards(self) -> List[card_extraction_model]:
+    def extract_cards(self, url:str) -> List[card_extraction_model]:
         """Extract card data from the HTML content and return a list of card_extraction_model objects."""
         pass
 

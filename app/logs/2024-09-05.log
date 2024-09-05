@@ -1,0 +1,451 @@
+INFO - 05/09/2024 02:16:18 : log : [0] APPLICATION STARTING
+ERROR - 05/09/2024 02:16:18 : log : MongoDB is not running or not installed.
+INFO - 05/09/2024 02:16:18 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 02:16:26 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 02:16:31 : log : [1] Something happened while connecting to elastic server : ApiError(429, 'cluster_block_exception', 'index [generic_mod
+SUCCESS - 05/09/2024 02:16:31 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:31 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 02:16:33 : log : [1] Something happened while connecting to elastic server : ApiError(429, 'cluster_block_exception', 'index [generic_mod
+SUCCESS - 05/09/2024 02:16:33 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:33 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 02:16:33 : log : [1] Something happened while connecting to elastic server : ApiError(429, 'cluster_block_exception', 'index [generic_mod
+SUCCESS - 05/09/2024 02:16:33 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:33 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 02:16:35 : log : [1] Something happened while connecting to elastic server : ApiError(429, 'cluster_block_exception', 'index [generic_mod
+SUCCESS - 05/09/2024 02:16:35 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:35 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 02:16:36 : log : [1] Something happened while connecting to elastic server : ApiError(429, 'cluster_block_exception', 'index [generic_mod
+SUCCESS - 05/09/2024 02:16:36 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:36 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 02:16:37 : log : [1] Something happened while connecting to elastic server : ApiError(429, 'cluster_block_exception', 'index [generic_mod
+SUCCESS - 05/09/2024 02:16:37 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:37 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 02:16:38 : log : [1] Something happened while connecting to elastic server : ApiError(429, 'cluster_block_exception', 'index [generic_mod
+SUCCESS - 05/09/2024 02:16:38 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 02:16:38 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 02:16:39 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 02:16:40 : log : [1] Something happened while connecting to elastic server : ApiError(429, 'cluster_block_exception', 'index [generic_mod
+SUCCESS - 05/09/2024 02:16:40 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:40 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 02:16:45 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 02:16:45 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 02:16:45 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 02:16:46 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:46 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:16:48 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:48 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:16:49 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:49 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:16:50 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:50 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:16:51 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:51 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:16:52 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:52 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:16:53 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 02:16:53 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 02:16:53 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 02:16:54 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:54 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:16:56 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:56 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:16:57 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:57 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:16:58 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:58 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:16:59 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:16:59 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:17:01 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:17:01 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:17:02 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 02:17:02 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 02:17:02 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 02:17:03 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:17:03 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 02:17:04 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 02:17:04 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 03:09:55 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:09:55 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:09:55 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 03:10:00 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:00 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:02 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:02 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:04 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:04 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:07 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:07 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:09 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:09 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:11 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:11 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:13 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 03:10:13 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:10:13 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 03:10:15 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:15 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:10:17 : log : [8] Elastic Commands Failed : HTTP Status Code HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded wit
+SUCCESS - 05/09/2024 03:10:17 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:17 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:10:18 : log : [8] Elastic Commands Failed : HTTP Status Code HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded wit
+SUCCESS - 05/09/2024 03:10:18 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:18 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:10:20 : log : [8] Elastic Commands Failed : HTTP Status Code HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded wit
+SUCCESS - 05/09/2024 03:10:20 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:20 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:10:22 : log : [8] Elastic Commands Failed : HTTP Status Code HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded wit
+SUCCESS - 05/09/2024 03:10:22 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:22 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:10:24 : log : [8] Elastic Commands Failed : HTTP Status Code HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded wit
+SUCCESS - 05/09/2024 03:10:24 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:24 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:10:26 : log : [8] Elastic Commands Failed : HTTP Status Code HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded wit
+SUCCESS - 05/09/2024 03:10:26 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 03:10:36 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:10:36 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:10:38 : log : [1] Something happened while connecting to elastic server : Connection error caused by: ConnectionError(Connection error
+SUCCESS - 05/09/2024 03:10:38 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:38 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:10:40 : log : [1] Something happened while connecting to elastic server : Connection error caused by: ConnectionError(Connection error
+SUCCESS - 05/09/2024 03:10:40 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:40 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:10:42 : log : [1] Something happened while connecting to elastic server : Connection error caused by: ConnectionError(Connection error
+SUCCESS - 05/09/2024 03:10:42 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:42 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:44 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:44 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:46 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:46 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:48 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:48 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:50 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 03:10:50 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:10:50 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 03:10:52 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:52 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:54 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:54 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:10:56 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:10:56 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:00 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:00 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:01 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:01 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:03 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:03 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:06 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 03:11:06 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:11:06 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 03:11:09 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:09 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:11 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:11 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:13 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:13 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:15 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:15 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:17 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:17 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:19 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:19 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:21 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 03:11:21 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:11:21 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 03:11:23 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:23 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:26 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:26 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:27 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:27 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:11:31 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:11:31 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 03:17:31 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:17:31 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:17:43 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:17:45 : log : [1] Something happened while connecting to elastic server : Connection error caused by: ConnectionError(Connection error
+SUCCESS - 05/09/2024 03:17:45 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:17:45 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:17:47 : log : [1] Something happened while connecting to elastic server : Connection error caused by: ConnectionError(Connection error
+SUCCESS - 05/09/2024 03:17:47 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:17:47 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 03:43:45 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:43:45 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:43:45 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:43:47 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:43:47 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:43:47 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:43:49 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:43:49 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:43:49 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:43:50 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:43:50 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:43:50 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:43:51 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:43:51 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:43:51 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:43:52 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:43:52 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:43:52 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 03:44:06 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:44:06 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:44:06 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:44:07 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:44:07 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:44:07 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:44:08 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:44:08 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:44:08 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:44:09 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:44:09 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:44:09 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:44:10 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:44:10 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:44:10 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 03:45:14 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:45:14 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:45:14 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:45:15 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:45:15 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:45:15 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:45:17 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:45:17 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:45:17 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:45:18 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:45:18 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:45:18 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:45:19 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:45:19 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:45:19 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:45:20 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:45:20 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:45:20 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 03:46:36 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:46:36 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:46:36 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:46:39 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:46:39 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:46:39 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:46:40 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:46:40 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:46:40 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 03:47:47 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:47:47 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:47:47 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:47:49 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:47:49 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:47:49 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:47:50 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:47:50 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:47:50 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:47:51 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:47:51 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:47:51 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:47:52 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:47:52 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:47:52 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:47:53 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:47:53 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:47:53 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:47:54 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:47:54 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:47:54 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:47:56 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:47:56 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 03:47:56 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:47:56 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:47:57 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:47:57 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:47:57 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:47:58 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:47:58 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:47:58 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:47:59 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:47:59 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:47:59 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:48:00 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:48:00 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:48:00 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:48:02 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:48:02 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:48:02 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:48:03 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:48:03 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:48:03 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:48:04 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:48:04 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 03:48:04 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:48:04 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:50:20 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:50:20 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:50:21 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:50:22 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:50:22 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:50:22 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:50:23 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:50:23 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:50:23 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:50:24 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:50:24 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:50:24 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:50:25 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:50:25 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:50:25 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:50:26 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:50:26 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:50:26 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:50:28 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:50:28 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:50:28 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 03:50:29 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:50:29 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 03:50:29 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:50:29 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:52:26 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:52:26 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:52:26 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:52:27 : log : [8] Elastic Commands Failed : HTTP Status Code 500 Server Error: Internal Server Error for url: http://localhost:8080/cr
+SUCCESS - 05/09/2024 03:52:27 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:52:27 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 03:54:17 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:54:17 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:54:17 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 03:54:22 : log : [1] Something happened while connecting to elastic server : Connection error caused by: ConnectionError(Connection error
+SUCCESS - 05/09/2024 03:54:22 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:54:22 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 03:56:42 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:56:42 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:56:42 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 03:56:44 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:56:44 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:56:46 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:56:46 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:56:48 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:56:48 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:56:50 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:56:50 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 03:58:28 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 03:58:28 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 03:58:28 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 03:58:32 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:58:32 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:58:34 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:58:34 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:58:36 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:58:36 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:58:37 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:58:37 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:58:39 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:58:39 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:58:41 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:58:41 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:58:42 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 03:58:42 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 03:58:42 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 03:58:44 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:58:44 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 03:58:46 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 03:58:46 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 04:28:56 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 04:28:56 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 04:28:56 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 04:29:04 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:04 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:06 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:06 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:07 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:07 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:09 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:09 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:11 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:11 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:13 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:13 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:15 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 04:29:15 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 04:29:15 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 04:29:18 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:18 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:19 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:19 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:22 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:22 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:24 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:24 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:25 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:25 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:29:28 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:29:28 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+ERROR - 05/09/2024 04:29:32 : log : [8] Elastic Commands Failed : HTTP Status Code HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded wit
+SUCCESS - 05/09/2024 04:29:32 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:31:08 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 04:31:08 : log : [4] Re-initializing Crawlable URL
+SUCCESS - 05/09/2024 04:31:08 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 04:31:08 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+ERROR - 05/09/2024 04:31:10 : log : [1] Something happened while connecting to elastic server : Connection error caused by: ConnectionError(Connection error
+SUCCESS - 05/09/2024 04:31:10 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:31:10 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:31:12 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:31:12 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+INFO - 05/09/2024 04:32:50 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 04:32:50 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 04:32:50 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 04:32:53 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:32:53 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:32:54 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:32:54 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:32:56 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:32:56 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:32:59 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:32:59 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:33:01 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:33:01 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:33:03 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:33:03 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:33:05 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 04:33:05 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 04:33:05 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 04:33:07 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:33:07 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:33:10 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:33:10 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:33:11 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:33:11 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:33:13 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:33:13 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:33:15 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:33:15 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:33:17 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:33:17 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:33:18 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 04:33:18 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 04:33:18 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 04:51:24 : log : [0] APPLICATION STARTING
+INFO - 05/09/2024 04:51:24 : log : [4] Re-initializing Crawlable URL
+INFO - 05/09/2024 04:51:24 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 04:51:28 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:28 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:31 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:31 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:32 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:32 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:36 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:36 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:40 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:40 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:42 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:42 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:44 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+SUCCESS - 05/09/2024 04:51:44 : log : [5] Successfully Installed URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+INFO - 05/09/2024 04:51:44 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion
+SUCCESS - 05/09/2024 04:51:45 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:45 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:47 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:47 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:51 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:51 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:53 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:53 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:54 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:54 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag
+SUCCESS - 05/09/2024 04:51:56 : log : dirlink_-1 : 100 : [6] Successfully Parsed Local URL : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.o
+INFO - 05/09/2024 04:51:56 : log : dirlink_-1 : 100 : [13] URL parsing started : http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?pag

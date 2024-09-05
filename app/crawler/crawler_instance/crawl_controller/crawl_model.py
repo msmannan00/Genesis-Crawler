@@ -34,7 +34,7 @@ class crawl_model(request_handler):
     web_request_manager = webRequestManager()
 
     try:
-      file_content, status_or_error = web_request_manager.request_server(CRAWL_SETTINGS_CONSTANTS.S_PARSERS_URL)
+      file_content, status_or_error = web_request_manager.request_server_get(CRAWL_SETTINGS_CONSTANTS.S_PARSERS_URL)
 
       if status_or_error == 200:
         with open(zip_path, "wb") as file:
@@ -55,7 +55,7 @@ class crawl_model(request_handler):
 
     while True:
       try:
-        m_html, m_status = web_request_manager.request_server(CRAWL_SETTINGS_CONSTANTS.S_START_URL, m_proxy)
+        m_html, m_status = web_request_manager.request_server_get(CRAWL_SETTINGS_CONSTANTS.S_START_URL, m_proxy)
         if isinstance(m_html, bytes):
           m_html = m_html.decode('utf-8')
         if m_status == 200:
@@ -113,8 +113,8 @@ class crawl_model(request_handler):
 
   def __init_crawler(self):
     self.__celery_vid = 100000
-    self.init_parsers()
-    RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_PARSERS_TIMEOUT, self.reinit_list_periodically, False, self.init_parsers)
+    # self.init_parsers()
+    # RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_PARSERS_TIMEOUT, self.reinit_list_periodically, False, self.init_parsers)
 
     if APP_STATUS.DOCKERIZED_RUN:
      self.__init_docker_request()

@@ -49,16 +49,33 @@ class webRequestManager:
       print(ex)
       return p_url, False, None
 
-  def request_server(self, url, params=None, timeout=1000):
+  def request_server_post(self, url, data=None, params=None, timeout=1000):
     try:
       crypto = crypto_handler.get_instance()
       secret_token = crypto.generate_secret_token()
 
-      if params is None:
-        params = {}
-      params['data'] = secret_token
+      headers = {
+        'pSecretToken': f'Bearer {secret_token}',
+        'Content-Type': 'application/json'
+      }
 
-      response = requests.get(url, params=params, timeout=timeout, allow_redirects=True)
+      response = requests.post(url, json=data, params=params, headers=headers, timeout=timeout)
+      response.raise_for_status()
+      return response.json(), response.status_code
+
+    except Exception as ex:
+      return None, str(ex)
+
+  def request_server_get(self, url, params=None, timeout=1000):
+    try:
+      crypto = crypto_handler.get_instance()
+      secret_token = crypto.generate_secret_token()
+
+      headers = {
+        'pSecretToken': f'{secret_token}'
+      }
+
+      response = requests.get(url, params=params, headers=headers, timeout=timeout, allow_redirects=True)
       response.raise_for_status()
       return response.content, response.status_code
 

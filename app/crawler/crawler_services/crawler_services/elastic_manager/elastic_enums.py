@@ -3,10 +3,7 @@ class ELASTIC_CRUD_COMMANDS:
 
 
 class ELASTIC_REQUEST_COMMANDS:
-  S_INDEX = 5
-  S_UNIQUE_HOST = 6
-  S_DUPLICATE = 7
-
+  S_INDEX = 7
 
 class ELASTIC_CONNECTIONS:
-  S_DATABASE_IP = 'http://192.168.3.11:8070/crawl_index/'
+  S_DATABASE_IP = 'http://localhost:8080/crawl_index/'

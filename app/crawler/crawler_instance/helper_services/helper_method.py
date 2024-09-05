@@ -5,9 +5,18 @@ import shutil
 import zipfile
 from urllib.parse import urlparse, urlunparse
 from gensim.parsing.preprocessing import STOPWORDS
+import socket
+
+from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 
 class helper_method:
+
+  @staticmethod
+  def get_base_url(url):
+    parsed_url = urlparse(url)
+    base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
+    return base_url
 
   @staticmethod
   def get_host_name(p_url):
@@ -27,6 +36,14 @@ class helper_method:
       m_host_name = m_netloc
 
     return m_host_name
+
+  @staticmethod
+  def check_service_status(service_name, host, port):
+      with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+          try:
+              s.connect((host, port))
+          except socket.error:
+              log.g().e(f"{service_name} is not running or not installed.")
 
   @staticmethod
   def extract_zip(from_path, to_path, delete_after=False):

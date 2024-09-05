@@ -3,7 +3,8 @@ from typing import List
 from crawler.crawler_instance.local_shared_model.url_model import url_model
 
 class index_model(BaseModel):
-    m_base_model: url_model
+    m_base_url: str
+    m_url: str
     m_title: str
     m_meta_description: str
     m_meta_keywords: List[str]
@@ -18,7 +19,8 @@ class index_model(BaseModel):
     m_content_summary: str
 
 def index_model_init(
-    p_base_model: url_model,
+    m_base_url: str,
+    m_url: str,
     m_title: str,
     m_meta_description: str,
     m_meta_keywords: List[str],
@@ -33,7 +35,8 @@ def index_model_init(
     m_content_summary: str
 ) -> index_model:
     return index_model(
-        m_base_model=p_base_model,
+        m_base_url=m_base_url,
+        m_url=m_url,
         m_title=m_title,
         m_meta_description=m_meta_description,
         m_meta_keywords=m_meta_keywords,

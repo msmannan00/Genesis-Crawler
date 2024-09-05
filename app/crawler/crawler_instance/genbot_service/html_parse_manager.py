@@ -15,8 +15,6 @@ from app.crawler.crawler_instance.local_shared_model.url_model import url_model
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 
-nltk.download('punkt')
-nltk.download('stopwords')
 
 class html_parse_manager(HTMLParser, ABC):
 
@@ -125,7 +123,8 @@ class html_parse_manager(HTMLParser, ABC):
         """Implement parsing logic for extracting data and creating an index model."""
         images, documents = self.extract_sub_urls()
         return index_model_init(
-            self.request_model,
+            m_base_url = helper_method.get_base_url(self.base_url),
+            m_url = self.base_url,
             m_title=self.extract_title(),
             m_meta_description=self.extract_meta_description(),
             m_meta_keywords=self.extract_meta_keywords(),

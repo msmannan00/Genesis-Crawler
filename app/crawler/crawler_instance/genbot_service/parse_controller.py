@@ -1,7 +1,7 @@
 import importlib
 import os
 import sys
-from typing import Optional, Any
+from typing import Optional, Any, Set
 
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_instance.genbot_service.html_parse_manager import html_parse_manager
@@ -18,6 +18,7 @@ class parse_controller:
 
     def __init__(self):
         self.leak_extractor_instance = None
+        self.post_leak_model_instance = post_leak_model_tuner()
 
     def on_parse_html(self, p_html: str, p_request_model: url_model) -> index_model:
         m_parsed_model = self.__on_html_parser_invoke(p_html, p_request_model)
@@ -26,7 +27,7 @@ class parse_controller:
         else:
             return m_parsed_model
 
-    def on_parse_leaks(self, p_html: str, m_url: str) -> tuple[None, bool] | tuple[leak_data_model, bool]:
+    def on_parse_leaks(self, p_html: str, m_url: str) -> tuple[None, bool] | tuple[leak_data_model, Set[str]]:
         data_model, m_sub_url = self.__on_leak_parser_invoke(p_html, m_url)
         if CRAWL_SETTINGS_CONSTANTS.S_GENERIC_FILE_VERIFICATION_ALLOWED and data_model is not None:
             return file_parse_manager().parse_leak_files(data_model), m_sub_url
@@ -36,7 +37,7 @@ class parse_controller:
     def __on_html_parser_invoke(self, p_html: str, p_request_model: url_model) -> index_model:
         return html_parse_manager(p_html, p_request_model).parse_html_files()
 
-    def __on_leak_parser_invoke(self, p_html, p_data_url: str) -> tuple[Optional[Any], bool]:
+    def __on_leak_parser_invoke(self, p_html, p_data_url: str) -> tuple[Optional[Any], Set[str]]:
         if not self.leak_extractor_instance:
             class_name = helper_method.get_host_name(p_data_url)  # Get the host name
             try:
@@ -50,7 +51,7 @@ class parse_controller:
                 class_ = getattr(module, class_name)
                 self.leak_extractor_instance: leak_extractor_interface = class_()
             except Exception as ex:
-                return None, False
+                return None, set()
 
         data_model, m_sub_url = self.leak_extractor_instance.parse_leak_data(p_html, p_data_url)
-        return post_leak_model_tuner.get_instance().process(data_model, m_sub_url)
+        return self.post_leak_model_instance.process(data_model, m_sub_url)
