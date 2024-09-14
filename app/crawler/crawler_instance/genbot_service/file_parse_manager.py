@@ -1,7 +1,7 @@
 from typing import List, Set, Optional
 from pydantic import BaseModel, Field
 from crawler.crawler_instance.helper_services.web_request_handler import webRequestManager
-from app.crawler.crawler_instance.local_shared_model.index_model import index_model
+from crawler.crawler_instance.local_shared_model.index_model import index_model
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS

@@ -10,8 +10,8 @@ from urllib.parse import urljoin
 import nltk
 import re
 
-from app.crawler.crawler_instance.local_shared_model.index_model import index_model, index_model_init
-from app.crawler.crawler_instance.local_shared_model.url_model import url_model
+from crawler.crawler_instance.local_shared_model.index_model import index_model, index_model_init
+from crawler.crawler_instance.local_shared_model.url_model import url_model
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 
