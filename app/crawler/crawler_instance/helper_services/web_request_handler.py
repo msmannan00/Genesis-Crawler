@@ -6,6 +6,7 @@ from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.helper_services.crypto_handler import crypto_handler
+from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 
 class webRequestManager:
@@ -46,7 +47,7 @@ class webRequestManager:
         return helper_method.on_clean_url(str(m_url_redirect)), True, str(m_html)
 
     except Exception as ex:
-      print(ex)
+      log.g().e(str(ex))
       return p_url, False, None
 
   def request_server_post(self, url, data=None, params=None, timeout=1000):

@@ -29,20 +29,21 @@ class application_controller(request_handler, ABC):
             self.__m_crawl_controller = crawl_controller()
             application_controller.__instance = self
 
-    def __initializations(self):
-        helper_method.check_service_status("MongoDB", "localhost", 27017)
-        helper_method.check_service_status("Redis", "localhost", 6379)
+    def __initializations(self, p_command):
+        if p_command == APPICATION_COMMANDS.S_START_APPLICATION_DIRECT:
+            helper_method.check_service_status("MongoDB", "localhost", 27017)
+            helper_method.check_service_status("Redis", "localhost", 6379)
 
     # External Request Callbacks
-    def __on_start(self):
+    def __on_start(self, p_command):
         log.g().i(MANAGE_CRAWLER_MESSAGES.S_APPLICATION_STARTING)
-        self.__initializations()
+        self.__initializations(p_command)
         self.__m_crawl_controller.invoke_trigger(CRAWL_CONTROLLER_COMMANDS.S_RUN_CRAWLER)
 
     # External Request Manager
     def invoke_triggers(self, p_command):
         if p_command == APPICATION_COMMANDS.S_START_APPLICATION_DIRECT:
-            return self.__on_start()
+            return self.__on_start(p_command)
 
         elif p_command == APPICATION_COMMANDS.S_START_APPLICATION_DOCKERISED:
-            return self.__on_start()
+            return self.__on_start(p_command)

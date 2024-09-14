@@ -69,7 +69,7 @@ class genbot_controller(request_handler):
         log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
         return None, None
     except Exception as ex:
-      print(ex, flush=True)
+      log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + ex)
       return None, None
 
   def start_crawler_instance(self, p_request_url, p_task_id):
