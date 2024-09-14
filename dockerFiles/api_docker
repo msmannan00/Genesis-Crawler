@@ -1,13 +1,12 @@
 # Use an official Python runtime as a parent image
-FROM python:3.7-slim
+FROM python:3.12-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Upgrade pip and install Celery and specific versions of kombu and importlib-metadata
+# Upgrade pip and install Celery and Flower
 RUN python3 -m ensurepip && pip install --upgrade pip
-RUN pip install celery kombu==5.2.3 importlib-metadata==4.8.3
 
 # Install Celery and Flower
 RUN pip install celery flower
@@ -20,3 +19,8 @@ RUN pip install -r /tmp/requirements.txt
 COPY app /app
 WORKDIR /app
 
+# Copy nltk_data folder to the Ubuntu home directory
+COPY app/libs/nltk_data /root/nltk_data
+
+# Set NLTK_DATA environment variable to the appropriate path
+ENV NLTK_DATA=/root/nltk_data

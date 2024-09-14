@@ -1,5 +1,8 @@
 from pathlib import Path
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
+S_SERVER = os.getenv('S_SERVER')
 
 class RAW_PATH_CONSTANTS:
   S_SIGWIN_PATH = str(Path(__file__).parent.parent.parent.parent.parent) + "/cygwin64/bin/bash.exe --login"
@@ -49,8 +52,9 @@ class CRAWL_SETTINGS_CONSTANTS:
     '.ps', '.eps', '.svg', '.odg', '.pub', '.wps', '.xps', '.pdfa', '.pdfx',
   ]
   # Local URL
-  S_START_URL = "http://localhost:8080/feeder"
-  S_PARSERS_URL = "http://localhost:8080/parser"
+  S_START_URL = f"{S_SERVER}/feeder"
+  S_PARSERS_URL = f"{S_SERVER}/parser"
+
   S_PARSE_EXTRACTION_DIR = "raw/parsers"
 
   # Total Thread Instances Allowed

@@ -1,8 +1,6 @@
 # Local Imports
 import os
 from time import sleep
-import requests
-
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
@@ -15,7 +13,6 @@ from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_COMMANDS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS, MONGO_CRUD
-from crawler.crawler_services.helper_services.crypto_handler import crypto_handler
 from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
