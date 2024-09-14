@@ -33,7 +33,7 @@ services:
         hard: 46677
     networks:
       backend:
-        ipv4_address: 172.18.0.2
+        ipv4_address: 172.19.0.2
     entrypoint: [ "bash", "-c", "./start_app.sh" ]
 
   redis_server:
@@ -44,7 +44,7 @@ services:
     restart: always
     networks:
       backend:
-        ipv4_address: 172.18.0.3
+        ipv4_address: 172.19.0.3
     deploy:
       resources:
         limits:
@@ -62,7 +62,7 @@ services:
       - ./app:/app
     networks:
       backend:
-        ipv4_address: 172.18.0.4
+        ipv4_address: 172.19.0.4
 
   celery_beat:
     build:
@@ -76,7 +76,7 @@ services:
       - ./app:/app
     networks:
       backend:
-        ipv4_address: 172.18.0.5
+        ipv4_address: 172.19.0.5
 
   flower:
     build:
@@ -90,7 +90,7 @@ services:
     restart: always
     networks:
       backend:
-        ipv4_address: 172.18.0.6
+        ipv4_address: 172.19.0.6
 
   mongo:
     image: mongocamp/mongodb:5.0.9
@@ -105,7 +105,7 @@ services:
     restart: always
     networks:
       backend:
-        ipv4_address: 172.18.0.7
+        ipv4_address: 172.19.0.7
 
   tor-extend-1:
     container_name: tor_instace_1
@@ -124,7 +124,7 @@ services:
       TOR_PROXYL: "true"
       TOR_PROXY_PORT: "0.0.0.0:9152"
       TOR_PROXY_SOCKET: "true"
-      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_PROXY_ACCEPT: 'accept 172.19.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9153"
       TOR_CONTROL_SOCKET: "true"
@@ -133,7 +133,7 @@ services:
       TOR_RELAY: "false"
     networks:
       backend:
-        ipv4_address: 172.18.0.10
+        ipv4_address: 172.19.0.10
 
   tor-extend-2:
     container_name: tor_instace_2
@@ -152,7 +152,7 @@ services:
       TOR_PROXYL: "true"
       TOR_PROXY_PORT: "0.0.0.0:9154"
       TOR_PROXY_SOCKET: "true"
-      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_PROXY_ACCEPT: 'accept 172.19.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9155"
       TOR_CONTROL_SOCKET: "true"
@@ -161,7 +161,7 @@ services:
       TOR_RELAY: "false"
     networks:
       backend:
-        ipv4_address: 172.18.0.11
+        ipv4_address: 172.19.0.11
 
   tor-extend-3:
     container_name: tor_instace_3
@@ -180,7 +180,7 @@ services:
       TOR_PROXYL: "true"
       TOR_PROXY_PORT: "0.0.0.0:9156"
       TOR_PROXY_SOCKET: "true"
-      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_PROXY_ACCEPT: 'accept 172.19.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9157"
       TOR_CONTROL_SOCKET: "true"
@@ -189,7 +189,7 @@ services:
       TOR_RELAY: "false"
     networks:
       backend:
-        ipv4_address: 172.18.0.12
+        ipv4_address: 172.19.0.12
 
   tor-extend-4:
     container_name: tor_instace_42
@@ -208,7 +208,7 @@ services:
       TOR_PROXYL: "true"
       TOR_PROXY_PORT: "0.0.0.0:9158"
       TOR_PROXY_SOCKET: "true"
-      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_PROXY_ACCEPT: 'accept 172.19.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9159"
       TOR_CONTROL_SOCKET: "true"
@@ -217,7 +217,7 @@ services:
       TOR_RELAY: "false"
     networks:
       backend:
-        ipv4_address: 172.18.0.13
+        ipv4_address: 172.19.0.13
 
   tor-extend-5:
     container_name: tor_instace_5
@@ -236,7 +236,7 @@ services:
       TOR_PROXYL: "true"
       TOR_PROXY_PORT: "0.0.0.0:9160"
       TOR_PROXY_SOCKET: "true"
-      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_PROXY_ACCEPT: 'accept 172.19.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9161"
       TOR_CONTROL_SOCKET: "true"
@@ -245,7 +245,7 @@ services:
       TOR_RELAY: "false"
     networks:
       backend:
-        ipv4_address: 172.18.0.14
+        ipv4_address: 172.19.0.14
 
   tor-extend-6:
     container_name: tor_instace_6
@@ -264,7 +264,7 @@ services:
       TOR_PROXYL: "true"
       TOR_PROXY_PORT: "0.0.0.0:9162"
       TOR_PROXY_SOCKET: "true"
-      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_PROXY_ACCEPT: 'accept 172.19.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9163"
       TOR_CONTROL_SOCKET: "true"
@@ -273,7 +273,7 @@ services:
       TOR_RELAY: "false"
     networks:
       backend:
-        ipv4_address: 172.18.0.15
+        ipv4_address: 172.19.0.15
 
   tor-extend-7:
     container_name: tor_instace_7
@@ -292,7 +292,7 @@ services:
       TOR_PROXYL: "true"
       TOR_PROXY_PORT: "0.0.0.0:9164"
       TOR_PROXY_SOCKET: "true"
-      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_PROXY_ACCEPT: 'accept 172.19.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9165"
       TOR_CONTROL_SOCKET: "true"
@@ -301,7 +301,7 @@ services:
       TOR_RELAY: "false"
     networks:
       backend:
-        ipv4_address: 172.18.0.16
+        ipv4_address: 172.19.0.16
 
   tor-extend-8:
     container_name: tor_instace_8
@@ -320,7 +320,7 @@ services:
       TOR_PROXYL: "true"
       TOR_PROXY_PORT: "0.0.0.0:9166"
       TOR_PROXY_SOCKET: "true"
-      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_PROXY_ACCEPT: 'accept 172.19.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9167"
       TOR_CONTROL_SOCKET: "true"
@@ -329,7 +329,7 @@ services:
       TOR_RELAY: "false"
     networks:
       backend:
-        ipv4_address: 172.18.0.17
+        ipv4_address: 172.19.0.17
 
   tor-extend-9:
     container_name: tor_instace_9
@@ -348,7 +348,7 @@ services:
       TOR_PROXYL: "true"
       TOR_PROXY_PORT: "0.0.0.0:9168"
       TOR_PROXY_SOCKET: "true"
-      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_PROXY_ACCEPT: 'accept 172.19.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9169"
       TOR_CONTROL_SOCKET: "true"
@@ -357,7 +357,7 @@ services:
       TOR_RELAY: "false"
     networks:
       backend:
-        ipv4_address: 172.18.0.18
+        ipv4_address: 172.19.0.18
 
   tor-extend-10:
     container_name: tor_instace_10
@@ -376,7 +376,7 @@ services:
       TOR_PROXYL: "true"
       TOR_PROXY_PORT: "0.0.0.0:9170"
       TOR_PROXY_SOCKET: "true"
-      TOR_PROXY_ACCEPT: 'accept 172.18.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
+      TOR_PROXY_ACCEPT: 'accept 172.19.0.0/24,accept 127.0.0.1,accept 10.0.0.0/8,accept 172.16.0.0/12,accept 192.168.0.0/16'
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9171"
       TOR_CONTROL_SOCKET: "true"
@@ -385,7 +385,7 @@ services:
       TOR_RELAY: "false"
     networks:
       backend:
-        ipv4_address: 172.18.0.19
+        ipv4_address: 172.19.0.19
 
 networks:
   backend:
@@ -393,4 +393,4 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.18.0.0/24
+        - subnet: 172.19.0.0/24

@@ -1,6 +1,5 @@
 socks
 stopwords
-python-Levenshtein-wheels
 django
 html-similarity
 jaccard-index
