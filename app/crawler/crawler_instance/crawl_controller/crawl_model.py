@@ -113,8 +113,8 @@ class crawl_model(request_handler):
 
   def __init_crawler(self):
     self.__celery_vid = 100000
-    # self.init_parsers()
-    # RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_PARSERS_TIMEOUT, self.reinit_list_periodically, False, self.init_parsers)
+    self.init_parsers()
+    RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_PARSERS_TIMEOUT, self.reinit_list_periodically, False, self.init_parsers)
 
     if APP_STATUS.DOCKERIZED_RUN:
      self.__init_docker_request()
