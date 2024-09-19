@@ -2,11 +2,11 @@ import inspect
 import sys
 import logging
 import os
-import datetime
+import datetimeq
 from logdna import LogDNAHandler
 from termcolor import colored
 
-from crawler.constants.constant import LOG_CONSTANTS
+from crawler.constants.constant import LOG_CONSTANTS, RAW_PATH_CONSTANTS
 
 if sys.platform == "win32":
   os.system('color')
@@ -32,7 +32,7 @@ class log:
     self.__server_instance.propagate = False
     self.__server_instance.addHandler(handler)
 
-    self.log_directory = os.path.join(os.getcwd(), 'logs')
+    self.log_directory = RAW_PATH_CONSTANTS.LOG_DIRECTORY
     os.makedirs(self.log_directory, exist_ok=True)
 
   @staticmethod

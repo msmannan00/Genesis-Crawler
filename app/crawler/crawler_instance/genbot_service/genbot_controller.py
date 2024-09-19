@@ -93,7 +93,7 @@ class genbot_controller(request_handler):
             sleep(5)
           continue
 
-      for sub_url in m_sub_url:
+      for sub_url in m_sub_url and item.m_depth + 1 <= CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH:
         self.m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
 
       m_host_crawled = True

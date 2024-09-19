@@ -7,6 +7,7 @@ S_SERVER = os.getenv('S_SERVER')
 class RAW_PATH_CONSTANTS:
   S_SIGWIN_PATH = str(Path(__file__).parent.parent.parent.parent.parent) + "/cygwin64/bin/bash.exe --login"
   S_PROJECT_PATH = str(Path(__file__).parent.parent)
+  LOG_DIRECTORY = os.path.join(os.getcwd(), 'logs')
 
 
 class NETWORK_MONITOR:
@@ -80,3 +81,5 @@ class CRAWL_SETTINGS_CONSTANTS:
   # Max Thread Size
   S_LEAK_FILE_VERIFICATION_ALLOWED = False
   S_GENERIC_FILE_VERIFICATION_ALLOWED = False
+
+

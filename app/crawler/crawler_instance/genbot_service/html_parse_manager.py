@@ -14,48 +14,23 @@ from crawler.crawler_instance.local_shared_model.index_model import index_model,
 from crawler.crawler_instance.local_shared_model.url_model import url_model
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_instance.helper_services.helper_method import helper_method
-
+from gensim.summarization import summarize
 
 class html_parse_manager(HTMLParser, ABC):
 
-    def __init__(self, html_content: str, request_model: url_model):
-        super().__init__()
-        self.base_url = request_model.m_url
-        self.html_content = html_content
-        self.request_model = request_model
-        self.soup = BeautifulSoup(html_content, 'html.parser')
-        self.stop_words = set(stopwords.words('english'))
-        self.stemmer = PorterStemmer()
-
-    def extract_title(self) -> str:
-        """Extract the title from the HTML."""
-        title_tag = self.soup.find('title')
-        return title_tag.get_text(strip=True).lower() if title_tag else ''
-
-    def extract_meta_description(self) -> str:
-        """Extract the meta description from the HTML."""
-        meta_tag = self.soup.find('meta', attrs={'name': 'description'})
-        return meta_tag['content'].strip().lower() if meta_tag and 'content' in meta_tag.attrs else ''
-
-    def extract_meta_keywords(self) -> List[str]:
-        """Extract the meta keywords from the HTML."""
-        meta_tag = self.soup.find('meta', attrs={'name': 'keywords'})
-        if meta_tag and 'content' in meta_tag.attrs:
-            return [keyword.strip().lower() for keyword in meta_tag['content'].split(',')]
-        return []
-
-    def extract_content(self) -> str:
-        """Extract the main content from the HTML, excluding unwanted elements."""
-        for tag in self.soup(['script', 'style', 'noscript', '[document]', 'header', 'footer', 'aside']):
-            tag.decompose()
-
-        content = ' '.join(self.soup.stripped_strings)
-        return content.lower()
-
     def extract_important_content(self) -> str:
-        """Extract important content such as headers, strong, and emphasized text."""
         important_tags = self.soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'b', 'blockquote'])
-        return ' '.join(tag.get_text(strip=True).lower() for tag in important_tags)
+        important_content = ' '.join(tag.get_text(strip=True) for tag in important_tags)
+        cleaned_content = ' '.join(important_content.split())
+
+        if len(cleaned_content.split()) > 50:
+            try:
+                summarized_content = summarize(cleaned_content, ratio=0.2)
+                return summarized_content
+            except ValueError:
+                return cleaned_content
+        else:
+            return cleaned_content
 
     def extract_sub_urls(self) -> Tuple[List[str], List[str]]:
         """Extract unique and cleaned images and documents (excluding videos) from the HTML."""
@@ -112,6 +87,27 @@ class html_parse_manager(HTMLParser, ABC):
         score = (len(non_stopwords) / token_count) * 70 + (unique_non_stopwords / token_count) * 30
         return int(score)
 
+    def extract_text_sections(self) -> List[str]:
+        sections = []
+        stop_words = set(stopwords.words('english'))
+        tags_to_extract = ['p', 'div', 'article', 'section', 'blockquote', 'aside']
+
+        for tag in self.soup.find_all(tags_to_extract):
+            section_text = tag.get_text(strip=True)
+            cleaned_section_text = re.sub(r'[^\w\s]', '', re.sub(r'\s+', ' ', section_text)).strip()
+
+            tokens = [word for word in word_tokenize(cleaned_section_text) if word.isalpha()]
+            filtered_tokens = [word for word in tokens if word.lower() not in stop_words]
+
+            if len(filtered_tokens) > 5:
+                sentences = re.split(r'[.!?]', cleaned_section_text)
+                long_sentences = [sentence for sentence in sentences if len(sentence.split()) > 6]
+
+                if len(long_sentences) > 0:
+                    sections.append(cleaned_section_text)
+
+        return sections
+
     def generate_content_summary(self) -> str:
         """Generate a brief summary or snippet of the content."""
         content = self.extract_content()
@@ -127,16 +123,12 @@ class html_parse_manager(HTMLParser, ABC):
             m_url = self.base_url,
             m_title=self.extract_title(),
             m_meta_description=self.extract_meta_description(),
-            m_meta_keywords=self.extract_meta_keywords(),
             m_content=self.extract_content(),
             m_important_content=self.extract_important_content(),
-            m_content_tokens=self.extract_content_tokens(),
-            m_keywords=self.extract_keywords(),
             m_images=images,
             m_document=documents,
             m_video=self.extract_media('video'),
             m_validity_score=self.calculate_validity_score(),
-            m_content_summary=self.generate_content_summary()
         )
 
     def extract_media(self, tag_name: str) -> List[str]:
