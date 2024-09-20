@@ -69,7 +69,7 @@ class genbot_controller(request_handler):
         log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED_FAILED + " : " + p_request_model.m_url + " : " + str(m_raw_html))
         return None, None
     except Exception as ex:
-      log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + ex)
+      log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + str(ex))
       return None, None
 
   def start_crawler_instance(self, p_request_url, p_task_id):
@@ -111,6 +111,6 @@ def genbot_instance(p_url, p_vid):
     p_request_url = helper_method.on_clean_url(p_url)
     mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
   except Exception as ex:
-    print("error : " + str(ex), flush=True)
+    print("error : " + str(ex.with_traceback(ex.__traceback__)), flush=True)
   finally:
     del m_crawler

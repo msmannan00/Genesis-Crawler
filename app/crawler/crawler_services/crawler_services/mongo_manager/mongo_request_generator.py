@@ -57,7 +57,7 @@ class mongo_request_generator(request_handler):
               {'$set': {'status.m_crawler_waiting': False, 'sub_url_parsed': [], 'sub_url_pending': [], 'image_url_parsed': [], 'content': [], 'document_url_parsed': [], 'video_url_parsed': []}}}
 
   def __update_index(self, p_request_url, sub_url_parsed, sub_url_pending):
-    m_cached_url = url_model_list(sub_url_pending=sub_url_pending).dict()
+    m_cached_url = url_model_list(sub_url_pending=sub_url_pending).model_dump()
     m_cached_url['sub_url_parsed'] = sub_url_parsed
 
     return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_MONGO_INDEX_MODEL,

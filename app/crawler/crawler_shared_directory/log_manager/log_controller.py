@@ -1,8 +1,8 @@
+import datetime
 import inspect
 import sys
 import logging
 import os
-import datetimeq
 from logdna import LogDNAHandler
 from termcolor import colored
 
@@ -33,7 +33,7 @@ class log:
     self.__server_instance.addHandler(handler)
 
     self.log_directory = RAW_PATH_CONSTANTS.LOG_DIRECTORY
-    os.makedirs(self.log_directory, exist_ok=True)
+    #os.makedirs(self.log_directory, exist_ok=True)
 
   @staticmethod
   def g():

@@ -93,7 +93,7 @@ class webRequestManager:
         gc.collect()
         return True, page.headers
 
-    except Exception as ex:
+    except Exception:
       m_request_handler.close()
       gc.collect()
       return False, None

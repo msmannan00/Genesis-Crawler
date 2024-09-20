@@ -1,5 +1,5 @@
 from crawler.constants.app_status import APP_STATUS
-from crawler.constants.constant import RAW_PATH_CONSTANTS
+from crawler.constants.constant import RAW_PATH_CONSTANTS, CRAWL_SETTINGS_CONSTANTS
 
 APP_STATUS.DOCKERIZED_RUN = False
 from crawler.constants.strings import TOR_STRINGS
@@ -15,7 +15,9 @@ try:
   REDIS_CONNECTIONS.S_DATABASE_IP = "localhost"
   REDIS_CONNECTIONS.S_DATABASE_PASSWORD = ""
   MONGO_CONNECTIONS.S_DATABASE_PORT = 27017
-  RAW_PATH_CONSTANTS.LOG_DIRECTORY = "app/logs"
+  RAW_PATH_CONSTANTS.LOG_DIRECTORY = "/logs"
+  CRAWL_SETTINGS_CONSTANTS.S_START_URL = "http://localhost:8080//feeder"
+  CRAWL_SETTINGS_CONSTANTS.S_PARSERS_URL = "http://localhost:8080//parser"
 
   application_controller.get_instance().invoke_triggers(APPICATION_COMMANDS.S_START_APPLICATION_DIRECT)
 except Exception as ex:

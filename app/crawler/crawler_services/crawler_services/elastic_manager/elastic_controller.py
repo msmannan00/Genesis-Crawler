@@ -1,8 +1,4 @@
 # Local Imports
-import json
-import requests
-from requests.adapters import HTTPAdapter
-from urllib3 import Retry
 from crawler.constants.strings import MANAGE_ELASTIC_MESSAGES, MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.helper_services.web_request_handler import webRequestManager
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS
@@ -23,7 +19,7 @@ class elastic_controller(request_handler):
   def __init__(self):
     elastic_controller.__instance = self
 
-  def __post_data(self, p_commands, p_data):
+  def __post_data(self, p_data):
     web_request_manager = webRequestManager()
     m_counter = 0
     while True:
@@ -54,4 +50,4 @@ class elastic_controller(request_handler):
           return False, None
 
   def invoke_trigger(self, p_commands, p_data=None):
-    return self.__post_data(p_commands, p_data)
+    return self.__post_data(p_data)

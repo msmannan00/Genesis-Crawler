@@ -6,7 +6,7 @@ S_SERVER = os.getenv('S_SERVER')
 
 class RAW_PATH_CONSTANTS:
   S_SIGWIN_PATH = str(Path(__file__).parent.parent.parent.parent.parent) + "/cygwin64/bin/bash.exe --login"
-  S_PROJECT_PATH = str(Path(__file__).parent.parent)
+  S_PROJECT_PATH = str(Path(__file__).parent.parent.parent)
   LOG_DIRECTORY = os.path.join(os.getcwd(), 'logs')
 
 
@@ -30,18 +30,24 @@ class TOR_CONNECTION_CONSTANTS:
 
 
 class SPELL_CHECK_CONSTANTS:
-  S_DICTIONARY_PATH = RAW_PATH_CONSTANTS.S_PROJECT_PATH + "/crawler_services/raw/dictionary"
-  S_DICTIONARY_MINI_PATH = RAW_PATH_CONSTANTS.S_PROJECT_PATH + "/crawler_services/raw/dictionary_small"
+  S_DICTIONARY_PATH = RAW_PATH_CONSTANTS.S_PROJECT_PATH + "/raw/dictionary/dictionary"
+  S_DICTIONARY_MINI_PATH = RAW_PATH_CONSTANTS.S_PROJECT_PATH + "/raw/dictionary/dictionary_small"
 
 
 class CLASSIFIER_CONSTANTS:
-  S_CLASSIFIER_PICKLE_PATH = "/crawler_services/raw/classifier_output/web_classifier.sav"
-  S_VECTORIZER_PATH = "/crawler_services/raw/classifier_output/class_vectorizer.csv"
-  S_SELECTKBEST_PATH = "/crawler_services/raw/classifier_output/feature_vector.sav"
+  S_CLASSIFIER_PICKLE_PATH = "/raw/classifier/web_classifier.sav"
+  S_VECTORIZER_PATH = "/raw/classifier/class_vectorizer.csv"
+  S_SELECTKBEST_PATH = "/raw/classifier/feature_vector.sav"
   S_IMAGE_CLASSIFIER_PATH = str(Path(__file__).parent.parent.parent) + "/libs/nudenet/.NudeNet/classifier_lite.onnx"
 
 
 class CRAWL_SETTINGS_CONSTANTS:
+
+  # Crawl Catagory
+  S_THREAD_CATEGORY_GENERAL = "general"
+  S_THREAD_CATEGORY_UNKNOWN = "unknown"
+  S_THREAD_CATEGORY_ILLEGAL = "illegal"
+
   # Allowed Extentions
   S_DOC_TYPES = [
     '.pdf', '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx',
@@ -52,10 +58,10 @@ class CRAWL_SETTINGS_CONSTANTS:
     '.dmg', '.tgz', '.tbz2', '.z', '.lz', '.lha', '.lzh',
     '.ps', '.eps', '.svg', '.odg', '.pub', '.wps', '.xps', '.pdfa', '.pdfx',
   ]
+
   # Local URL
   S_START_URL = f"{S_SERVER}/feeder"
   S_PARSERS_URL = f"{S_SERVER}/parser"
-
   S_PARSE_EXTRACTION_DIR = "raw/parsers"
 
   # Total Thread Instances Allowed
@@ -81,5 +87,8 @@ class CRAWL_SETTINGS_CONSTANTS:
   # Max Thread Size
   S_LEAK_FILE_VERIFICATION_ALLOWED = False
   S_GENERIC_FILE_VERIFICATION_ALLOWED = False
+
+  # Max URL Size
+  S_MAX_URL_SIZE = 480
 
 

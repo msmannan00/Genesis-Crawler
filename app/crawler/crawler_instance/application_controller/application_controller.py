@@ -1,5 +1,4 @@
 import warnings
-import socket
 from abc import ABC
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS

@@ -1,138 +1,385 @@
+import mimetypes
+import pathlib
+import re
+import validators
+
+from urllib.parse import urljoin
 from abc import ABC
 from html.parser import HTMLParser
 from bs4 import BeautifulSoup
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
-from nltk.probability import FreqDist
-from typing import List, Tuple
-from urllib.parse import urljoin
-import nltk
-import re
-
-from crawler.crawler_instance.local_shared_model.index_model import index_model, index_model_init
-from crawler.crawler_instance.local_shared_model.url_model import url_model
+from thefuzz import fuzz
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from crawler.crawler_instance.helper_services.helper_method import helper_method
-from gensim.summarization import summarize
+from crawler.constants.strings import STRINGS
+from crawler.crawler_instance.genbot_service.genbot_enums import PARSE_TAGS
+from crawler.crawler_instance.local_shared_model.index_model import index_model_init
+from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
+from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
+from crawler.crawler_services.helper_services.helper_method import helper_method
+from crawler.crawler_services.helper_services.spell_check_handler import spell_checker_handler
 
 class html_parse_manager(HTMLParser, ABC):
 
-    def extract_important_content(self) -> str:
-        important_tags = self.soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'b', 'blockquote'])
-        important_content = ' '.join(tag.get_text(strip=True) for tag in important_tags)
-        cleaned_content = ' '.join(important_content.split())
+    def __init__(self, p_html, p_request_model):
+        super().__init__()
+        self.m_html = p_html
+        self.request_model = p_request_model
+        self.m_base_url = p_request_model.m_url
+        self.m_soup = None
 
-        if len(cleaned_content.split()) > 50:
+        self.m_title = STRINGS.S_EMPTY
+        self.m_meta_description = STRINGS.S_EMPTY
+        self.m_meta_content = STRINGS.S_EMPTY
+        self.m_important_content = STRINGS.S_EMPTY
+        self.m_content = STRINGS.S_EMPTY
+        self.m_meta_keyword = STRINGS.S_EMPTY
+        self.m_content_type = CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
+        self.m_sub_url = []
+        self.m_sub_url_hashed = []
+        self.m_image_url = []
+        self.m_doc_url = []
+        self.m_video_url = []
+
+        # New variables for extracted data
+        self.m_names = []
+        self.m_emails = []
+        self.m_phone_numbers = []
+        self.m_clearnet_links = []
+
+        self.m_paragraph_count = 0
+        self.m_parsed_paragraph_count = 0
+        self.m_query_url_count = 0
+        self.m_non_important_text = STRINGS.S_EMPTY
+        self.m_all_url_count = 0
+        self.m_important_content_raw = []
+        self.m_rec = PARSE_TAGS.S_NONE
+
+        # New variable for managing sections
+        self.m_sections = []
+        self.m_current_section = ""  # This will accumulate consecutive paragraphs
+
+    def __insert_external_url(self, p_url):
+        self.m_all_url_count += 1
+        if p_url is not None and not str(p_url).endswith("#"):
+            mime = mimetypes.MimeTypes().guess_type(p_url)[0]
+
+            # List of archive extensions to check for (e.g., zip, tar, rar, etc.)
+            archive_extensions = ['.zip', '.rar', '.tar', '.gz', '.7z', '.bz2', '.xz']
+
+            if 5 < len(p_url) <= CRAWL_SETTINGS_CONSTANTS.S_MAX_URL_SIZE:
+                # Joining Relative URL
+                if not p_url.startswith("https://") and not p_url.startswith("http://") and not p_url.startswith("ftp://"):
+                    m_temp_base_url = self.m_base_url
+                    p_url = urljoin(m_temp_base_url, p_url)
+                    p_url = p_url.replace(" ", "%20")
+                    p_url = helper_method.on_clean_url(helper_method.normalize_slashes(p_url))
+
+                if validators.url(p_url):
+                    suffix = ''.join(pathlib.Path(p_url).suffixes)
+                    m_host_url = helper_method.get_host_url(p_url)
+                    parent_domain = helper_method.on_clean_url(self.m_base_url).split(".")[0]
+                    host_domain = helper_method.on_clean_url(p_url).split(".")[0]
+
+                    # Detect the MIME type if it's missing
+                    if mime is None:
+                        mime = mimetypes.MimeTypes().guess_type(p_url)[0]
+
+                    # Check if it's a document or video type based on suffix or MIME type
+                    if mime != "text/html":
+                        if mime is not None and suffix in CRAWL_SETTINGS_CONSTANTS.S_DOC_TYPES and len(self.m_doc_url) < 10:
+                            self.m_doc_url.append(p_url)
+                        elif mime is not None and str(mime).startswith("video") and len(self.m_video_url) < 10:
+                            self.m_video_url.append(p_url)
+                        # Add logic to detect and capture archive files
+                        elif any(ext in suffix.lower() for ext in archive_extensions):
+                            self.m_doc_url.append(p_url)
+
+                    # Handle .onion links separately
+                    elif parent_domain == host_domain and m_host_url.endswith(".onion"):
+                        if "#" in p_url:
+                            if p_url.count("/") > 2 and m_host_url.__contains__("?") and self.m_query_url_count < 5:
+                                self.m_query_url_count += 1
+                                p_url = helper_method.normalize_slashes(p_url)
+                                if p_url not in self.m_sub_url_hashed:
+                                    self.m_sub_url_hashed.append(p_url)
+                        else:
+                            self.m_query_url_count += 1
+                            p_url = helper_method.normalize_slashes(p_url)
+                            if p_url not in self.m_sub_url:
+                                self.m_sub_url.append(p_url)
+
+                    # Add to clearnet links if it's not an onion link
+                    if ".onion" not in p_url:
+                        self.m_clearnet_links.append(p_url)
+
+    def handle_starttag(self, p_tag, p_attrs):
+        if p_tag == "a":
+            for name, value in p_attrs:
+                if name == "href":
+                    self.__insert_external_url(value)
+
+        if p_tag == 'img':
+            for value in p_attrs:
+                if value[0] == 'src' and not helper_method.is_url_base_64(value[1]) and len(self.m_image_url) < 35:
+                    # Joining Relative URL
+                    m_temp_base_url = self.m_base_url
+                    if not m_temp_base_url.endswith("/"):
+                        m_temp_base_url = m_temp_base_url + "/"
+                    m_url = urljoin(m_temp_base_url, value[1])
+                    m_url = helper_method.on_clean_url(helper_method.normalize_slashes(m_url))
+                    if any(ext in m_url for ext in ['.jpg', '.jpeg', '.png']):
+                        self.m_image_url.append(m_url)
+
+        elif p_tag == 'title':
+            self.m_rec = PARSE_TAGS.S_TITLE
+
+        elif p_tag in ['h1', 'h2', 'h3', 'h4']:
+            self.__save_section()  # Save accumulated section before starting a new one
+            self.m_rec = PARSE_TAGS.S_HEADER
+
+        elif p_tag == 'span' and self.m_paragraph_count == 0:
+            self.__save_section()
+            self.m_rec = PARSE_TAGS.S_SPAN
+
+        elif p_tag == 'div':
+            self.__save_section()  # Save accumulated section when a new div starts
+            self.m_rec = PARSE_TAGS.S_DIV
+
+        elif p_tag == 'li':
+            self.__save_section()
+            self.m_rec = PARSE_TAGS.S_PARAGRAPH
+
+        elif p_tag == 'br':
+            self.m_rec = PARSE_TAGS.S_BR
+
+        elif p_tag == 'p':
+            self.m_rec = PARSE_TAGS.S_PARAGRAPH
+            self.m_paragraph_count += 1
+
+        elif p_tag == 'meta':
             try:
-                summarized_content = summarize(cleaned_content, ratio=0.2)
-                return summarized_content
-            except ValueError:
-                return cleaned_content
+                if p_attrs[0][0] == 'content':
+                    if p_attrs[0][1] is not None and len(p_attrs[0][1]) > 50 and p_attrs[0][1].count(" ") > 4 and \
+                            p_attrs[0][1] not in self.m_meta_content:
+                        self.m_meta_content += p_attrs[0][1]
+                if p_attrs[0][1] == 'description':
+                    if len(p_attrs) > 1 and len(p_attrs[1]) > 0 and p_attrs[1][0] == 'content' and p_attrs[1][1] is not None:
+                        self.m_meta_description += p_attrs[1][1]
+                elif p_attrs[0][1] == 'keywords':
+                    if len(p_attrs) > 1 and len(p_attrs[1]) > 0 and p_attrs[1][0] == 'content' and p_attrs[1][1] is not None:
+                        self.m_meta_keyword = p_attrs[1][1].replace(",", " ")
+            except Exception:
+                pass
         else:
-            return cleaned_content
+            self.m_rec = PARSE_TAGS.S_NONE
 
-    def extract_sub_urls(self) -> Tuple[List[str], List[str]]:
-        """Extract unique and cleaned images and documents (excluding videos) from the HTML."""
-        seen_urls = set()
+    def handle_endtag(self, p_tag):
+        if p_tag == 'p':
+            self.m_paragraph_count -= 1
+        if self.m_rec != PARSE_TAGS.S_BR:
+            self.m_rec = PARSE_TAGS.S_NONE
 
-        images = []
-        for img in self.soup.find_all('img'):
-            if 'src' in img.attrs:
-                img_url = urljoin(self.base_url, img['src'])
-                cleaned_img_url = helper_method.on_clean_url(img_url)
-                if cleaned_img_url not in seen_urls:
-                    seen_urls.add(cleaned_img_url)
-                    images.append(cleaned_img_url)
+    def handle_data(self, p_data):
+        if self.m_rec == PARSE_TAGS.S_HEADER:
+            self.__add_important_description(p_data, False)
+        if self.m_rec == PARSE_TAGS.S_TITLE and len(self.m_title) == 0:
+            self.m_title = p_data
+        elif self.m_rec == PARSE_TAGS.S_META and len(self.m_title) > 0:
+            self.m_title = p_data
+        elif self.m_rec == PARSE_TAGS.S_PARAGRAPH or self.m_rec == PARSE_TAGS.S_BR:
+            self.m_current_section += " " + p_data.strip()  # Append paragraph content to current section
+            self.__extract_names_emails_phones(p_data.strip())  # Extract names, emails, phones from the data
+        elif self.m_rec == PARSE_TAGS.S_SPAN and p_data.count(' ') > 5:
+            self.m_current_section += " " + p_data.strip()
+        elif self.m_rec == PARSE_TAGS.S_DIV:
+            if p_data.count(' ') > 5:
+                self.m_current_section += " " + p_data.strip()
 
-        documents = []
-        for a in self.soup.find_all('a', href=True):
-            href = a['href']
-            # Check if the href ends with allowed document types
-            if any(href.endswith(ext) for ext in CRAWL_SETTINGS_CONSTANTS.S_DOC_TYPES) or 'download' in a.get('rel', []):
-                doc_url = urljoin(self.base_url, href)
-                cleaned_doc_url = helper_method.on_clean_url(doc_url)
-                if cleaned_doc_url not in seen_urls:
-                    seen_urls.add(cleaned_doc_url)
-                    seen_urls.add(cleaned_doc_url)
-                    documents.append(cleaned_doc_url)
+    # Function to save accumulated sections when a tag change happens
+    def __save_section(self):
+        if self.m_current_section.strip():
+            # Save only non-empty sections
+            self.m_sections.append(self.m_current_section.strip())
+            self.m_current_section = ""  # Reset the current section
 
-        return images, documents
+    # Extract names, emails, and phone numbers from the text
+    def __extract_names_emails_phones(self, text):
+        # Extract emails
+        email_matches = re.findall(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', text)
+        self.m_emails.extend(email_matches)
 
-    def extract_content_tokens(self) -> List[str]:
-        """Tokenize and stem the main content, removing stopwords."""
-        content = self.extract_content()
-        tokens = [word for word in word_tokenize(content) if word.isalpha()]
-        filtered_tokens = [token for token in tokens if token.lower() not in self.stop_words]
-        stemmed_tokens = [self.stemmer.stem(token) for token in filtered_tokens]
-        return stemmed_tokens
+        # Extract phone numbers (very simple regex for demonstration)
+        phone_matches = re.findall(r'(\+?\d{1,3}[-\s.]?)?\(?\d{3}\)?[-\s.]?\d{3}[-\s.]?\d{4}', text)
+        self.m_phone_numbers.extend(phone_matches)
 
-    def extract_keywords(self) -> List[str]:
-        """Extract significant keywords based on frequency and importance."""
-        tokens = self.extract_content_tokens()
-        fdist = FreqDist(tokens)
-        most_common = fdist.most_common(10)
-        return [word for word, freq in most_common]
+        # Example name extraction (basic heuristic based on capitalized words)
+        name_matches = re.findall(r'\b[A-Z][a-z]* [A-Z][a-z]*\b', text)
+        self.m_names.extend(name_matches)
 
-    def calculate_validity_score(self) -> int:
-        """Calculate the validity score based on content quality."""
-        tokens = self.extract_content_tokens()
-        non_stopwords = [word for word in tokens if word.lower() not in self.stop_words]
-        token_count = len(tokens)
-        unique_non_stopwords = len(set(non_stopwords))
+    # Example function to retrieve sections (for further use)
+    def __get_sections(self):
+        return self.m_sections
 
-        if token_count == 0:
-            return 0
+    # Creating keyword request_manager1 for webpage representation
+    def __add_important_description(self, p_data, extended_only):
+        p_data = " ".join(p_data.split())
+        if (p_data.__contains__("java") and p_data.__contains__("script")) or p_data.__contains__("cookies"):
+            return
 
-        score = (len(non_stopwords) / token_count) * 70 + (unique_non_stopwords / token_count) * 30
-        return int(score)
+        if (p_data.count(' ') > 2 or (self.m_paragraph_count > 0 and len(p_data) > 0 and p_data != " ")) and p_data not in self.m_important_content:
+            self.m_important_content_raw.append(p_data)
+            self.m_parsed_paragraph_count += 1
 
-    def extract_text_sections(self) -> List[str]:
-        sections = []
-        stop_words = set(stopwords.words('english'))
-        tags_to_extract = ['p', 'div', 'article', 'section', 'blockquote', 'aside']
+            p_data = re.sub('[^A-Za-z0-9 ,;"\][/.+-;!\'@#$%^&*_+=]', '', p_data)
+            p_data = re.sub(' +', ' ', p_data)
+            p_data = re.sub(r'^\W*', '', p_data)
 
-        for tag in self.soup.find_all(tags_to_extract):
-            section_text = tag.get_text(strip=True)
-            cleaned_section_text = re.sub(r'[^\w\s]', '', re.sub(r'\s+', ' ', section_text)).strip()
+            if p_data.lower() in self.m_important_content.lower():
+                return
 
-            tokens = [word for word in word_tokenize(cleaned_section_text) if word.isalpha()]
-            filtered_tokens = [word for word in tokens if word.lower() not in stop_words]
+            if not extended_only:
+                try:
+                    self.m_important_content = self.m_important_content + " " + spell_checker_handler.get_instance().clean_paragraph(p_data.lower())
+                except Exception:
+                    pass
+                if len(self.m_important_content) > 250:
+                    self.m_parsed_paragraph_count = 9
 
-            if len(filtered_tokens) > 5:
-                sentences = re.split(r'[.!?]', cleaned_section_text)
-                long_sentences = [sentence for sentence in sentences if len(sentence.split()) > 6]
+    def __clean_text(self, p_text):
+        m_text = p_text
 
-                if len(long_sentences) > 0:
-                    sections.append(cleaned_section_text)
+        for m_important_content_item in self.m_important_content_raw:
+            m_text = m_text.replace(m_important_content_item, ' ')
 
-        return sections
+        m_text = m_text.replace('\n', ' ')
+        m_text = m_text.replace('\t', ' ')
+        m_text = m_text.replace('\r', ' ')
+        m_text = m_text.replace(' ', ' ')
 
-    def generate_content_summary(self) -> str:
-        """Generate a brief summary or snippet of the content."""
-        content = self.extract_content()
-        sentences = re.split(r'(?<=[.!?]) +', content)
-        summary = ' '.join(sentences[:3]) if len(sentences) > 3 else content
-        return summary
+        m_text = re.sub(' +', ' ', m_text)
 
-    def parse_html_files(self) -> index_model:
-        """Implement parsing logic for extracting data and creating an index model."""
-        images, documents = self.extract_sub_urls()
+        # Lower Case
+        p_text = m_text.lower()
+
+        # Tokenizer
+        m_word_tokenized = p_text.split()
+
+        # Word Checking
+        m_content = STRINGS.S_EMPTY
+        for m_token in m_word_tokenized:
+            if helper_method.is_stop_word(m_token) is False and m_token.isnumeric() is False:
+                m_valid_status = spell_checker_handler.get_instance().validate_word(m_token)
+                if m_valid_status is True:
+                    m_content += " " + m_token
+                else:
+                    m_content += " " + spell_checker_handler.get_instance().clean_sentence(m_token)
+
+        m_content = ' '.join(m_content.split())
+        return m_content
+
+    def __generate_html(self):
+        try:
+            # Start the HTML parsing by feeding the HTML content
+            self.feed(self.m_html)
+
+            # After feeding the HTML to HTMLParser, use BeautifulSoup for additional text processing
+            self.m_soup = BeautifulSoup(self.m_html, "html.parser")
+            self.m_content = self.__clean_text(self.m_soup.get_text())
+        except Exception as ex:
+            print(f"Error during HTML parsing: {ex}")
+
+    # ----------------- Data Receivers -----------------
+
+    def __get_title(self):
+        return helper_method.strip_special_character(self.m_title).strip()
+
+    def __get_meta_description(self):
+        meta_tag = self.m_soup.find("meta", {"name": "description"})
+        if meta_tag and meta_tag.get("content"):
+            return self.__clean_text(meta_tag.get("content"))
+        return ""
+
+    def __get_title_hidden(self, p_title_hidden):
+        return self.__clean_text(p_title_hidden)
+
+    def __get_important_content(self):
+        m_content = self.m_important_content
+        if len(m_content) < 150 and fuzz.ratio(m_content, self.m_meta_description) < 85 and len(
+                self.m_meta_description) > 10:
+            m_content += self.m_meta_description
+        if len(m_content) < 150 and fuzz.ratio(m_content, self.m_non_important_text) < 85 and len(
+                self.m_non_important_text) > 10:
+            self.__add_important_description(self.m_non_important_text, False)
+            m_content += self.m_important_content
+        if len(m_content) < 50 and len(self.m_sub_url) >= 3:
+            m_content = "- No description found but contains some urls. This website is most probably a search engine or only contain references of other websites - " + self.m_title.lower()
+
+        return helper_method.strip_special_character(m_content)
+
+    def __get_validity_score(self, p_important_content):
+        m_rank = (((len(p_important_content) + len(self.m_title)) > 150) or len(self.m_sub_url) >= 3) * 10 + (
+                len(self.m_sub_url) > 0 or self.m_all_url_count > 5) * 5
+
+        return m_rank
+
+    def __get_content_type(self):
+        try:
+            if len(self.m_content) > 0:
+                self.m_content_type = topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_PREDICT_CLASSIFIER, [self.m_title, self.m_important_content, self.m_content])
+                if self.m_content_type is None:
+                    return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
+
+                return self.m_content_type
+            return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
+        except Exception as ex:
+            return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
+
+    def __get_static_file(self):
+        return self.m_sub_url, self.m_image_url, self.m_doc_url, self.m_video_url
+
+    def __get_content(self):
+        return self.m_content
+
+    def __get_meta_keywords(self):
+        return self.m_meta_keyword
+
+    def __get_text(self):
+        m_soup = BeautifulSoup(self.m_html, "html.parser")
+        m_text = self.__clean_text(m_soup.get_text())
+        return " ".join(list(set(self.__clean_text(m_text).split(" "))))
+
+    def parse_html_files(self):
+        self.__generate_html()
+
+        m_sub_url, m_images, m_document, m_video = self.__get_static_file()
+        m_title = self.__get_title()
+        m_meta_description = self.__get_meta_description()
+        m_important_content = self.__get_important_content() + " " + m_meta_description
+        m_meta_keywords = self.__get_meta_keywords()
+        m_content_type = self.__get_content_type()
+        m_content = self.__get_content() + " " + m_title + " " + m_meta_description
+        m_validity_score = self.__get_validity_score(m_important_content)
+        m_section = self.__get_sections()
+        m_names = self.m_names
+        m_emails = self.m_emails
+        m_phone_numbers = self.m_phone_numbers
+        m_clearnet_links = self.m_clearnet_links
+
         return index_model_init(
-            m_base_url = helper_method.get_base_url(self.base_url),
-            m_url = self.base_url,
-            m_title=self.extract_title(),
-            m_meta_description=self.extract_meta_description(),
-            m_content=self.extract_content(),
-            m_important_content=self.extract_important_content(),
-            m_images=images,
-            m_document=documents,
-            m_video=self.extract_media('video'),
-            m_validity_score=self.calculate_validity_score(),
+            m_base_url=self.m_base_url,
+            m_url=self.request_model.m_url,
+            m_title=m_title,
+            m_meta_description=m_meta_description,
+            m_content=m_content,
+            m_important_content=m_important_content,
+            m_images=m_images,
+            m_document=m_document,
+            m_video=m_video,
+            m_validity_score=m_validity_score,
+            m_meta_keywords=m_meta_keywords,
+            m_content_type=m_content_type,
+            m_section=m_section,
+            m_names=m_names,
+            m_emails=m_emails,
+            m_phone_numbers=m_phone_numbers,
+            m_clearnet_links=m_clearnet_links,
         )
-
-    def extract_media(self, tag_name: str) -> List[str]:
-        """Extract media elements such as videos."""
-        media_tags = self.soup.find_all(tag_name)
-        return [urljoin(self.base_url, tag['src']) for tag in media_tags if 'src' in tag.attrs]
-

@@ -50,7 +50,7 @@ class parse_controller:
                 module = importlib.import_module(module_path)
                 class_ = getattr(module, class_name)
                 self.leak_extractor_instance: leak_extractor_interface = class_()
-            except Exception as ex:
+            except Exception:
                 return None, set()
 
         data_model, m_sub_url = self.leak_extractor_instance.parse_leak_data(p_html, p_data_url)

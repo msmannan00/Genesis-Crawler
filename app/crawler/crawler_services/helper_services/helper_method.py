@@ -1,7 +1,5 @@
 # Local Imports
-import os
-import shutil
-import zipfile
+import re
 from urllib.parse import urlparse
 from gensim.parsing.preprocessing import STOPWORDS
 
@@ -16,6 +14,18 @@ class helper_method:
     if m_host_url.endswith("/"):
       m_host_url = m_host_url[:-1]
     return m_host_url
+
+  @staticmethod
+  def strip_special_character(p_text):
+    m_text = re.sub(r"^\W+", "", p_text)
+    return m_text
+
+  @staticmethod
+  def is_url_base_64(p_url):
+    if str(p_url).startswith("duplicationHandlerService:"):
+      return True
+    else:
+      return False
 
   # URL Cleaner
   @staticmethod
