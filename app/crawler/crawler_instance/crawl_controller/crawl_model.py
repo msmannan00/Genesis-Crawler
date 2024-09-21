@@ -1,11 +1,13 @@
 # Local Imports
 import os
+import threading
 from time import sleep
 from crawler.constants.app_status import APP_STATUS
-from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
 from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
+from crawler.crawler_instance.genbot_service.genbot_unique_controller import genbot_unique_instance
 from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.helper_services.web_request_handler import webRequestManager
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
@@ -18,7 +20,6 @@ from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_services.crawler_services.celery_manager.celery_controller import celery_controller
 from crawler.shared_data import celery_shared_data
-
 
 class crawl_model(request_handler):
 
@@ -108,15 +109,35 @@ class crawl_model(request_handler):
         self.__celery_vid += 1
         celery_controller.get_instance().invoke_trigger(CELERY_COMMANDS.S_START_TASK, [p_fetched_url_list.pop(0), self.__celery_vid])
 
+  def __trigger_unique_crawling(self):
+    file_path = os.path.join(RAW_PATH_CONSTANTS.UNIQUE_CRAWL_DIRECTORY, 'hosts.txt')
+    os.makedirs(RAW_PATH_CONSTANTS.UNIQUE_CRAWL_DIRECTORY, exist_ok=True)
+    with open(file_path, 'w'):
+      pass
+
+    while True:
+      try:
+        web_request_manager = webRequestManager()
+        file_content, status_or_error = web_request_manager.request_server_get(CRAWL_SETTINGS_CONSTANTS.S_PARSERS_URL)
+        if status_or_error == 200:
+          file_content_as_str = file_content.decode('utf-8')
+          content_list = file_content_as_str.splitlines()
+          log.g().i(f"Content List: {content_list}")
+          genbot_unique_instance(content_list)
+      except Exception as e:
+        log.g().e(e)
+      pass
+
   def __init_crawler(self):
     self.__celery_vid = 100000
     self.init_parsers()
+    threading.Thread(target=self.__trigger_unique_crawling).start()
     RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_PARSERS_TIMEOUT, self.reinit_list_periodically, False, self.init_parsers)
 
-    if APP_STATUS.DOCKERIZED_RUN:
-     self.__init_docker_request()
-    else:
-     self.__init_direct_request()
+    # if APP_STATUS.DOCKERIZED_RUN:
+    #  self.__init_docker_request()
+    # else:
+    #  self.__init_direct_request()
 
   def invoke_trigger(self, p_command, p_data=None):
     if p_command == CRAWL_MODEL_COMMANDS.S_INIT:

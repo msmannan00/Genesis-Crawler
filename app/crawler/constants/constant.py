@@ -8,6 +8,7 @@ class RAW_PATH_CONSTANTS:
   S_SIGWIN_PATH = str(Path(__file__).parent.parent.parent.parent.parent) + "/cygwin64/bin/bash.exe --login"
   S_PROJECT_PATH = str(Path(__file__).parent.parent.parent)
   LOG_DIRECTORY = os.path.join(os.getcwd(), 'logs')
+  UNIQUE_CRAWL_DIRECTORY = os.path.join(os.getcwd(), 'unique_host')
 
 
 class NETWORK_MONITOR:

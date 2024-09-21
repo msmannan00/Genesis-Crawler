@@ -1,6 +1,8 @@
 # Local Imports
 import json
 from asyncio import sleep
+import os
+import sys
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
@@ -21,8 +23,6 @@ from crawler.crawler_instance.helper_services.helper_method import helper_method
 
 
 class genbot_controller(request_handler):
-  import os
-  import sys
 
   hashseed = os.getenv('PYTHONHASHSEED')
   if not hashseed:
