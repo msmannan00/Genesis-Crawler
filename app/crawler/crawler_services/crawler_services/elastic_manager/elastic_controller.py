@@ -1,6 +1,6 @@
 # Local Imports
 from crawler.constants.strings import MANAGE_ELASTIC_MESSAGES, MANAGE_CRAWLER_MESSAGES
-from crawler.crawler_instance.helper_services.web_request_handler import webRequestManager
+from crawler.crawler_services.web_request_handler import webRequestManager
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
@@ -25,7 +25,7 @@ class elastic_controller(request_handler):
     while True:
       try:
         m_post_object = {'pRequestCommand': p_data[0], 'pRequestData': p_data[1]}
-        url = ELASTIC_CONNECTIONS.S_DATABASE_IP
+        url = p_data[2]
 
         m_response, status_code = web_request_manager.request_server_post(url, data=m_post_object)
 

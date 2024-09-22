@@ -6,7 +6,8 @@ import sys
 from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
 from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, \
+  ELASTIC_REQUEST_COMMANDS, ELASTIC_CONNECTIONS
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
@@ -15,11 +16,11 @@ from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import 
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
-from crawler.crawler_instance.helper_services.web_request_handler import webRequestManager
+from crawler.crawler_services.web_request_handler import webRequestManager
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_shared_directory.log_manager.log_controller import log
-from crawler.crawler_instance.helper_services.helper_method import helper_method
+from crawler.crawler_services.helper_services.helper_method import helper_method
 
 
 class genbot_controller(request_handler):
@@ -54,10 +55,10 @@ class genbot_controller(request_handler):
         m_parsed_model = self.__m_html_parser.on_parse_html(m_raw_html, p_request_model)
         m_leak_data_model, m_sub_url = self.__m_html_parser.on_parse_leaks(m_raw_html, m_redirected_url)
 
-        if m_leak_data_model is not None and helper_method.get_host_name(m_redirected_url).__eq__(helper_method.get_host_name(p_request_model.m_url)) and self.m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
+        if helper_method.get_host_name(m_redirected_url).__eq__(helper_method.get_host_name(p_request_model.m_url)) and self.m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
 
           m_paresed_request_data = {"m_generic_model":json.dumps(m_parsed_model.model_dump()),  "m_leak_data_model":json.dumps(m_leak_data_model.model_dump())}
-          elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, json.dumps(m_paresed_request_data), [True]])
+          elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, json.dumps(m_paresed_request_data), ELASTIC_CONNECTIONS.S_CRAWL_INDEX])
 
           log.g().s(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + MANAGE_CRAWLER_MESSAGES.S_LOCAL_URL_PARSED + " : " + m_redirected_url)
           self.m_parsed_url.append(m_redirected_url)
@@ -93,8 +94,9 @@ class genbot_controller(request_handler):
             sleep(5)
           continue
 
-      for sub_url in m_sub_url and item.m_depth + 1 <= CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH:
-        self.m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
+      if item.m_depth + 1 <= CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH:
+        for sub_url in m_sub_url:
+          self.m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
 
       m_host_crawled = True
       self.m_unparsed_url.pop(0)
@@ -105,12 +107,13 @@ class genbot_controller(request_handler):
 
 
 def genbot_instance(p_url, p_vid):
+
   m_crawler = genbot_controller()
   try:
     m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
     p_request_url = helper_method.on_clean_url(p_url)
     mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
   except Exception as ex:
-    print("error : " + str(ex.with_traceback(ex.__traceback__)), flush=True)
+    log.g().e(str(p_vid) + " : " + str(ex))
   finally:
     del m_crawler

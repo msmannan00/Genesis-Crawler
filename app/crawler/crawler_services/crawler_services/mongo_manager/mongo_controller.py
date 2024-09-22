@@ -26,7 +26,18 @@ class mongo_controller(request_handler):
     self.__link_connection()
 
   def __link_connection(self):
-    self.__m_connection = pymongo.MongoClient(MONGO_CONNECTIONS.S_DATABASE_IP, MONGO_CONNECTIONS.S_DATABASE_PORT)[MONGO_CONNECTIONS.S_DATABASE_NAME]
+    connection_params = {
+     'host': MONGO_CONNECTIONS.S_MONGO_IP,
+     'port': MONGO_CONNECTIONS.S_MONGO_PORT,
+    }
+
+    auth_params = {
+      'username': MONGO_CONNECTIONS.S_MONGO_USERNAME,
+      'password': MONGO_CONNECTIONS.S_MONGO_PASSWORD
+    }
+
+    connection_params.update({k: v for k, v in auth_params.items() if v})
+    self.__m_connection = pymongo.MongoClient(**connection_params)[MONGO_CONNECTIONS.S_MONGO_DB_NAME]
 
   def __reset(self, p_data):
     try:
@@ -59,7 +70,7 @@ class mongo_controller(request_handler):
 
   def __update(self, p_data, upsert=True):
     try:
-      self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].update_many(p_data[MONGODB_KEYS.S_FILTER], p_data[MONGODB_KEYS.S_VALUE], upsert=upsert)
+      self.__m_connection = pymongo.MongoClient(MONGO_CONNECTIONS.S_MONGO_IP, MONGO_CONNECTIONS.S_MONGO_PORT, username=MONGO_CONNECTIONS.S_MONGO_USERNAME, password=MONGO_CONNECTIONS.S_DATABASE_PASSWORD)[MONGO_CONNECTIONS.S_MONGO_USERNAME]
       return True, MANAGE_MONGO_MESSAGES.S_UPDATE_SUCCESS
 
     except Exception as ex:

@@ -6,8 +6,11 @@ import sys
 import os
 import redis
 from logging.config import dictConfig
+
+from crawler.crawler_instance.genbot_service.genbot_unique_controller import genbot_unique_instance
 from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_CONNECTIONS, ELASTIC_LOGGING, \
   CELERY_COMMANDS
+from crawler.crawler_services.helper_services.env_handler import env_handler
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
@@ -54,7 +57,7 @@ class celery_controller:
 
   def __clear_redis_database(self):
     try:
-      r = redis.Redis(host='redis_server', port=6379, password='killprg1')
+      r = redis.Redis(host='redis_server', port=6379, password=env_handler.get_instance().env("REDIS_PASSWORD"))
       r.flushall()
       logger.info("Redis database cleared.")
     except redis.RedisError as e:
@@ -79,18 +82,47 @@ class celery_controller:
     ])
     logger.info("Started Celery worker with custom settings.")
 
-  def __run_task(self, url, virtual_id):
-    simple_task.delay(url, virtual_id)
+  def __run_crawler(self, url, virtual_id):
+    start_crawler.delay(url, virtual_id)
+
+  def __run_unique_task(self, url):
+    invoke_unique_crawler.delay(url)
 
   def invoke_trigger(self, p_commands, p_data=None):
-    if p_commands == CELERY_COMMANDS.S_START_TASK:
-      self.__run_task(p_data[0], p_data[1])
+    if p_commands == CELERY_COMMANDS.S_START_CRAWLER:
+      self.__run_crawler(p_data[0], p_data[1])
+    if p_commands == CELERY_COMMANDS.S_INVOKE_UNIQUE_CRAWLER:
+      self.__run_unique_task(p_data)
 
 
 # Define Celery tasks
-@celery.task(name='celery_controller.simple_task')
-def simple_task(url, virtual_id):
+
+@celery.task(name='celery_controller.start_crawler')
+def start_crawler(url, virtual_id):
   genbot_instance(url, virtual_id)
+
+@celery.task(name='celery_controller.invoke_unique_crawler', bind=True)
+def invoke_unique_crawler(self, url):
+  redis_client = redis.Redis(host='redis_server', port=6379, password=env_handler.get_instance().env("REDIS_PASSWORD"))
+
+  lock_key = "celery_controller:invoke_unique_crawler_lock"
+
+  lock = redis_client.lock(lock_key, timeout=600, blocking_timeout=5)
+  lock_acquired = False
+
+  try:
+    if lock.acquire(blocking=False):
+      lock_acquired = True
+      genbot_unique_instance(url)
+    else:
+      raise self.retry(exc=Exception("Task already running, rejecting the call"), countdown=60, max_retries=3)
+
+  except Exception as e:
+    raise e
+
+  finally:
+    if lock_acquired and lock.locked():
+      lock.release()
 
 
 if __name__ == "__main__":

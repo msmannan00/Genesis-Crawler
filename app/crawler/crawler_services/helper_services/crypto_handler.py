@@ -1,16 +1,12 @@
 import base64
-import os
 import time
-from dotenv import load_dotenv
 from fernet import Fernet
-
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
+from crawler.crawler_services.helper_services.env_handler import env_handler
+
 
 class crypto_handler:
     __instance = None
-
-    dotenv_path = os.path.join(os.getcwd(), '.env')
-    load_dotenv(dotenv_path)
 
     @staticmethod
     def get_instance():
@@ -24,8 +20,8 @@ class crypto_handler:
         else:
             crypto_handler.__instance = self
 
-        self.fernet_key = os.getenv('S_FERNET_KEY')
-        self.app_block_key = os.getenv('S_APP_BLOCK_KEY')
+        self.fernet_key = env_handler.get_instance().env('S_FERNET_KEY')
+        self.app_block_key = env_handler.get_instance().env('S_APP_BLOCK_KEY')
 
     def generate_secret_token(self):
         fernet = Fernet(base64.urlsafe_b64encode(self.fernet_key.encode()))

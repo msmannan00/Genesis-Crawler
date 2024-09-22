@@ -1,14 +1,14 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
-load_dotenv()
-S_SERVER = os.getenv('S_SERVER')
+
+from crawler.crawler_services.helper_services.env_handler import env_handler
+S_SERVER = env_handler.get_instance().env('S_SERVER')
 
 class RAW_PATH_CONSTANTS:
   S_SIGWIN_PATH = str(Path(__file__).parent.parent.parent.parent.parent) + "/cygwin64/bin/bash.exe --login"
   S_PROJECT_PATH = str(Path(__file__).parent.parent.parent)
   LOG_DIRECTORY = os.path.join(os.getcwd(), 'logs')
-  UNIQUE_CRAWL_DIRECTORY = os.path.join(os.getcwd(), 'unique_host')
+  UNIQUE_CRAWL_DIRECTORY = os.path.join(os.getcwd()+"/raw", 'unique_host')
 
 
 class NETWORK_MONITOR:
@@ -61,7 +61,8 @@ class CRAWL_SETTINGS_CONSTANTS:
   ]
 
   # Local URL
-  S_START_URL = f"{S_SERVER}/feeder"
+  S_FEEDER_URL = f"{S_SERVER}/feeder"
+  S_FEEDER_URL_UNIQUE = f"{S_SERVER}/feeder/unique"
   S_PARSERS_URL = f"{S_SERVER}/parser"
   S_PARSE_EXTRACTION_DIR = "raw/parsers"
 

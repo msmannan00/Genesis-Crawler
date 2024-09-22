@@ -1,5 +1,5 @@
 import enum
-
+from crawler.crawler_services.helper_services.env_handler import env_handler
 
 class MONGODB_COMMANDS(enum.Enum):
   S_INSTALL_CRAWLABLE_URL = 1
@@ -17,9 +17,11 @@ class MONGODB_COLLECTIONS:
 
 
 class MONGO_CONNECTIONS:
-  S_DATABASE_NAME = 'genbot-crawler'
-  S_DATABASE_PORT = 27017
-  S_DATABASE_IP = 'mongo'
+  S_MONGO_DB_NAME = "Trustly-Crawler"
+  S_MONGO_USERNAME = env_handler.get_instance().env('MONGO_ROOT_USERNAME')
+  S_MONGO_PASSWORD = env_handler.get_instance().env('MONGO_ROOT_PASSWORD')
+  S_MONGO_PORT = 27017
+  S_MONGO_IP = 'mongo'
 
 
 class MONGO_CRUD(enum.Enum):

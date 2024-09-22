@@ -1,1 +1,1 @@
-python3 main.py
+python3 main.py --command invoke_celery_crawler

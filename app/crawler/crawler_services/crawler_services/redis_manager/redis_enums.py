@@ -1,6 +1,9 @@
+from crawler.crawler_services.helper_services.env_handler import env_handler
+
+
 class REDIS_CONNECTIONS:
   S_DATABASE_IP = 'redis_server'
-  S_DATABASE_PASSWORD = 'killprg1'
+  S_DATABASE_PASSWORD = env_handler.get_instance().env('REDIS_PASSWORD')
 
 
 class REDIS_KEYS:

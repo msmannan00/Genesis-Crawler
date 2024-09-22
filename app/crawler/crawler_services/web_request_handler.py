@@ -2,10 +2,10 @@ import gc
 from raven.transport import requests
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
-from crawler.crawler_instance.helper_services.helper_method import helper_method
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.helper_services.crypto_handler import crypto_handler
+from crawler.crawler_services.helper_services.helper_method import helper_method
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 

@@ -31,20 +31,24 @@ services:
       nofile:
         soft: 26677
         hard: 46677
+    env_file:
+      - .env
     networks:
       backend:
         ipv4_address: 172.19.0.2
     entrypoint: [ "bash", "-c", "./start_app.sh" ]
 
   redis_server:
-    image: redis
+    image: redis:7.4.0
     logging:
       driver: none
-    command: redis-server --requirepass killprg1
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
     restart: always
     networks:
       backend:
         ipv4_address: 172.19.0.3
+    env_file:
+      - .env
     deploy:
       resources:
         limits:
@@ -55,6 +59,8 @@ services:
       context: .
       dockerfile: dockerFiles/api_docker
     command: celery -A crawler.crawler_services.crawler_services.celery_manager worker --loglevel=INFO --concurrency=1
+    env_file:
+      - .env
     depends_on:
       - redis_server
     restart: always
@@ -72,6 +78,8 @@ services:
     depends_on:
       - redis_server
     restart: always
+    env_file:
+      - .env
     volumes:
       - ./app:/app
     networks:
@@ -82,7 +90,9 @@ services:
     build:
       context: .
       dockerfile: dockerFiles/api_docker
-    command: celery -A crawler.crawler_services.crawler_services.celery_manager flower --port=5555 --broker=redis://:killprg1@redis_server:6379/0
+    command: celery -A crawler.crawler_services.crawler_services.celery_manager flower --port=5555 --broker=redis://:${REDIS_PASSWORD}@redis_server:6379/0 --basic_auth=${FLOWER_USERNAME}:${FLOWER_PASSWORD}
+    env_file:
+      - .env
     depends_on:
       - redis_server
     ports:
@@ -91,11 +101,15 @@ services:
     networks:
       backend:
         ipv4_address: 172.19.0.6
+    environment:
+      - CELERY_BROKER_URL=redis://:${REDIS_PASSWORD}@redis_server:6379/0
 
   mongo:
     image: mongocamp/mongodb:5.0.9
     container_name: mongo-db
-    command: mongod --quiet --logpath /dev/null
+    env_file:
+      - .env
+    command: mongod --auth --quiet --logpath /dev/null
     logging:
       driver: none
     volumes:
@@ -106,10 +120,15 @@ services:
     networks:
       backend:
         ipv4_address: 172.19.0.7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
 
   tor-extend-1:
     container_name: tor_instace_1
     image: barneybuffet/tor:latest
+    env_file:
+      - .env
     volumes:
       - ~/Documents/docker/tor_test:/tor1
 
@@ -128,16 +147,19 @@ services:
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9153"
       TOR_CONTROL_SOCKET: "true"
-      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_PASSWORD: ${TOR_PASSWORD}
       TOR_CONTROL_COOKIE: "true"
       TOR_RELAY: "false"
     networks:
       backend:
         ipv4_address: 172.19.0.10
 
+
   tor-extend-2:
     container_name: tor_instace_2
     image: barneybuffet/tor:latest
+    env_file:
+      - .env
     volumes:
       - ~/Documents/docker/tor_test:/tor2
 
@@ -156,7 +178,7 @@ services:
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9155"
       TOR_CONTROL_SOCKET: "true"
-      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_PASSWORD: ${TOR_PASSWORD}
       TOR_CONTROL_COOKIE: "true"
       TOR_RELAY: "false"
     networks:
@@ -166,6 +188,8 @@ services:
   tor-extend-3:
     container_name: tor_instace_3
     image: barneybuffet/tor:latest
+    env_file:
+      - .env
     volumes:
       - ~/Documents/docker/tor_test:/tor3
 
@@ -184,7 +208,7 @@ services:
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9157"
       TOR_CONTROL_SOCKET: "true"
-      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_PASSWORD: ${TOR_PASSWORD}
       TOR_CONTROL_COOKIE: "true"
       TOR_RELAY: "false"
     networks:
@@ -194,6 +218,8 @@ services:
   tor-extend-4:
     container_name: tor_instace_42
     image: barneybuffet/tor:latest
+    env_file:
+      - .env
     volumes:
       - ~/Documents/docker/tor_test:/tor4
 
@@ -212,7 +238,7 @@ services:
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9159"
       TOR_CONTROL_SOCKET: "true"
-      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_PASSWORD: ${TOR_PASSWORD}
       TOR_CONTROL_COOKIE: "true"
       TOR_RELAY: "false"
     networks:
@@ -222,6 +248,8 @@ services:
   tor-extend-5:
     container_name: tor_instace_5
     image: barneybuffet/tor:latest
+    env_file:
+      - .env
     volumes:
       - ~/Documents/docker/tor_test:/tor5
 
@@ -240,7 +268,7 @@ services:
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9161"
       TOR_CONTROL_SOCKET: "true"
-      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_PASSWORD: ${TOR_PASSWORD}
       TOR_CONTROL_COOKIE: "true"
       TOR_RELAY: "false"
     networks:
@@ -250,6 +278,8 @@ services:
   tor-extend-6:
     container_name: tor_instace_6
     image: barneybuffet/tor:latest
+    env_file:
+      - .env
     volumes:
       - ~/Documents/docker/tor_test:/tor6
 
@@ -268,7 +298,7 @@ services:
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9163"
       TOR_CONTROL_SOCKET: "true"
-      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_PASSWORD: ${TOR_PASSWORD}
       TOR_CONTROL_COOKIE: "true"
       TOR_RELAY: "false"
     networks:
@@ -278,6 +308,8 @@ services:
   tor-extend-7:
     container_name: tor_instace_7
     image: barneybuffet/tor:latest
+    env_file:
+      - .env
     volumes:
       - ~/Documents/docker/tor_test:/tor7
 
@@ -296,7 +328,7 @@ services:
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9165"
       TOR_CONTROL_SOCKET: "true"
-      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_PASSWORD: ${TOR_PASSWORD}
       TOR_CONTROL_COOKIE: "true"
       TOR_RELAY: "false"
     networks:
@@ -306,6 +338,8 @@ services:
   tor-extend-8:
     container_name: tor_instace_8
     image: barneybuffet/tor:latest
+    env_file:
+      - .env
     volumes:
       - ~/Documents/docker/tor_test:/tor8
 
@@ -324,7 +358,7 @@ services:
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9167"
       TOR_CONTROL_SOCKET: "true"
-      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_PASSWORD: ${TOR_PASSWORD}
       TOR_CONTROL_COOKIE: "true"
       TOR_RELAY: "false"
     networks:
@@ -334,6 +368,8 @@ services:
   tor-extend-9:
     container_name: tor_instace_9
     image: barneybuffet/tor:latest
+    env_file:
+      - .env
     volumes:
       - ~/Documents/docker/tor_test:/tor9
 
@@ -352,7 +388,7 @@ services:
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9169"
       TOR_CONTROL_SOCKET: "true"
-      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_PASSWORD: ${TOR_PASSWORD}
       TOR_CONTROL_COOKIE: "true"
       TOR_RELAY: "false"
     networks:
@@ -362,6 +398,8 @@ services:
   tor-extend-10:
     container_name: tor_instace_10
     image: barneybuffet/tor:latest
+    env_file:
+      - .env
     volumes:
       - ~/Documents/docker/tor_test:/tor10
 
@@ -380,7 +418,7 @@ services:
       TOR_CONTROL: "true"
       TOR_CONTROL_PORT: "0.0.0.0:9171"
       TOR_CONTROL_SOCKET: "true"
-      TOR_CONTROL_PASSWORD: "Imammehdi@00"
+      TOR_CONTROL_PASSWORD: ${TOR_PASSWORD}
       TOR_CONTROL_COOKIE: "true"
       TOR_RELAY: "false"
     networks:

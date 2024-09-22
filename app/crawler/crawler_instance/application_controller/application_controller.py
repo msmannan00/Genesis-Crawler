@@ -4,7 +4,7 @@ from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_CONTROLLER_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_controller import crawl_controller
-from crawler.crawler_instance.helper_services.helper_method import helper_method
+from crawler.crawler_services.helper_services.helper_method import helper_method
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 

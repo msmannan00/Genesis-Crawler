@@ -4,13 +4,12 @@ import stem as stem
 from requests.adapters import HTTPAdapter
 from stem.control import Controller
 from urllib3 import Retry
-
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS, TOR_PROXIES
+from crawler.crawler_services.helper_services.env_handler import env_handler
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
-
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_CONTROL_PROXIES
 from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
 from stem import Signal
@@ -43,7 +42,7 @@ class tor_controller(request_handler):
     if APP_STATUS.DOCKERIZED_RUN:
       for connection_controller in TOR_CONTROL_PROXIES:
         m_temp_controller = Controller(stem.socket.ControlPort(connection_controller["proxy"], connection_controller["port"]))
-        m_temp_controller.authenticate("Imammehdi@00")
+        m_temp_controller.authenticate(env_handler.get_instance().env('TOR_PASSWORD'))
         self.__m_controller.append(m_temp_controller)
         RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_TOR_NEW_CIRCUIT_INVOKE_DELAY, self.__invoke_new_circuit, False, m_temp_controller)
         self.__invoke_new_circuit(m_temp_controller)

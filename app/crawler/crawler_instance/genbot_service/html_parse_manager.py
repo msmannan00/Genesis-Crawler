@@ -207,8 +207,8 @@ class html_parse_manager(HTMLParser, ABC):
         email_matches = re.findall(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', text)
         self.m_emails.extend(email_matches)
 
-        # Extract phone numbers (very simple regex for demonstration)
-        phone_matches = re.findall(r'(\+?\d{1,3}[-\s.]?)?\(?\d{3}\)?[-\s.]?\d{3}[-\s.]?\d{4}', text)
+        phone_matches = re.findall(r'(\+?\d{1,3}[-\s.]?)?\(?\d{1,4}\)?[-\s.]?\d{1,4}[-\s.]?\d{1,4}[-\s.]?\d{1,9}', text)
+        phone_matches = [number for number in phone_matches if number.strip()]
         self.m_phone_numbers.extend(phone_matches)
 
         # Example name extraction (basic heuristic based on capitalized words)
@@ -330,7 +330,7 @@ class html_parse_manager(HTMLParser, ABC):
 
                 return self.m_content_type
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
-        except Exception as ex:
+        except Exception:
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
 
     def __get_static_file(self):

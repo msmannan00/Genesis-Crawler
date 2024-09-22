@@ -7,9 +7,9 @@ from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_instance.genbot_service.html_parse_manager import html_parse_manager
 from crawler.crawler_instance.genbot_service.file_parse_manager import file_parse_manager
 from crawler.crawler_instance.genbot_service.post_leak_model_tuner import post_leak_model_tuner
-from crawler.crawler_instance.helper_services.helper_method import helper_method
+from crawler.crawler_instance.local_shared_model.leak_data_model import leak_data_model
+from crawler.crawler_services.helper_services.helper_method import helper_method
 from crawler.crawler_instance.local_interface_model.leak_extractor_interface import leak_extractor_interface
-from crawler.crawler_instance.local_shared_model import leak_data_model
 from crawler.crawler_instance.local_shared_model.index_model import index_model
 from crawler.crawler_instance.local_shared_model.url_model import url_model
 
@@ -17,6 +17,7 @@ from crawler.crawler_instance.local_shared_model.url_model import url_model
 class parse_controller:
 
     def __init__(self):
+
         self.leak_extractor_instance = None
         self.post_leak_model_instance = post_leak_model_tuner()
 
@@ -32,6 +33,11 @@ class parse_controller:
         if CRAWL_SETTINGS_CONSTANTS.S_GENERIC_FILE_VERIFICATION_ALLOWED and data_model is not None:
             return file_parse_manager().parse_leak_files(data_model), m_sub_url
         else:
+            data_model = leak_data_model(
+                cards_data=[],
+                contact_link="",
+                base_url="",
+            )
             return data_model, m_sub_url
 
     def __on_html_parser_invoke(self, p_html: str, p_request_model: url_model) -> index_model:

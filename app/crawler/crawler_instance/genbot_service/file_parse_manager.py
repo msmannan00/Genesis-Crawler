@@ -1,17 +1,10 @@
 from typing import List, Set, Optional
-from pydantic import BaseModel, Field
-from crawler.crawler_instance.helper_services.web_request_handler import webRequestManager
+from crawler.crawler_instance.local_shared_model.leak_data_model import leak_data_model
+from crawler.crawler_services.web_request_handler import webRequestManager
 from crawler.crawler_instance.local_shared_model.index_model import index_model
-from crawler.crawler_instance.helper_services.helper_method import helper_method
+from crawler.crawler_services.helper_services.helper_method import helper_method
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
-from crawler.crawler_instance.local_shared_model.card_extraction_model import card_extraction_model
-
-
-class leak_data_model(BaseModel):
-  cards_data: List[card_extraction_model] = Field(default_factory=list)
-  contact_link: str
-  base_url: str
 
 
 class file_parse_manager:
