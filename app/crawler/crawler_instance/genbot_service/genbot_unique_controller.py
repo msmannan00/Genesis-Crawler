@@ -120,3 +120,16 @@ def genbot_unique_instance(p_url_list):
   finally:
     del m_crawler
 
+def prepare_and_fetch_data(url):
+  os.makedirs(RAW_PATH_CONSTANTS.UNIQUE_CRAWL_DIRECTORY, exist_ok=True)
+  helper_method.clear_hosts_file(os.path.join(RAW_PATH_CONSTANTS.UNIQUE_CRAWL_DIRECTORY, 'hosts.txt'))
+  helper_method.clear_hosts_file(os.path.join(RAW_PATH_CONSTANTS.UNIQUE_CRAWL_DIRECTORY, 'hosts_new.txt'))
+
+  web_request_manager = webRequestManager()
+  file_content, status_or_error = web_request_manager.request_server_get(url)
+
+  if status_or_error == 200:
+    return file_content.decode('utf-8').splitlines()
+  else:
+    log.g().e(f"Failed to fetch data from {url}, status: {status_or_error}")
+    return None

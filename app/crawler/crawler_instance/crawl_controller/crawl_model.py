@@ -7,6 +7,7 @@ from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
 from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
+from crawler.crawler_instance.genbot_service.genbot_unique_controller import prepare_and_fetch_data
 from crawler.crawler_services.helper_services.helper_method import helper_method
 from crawler.crawler_services.web_request_handler import webRequestManager
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
@@ -108,10 +109,15 @@ class crawl_model(request_handler):
         self.__celery_vid += 1
         celery_controller.get_instance().invoke_trigger(CELERY_COMMANDS.S_START_CRAWLER, [p_fetched_url_list.pop(0), self.__celery_vid])
 
+  def reinit_unique_feeders_periodically(self):
+    content_list = prepare_and_fetch_data(CRAWL_SETTINGS_CONSTANTS.S_FEEDER_URL)
+    celery_controller.get_instance().invoke_trigger(CELERY_COMMANDS.S_INVOKE_UNIQUE_CRAWLER, content_list)
+
   def __init_crawler(self):
     self.__celery_vid = 100000
     self.init_parsers()
     RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_PARSERS_TIMEOUT, self.reinit_list_periodically, False, self.init_parsers)
+    RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_UNIQUE_FEEDER_TIMEOUT, self.reinit_unique_feeders_periodically, False, self.init_parsers)
 
     if APP_STATUS.DOCKERIZED_RUN:
      self.__init_docker_request()
