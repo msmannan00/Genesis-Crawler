@@ -28,17 +28,19 @@ class parse_controller:
         else:
             return m_parsed_model
 
-    def on_parse_leaks(self, p_html: str, m_url: str) -> tuple[None, bool] | tuple[leak_data_model, Set[str]]:
+    def on_parse_leaks(self, p_html: str, m_url: str) -> tuple[None, bool, bool] | tuple[leak_data_model, Set[str], bool]:
         data_model, m_sub_url = self.__on_leak_parser_invoke(p_html, m_url)
+
         if CRAWL_SETTINGS_CONSTANTS.S_GENERIC_FILE_VERIFICATION_ALLOWED and data_model is not None:
-            return file_parse_manager().parse_leak_files(data_model), m_sub_url
+            parsed_data, m_sub_url = file_parse_manager().parse_leak_files(data_model), m_sub_url
+            return parsed_data, m_sub_url, True
         else:
             data_model = leak_data_model(
                 cards_data=[],
                 contact_link="",
                 base_url="",
             )
-            return data_model, m_sub_url
+            return data_model, m_sub_url, False
 
     def __on_html_parser_invoke(self, p_html: str, p_request_model: url_model) -> index_model:
         return html_parse_manager(p_html, p_request_model).parse_html_files()

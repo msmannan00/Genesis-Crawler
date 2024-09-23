@@ -3,8 +3,11 @@ import filecmp
 import json
 
 from crawler.constants.constant import RAW_PATH_CONSTANTS
+from crawler.constants.strings import MANAGE_MESSAGES
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS, ELASTIC_CONNECTIONS
+from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
+from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_KEYS
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
@@ -27,7 +30,7 @@ class genbot_unique_controller(request_handler):
     os.execv(sys.executable, [sys.executable] + sys.argv)
 
   def __init__(self):
-    self.__task_id = None
+    self.__task_id = -1
     self.m_url_duplication_handler = duplication_handler()
     self.__m_web_request_handler = webRequestManager()
     self.__m_parsed_list = []
@@ -40,6 +43,7 @@ class genbot_unique_controller(request_handler):
 
   def __trigger_url_request(self, p_url):
     try:
+      log.g().i(MANAGE_MESSAGES.S_UNIQUE_PARSING_URL_STARTED + " : " + p_url)
       m_redirected_url, m_response, m_raw_html = self.__m_web_request_handler.load_url(p_url, self.__m_proxy)
 
       if m_response is True:
@@ -56,7 +60,7 @@ class genbot_unique_controller(request_handler):
         return False, False
 
     except Exception as ex:
-      log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + str(ex))
+      log.g().e(MANAGE_MESSAGES.S_LOAD_URL_ERROR + " : " + str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + str(ex))
       return False, True
 
   def __index_url(self, m_url):
@@ -64,9 +68,9 @@ class genbot_unique_controller(request_handler):
     try:
       with open(file_path, 'a') as file:
         file.write(m_url + '\n')
-      log.g().i(f"Written to file: {m_url}")
+      log.g().i(MANAGE_MESSAGES.S_UNIQUE_INDEX_UPDATED_SUCCESSFULLY + " : " + f"Written to file: {m_url}")
     except Exception as e:
-      log.g().e(f"Failed to write to file: {e}")
+      log.g().e(MANAGE_MESSAGES.S_UNIQUE_INDEX_UPDATE_FAILED + " : " + f"Failed to write to file: {e}")
 
   def __update_global_index(self):
     file_path_new = os.path.join(RAW_PATH_CONSTANTS.UNIQUE_CRAWL_DIRECTORY, 'hosts_new.txt')
@@ -101,7 +105,7 @@ class genbot_unique_controller(request_handler):
               break
           if m_status:
             self.__m_parsed_list.append(m_url)
-            self.__index_url(m_url)
+            log.g().i(MANAGE_MESSAGES.S_UNIQUE_PARSING_URL_FINISHED + " : " + str(len(self.__m_parsed_list)))
         except Exception as ex:
           log.g().e(str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + str(ex))
       self.__update_global_index()
@@ -112,13 +116,20 @@ class genbot_unique_controller(request_handler):
 
 
 def genbot_unique_instance(p_url_list):
-  m_crawler = genbot_unique_controller()
-  try:
-    m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url_list])
-  except Exception as ex:
-    print("error : " + str(ex.with_traceback(ex.__traceback__)), flush=True)
-  finally:
-    del m_crawler
+  status = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, False, None])
+  if not status:
+    log.g().i(MANAGE_MESSAGES.S_UNIQUE_PARSING_STARTED)
+    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, True, None])
+    m_crawler = genbot_unique_controller()
+    try:
+      m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url_list])
+    except Exception as ex:
+      log.g().e(MANAGE_MESSAGES.S_GENBOT_ERROR + " : " + str(ex))
+    finally:
+      redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, False, None])
+      del m_crawler
+  else:
+    log.g().i(MANAGE_MESSAGES.S_UNIQUE_PARSING_PENDING)
 
 def prepare_and_fetch_data(url):
   os.makedirs(RAW_PATH_CONSTANTS.UNIQUE_CRAWL_DIRECTORY, exist_ok=True)
@@ -131,5 +142,5 @@ def prepare_and_fetch_data(url):
   if status_or_error == 200:
     return file_content.decode('utf-8').splitlines()
   else:
-    log.g().e(f"Failed to fetch data from {url}, status: {status_or_error}")
+    log.g().e(MANAGE_MESSAGES.S_UNIQUE_INDEX_FAILED)
     return None

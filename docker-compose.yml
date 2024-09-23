@@ -5,6 +5,7 @@ services:
     command: tail -f /dev/null
 
   api:
+    container_name: trusted-crawler-main
     build:
       context: ./
       dockerfile: dockerFiles/api_docker
@@ -36,9 +37,10 @@ services:
     networks:
       backend:
         ipv4_address: 172.19.0.2
-    entrypoint: [ "bash", "-c", "./start_app.sh" ]
+    entrypoint: [ "bash", "-c", "./start_app.sh start_app" ]
 
   redis_server:
+    container_name: trusted-crawler-redis
     image: redis:7.4.0
     logging:
       driver: none
@@ -55,10 +57,11 @@ services:
           memory: 2G
 
   celery_worker:
+    container_name: trusted-crawler-celery
     build:
       context: .
       dockerfile: dockerFiles/api_docker
-    command: celery -A crawler.crawler_services.crawler_services.celery_manager worker --loglevel=INFO --concurrency=1
+    command: celery -A crawler.crawler_services.crawler_services.celery_manager worker --loglevel=INFO --concurrency=${CELERY_WORKER_COUNT}
     env_file:
       - .env
     depends_on:
@@ -71,6 +74,7 @@ services:
         ipv4_address: 172.19.0.4
 
   celery_beat:
+    container_name: trusted-crawler-celery_beat
     build:
       context: .
       dockerfile: dockerFiles/api_docker
@@ -87,6 +91,7 @@ services:
         ipv4_address: 172.19.0.5
 
   flower:
+    container_name: trusted-crawler-flower
     build:
       context: .
       dockerfile: dockerFiles/api_docker
@@ -105,27 +110,41 @@ services:
       - CELERY_BROKER_URL=redis://:${REDIS_PASSWORD}@redis_server:6379/0
 
   mongo:
-    image: mongocamp/mongodb:5.0.9
-    container_name: mongo-db
-    env_file:
-      - .env
-    command: mongod --auth --quiet --logpath /dev/null
-    logging:
-      driver: none
-    volumes:
-      - ./data/db:/data/db
-    ports:
-      - "27017:27017"
+    image: mongo:latest
+    container_name: trustly-crawler-mongodb
     restart: always
-    networks:
-      backend:
-        ipv4_address: 172.19.0.7
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db
+    command: >
+      bash -c "
+      mongod --auth --bind_ip_all --fork --logpath /var/log/mongodb.log &&
+      sleep 5 &&
+      mongosh \"mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@localhost:27017/admin\" --eval '
+      db = db.getSiblingDB(\"trustly-crawler\");
+      if (db.getUser(\"${MONGO_ROOT_USERNAME}\") === null) {
+        db.createUser({
+          user: \"${MONGO_ROOT_USERNAME}\",
+          pwd: \"${MONGO_ROOT_PASSWORD}\",
+          roles: [{ role: \"readWrite\", db: \"trustly-crawler\" }]
+        });
+      }
+      ' && tail -f /var/log/mongodb.log
+      "
+    deploy:
+      resources:
+        limits:
+          memory: 5G
+    networks:
+      backend:
+        ipv4_address: 172.19.0.7
 
   tor-extend-1:
-    container_name: tor_instace_1
+    container_name: trusted-crawler_tor_instace_1
     image: barneybuffet/tor:latest
     env_file:
       - .env
@@ -156,7 +175,7 @@ services:
 
 
   tor-extend-2:
-    container_name: tor_instace_2
+    container_name: trusted-crawler_tor_instace_2
     image: barneybuffet/tor:latest
     env_file:
       - .env
@@ -186,7 +205,7 @@ services:
         ipv4_address: 172.19.0.11
 
   tor-extend-3:
-    container_name: tor_instace_3
+    container_name: trusted-crawler_tor_instace_3
     image: barneybuffet/tor:latest
     env_file:
       - .env
@@ -216,7 +235,7 @@ services:
         ipv4_address: 172.19.0.12
 
   tor-extend-4:
-    container_name: tor_instace_42
+    container_name: trusted-crawler_tor_instace_4
     image: barneybuffet/tor:latest
     env_file:
       - .env
@@ -246,7 +265,7 @@ services:
         ipv4_address: 172.19.0.13
 
   tor-extend-5:
-    container_name: tor_instace_5
+    container_name: trusted-crawler_tor_instace_5
     image: barneybuffet/tor:latest
     env_file:
       - .env
@@ -276,7 +295,7 @@ services:
         ipv4_address: 172.19.0.14
 
   tor-extend-6:
-    container_name: tor_instace_6
+    container_name: trusted-crawler_tor_instace_6
     image: barneybuffet/tor:latest
     env_file:
       - .env
@@ -306,7 +325,7 @@ services:
         ipv4_address: 172.19.0.15
 
   tor-extend-7:
-    container_name: tor_instace_7
+    container_name: trusted-crawler_tor_instace_7
     image: barneybuffet/tor:latest
     env_file:
       - .env
@@ -336,7 +355,7 @@ services:
         ipv4_address: 172.19.0.16
 
   tor-extend-8:
-    container_name: tor_instace_8
+    container_name: trusted-crawler_tor_instace_8
     image: barneybuffet/tor:latest
     env_file:
       - .env
@@ -366,7 +385,7 @@ services:
         ipv4_address: 172.19.0.17
 
   tor-extend-9:
-    container_name: tor_instace_9
+    container_name: trusted-crawler_tor_instace_9
     image: barneybuffet/tor:latest
     env_file:
       - .env
@@ -396,7 +415,7 @@ services:
         ipv4_address: 172.19.0.18
 
   tor-extend-10:
-    container_name: tor_instace_10
+    container_name: trusted-crawler_tor_instace_10
     image: barneybuffet/tor:latest
     env_file:
       - .env

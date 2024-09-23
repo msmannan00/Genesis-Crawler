@@ -11,9 +11,6 @@ logdna
 gevent
 lxml
 transformers
-torch
-torchvision
-torchaudio
 simplejson
 elasticsearch
 pymongo
@@ -44,3 +41,5 @@ onnxruntime
 scikit-image
 pydantic
 aiohttp
+torch
+-f https://download.pytorch.org/whl/cpu

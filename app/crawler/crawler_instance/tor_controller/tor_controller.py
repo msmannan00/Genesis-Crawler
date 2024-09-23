@@ -8,6 +8,8 @@ from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS, TOR_PROXIES
+from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
+from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS
 from crawler.crawler_services.helper_services.env_handler import env_handler
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_CONTROL_PROXIES
@@ -19,8 +21,8 @@ class tor_controller(request_handler):
   __instance = None
   __m_controller = []
   __m_session = None
+  __redis_controller = None  # Redis controller instance
 
-  # Initializations
   @staticmethod
   def get_instance():
     if tor_controller.__instance is None:
@@ -29,11 +31,13 @@ class tor_controller(request_handler):
 
   def __init__(self):
     tor_controller.__instance = self
-    self.m_queue_index = 0
     self.m_request_index = 0
     self.__on_init()
 
   def __on_init(self):
+    # Initialize Redis controller instance
+    self.__redis_controller = redis_controller.get_instance()
+
     self.__session = requests.Session()
     retries = Retry(total=1, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
     adapter = requests.adapters.HTTPAdapter(pool_connections=1000, pool_maxsize=1000, max_retries=retries)
@@ -56,14 +60,13 @@ class tor_controller(request_handler):
 
   # Tor Helper Methods
   def __on_create_session(self, p_tor_based):
-    if p_tor_based:
-      headers = {
-        TOR_KEYS.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT, 'Cache-Control': 'no-cache'
-      }
-    else:
-      headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36', 'Cache-Control': 'no-cache'
-      }
+    headers = {
+      TOR_KEYS.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT,
+      'Cache-Control': 'no-cache'
+    } if p_tor_based else {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
+      'Cache-Control': 'no-cache'
+    }
     return self.__session, headers
 
   def __on_proxy(self):
@@ -72,15 +75,17 @@ class tor_controller(request_handler):
         "http": "socks5h://localhost:9150",
         "https": "socks5h://localhost:9150"
       }
-
       return proxies, 100
     else:
-      self.m_queue_index += 1
-      return TOR_PROXIES[self.m_queue_index % len(TOR_PROXIES)], self.m_queue_index % len(TOR_PROXIES)
+
+      current_index = int(self.__redis_controller.invoke_trigger(REDIS_COMMANDS.S_GET_INT, ["tor_queue_index", -1, None])) + 1
+      self.__redis_controller.invoke_trigger(REDIS_COMMANDS.S_SET_INT, ["tor_queue_index", current_index, None])
+
+      return TOR_PROXIES[current_index % len(TOR_PROXIES)], current_index % len(TOR_PROXIES)
 
   # Request Triggers
   def invoke_trigger(self, p_command, p_data=None):
-    if p_command is TOR_COMMANDS.S_CREATE_SESSION:
+    if p_command == TOR_COMMANDS.S_CREATE_SESSION:
       return self.__on_create_session(p_data[0])
-    elif p_command is TOR_COMMANDS.S_PROXY:
+    elif p_command == TOR_COMMANDS.S_PROXY:
       return self.__on_proxy()

@@ -17,7 +17,7 @@ class MONGODB_COLLECTIONS:
 
 
 class MONGO_CONNECTIONS:
-  S_MONGO_DB_NAME = "Trustly-Crawler"
+  S_MONGO_DB_NAME = "trustly-crawler"
   S_MONGO_USERNAME = env_handler.get_instance().env('MONGO_ROOT_USERNAME')
   S_MONGO_PASSWORD = env_handler.get_instance().env('MONGO_ROOT_PASSWORD')
   S_MONGO_PORT = 27017

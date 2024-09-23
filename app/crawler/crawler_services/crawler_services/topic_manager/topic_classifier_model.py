@@ -1,14 +1,13 @@
-import pandas as pd
 from transformers import pipeline
-from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_MODEL, TOPIC_CLASSFIER_MESSAGES
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
+from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_MODEL
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
 
 class topic_classifier_model(request_handler):
 
     def __init__(self):
-        self.classifier = pipeline("text-classification", model="unitary/toxic-bert")
+        self.classifier = pipeline("text-classification", model=RAW_PATH_CONSTANTS.TOXIC_MODEL, device=-1)
 
     def __predict_classifier(self, p_title, p_description, p_keyword):
         input_text = p_title + p_description + p_keyword

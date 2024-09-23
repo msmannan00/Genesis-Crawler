@@ -1,13 +1,15 @@
 import enum
 
+from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS
+
 
 class CELERY_CONNECTIONS:
-  conn = 'redis://:killprg1@redis_server:6379/0'
+  conn = f"redis://:{REDIS_CONNECTIONS.S_DATABASE_PASSWORD}@{REDIS_CONNECTIONS.S_DATABASE_IP}:{REDIS_CONNECTIONS.S_DATABASE_PORT}/0"
 
 
 class CELERY_COMMANDS(enum.Enum):
   S_START_CRAWLER = 1
-  S_INVOKE_UNIQUE_CRAWLER = 1
+  S_INVOKE_UNIQUE_CRAWLER = 2
 
 
 class ELASTIC_LOGGING:

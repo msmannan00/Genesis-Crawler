@@ -1,7 +1,6 @@
 import redis
-from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
+from crawler.constants.strings import MANAGE_MESSAGES
 from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_CONNECTIONS
-from crawler.crawler_services.helper_services.env_handler import env_handler
 
 
 class redis_controller:
@@ -17,10 +16,16 @@ class redis_controller:
 
   def __init__(self):
     if redis_controller.__instance is not None:
-      raise Exception(MANAGE_CRAWLER_MESSAGES.S_SINGLETON_EXCEPTION)
+      raise Exception(MANAGE_MESSAGES.S_SINGLETON_EXCEPTION)
     else:
       redis_controller.__instance = self
-    self.__redis = redis.StrictRedis(REDIS_CONNECTIONS.S_DATABASE_IP, decode_responses=True, password=REDIS_CONNECTIONS.S_DATABASE_PASSWORD)
+
+    self.__redis = redis.StrictRedis(
+      port=REDIS_CONNECTIONS.S_DATABASE_PORT,
+      host=REDIS_CONNECTIONS.S_DATABASE_IP,
+      password=REDIS_CONNECTIONS.S_DATABASE_PASSWORD,
+      decode_responses=True
+    )
 
   def __set_bool(self, p_key, p_val):
     self.__redis.set(p_key, int(p_val))
@@ -74,11 +79,27 @@ class redis_controller:
   def __get_keys(self):
     return self.__redis.keys()
 
-  def invoke_trigger(self, p_commands, p_data=None):
+  # New flushall function
+  def __flush_all(self):
+    self.__redis.flushall()
 
+  # New acquire lock function
+  def __acquire_lock(self, p_key, timeout=None, blocking_timeout=None):
+    lock = self.__redis.lock(p_key, timeout=timeout, blocking_timeout=blocking_timeout)
+    if lock.acquire(blocking=False):
+      return True
+    return False
+
+  # New release lock function
+  def __release_lock(self, p_key):
+    lock = self.__redis.lock(p_key)
+    if lock.locked():
+      lock.release()
+
+  def invoke_trigger(self, p_commands, p_data=None):
     if p_commands == REDIS_COMMANDS.S_GET_INT:
       return self.__get_int(p_data[0], p_data[1], p_data[2])
-    if p_commands == REDIS_COMMANDS.S_SET_INT:
+    elif p_commands == REDIS_COMMANDS.S_SET_INT:
       return self.__set_int(p_data[0], p_data[1], p_data[2])
     elif p_commands == REDIS_COMMANDS.S_GET_BOOL:
       return self.__get_bool(p_data[0], p_data[1])
@@ -98,3 +119,9 @@ class redis_controller:
       return self.__get_float(p_data[0], p_data[1], p_data[2])
     elif p_commands == REDIS_COMMANDS.S_SET_FLOAT:
       return self.__set_float(p_data[0], p_data[1], p_data[2])
+    elif p_commands == REDIS_COMMANDS.S_FLUSH_ALL:
+      self.__flush_all()
+    elif p_commands == REDIS_COMMANDS.S_ACQUIRE_LOCK:
+      return self.__acquire_lock(p_data[0], p_data[1], p_data[2])
+    elif p_commands == REDIS_COMMANDS.S_RELEASE_LOCK:
+      self.__release_lock(p_data[0])

@@ -1,7 +1,7 @@
 import argparse
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import RAW_PATH_CONSTANTS, CRAWL_SETTINGS_CONSTANTS
-from crawler.constants.strings import TOR_STRINGS
+from crawler.constants.strings import TOR_STRINGS, MANAGE_MESSAGES
 from crawler.crawler_instance.application_controller.application_controller import application_controller
 from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
 from crawler.crawler_instance.genbot_service.genbot_unique_controller import genbot_unique_instance, prepare_and_fetch_data
@@ -15,6 +15,7 @@ from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 def initialize_local_setting():
   APP_STATUS.DOCKERIZED_RUN = False
+  RAW_PATH_CONSTANTS.TOXIC_MODEL = "./app/raw/toxic_model/"
 
   MONGO_CONNECTIONS.S_MONGO_IP = "localhost"
   MONGO_CONNECTIONS.S_MONGO_USERNAME = ""
@@ -27,7 +28,7 @@ def initialize_local_setting():
   REDIS_CONNECTIONS.S_DATABASE_IP = "localhost"
   REDIS_CONNECTIONS.S_DATABASE_PASSWORD = ""
 
-  RAW_PATH_CONSTANTS.LOG_DIRECTORY = "/logs"
+  RAW_PATH_CONSTANTS.LOG_DIRECTORY = "logs"
 
   ELASTIC_CONNECTIONS.S_CRAWL_INDEX = "http://localhost:8080/crawl_index/"
   ELASTIC_CONNECTIONS.S_CRAWL_UNIQUE_INDEX = "http://localhost:8080/feeder/publish"
@@ -38,7 +39,7 @@ def initialize_local_setting():
   CRAWL_SETTINGS_CONSTANTS.S_FEEDER_URL_UNIQUE = "http://localhost:8080/feeder/unique"
 
 def main():
-  default_command = 'local_run'
+  default_command = 'local_unique_crawler_run'
   parser = argparse.ArgumentParser(description='Crawler application initializer')
   parser.add_argument('--command', type=str, default=default_command)
 
@@ -55,16 +56,16 @@ def main():
       content_list = prepare_and_fetch_data(CRAWL_SETTINGS_CONSTANTS.S_FEEDER_URL)
       genbot_unique_instance(content_list)
 
-    elif args.command == 'invoke_unique_crawler':
-      content_list = prepare_and_fetch_data(CRAWL_SETTINGS_CONSTANTS.S_FEEDER_URL)
-      celery_controller.get_instance().invoke_trigger(CELERY_COMMANDS.S_INVOKE_UNIQUE_CRAWLER, content_list)
-
     elif args.command == 'invoke_celery_crawler':
       APP_STATUS.DOCKERIZED_RUN = True
       application_controller.get_instance().invoke_triggers(APPICATION_COMMANDS.S_START_APPLICATION_DOCKERISED)
 
+    elif args.command == 'invoke_unique_crawler':
+      content_list = prepare_and_fetch_data(CRAWL_SETTINGS_CONSTANTS.S_FEEDER_URL)
+      celery_controller.get_instance().invoke_trigger(CELERY_COMMANDS.S_INVOKE_UNIQUE_CRAWLER, content_list)
+
   except Exception as ex:
-    log.g().e("Main thread error: " + str(ex))
+    log.g().e(MANAGE_MESSAGES.S_APPLICATION_ERROR + " : " + str(ex))
 
 
 if __name__ == "__main__":

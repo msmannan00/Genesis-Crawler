@@ -7,6 +7,7 @@ from urllib.parse import urlparse, urlunparse
 from gensim.parsing.preprocessing import STOPWORDS
 import socket
 
+from crawler.constants.strings import MANAGE_MESSAGES
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 
@@ -52,10 +53,9 @@ class helper_method:
 
       with open(file_path, 'w'):
         pass
-      log.g().i(f"{file_path} has been cleared.")
 
-    except Exception as e:
-      log.g().e(e)
+    except Exception:
+      pass
 
   @staticmethod
   def get_host_name(p_url):
@@ -82,19 +82,20 @@ class helper_method:
           try:
               s.connect((host, port))
           except socket.error:
-              log.g().e(f"{service_name} is not running or not installed.")
+              log.g().e(MANAGE_MESSAGES.S_SERVICE_NOT_INITIATED + " : " +  f"{service_name} is not running or not installed.")
 
   @staticmethod
-  def extract_zip(from_path, to_path, delete_after=False):
-    if os.path.exists(to_path):
-      shutil.rmtree(to_path)
-    os.makedirs(to_path)
-
-    with zipfile.ZipFile(from_path, 'r') as zip_ref:
+  def extract_zip(from_path, to_path):
+    os.makedirs(to_path, exist_ok=True)
+    zip_ref = None
+    try:
+      zip_ref = zipfile.ZipFile(from_path, 'r')
       zip_ref.extractall(to_path)
-
-    if delete_after:
-      os.remove(from_path)
+    except Exception as e:
+      log.g().e(f"Error occurred while extracting {from_path}: {e}")
+    finally:
+      if zip_ref:
+        zip_ref.close()
 
   @staticmethod
   def split_host_url(p_url):

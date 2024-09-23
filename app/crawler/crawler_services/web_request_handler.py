@@ -2,6 +2,7 @@ import gc
 from raven.transport import requests
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.keys import TOR_KEYS
+from crawler.constants.strings import MANAGE_MESSAGES
 from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.helper_services.crypto_handler import crypto_handler
@@ -47,7 +48,7 @@ class webRequestManager:
         return helper_method.on_clean_url(str(m_url_redirect)), True, str(m_html)
 
     except Exception as ex:
-      log.g().e(str(ex))
+      log.g().e(MANAGE_MESSAGES.S_LOAD_URL_ERROR_MAIN + " : " + str(ex))
       return p_url, False, None
 
   def request_server_post(self, url, data=None, params=None, timeout=1000):

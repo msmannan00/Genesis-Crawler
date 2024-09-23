@@ -20,7 +20,6 @@ class log:
     self.__server_instance = logging.getLogger('genesis_logs')
     self.__server_instance.setLevel(logging.DEBUG)
 
-    # Configure LogDNA handler
     options = {
       'hostname': 'genesis_logs',
       'ip': '10.0.1.1',
@@ -33,7 +32,6 @@ class log:
     self.__server_instance.addHandler(handler)
 
     self.log_directory = RAW_PATH_CONSTANTS.LOG_DIRECTORY
-    #os.makedirs(self.log_directory, exist_ok=True)
 
   @staticmethod
   def g():
@@ -45,68 +43,81 @@ class log:
     log.__server_instance = self
     self.__configure_logs()
 
-  def get_caller_class(self):
-    m_prev_frame = inspect.currentframe().f_back.f_back
-    return str(m_prev_frame.f_locals["self"].__class__.__name__)
+  def get_caller_info(self):
+    frame = inspect.currentframe()
+    while frame:
+      frame = frame.f_back
+      if frame:
+        caller_class = frame.f_locals.get("self", None)
+        if caller_class and caller_class.__class__.__name__ != self.__class__.__name__:
+          caller_class = caller_class.__class__.__name__
+          caller_file = os.path.abspath(frame.f_code.co_filename)
+          caller_line = frame.f_lineno
+          return caller_class, caller_file, caller_line
+        elif not caller_class:
+          caller_file = os.path.abspath(frame.f_code.co_filename)
+          caller_line = frame.f_lineno
+          return "Function", caller_file, caller_line
+    return "Unknown", "Unknown", 0
 
   def __write_to_file(self, log_message):
+    caller_class, caller_file, caller_line = self.get_caller_info()
     log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
     log_filepath = os.path.join(self.log_directory, log_filename)
     with open(log_filepath, 'a') as log_file:
-      log_file.write(log_message + "\n")
+      full_log_message = f"{log_message} - {caller_class} ({caller_file}:{caller_line})"
+      log_file.write(full_log_message + "\n")
 
-  def __format_log_message(self, log_type, p_log):
+  def __format_log_message(self, log_type, p_log, include_caller=False):
     current_time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    caller_class = self.get_caller_class()
-    formatted_log = f"{log_type} - {current_time} : {caller_class} : {p_log[:120]}"
+    if include_caller:
+      caller_class, caller_file, caller_line = self.get_caller_info()
+      formatted_log = f"{log_type} - {current_time} : {p_log} - {caller_class} ({caller_file}:{caller_line})"
+    else:
+      formatted_log = f"{log_type} - {current_time} : {p_log}"
     return formatted_log
 
-  # Info Logs
   def i(self, p_log):
     try:
-      filter_log = self.__format_log_message("INFO", p_log)
-      self.__server_instance.info(filter_log)
-      self.__write_to_file(filter_log)
-      print(colored(filter_log, 'cyan', attrs=['bold']))
+      console_log = self.__format_log_message("INFO", p_log)
+      self.__server_instance.info(console_log)
+      self.__write_to_file(console_log)
+      print(colored(console_log, 'cyan', attrs=['bold']))
     except Exception:
       pass
 
-  # Success Logs
   def s(self, p_log):
     try:
-      filter_log = self.__format_log_message("SUCCESS", p_log)
-      self.__server_instance.info(filter_log)
-      self.__write_to_file(filter_log)
-      print(colored(filter_log, 'green'))
+      console_log = self.__format_log_message("SUCCESS", p_log)
+      self.__server_instance.info(console_log)
+      self.__write_to_file(console_log)
+      print(colored(console_log, 'green'))
     except Exception:
       pass
 
-  # Warning Logs
   def w(self, p_log):
     try:
-      filter_log = self.__format_log_message("WARNING", p_log)
-      self.__server_instance.warning(filter_log)
-      self.__write_to_file(filter_log)
-      print(colored(filter_log, 'yellow'))
+      console_log = self.__format_log_message("WARNING", p_log)
+      self.__server_instance.warning(console_log)
+      self.__write_to_file(console_log)
+      print(colored(console_log, 'yellow'))
     except Exception:
       pass
 
-  # Error Logs
   def e(self, p_log):
     try:
-      filter_log = self.__format_log_message("ERROR", p_log)
-      self.__server_instance.error(filter_log)
-      self.__write_to_file(filter_log)
-      print(colored(filter_log, 'blue'))
+      console_log = self.__format_log_message("ERROR", p_log)
+      self.__server_instance.error(console_log)
+      self.__write_to_file(console_log)
+      print(colored(console_log, 'blue'))
     except Exception:
       pass
 
-  # Critical Logs
   def c(self, p_log):
     try:
-      filter_log = self.__format_log_message("CRITICAL", p_log)
-      self.__server_instance.critical(filter_log)
-      self.__write_to_file(filter_log)
-      print(colored(filter_log, 'red'))
+      console_log = self.__format_log_message("CRITICAL", p_log)
+      self.__server_instance.critical(console_log)
+      self.__write_to_file(console_log)
+      print(colored(console_log, 'red'))
     except Exception:
       pass

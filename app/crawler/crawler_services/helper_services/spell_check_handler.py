@@ -5,7 +5,7 @@ import warnings
 import nltk
 from nltk import PorterStemmer
 from crawler.constants.constant import SPELL_CHECK_CONSTANTS
-from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES, STRINGS
+from crawler.constants.strings import MANAGE_MESSAGES, STRINGS
 from crawler.crawler_services.helper_services.helper_method import helper_method
 import os
 import sys
@@ -46,7 +46,7 @@ class spell_checker_handler:
 
   def __init__(self):
     if spell_checker_handler.__instance is not None:
-      raise Exception(MANAGE_CRAWLER_MESSAGES.S_SINGLETON_EXCEPTION)
+      raise Exception(MANAGE_MESSAGES.S_SINGLETON_EXCEPTION)
     else:
       spell_checker_handler.__instance = self
       self.__spell_check = set(open(SPELL_CHECK_CONSTANTS.S_DICTIONARY_PATH).read().split())

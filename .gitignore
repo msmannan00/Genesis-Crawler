@@ -7,3 +7,4 @@ env/*
 venv/*
 app/data/*
 app/logs/*
+mongo-data/*

@@ -3,7 +3,7 @@ import pathlib
 import re
 import validators
 
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from abc import ABC
 from html.parser import HTMLParser
 from bs4 import BeautifulSoup
@@ -38,6 +38,7 @@ class html_parse_manager(HTMLParser, ABC):
         self.m_image_url = []
         self.m_doc_url = []
         self.m_video_url = []
+        self.m_archive_url = []
 
         # New variables for extracted data
         self.m_names = []
@@ -59,57 +60,73 @@ class html_parse_manager(HTMLParser, ABC):
 
     def __insert_external_url(self, p_url):
         self.m_all_url_count += 1
+
+        # Extended list of archive extensions to check for compressed files (e.g., zip, tar, rar, etc.)
+        archive_extensions = ['.zip', '.rar', '.tar', '.gz', '.7z', '.bz2', '.xz', '.tgz', '.tbz2', '.tar.gz', '.tar.bz2']
+
+        # File extension lists for images, videos, and documents
+        image_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.tiff']
+        video_extensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv', '.webm']
+        document_extensions = ['.pdf', '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.txt']
+
+        # Check if the URL is not None and does not end with "#"
         if p_url is not None and not str(p_url).endswith("#"):
             mime = mimetypes.MimeTypes().guess_type(p_url)[0]
 
-            # List of archive extensions to check for (e.g., zip, tar, rar, etc.)
-            archive_extensions = ['.zip', '.rar', '.tar', '.gz', '.7z', '.bz2', '.xz']
-
             if 5 < len(p_url) <= CRAWL_SETTINGS_CONSTANTS.S_MAX_URL_SIZE:
-                # Joining Relative URL
-                if not p_url.startswith("https://") and not p_url.startswith("http://") and not p_url.startswith("ftp://"):
+                # Join relative URLs if they don't start with a valid scheme (http, https, ftp)
+                if not p_url.startswith(("https://", "http://", "ftp://")):
                     m_temp_base_url = self.m_base_url
                     p_url = urljoin(m_temp_base_url, p_url)
                     p_url = p_url.replace(" ", "%20")
                     p_url = helper_method.on_clean_url(helper_method.normalize_slashes(p_url))
 
+                # Validate if the URL is valid
                 if validators.url(p_url):
                     suffix = ''.join(pathlib.Path(p_url).suffixes)
                     m_host_url = helper_method.get_host_url(p_url)
                     parent_domain = helper_method.on_clean_url(self.m_base_url).split(".")[0]
                     host_domain = helper_method.on_clean_url(p_url).split(".")[0]
 
+                    # Parse the URL to get the path without query parameters or fragments
+                    parsed_url = urlparse(p_url)
+                    clean_url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path
+
                     # Detect the MIME type if it's missing
                     if mime is None:
                         mime = mimetypes.MimeTypes().guess_type(p_url)[0]
 
-                    # Check if it's a document or video type based on suffix or MIME type
-                    if mime != "text/html":
-                        if mime is not None and suffix in CRAWL_SETTINGS_CONSTANTS.S_DOC_TYPES and len(self.m_doc_url) < 10:
-                            self.m_doc_url.append(p_url)
-                        elif mime is not None and str(mime).startswith("video") and len(self.m_video_url) < 10:
-                            self.m_video_url.append(p_url)
-                        # Add logic to detect and capture archive files
-                        elif any(ext in suffix.lower() for ext in archive_extensions):
-                            self.m_doc_url.append(p_url)
+                    # Check if the URL is an image, video, document, or archive based on suffix or MIME type
+                    if any(ext in suffix.lower() for ext in image_extensions):
+                        if len(self.m_image_url) < 10:
+                            self.m_image_url.append(clean_url)
+                    elif any(ext in suffix.lower() for ext in video_extensions):
+                        if len(self.m_video_url) < 10:
+                            self.m_video_url.append(clean_url)
+                    elif any(ext in suffix.lower() for ext in document_extensions):
+                        if len(self.m_doc_url) < 10:
+                            self.m_doc_url.append(clean_url)
+                    elif any(ext in suffix.lower() for ext in archive_extensions):
+                        if len(self.m_archive_url) < 10:
+                            self.m_archive_url.append(clean_url)
 
                     # Handle .onion links separately
                     elif parent_domain == host_domain and m_host_url.endswith(".onion"):
                         if "#" in p_url:
-                            if p_url.count("/") > 2 and m_host_url.__contains__("?") and self.m_query_url_count < 5:
+                            if p_url.count("/") > 2 and "?" in m_host_url and self.m_query_url_count < 5:
                                 self.m_query_url_count += 1
-                                p_url = helper_method.normalize_slashes(p_url)
-                                if p_url not in self.m_sub_url_hashed:
-                                    self.m_sub_url_hashed.append(p_url)
+                                clean_url = helper_method.normalize_slashes(clean_url)
+                                if clean_url not in self.m_sub_url_hashed:
+                                    self.m_sub_url_hashed.append(clean_url)
                         else:
                             self.m_query_url_count += 1
-                            p_url = helper_method.normalize_slashes(p_url)
-                            if p_url not in self.m_sub_url:
+                            p_url = p_url.rstrip('/')
+                            if p_url not in self.m_sub_url and p_url != self.m_base_url:
                                 self.m_sub_url.append(p_url)
 
                     # Add to clearnet links if it's not an onion link
                     if ".onion" not in p_url:
-                        self.m_clearnet_links.append(p_url)
+                        self.m_clearnet_links.append(clean_url)
 
     def handle_starttag(self, p_tag, p_attrs):
         if p_tag == "a":
@@ -334,7 +351,7 @@ class html_parse_manager(HTMLParser, ABC):
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
 
     def __get_static_file(self):
-        return self.m_sub_url, self.m_image_url, self.m_doc_url, self.m_video_url
+        return self.m_sub_url, self.m_image_url, self.m_doc_url, self.m_video_url, self.m_archive_url
 
     def __get_content(self):
         return self.m_content
@@ -350,7 +367,7 @@ class html_parse_manager(HTMLParser, ABC):
     def parse_html_files(self):
         self.__generate_html()
 
-        m_sub_url, m_images, m_document, m_video = self.__get_static_file()
+        m_sub_url, m_images, m_document, m_video, m_archive_url = self.__get_static_file()
         m_title = self.__get_title()
         m_meta_description = self.__get_meta_description()
         m_important_content = self.__get_important_content() + " " + m_meta_description
@@ -374,12 +391,14 @@ class html_parse_manager(HTMLParser, ABC):
             m_images=m_images,
             m_document=m_document,
             m_video=m_video,
+            m_sub_url = m_sub_url,
             m_validity_score=m_validity_score,
             m_meta_keywords=m_meta_keywords,
             m_content_type=m_content_type,
             m_section=m_section,
             m_names=m_names,
             m_emails=m_emails,
+            m_archive_url=m_archive_url,
             m_phone_numbers=m_phone_numbers,
             m_clearnet_links=m_clearnet_links,
         )

@@ -9,6 +9,7 @@ class RAW_PATH_CONSTANTS:
   S_PROJECT_PATH = str(Path(__file__).parent.parent.parent)
   LOG_DIRECTORY = os.path.join(os.getcwd(), 'logs')
   UNIQUE_CRAWL_DIRECTORY = os.path.join(os.getcwd()+"/raw", 'unique_host')
+  TOXIC_MODEL = "./raw/toxic_model/"
 
 
 class NETWORK_MONITOR:
@@ -68,7 +69,7 @@ class CRAWL_SETTINGS_CONSTANTS:
 
   # Total Thread Instances Allowed
   S_UPDATE_STATUS_TIMEOUT = 86400
-  S_UPDATE_PARSERS_TIMEOUT = 86400
+  S_UPDATE_PARSERS_TIMEOUT = 16400
   S_UPDATE_UNIQUE_FEEDER_TIMEOUT = 604800
   S_UPDATE_NETWORK_STATUS_TIMEOUT = 60
   S_UPDATE_STATUS_URL = "http://167.86.99.31/update_status/?pRequest=m_crawler"

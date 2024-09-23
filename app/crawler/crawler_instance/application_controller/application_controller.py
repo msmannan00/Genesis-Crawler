@@ -1,6 +1,7 @@
 import warnings
 from abc import ABC
-from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
+
+from crawler.constants.strings import MANAGE_MESSAGES
 from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_CONTROLLER_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_controller import crawl_controller
@@ -23,7 +24,7 @@ class application_controller(request_handler, ABC):
 
     def __init__(self):
         if application_controller.__instance is not None:
-            raise Exception(MANAGE_CRAWLER_MESSAGES.S_SINGLETON_EXCEPTION)
+            raise Exception(MANAGE_MESSAGES.S_SINGLETON_EXCEPTION)
         else:
             self.__m_crawl_controller = crawl_controller()
             application_controller.__instance = self
@@ -35,7 +36,7 @@ class application_controller(request_handler, ABC):
 
     # External Request Callbacks
     def __on_start(self, p_command):
-        log.g().i(MANAGE_CRAWLER_MESSAGES.S_APPLICATION_STARTING)
+        log.g().i(MANAGE_MESSAGES.S_APPLICATION_STARTING)
         self.__initializations(p_command)
         self.__m_crawl_controller.invoke_trigger(CRAWL_CONTROLLER_COMMANDS.S_RUN_CRAWLER)
 

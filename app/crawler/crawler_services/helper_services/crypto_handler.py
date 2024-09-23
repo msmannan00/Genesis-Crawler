@@ -1,7 +1,8 @@
 import base64
 import time
 from fernet import Fernet
-from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
+
+from crawler.constants.strings import MANAGE_MESSAGES
 from crawler.crawler_services.helper_services.env_handler import env_handler
 
 
@@ -16,7 +17,7 @@ class crypto_handler:
 
     def __init__(self):
         if crypto_handler.__instance is not None:
-            raise Exception(MANAGE_CRAWLER_MESSAGES.S_SINGLETON_EXCEPTION)
+            raise Exception(MANAGE_MESSAGES.S_SINGLETON_EXCEPTION)
         else:
             crypto_handler.__instance = self
 

@@ -1,7 +1,7 @@
 # Local Imports
 import pymongo
 
-from crawler.constants.strings import MANAGE_MONGO_MESSAGES
+from crawler.constants.strings import MANAGE_MESSAGES
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_KEYS, MONGO_CONNECTIONS, MONGODB_PROPERTIES
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_request_generator import mongo_request_generator
 from crawler.crawler_shared_directory.log_manager.log_controller import log
@@ -27,8 +27,8 @@ class mongo_controller(request_handler):
 
   def __link_connection(self):
     connection_params = {
-     'host': MONGO_CONNECTIONS.S_MONGO_IP,
-     'port': MONGO_CONNECTIONS.S_MONGO_PORT,
+      'host': MONGO_CONNECTIONS.S_MONGO_IP,
+      'port': MONGO_CONNECTIONS.S_MONGO_PORT,
     }
 
     auth_params = {
@@ -37,23 +37,23 @@ class mongo_controller(request_handler):
     }
 
     connection_params.update({k: v for k, v in auth_params.items() if v})
-    self.__m_connection = pymongo.MongoClient(**connection_params)[MONGO_CONNECTIONS.S_MONGO_DB_NAME]
+    self.__m_connection = pymongo.MongoClient(MONGO_CONNECTIONS.S_MONGO_IP, MONGO_CONNECTIONS.S_MONGO_PORT, username=MONGO_CONNECTIONS.S_MONGO_USERNAME, password=MONGO_CONNECTIONS.S_MONGO_PASSWORD)[MONGO_CONNECTIONS.S_MONGO_DB_NAME]
 
   def __reset(self, p_data):
     try:
       self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].update_many(p_data[MONGODB_KEYS.S_FILTER], p_data[MONGODB_KEYS.S_VALUE])
-      return True, MANAGE_MONGO_MESSAGES.S_UPDATE_SUCCESS
+      return True, MANAGE_MESSAGES.S_UPDATE_SUCCESS
 
     except Exception as ex:
-      log.g().e(MANAGE_MONGO_MESSAGES.S_UPDATE_FAILURE + " : " + str(ex))
+      log.g().e(MANAGE_MESSAGES.S_UPDATE_FAILURE + " : " + str(ex))
       return False, str(ex)
 
   def __create(self, p_data):
     try:
       self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].insert(p_data[MONGODB_KEYS.S_VALUE])
-      return True, MANAGE_MONGO_MESSAGES.S_INSERT_SUCCESS
+      return True, MANAGE_MESSAGES.S_INSERT_SUCCESS
     except Exception as ex:
-      log.g().e(MANAGE_MONGO_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
+      log.g().e(MANAGE_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
       return False, str(ex)
 
   def __read(self, p_data):
@@ -65,24 +65,24 @@ class mongo_controller(request_handler):
 
       return documents
     except Exception as ex:
-      log.g().e(MANAGE_MONGO_MESSAGES.S_READ_FAILURE + " : " + str(ex))
+      log.g().e(MANAGE_MESSAGES.S_READ_FAILURE + " : " + str(ex))
       return str(ex)
 
   def __update(self, p_data, upsert=True):
     try:
-      self.__m_connection = pymongo.MongoClient(MONGO_CONNECTIONS.S_MONGO_IP, MONGO_CONNECTIONS.S_MONGO_PORT, username=MONGO_CONNECTIONS.S_MONGO_USERNAME, password=MONGO_CONNECTIONS.S_DATABASE_PASSWORD)[MONGO_CONNECTIONS.S_MONGO_USERNAME]
-      return True, MANAGE_MONGO_MESSAGES.S_UPDATE_SUCCESS
+      self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].update_many(p_data[MONGODB_KEYS.S_FILTER], p_data[MONGODB_KEYS.S_VALUE], upsert=upsert)
+      return True, MANAGE_MESSAGES.S_UPDATE_SUCCESS
 
     except Exception as ex:
-      log.g().e(MANAGE_MONGO_MESSAGES.S_UPDATE_FAILURE + " : " + str(ex))
+      log.g().e(MANAGE_MESSAGES.S_UPDATE_FAILURE + " : " + str(ex))
       return False, str(ex)
 
   def __delete(self, p_data):
     try:
       self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].delete_many(p_data[MONGODB_KEYS.S_FILTER])
-      return True, MANAGE_MONGO_MESSAGES.S_DELETE_SUCCESS
+      return True, MANAGE_MESSAGES.S_DELETE_SUCCESS
     except Exception as ex:
-      log.g().e(MANAGE_MONGO_MESSAGES.S_DELETE_FAILURE + " : " + str(ex))
+      log.g().e(MANAGE_MESSAGES.S_DELETE_FAILURE + " : " + str(ex))
       return False, str(ex)
 
   def invoke_trigger(self, p_commands, p_data=None):

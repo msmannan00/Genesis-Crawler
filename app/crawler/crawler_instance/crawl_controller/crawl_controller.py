@@ -4,7 +4,7 @@ from raven.transport import requests
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, NETWORK_MONITOR
 from crawler.constants.keys import REDIS_KEYS
-from crawler.constants.strings import MANAGE_CRAWLER_MESSAGES
+from crawler.constants.strings import MANAGE_MESSAGES
 from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_CONTROLLER_COMMANDS, CRAWL_MODEL_COMMANDS
 from crawler.crawler_instance.crawl_controller.crawl_model import crawl_model
 from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
@@ -37,7 +37,7 @@ class crawl_controller(request_handler):
       celery_shared_data.get_instance().set_network_status(True)
     except Exception:
       celery_shared_data.get_instance().set_network_status(False)
-      log.g().w(MANAGE_CRAWLER_MESSAGES.S_INTERNET_CONNECTION_ISSUE)
+      log.g().w(MANAGE_MESSAGES.S_INTERNET_CONNECTION_ISSUE)
 
   def __on_start(self):
     if APP_STATUS.DOCKERIZED_RUN:
