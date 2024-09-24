@@ -9,7 +9,9 @@ from crawler.crawler_services.crawler_services.celery_manager.celery_controller 
 from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_COMMANDS
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CONNECTIONS
-from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS
+from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
+from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS, REDIS_KEYS, \
+  REDIS_COMMANDS
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 
@@ -53,10 +55,12 @@ def main():
 
     elif args.command == 'local_unique_crawler_run':
       initialize_local_setting()
+      redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, False, None])
       content_list = prepare_and_fetch_data(CRAWL_SETTINGS_CONSTANTS.S_FEEDER_URL)
       genbot_unique_instance(content_list)
 
     elif args.command == 'invoke_celery_crawler':
+      redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, False, None])
       APP_STATUS.DOCKERIZED_RUN = True
       application_controller.get_instance().invoke_triggers(APPICATION_COMMANDS.S_START_APPLICATION_DOCKERISED)
 

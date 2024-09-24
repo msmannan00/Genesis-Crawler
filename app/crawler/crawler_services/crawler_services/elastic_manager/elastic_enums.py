@@ -10,4 +10,4 @@ class ELASTIC_REQUEST_COMMANDS:
 
 class ELASTIC_CONNECTIONS:
   S_CRAWL_INDEX = f"{S_SERVER}/crawl_index/"
-  S_CRAWL_UNIQUE_INDEX = f"{S_SERVER}/feeder/publish/"
+  S_CRAWL_UNIQUE_INDEX = f"{S_SERVER}/feeder/publish"

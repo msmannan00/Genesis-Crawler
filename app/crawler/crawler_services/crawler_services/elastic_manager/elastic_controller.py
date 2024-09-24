@@ -1,5 +1,7 @@
 # Local Imports
 from crawler.constants.strings import MANAGE_MESSAGES
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS, \
+  ELASTIC_REQUEST_COMMANDS, ELASTIC_CRUD_COMMANDS
 from crawler.crawler_services.web_request_handler import webRequestManager
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
@@ -18,7 +20,7 @@ class elastic_controller(request_handler):
   def __init__(self):
     elastic_controller.__instance = self
 
-  def __post_data(self, p_data):
+  def __post_data(self, p_data, unique_index=False):
     web_request_manager = webRequestManager()
     m_counter = 0
     while True:
@@ -37,7 +39,7 @@ class elastic_controller(request_handler):
 
         if not m_status:
           log.g().e(MANAGE_MESSAGES.S_REQUEST_FAILURE + " : " + str(m_data))
-        elif m_data:
+        elif m_data and not unique_index:
           log.g().s(MANAGE_MESSAGES.S_REQUEST_SUCCESS + " : " + str(m_data))
           m_data = m_data['hits']['hits']
         return m_status, m_data
@@ -49,4 +51,4 @@ class elastic_controller(request_handler):
           return False, None
 
   def invoke_trigger(self, p_commands, p_data=None):
-    return self.__post_data(p_data)
+    return self.__post_data(p_data, p_commands == ELASTIC_CRUD_COMMANDS.S_INDEX)

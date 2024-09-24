@@ -46,17 +46,17 @@ class celery_controller:
       raise Exception("This class is a singleton!")
     else:
       celery_controller.__instance = self
-    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, False, None])
     warnings.filterwarnings("ignore")
     self.__redis_controller = redis_controller.get_instance()
     self.__clear_redis_database()
     if not APP_STATUS.DOCKERIZED_RUN:
       self.__start_worker()
+      self.__start_unique_crawler_worker()
 
   def __clear_redis_database(self):
     try:
       self.__redis_controller.invoke_trigger('S_FLUSH_ALL')
-    except Exception as e:
+    except Exception:
       pass
 
   def __start_worker(self):
@@ -70,6 +70,19 @@ class celery_controller:
       '--pool=gevent'
     ])
 
+  def __start_unique_crawler_worker(self):
+    self.__stop_all_workers()
+    subprocess.Popen([
+      'celery', '-A', 'crawler.crawler_services.crawler_services.celery_manager', 'worker',
+      '--loglevel=DEBUG',
+      '--without-gossip',
+      '--without-mingle',
+      '--without-heartbeat',
+      '--pool=gevent',
+      '-Q', 'unique_crawler_queue',
+      '--concurrency=1'
+    ])
+
   def __stop_all_workers(self):
     try:
       output = subprocess.check_output(['pgrep', '-f', 'celery'])
@@ -78,7 +91,7 @@ class celery_controller:
         os.kill(int(pid), signal.SIGTERM)
     except subprocess.CalledProcessError:
       pass
-    except Exception as e:
+    except Exception:
       pass
 
   def __run_crawler(self, url, virtual_id):
@@ -87,13 +100,11 @@ class celery_controller:
   def __run_unique_task(self, url):
     # Queue the task
     invoke_unique_crawler.delay(url)
-    log.g().i("2 ::::::::::::::::::::::::::::::::::::::::::::::::")
 
   def invoke_trigger(self, p_commands, p_data=None):
     if p_commands == CELERY_COMMANDS.S_START_CRAWLER:
       self.__run_crawler(p_data[0], p_data[1])
     if p_commands == CELERY_COMMANDS.S_INVOKE_UNIQUE_CRAWLER:
-      log.g().i("1 ::::::::::::::::::::::::::::::::::::::::::::::::")
       self.__run_unique_task(p_data)
 
 
@@ -103,8 +114,7 @@ def start_crawler(url, virtual_id):
   genbot_instance(url, virtual_id)
 
 @celery.task(name='celery_controller.invoke_unique_crawler', bind=True)
-def invoke_unique_crawler(self, url):
-  log.g().i("3 ::::::::::::::::::::::::::::::::::::::::::::::::")
+def invoke_unique_crawler(_, url):
   genbot_unique_instance(url)
 
 if __name__ == "__main__":

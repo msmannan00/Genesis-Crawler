@@ -2,7 +2,6 @@
 import requests
 import stem as stem
 from requests.adapters import HTTPAdapter
-from stem.control import Controller
 from urllib3 import Retry
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
@@ -15,7 +14,7 @@ from crawler.crawler_shared_directory.request_manager.request_handler import req
 from crawler.crawler_instance.tor_controller.tor_enums import TOR_CONTROL_PROXIES
 from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
 from stem import Signal
-
+from stem.control import Controller
 
 class tor_controller(request_handler):
   __instance = None
@@ -35,7 +34,6 @@ class tor_controller(request_handler):
     self.__on_init()
 
   def __on_init(self):
-    # Initialize Redis controller instance
     self.__redis_controller = redis_controller.get_instance()
 
     self.__session = requests.Session()
@@ -57,6 +55,21 @@ class tor_controller(request_handler):
     except Exception as ex:
       print(ex, flush=True)
       pass
+
+  def get_non_bootstrapped_tor_instances(self):
+    non_bootstrapped_instances = []
+    for index, controller in enumerate(self.__m_controller):
+      try:
+        status = controller.get_info("status/bootstrap-phase")
+        if "100%" not in status and "Done" not in status:
+          proxy_ip_port = TOR_PROXIES[index]["http"]
+          current_phase = status.split(" ")[-1]  # Extract the current phase
+          print(f"Tor instance {proxy_ip_port} is in phase: {current_phase}")
+          non_bootstrapped_instances.append((proxy_ip_port, current_phase))  # Return with phase information
+      except Exception as ex:
+        print(f"Error checking bootstrap status for controller {index}: {ex}")
+        continue
+    return non_bootstrapped_instances
 
   # Tor Helper Methods
   def __on_create_session(self, p_tor_based):

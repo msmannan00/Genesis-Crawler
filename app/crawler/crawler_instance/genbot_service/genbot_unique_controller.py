@@ -55,6 +55,7 @@ class genbot_unique_controller(request_handler):
           return False, True
         else:
           self.m_url_duplication_handler.insert(p_url)
+          self.__index_url(p_url)
           return True, True
       else:
         return False, False
@@ -116,9 +117,9 @@ class genbot_unique_controller(request_handler):
 
 
 def genbot_unique_instance(p_url_list):
-  status = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, False, None])
+  status = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, None, None])
   if not status:
-    log.g().i(MANAGE_MESSAGES.S_UNIQUE_PARSING_STARTED)
+    log.g().i(MANAGE_MESSAGES.S_UNIQUE_PARSING_STARTED + " : " + str(status))
     redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, True, None])
     m_crawler = genbot_unique_controller()
     try:
