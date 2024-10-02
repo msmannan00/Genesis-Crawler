@@ -1,8 +1,8 @@
-import mimetypes
 import pathlib
 import re
 import validators
-
+import phonenumbers
+import spacy
 from urllib.parse import urljoin, urlparse
 from abc import ABC
 from html.parser import HTMLParser
@@ -16,6 +16,7 @@ from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_co
 from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
 from crawler.crawler_services.helper_services.helper_method import helper_method
 from crawler.crawler_services.helper_services.spell_check_handler import spell_checker_handler
+nlp_core = spacy.load("en_core_web_sm")
 
 class html_parse_manager(HTMLParser, ABC):
 
@@ -41,9 +42,6 @@ class html_parse_manager(HTMLParser, ABC):
         self.m_archive_url = []
 
         # New variables for extracted data
-        self.m_names = []
-        self.m_emails = []
-        self.m_phone_numbers = []
         self.m_clearnet_links = []
 
         self.m_paragraph_count = 0
@@ -71,8 +69,6 @@ class html_parse_manager(HTMLParser, ABC):
 
         # Check if the URL is not None and does not end with "#"
         if p_url is not None and not str(p_url).endswith("#"):
-            mime = mimetypes.MimeTypes().guess_type(p_url)[0]
-
             if 5 < len(p_url) <= CRAWL_SETTINGS_CONSTANTS.S_MAX_URL_SIZE:
                 # Join relative URLs if they don't start with a valid scheme (http, https, ftp)
                 if not p_url.startswith(("https://", "http://", "ftp://")):
@@ -91,10 +87,6 @@ class html_parse_manager(HTMLParser, ABC):
                     # Parse the URL to get the path without query parameters or fragments
                     parsed_url = urlparse(p_url)
                     clean_url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path
-
-                    # Detect the MIME type if it's missing
-                    if mime is None:
-                        mime = mimetypes.MimeTypes().guess_type(p_url)[0]
 
                     # Check if the URL is an image, video, document, or archive based on suffix or MIME type
                     if any(ext in suffix.lower() for ext in image_extensions):
@@ -183,7 +175,8 @@ class html_parse_manager(HTMLParser, ABC):
                         self.m_meta_description += p_attrs[1][1]
                 elif p_attrs[0][1] == 'keywords':
                     if len(p_attrs) > 1 and len(p_attrs[1]) > 0 and p_attrs[1][0] == 'content' and p_attrs[1][1] is not None:
-                        self.m_meta_keyword = p_attrs[1][1].replace(",", " ")
+                        self.m_meta_keyword = ' '.join(dict.fromkeys(p_attrs[1][1].replace(",", " ").split()))
+
             except Exception:
                 pass
         else:
@@ -203,8 +196,7 @@ class html_parse_manager(HTMLParser, ABC):
         elif self.m_rec == PARSE_TAGS.S_META and len(self.m_title) > 0:
             self.m_title = p_data
         elif self.m_rec == PARSE_TAGS.S_PARAGRAPH or self.m_rec == PARSE_TAGS.S_BR:
-            self.m_current_section += " " + p_data.strip()  # Append paragraph content to current section
-            self.__extract_names_emails_phones(p_data.strip())  # Extract names, emails, phones from the data
+            self.m_current_section += " " + p_data.strip()
         elif self.m_rec == PARSE_TAGS.S_SPAN and p_data.count(' ') > 5:
             self.m_current_section += " " + p_data.strip()
         elif self.m_rec == PARSE_TAGS.S_DIV:
@@ -213,24 +205,55 @@ class html_parse_manager(HTMLParser, ABC):
 
     # Function to save accumulated sections when a tag change happens
     def __save_section(self):
-        if self.m_current_section.strip():
+        section = self.m_current_section.strip()
+        section = self.__clean_text(section)
+        if section and section.count(" ")>20:
             # Save only non-empty sections
-            self.m_sections.append(self.m_current_section.strip())
+            self.m_sections.append(section)
             self.m_current_section = ""  # Reset the current section
 
     # Extract names, emails, and phone numbers from the text
-    def __extract_names_emails_phones(self, text):
-        # Extract emails
+    def __extract_names_places_phones_emails(self, text: str):
+        text = text.lower()
+        text = text.replace('\n', ' ')
+        text = text.replace('\t', ' ')
+        text = text.replace('\r', ' ')
+        text = text.replace(' ', ' ')
+
+        names = set()
+        phone_numbers = set()
+        emails = set()
+
         email_matches = re.findall(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', text)
-        self.m_emails.extend(email_matches)
+        emails.update(email_matches)
 
-        phone_matches = re.findall(r'(\+?\d{1,3}[-\s.]?)?\(?\d{1,4}\)?[-\s.]?\d{1,4}[-\s.]?\d{1,4}[-\s.]?\d{1,9}', text)
-        phone_matches = [number for number in phone_matches if number.strip()]
-        self.m_phone_numbers.extend(phone_matches)
+        doc = nlp_core(text)
 
-        # Example name extraction (basic heuristic based on capitalized words)
-        name_matches = re.findall(r'\b[A-Z][a-z]* [A-Z][a-z]*\b', text)
-        self.m_names.extend(name_matches)
+        for ent in doc.ents:
+            if ent.label_ in {'PERSON', 'GPE', 'ORG'}:
+                entity_text = ent.text.strip()
+
+                if entity_text.replace(" ", "").isalpha():
+                    if len(entity_text.split()) > 3:
+                        for token in ent:
+                            if token.pos_ == 'PROPN' and not helper_method.is_stop_word(token):
+                                names.add(token.text)
+                    else:
+                        if all(not helper_method.is_stop_word(token) for token in ent):
+                            names.add(entity_text)
+
+        phone_matches = re.findall(r'\+?\d{1,3}[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}', text)
+
+        for phone in phone_matches:
+            phone = re.sub(r'[^\d+]', '', phone)
+            try:
+                phone_obj = phonenumbers.parse(phone, None)
+                if phonenumbers.is_valid_number(phone_obj):
+                    phone_numbers.add(phonenumbers.format_number(phone_obj, phonenumbers.PhoneNumberFormat.E164))
+            except phonenumbers.NumberParseException:
+                continue
+
+        return list(names), list(phone_numbers), list(emails)
 
     # Example function to retrieve sections (for further use)
     def __get_sections(self):
@@ -262,7 +285,7 @@ class html_parse_manager(HTMLParser, ABC):
                     self.m_parsed_paragraph_count = 9
 
     def __clean_text(self, p_text):
-        m_text = p_text
+        m_text = p_text.lower()
 
         for m_important_content_item in self.m_important_content_raw:
             m_text = m_text.replace(m_important_content_item, ' ')
@@ -273,25 +296,26 @@ class html_parse_manager(HTMLParser, ABC):
         m_text = m_text.replace(' ', ' ')
 
         m_text = re.sub(' +', ' ', m_text)
-
-        # Lower Case
         p_text = m_text.lower()
-
-        # Tokenizer
         m_word_tokenized = p_text.split()
+        m_content = []
+        word_count = len(m_word_tokenized)
 
-        # Word Checking
-        m_content = STRINGS.S_EMPTY
-        for m_token in m_word_tokenized:
-            if helper_method.is_stop_word(m_token) is False and m_token.isnumeric() is False:
-                m_valid_status = spell_checker_handler.get_instance().validate_word(m_token)
-                if m_valid_status is True:
-                    m_content += " " + m_token
-                else:
-                    m_content += " " + spell_checker_handler.get_instance().clean_sentence(m_token)
+        i = 0
+        while i < word_count:
+            current_word = m_word_tokenized[i]
+            left_context = m_content[-5:]
+            right_context = m_word_tokenized[i+1:i+6]
+            current_pattern = " ".join(m_word_tokenized[i:i+5])
 
-        m_content = ' '.join(m_content.split())
-        return m_content
+            if current_word not in left_context and current_word not in right_context:
+                if current_pattern not in " ".join(m_content):
+                    m_content.append(current_word)
+
+            i += 1
+
+        final_content = ' '.join(m_content)
+        return final_content
 
     def __generate_html(self):
         try:
@@ -300,23 +324,22 @@ class html_parse_manager(HTMLParser, ABC):
 
             # After feeding the HTML to HTMLParser, use BeautifulSoup for additional text processing
             self.m_soup = BeautifulSoup(self.m_html, "html.parser")
-            self.m_content = self.__clean_text(self.m_soup.get_text())
+            self.m_content = self.m_soup.get_text()
+            self.m_content = self.__clean_text(self.m_content)
+
         except Exception as ex:
             print(f"Error during HTML parsing: {ex}")
 
     # ----------------- Data Receivers -----------------
 
     def __get_title(self):
-        return helper_method.strip_special_character(self.m_title).strip()
+        return self.__clean_text(helper_method.strip_special_character(self.m_title).strip())
 
     def __get_meta_description(self):
         meta_tag = self.m_soup.find("meta", {"name": "description"})
         if meta_tag and meta_tag.get("content"):
             return self.__clean_text(meta_tag.get("content"))
         return ""
-
-    def __get_title_hidden(self, p_title_hidden):
-        return self.__clean_text(p_title_hidden)
 
     def __get_important_content(self):
         m_content = self.m_important_content
@@ -347,22 +370,17 @@ class html_parse_manager(HTMLParser, ABC):
 
                 return self.m_content_type
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
-        except Exception:
+        except Exception as ex:
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
 
     def __get_static_file(self):
-        return self.m_sub_url, self.m_image_url, self.m_doc_url, self.m_video_url, self.m_archive_url
+        return self.m_sub_url[0:10], self.m_image_url, self.m_doc_url, self.m_video_url, self.m_archive_url
 
     def __get_content(self):
         return self.m_content
 
     def __get_meta_keywords(self):
-        return self.m_meta_keyword
-
-    def __get_text(self):
-        m_soup = BeautifulSoup(self.m_html, "html.parser")
-        m_text = self.__clean_text(m_soup.get_text())
-        return " ".join(list(set(self.__clean_text(m_text).split(" "))))
+        return self.__clean_text(self.m_meta_keyword)
 
     def parse_html_files(self):
         self.__generate_html()
@@ -370,15 +388,13 @@ class html_parse_manager(HTMLParser, ABC):
         m_sub_url, m_images, m_document, m_video, m_archive_url = self.__get_static_file()
         m_title = self.__get_title()
         m_meta_description = self.__get_meta_description()
-        m_important_content = self.__get_important_content() + " " + m_meta_description
+        m_important_content = self.__clean_text(self.__get_important_content() + " " + m_meta_description)
         m_meta_keywords = self.__get_meta_keywords()
         m_content_type = self.__get_content_type()
-        m_content = self.__get_content() + " " + m_title + " " + m_meta_description
+        m_content = self.__clean_text(self.__get_content() + " " + m_title + " " + m_meta_description)
         m_validity_score = self.__get_validity_score(m_important_content)
         m_section = self.__get_sections()
-        m_names = self.m_names
-        m_emails = self.m_emails
-        m_phone_numbers = self.m_phone_numbers
+        m_names, m_phone_numbers, m_emails = self.__extract_names_places_phones_emails(self.m_soup.get_text(separator=' '))
         m_clearnet_links = self.m_clearnet_links
 
         return index_model_init(

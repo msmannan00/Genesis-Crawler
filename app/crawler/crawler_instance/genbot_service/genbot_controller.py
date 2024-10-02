@@ -92,7 +92,7 @@ class genbot_controller(request_handler):
 
       if m_parsed_model is None:
         if not m_host_crawled:
-          if m_failure_count > 3:
+          if m_failure_count > 2:
             self.m_unparsed_url.pop(0)
           else:
             m_failure_count += 1
@@ -112,6 +112,7 @@ class genbot_controller(request_handler):
 
 
 def genbot_instance(p_url, p_vid):
+  p_url="http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/"
   log.g().i(MANAGE_MESSAGES.S_PARSING_WORKER_STARTED + " : " + p_url)
   m_crawler = genbot_controller()
   try:

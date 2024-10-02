@@ -13,11 +13,13 @@ from crawler.crawler_services.crawler_services.redis_manager.redis_controller im
 from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS, REDIS_KEYS, \
   REDIS_COMMANDS
 from crawler.crawler_shared_directory.log_manager.log_controller import log
+from pathlib import Path
+import os
 
 
 def initialize_local_setting():
   APP_STATUS.DOCKERIZED_RUN = False
-  RAW_PATH_CONSTANTS.TOXIC_MODEL = "./app/raw/toxic_model/"
+  RAW_PATH_CONSTANTS.TOXIC_MODEL = str(Path(__file__).parent.parent) + "/app/raw/toxic_model/"
 
   MONGO_CONNECTIONS.S_MONGO_IP = "localhost"
   MONGO_CONNECTIONS.S_MONGO_USERNAME = ""
@@ -41,7 +43,7 @@ def initialize_local_setting():
   CRAWL_SETTINGS_CONSTANTS.S_FEEDER_URL_UNIQUE = "http://localhost:8080/feeder/unique"
 
 def main():
-  default_command = 'local_unique_crawler_run'
+  default_command = 'local_run'
   parser = argparse.ArgumentParser(description='Crawler application initializer')
   parser.add_argument('--command', type=str, default=default_command)
 

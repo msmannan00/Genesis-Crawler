@@ -42,4 +42,7 @@ scikit-image
 pydantic
 aiohttp
 torch
+phonenumbers
+spacy
+nlp
 -f https://download.pytorch.org/whl/cpu

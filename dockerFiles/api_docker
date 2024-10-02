@@ -24,3 +24,4 @@ COPY app/libs/nltk_data /root/nltk_data
 
 # Set NLTK_DATA environment variable to the appropriate path
 ENV NLTK_DATA=/root/nltk_data
+python -m spacy download en_core_web_sm

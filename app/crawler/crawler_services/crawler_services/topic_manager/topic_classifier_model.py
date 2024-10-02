@@ -3,16 +3,19 @@ from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTA
 from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_MODEL
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
-
 class topic_classifier_model(request_handler):
 
     def __init__(self):
-        self.classifier = pipeline("text-classification", model=RAW_PATH_CONSTANTS.TOXIC_MODEL, device=-1)
+        self.classifier = pipeline("text-classification", model=RAW_PATH_CONSTANTS.TOXIC_MODEL+"saved_model", device=-1)
 
     def __predict_classifier(self, p_title, p_description, p_keyword):
         input_text = p_title + p_description + p_keyword
 
-        if not input_text.strip():
+        max_length = 512
+        if len(input_text) > max_length:
+            input_text = input_text[:max_length]
+
+        if not input_text:
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
 
         prediction = self.classifier(input_text)
