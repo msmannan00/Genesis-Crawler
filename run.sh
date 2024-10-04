@@ -1,51 +1,22 @@
 #!/bin/bash
 
-set -a
-. ./.env
-set +a
-
-if curl --output /dev/null --silent --head --fail "$S_SERVER"; then
-    echo "Server $S_SERVER is running."
-else
-    echo "Error: Server $S_SERVER is not reachable. Exiting."
-    exit 1
-fi
-
-DOWNLOAD_URL="http://localhost:8080/model/toxic_model"
-DEST_DIR="app/raw/toxic_model"
-TEMP_ZIP="app/raw/toxic_model.zip"
+URL="https://drive.usercontent.google.com/download?id=1LTI94WsJbf8PheaMb7269Vxm5ZKtbHwb&export=download&authuser=0&confirm=t&uuid=1163171e-ce7c-4a98-9a46-2a3ce2a91f48&at=AO7h07dQiPcuFN56QrmDruowdk0P%3A1727101003781"
+DEST_DIR="static/trustly/.well-known/model"
+DEST_FILE="$DEST_DIR/toxic-model.zip"
 
 mkdir -p $DEST_DIR
 
-download_and_extract() {
-    echo "Attempting to download $DOWNLOAD_URL..."
-
-    if [ -z "$(ls -A $DEST_DIR)" ]; then
-        echo "Toxic model folder is empty. Proceeding with download."
-
-        if curl --output /dev/null --silent --head --fail "$DOWNLOAD_URL"; then
+download_file() {
+    if [ -f "$DEST_FILE" ]; then
+        echo "File $DEST_FILE already exists. Skipping download."
+    else
+        if curl --output /dev/null --silent --head --fail "$URL"; then
             echo "Downloading file..."
-            curl -# -L "$DOWNLOAD_URL" -o "$TEMP_ZIP" || {
-                echo "Error: Failed to download the model file."
-                exit 1
-            }
+            curl -# -L "$URL" -o "$DEST_FILE"
         else
-            echo "Error: Model file URL is not reachable."
+            echo "Error: Invalid Model URL or network issue."
             exit 1
         fi
-
-        echo "Extracting toxic_model.zip..."
-        unzip -q "$TEMP_ZIP" -d "$DEST_DIR" || {
-            echo "Error: Failed to extract toxic_model.zip."
-            exit 1
-        }
-
-        echo "Removing the zip file..."
-        rm "$TEMP_ZIP"
-
-        echo "Download and extraction complete."
-    else
-        echo "Toxic model folder is not empty. Skipping download."
     fi
 }
 
@@ -63,16 +34,11 @@ remove_services() {
 
 if [ "$1" == "build" ]; then
     remove_services
-    download_and_extract
+    download_file
     docker-compose build --no-cache
-    docker-compose up -d
-    sleep 5
-    docker exec -d -it trusted-crawler-main celery -A crawler.crawler_services.crawler_services.celery_manager worker -Q unique_crawler_queue --loglevel=DEBUG
+    docker-compose up
 else
     docker-compose down
-    download_and_extract
-    docker-compose up -d
-    sleep 5
-    docker exec -d -it trusted-crawler-main celery -A crawler.crawler_services.crawler_services.celery_manager worker -Q unique_crawler_queue --loglevel=DEBUG
+    download_file
+    docker-compose up
 fi
-

@@ -9,3 +9,4 @@ app/data/*
 app/logs/*
 mongo-data/*
 app/raw/toxic_model/*
+static/trustly/.well-known/model/toxic-model.zip
