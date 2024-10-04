@@ -64,19 +64,21 @@ Ensure you have Docker and Docker Compose installed on your machine. Once instal
 
 Use Docker Compose to build and run the crawler:
 
+```
 ./run.sh build
-
+```
 
 to simply start the crawler run
 
+```
 ./run.sh
-
+```
 
 to run and update unique urls while removing not only duplicate url but also removing url that are no longer active run
 
+```
 ./run.sh invoke_unique_crawler
-
-
+```
 
 This will start the crawler, which can now begin collecting data.
 
