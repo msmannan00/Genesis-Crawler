@@ -64,8 +64,13 @@ Ensure you have Docker and Docker Compose installed on your machine. Once instal
 
 Use Docker Compose to build and run the crawler:
 
-docker-compose up --build
-
+```
+./run.sh build
+```
+to simply start the crawler run
+```
+./run.sh
+```
 
 This will start the crawler, which can now begin collecting data.
 
@@ -74,28 +79,6 @@ This will start the crawler, which can now begin collecting data.
 For specific website crawling, you can provide your own parsers. Load them onto the server and configure the crawler to use these custom parsers for enhanced scraping capabilities.
 
 ## Usage
-
-### Generic Crawler
-
-The generic crawler collects data from any website, making it useful for gathering general information.
-
-docker exec -it genesis-crawler python3 generic_crawler.py
-
-
-### Specific Crawler with Parsers
-
-If you have custom parsers for specific websites, you can run the specific crawler as follows:
-
-
-This variant of the crawler will use the available parsers from the specified list to scrape websites in a more targeted manner.
-
-./run.sh
-- **To force build and refresh the application**:
-Use `./run.sh build` to clean up the existing setup, download necessary files, rebuild the Docker containers, and start the crawler fresh.
-
-### `run.sh` Code
-
-This script automates downloading required models, cleaning Docker containers and networks, and either running or rebuilding the application. Here's an overview of what the script does:
 
 ## Contribution
 
