@@ -1,68 +1,160 @@
-# Trustly-Crawler
+# Genesis Search Engine
 
-This repository contains a webcrawler designed for monitoring the dark web. It uses Docker Compose to manage services, including MongoDB, Redis, and multiple Tor containers for enhanced anonymity.
+Genesis Search Engine is a web-based search tool built on top of Docker that provides a user-friendly interface to explore and visualize data extracted by the Genesis Crawler. The engine supports a vast array of functionalities, offering users the ability to search, filter, and visualize data across multiple categories. It integrates machine learning models for enhanced search relevance and content analysis.
 
-## Prerequisites
+## Features
 
-Ensure you have the following installed on your system:
-- [Python]([https://www.rust-lang.org/tools/install](https://github.com/python))
-- [Docker]([https://nodejs.org/](https://github.com/docker))
-- [Docker Compose]([https://github.com/docker/compose])
+- **Docker-Based Deployment**: Quick setup and deployment using Docker.
+- **Advanced Search Functionality**: Provides comprehensive search capabilities with various filters and options to refine search results.
+- **Data Visualization**: Generates visual representations of the data, making it easier to analyze search results.
+- **Customizable Search Parsers**: Allows for integrating custom parsers to refine data extraction from specific websites.
+- **Integrated Machine Learning Models**: Incorporates NLP and machine learning models to provide search relevance, content categorization, and detection of specific data patterns.
 
-## Installation
+## Technology Stack
 
-### Step 1: Clone Repository
+The Genesis Search Engine is built using various technologies to provide optimal search capabilities and data handling. Below is the list of libraries and frameworks used:
+
+### Search Functionality
+
+- **elasticsearch==8.15.0**: For indexing and searching data.
+- **pymongo==4.8.0**: For handling MongoDB-based data storage.
+
+### Web Framework
+
+- **django==4.2.15**: To provide the web interface and routing.
+- **django-bootstrap-v5==1.0.11**: For responsive and modern UI.
+
+### Data Processing
+
+- **pandas==2.1.1**, **numpy==1.26.0**: For efficient data manipulation and analysis.
+- **scikit-learn==1.5.1**: For machine learning tasks, such as classification and clustering.
+- **gensim==4.3.3**: For natural language processing tasks.
+
+### NLP & Similarity Matching
+
+- **nltk==3.9.0**: For natural language processing tasks and text analysis.
+- **html-similarity==0.3.3**: To compare and find similarities between different HTML pages.
+- **jaccard-index==0.0.3**: For calculating similarity between sets of data.
+- **thefuzz==0.19.0**: Fuzzy string matching for search accuracy.
+- **textblob==0.17.1**: For processing textual data, including sentiment analysis.
+- **autocorrect==2.6.1**: For automatic text corrections.
+- **stopwords==1.0.0**: For handling stopwords in natural language processing.
+
+### Networking & Proxies
+
+- **requests[socks]==2.31.0**, **urllib3==2.1.0**, **PySocks==1.7.1**: For handling proxy-based requests and secure data fetching.
+- **stem==1.8.0**: For interacting with Tor.
+
+### Data Caching
+
+- **redis==5.1.1**: For caching search queries and improving performance.
+
+### Security & Encryption
+
+- **cryptography==41.0.3**: For securing sensitive data and communication.
+
+### Logging & Monitoring
+
+- **raven==6.10.0**: For error logging and system monitoring.
+
+### Task Management
+
+- **celery==5.3.4**, **apscheduler==3.10.1**: For managing background tasks, such as indexing and updating search data.
+
+### Visualization
+
+- **Pillow==9.3.0**: For image processing.
+- **termcolor==2.3.0**: For colored terminal text output.
+
+### Machine Learning & AI
+
+- **scikit-learn==1.5.1**, **gensim==4.3.3**: For machine learning tasks, such as classification, clustering, and natural language processing.
+
+### Additional Libraries
+
+- **beautifulsoup4==4.12.3**: For parsing and extracting data from HTML and XML documents.
+- **lxml==4.9.3**: For processing XML and HTML documents.
+- **pyprobables==0.6.0**: For probabilistic data structures like Bloom filters.
+- **validators==0.20.0**: For validating URLs and other types of data.
+- **simplejson==3.8.0**: For handling JSON data.
+- **gunicorn==20.1.0**: For running the application in production.
+- **python-dotenv==1.0.0**: For managing environment variables.
+- **python-Levenshtein-wheels==0.13.2**: For string matching using the Levenshtein distance.
+- **bunch==1.0.0**: For handling grouped data in a Pythonic way.
+
+## Setup and Installation
+
+To get started with Genesis Search Engine, follow these steps:
+
+### 1. Clone the Repository
+
+Clone the repository from GitHub and navigate to the project directory.
 
 ```
-git clone https://github.com/yourusername/dark-web-monitoring-webcrawler.git
-cd dark-web-monitoring-webcrawler
+git clone https://github.com/msmannan00/Genesis-Search.git
+cd Genesis-Search
 ```
 
-### Step 2: Build and Start the Services
-```
-docker-compose up --build
-```
-This command will build and start the following services:
+## Setup and Installation
 
-    API Service (api): The main webcrawler service that runs according to the predefined settings.
-    MongoDB (mongo): Database for storing crawled data.
-    Redis (redis_server): In-memory data store for caching and task queuing.
-    Tor Containers (tor-extend-*): Multiple Tor instances to route crawler traffic through different Tor exit nodes.
+To get started with Genesis Search, follow these steps:
 
-### Step 3: Build and Start the Services
+### 1. Clone the Repository
 
-You can run the webcrawler in two ways:
-
-#### Direct Execution:
-    
-- Navigate to the Genesis-Crawler/app/ directory.
-- Run the webcrawler directly using:
-    
-```
-python main_direct.py
-```
-#### Using Docker:
-
-- The webcrawler can also be started using Docker, which utilizes the start_app.sh script:
+Clone the repository from GitHub and navigate to the project directory.
 
 ```
-docker-compose up --build
+https://github.com/msmannan00/Genesis-Search.git
+cd Genesis-Search
 ```
-        
-## Project Structure
 
-api/: Contains the webcrawler source code.
-data/db/: Directory where MongoDB stores data.
-dockerFiles/: Dockerfiles for building custom images.
-    
+### 2. Install Dependencies
+
+Ensure you have Docker and Docker Compose installed on your machine. Once installed, the dependencies will be handled via Docker Compose.
+
+### 3. Build and Start the Search
+
+Use Docker Compose to build and run the search:
+
+```
+./run.sh build
+```
+to simply start the search run
+```
+./run.sh
+```
+
+This will start the search engine, which can now begin visualizing collected data.
+
+### 4. Customizing Parsers (Optional for Specific Crawler)
+
+For specific website crawling, you can provide your own parsers. Load them onto the server and configure the crawler to use these custom parsers for enhanced scraping capabilities.
+```
+add custom parsers inside static/trustly/.well-known/parsers with same onion website name
+```
+
 ## Usage
 
-Follow the installation steps to set up and run the webcrawler. After starting the services, the crawler will automatically begin monitoring specified dark web URLs through the Tor network, storing data in MongoDB. Redis is used for caching and managing tasks.
+## Contribution
 
-## Configuring Tor Instances
+We welcome contributions to improve Genesis Search. If you'd like to contribute, please fork the repository and submit a pull request.
 
-Each Tor container is configured to run as a separate instance, routing traffic through different Tor exit nodes. This increases anonymity and reduces the chances of IP bans.
+### Steps to Contribute
 
-## Scaling
+1. Fork the repository.  
+2. Create a new feature branch (`git checkout -b feature-branch`).  
+3. Commit your changes (`git commit -m 'Add some feature'`).  
+4. Push to the branch (`git push origin feature-branch`).  
+5. Create a new Pull Request.
 
-You can scale the number of Tor instances by modifying the docker-compose.yml file and adding more tor-extend-* services as needed.
+## License
+
+Genesis Search is licensed under the [MIT License](LICENSE).
+
+## Disclaimer
+
+This project is intended for research purposes only. The authors of Genesis Search do not support or endorse illegal activities, and users of this project are responsible for ensuring their actions comply with the law.
+
+## GitHub Repository
+
+GitHub Repository URL: [https://github.com/msmannan00/Genesis-Search.git](https://github.com/msmannan00/Genesis-Search)
