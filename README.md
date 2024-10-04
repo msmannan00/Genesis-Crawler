@@ -51,8 +51,10 @@ To get started with Genesis Crawler, follow these steps:
 
 Clone the repository from GitHub and navigate to the project directory.
 
-'''git clone https://github.com/msmannan00/Genesis-Crawler.git
-cd genesis-crawler'''S
+```
+git clone https://github.com/msmannan00/Genesis-Crawler.git
+cd genesis-crawler
+```
 
 ### 2. Install Dependencies
 
