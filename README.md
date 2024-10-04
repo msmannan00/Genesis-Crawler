@@ -88,6 +88,14 @@ If you have custom parsers for specific websites, you can run the specific crawl
 
 This variant of the crawler will use the available parsers from the specified list to scrape websites in a more targeted manner.
 
+./run.sh
+- **To force build and refresh the application**:
+Use `./run.sh build` to clean up the existing setup, download necessary files, rebuild the Docker containers, and start the crawler fresh.
+
+### `run.sh` Code
+
+This script automates downloading required models, cleaning Docker containers and networks, and either running or rebuilding the application. Here's an overview of what the script does:
+
 ## Contribution
 
 We welcome contributions to improve Genesis Crawler. If you'd like to contribute, please fork the repository and submit a pull request.
