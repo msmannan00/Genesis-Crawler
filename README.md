@@ -73,7 +73,7 @@ to simply start the crawler run
 ```
 to run and update unique urls while removing not only duplicate url but also removing url that are no longer active run
 ```
-invoke_unique_crawler
+./run.sh invoke_unique_crawler
 ```
 
 This will start the crawler, which can now begin collecting data.
