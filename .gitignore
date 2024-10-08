@@ -4,6 +4,7 @@ data
 tor_proxy
 global_raw
 env/*
+.env
 venv/*
 app/data/*
 app/logs/*
