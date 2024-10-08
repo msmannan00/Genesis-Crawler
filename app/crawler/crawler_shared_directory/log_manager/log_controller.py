@@ -5,7 +5,7 @@ import sys
 import logging
 import os
 from termcolor import colored
-
+from threading import Lock
 from crawler.constants.constant import RAW_PATH_CONSTANTS
 
 if sys.platform == "win32":
@@ -14,30 +14,34 @@ if sys.platform == "win32":
 
 class log:
   __server_instance = None
+  __file_handler_added = False
+  __lock = Lock()
 
   def __configure_logs(self):
-    self.__server_instance = logging.getLogger('genesis_logs')
-    self.__server_instance.setLevel(logging.DEBUG)
+    with self.__lock:
+      self.__server_instance = logging.getLogger('genesis_logs')
 
-    # File handler for logging to a file
-    log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
-    log_filepath = os.path.join(RAW_PATH_CONSTANTS.LOG_DIRECTORY, log_filename)
-    file_handler = logging.FileHandler(log_filepath)
-    file_handler.setLevel(logging.DEBUG)
+      if not self.__server_instance.hasHandlers():
+        self.__server_instance.setLevel(logging.DEBUG)
 
-    # Console handler for logging to console
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.DEBUG)
+        if not log.__file_handler_added:
+          log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
+          log_filepath = os.path.join(RAW_PATH_CONSTANTS.LOG_DIRECTORY, log_filename)
+          file_handler = logging.FileHandler(log_filepath)
+          file_handler.setLevel(logging.DEBUG)
 
-    # Log format
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    file_handler.setFormatter(formatter)
-    console_handler.setFormatter(formatter)
+          self.__server_instance.addHandler(file_handler)
+          log.__file_handler_added = True
 
-    self.__server_instance.addHandler(file_handler)
-    self.__server_instance.addHandler(console_handler)
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.DEBUG)
 
-    self.__server_instance.propagate = False
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        console_handler.setFormatter(formatter)
+
+        self.__server_instance.addHandler(console_handler)
+
+      self.__server_instance.propagate = False
 
   @staticmethod
   def g():
@@ -70,14 +74,11 @@ class log:
     caller_class, caller_file, caller_line = self.get_caller_info()
     log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
     log_filepath = os.path.join(RAW_PATH_CONSTANTS.LOG_DIRECTORY, log_filename)
-    with open(log_filepath, 'a') as log_file:
-      full_log_message = f"{log_message} - {caller_class} ({caller_file}:{caller_line})"
-      log_file.write(full_log_message + "\n")
-    os.chmod(log_filepath, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
 
     with open(log_filepath, 'a') as log_file:
       full_log_message = f"{log_message} - {caller_class} ({caller_file}:{caller_line})"
       log_file.write(full_log_message + "\n")
+    os.chmod(log_filepath, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
 
   def __format_log_message(self, log_type, p_log, include_caller=False):
     current_time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -91,7 +92,6 @@ class log:
   def i(self, p_log):
     try:
       console_log = self.__format_log_message("INFO", p_log)
-      self.__server_instance.info(console_log)
       self.__write_to_file(console_log)
       print(colored(console_log, 'cyan', attrs=['bold']))
     except Exception:
@@ -100,7 +100,6 @@ class log:
   def s(self, p_log):
     try:
       console_log = self.__format_log_message("SUCCESS", p_log)
-      self.__server_instance.info(console_log)
       self.__write_to_file(console_log)
       print(colored(console_log, 'green'))
     except Exception:

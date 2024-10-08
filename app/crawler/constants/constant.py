@@ -75,7 +75,7 @@ class CRAWL_SETTINGS_CONSTANTS:
   S_UPDATE_STATUS_URL = "http://167.86.99.31/update_status/?pRequest=m_crawler"
 
   # Time Delay to Invoke New Url Requests
-  S_TOR_NEW_CIRCUIT_INVOKE_DELAY = 1800
+  S_TOR_NEW_CIRCUIT_INVOKE_DELAY = 600
 
   # Max Allowed Depth
   S_MAX_ALLOWED_DEPTH = 2
