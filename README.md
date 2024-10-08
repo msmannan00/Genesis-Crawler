@@ -1,113 +1,68 @@
-# Genesis Crawler
+# Trustly-Crawler
 
-Genesis Crawler is a dark web-focused crawling tool built with Docker Compose. It consists of two main variants:  
-1. **Generic Crawler**: Crawls and gathers data from generic websites.  
-2. **Specific Crawler**: Loads custom parsers from a server to specifically crawl supported websites in a fine-tuned manner.
+This repository contains a webcrawler designed for monitoring the dark web. It uses Docker Compose to manage services, including MongoDB, Redis, and multiple Tor containers for enhanced anonymity.
 
-The project is designed for heavy-duty web scraping, equipped with tools to detect illegal material and categorize content. Built on top of multitor, it provides enhanced anonymity and protection while crawling the dark web.
+## Prerequisites
 
-## Features
+Ensure you have the following installed on your system:
+- [Python]([https://www.rust-lang.org/tools/install](https://github.com/python))
+- [Docker]([https://nodejs.org/](https://github.com/docker))
+- [Docker Compose]([https://github.com/docker/compose])
 
-- **Docker Compose Setup**: Easy to set up and deploy via Docker Compose.
-- **Anonymity with multitor**: Ensures anonymity while crawling dark web content.
-- **Customizable Crawling**: Custom parsers are used to specifically crawl certain websites, giving fine-grained control over the crawling process.
-- **Illegal Content Detection**: Equipped with tools to detect and categorize illegal content.
-- **Two Crawling Variants**:  
-  - Generic crawler for general data collection.  
-  - Specific crawler with custom parsers for in-depth site crawling.
+## Installation
 
-## Technology Stack
-
-The project leverages multiple programming languages, tools, and libraries to achieve its goals:
-
-- **Languages**:  
-  - Python: Used for the core logic, handling web requests, processing data, and managing workflows.
-  
-- **Libraries/Frameworks**:  
-  - **Web Scraping & Parsing**:  
-    - requests, beautifulsoup4, lxml, urllib3, and html-similarity are used for fetching and parsing HTML content from the web.  
-  - **Data Processing**:  
-    - pandas, numpy, scikit-learn, and gensim provide tools for data manipulation, machine learning, and natural language processing.  
-  - **Natural Language Processing (NLP)**:  
-    - spacy, nltk, and thefuzz enable advanced text analysis and similarity checking.  
-  - **Machine Learning & AI**:  
-    - transformers, torch, and onnxruntime support deep learning and model inference.  
-  - **Database & Search**:  
-    - elasticsearch, pymongo, and redis for efficient data storage and retrieval.  
-  - **Task Management & Scheduling**:  
-    - celery, schedule, and eventlet handle distributed tasks and job scheduling.  
-  - **Security & Encryption**:  
-    - fernet is used for data encryption.  
-  - **Networking & Proxying**:  
-    - socks, aiohttp_socks, and requests[socks] enable proxy-based web requests, especially useful for dark web crawling.  
-  - **Error Logging**:  
-    - logdna and raven help monitor and log errors during the crawling process.
-
-## Setup and Installation
-
-To get started with Genesis Crawler, follow these steps:
-
-### 1. Clone the Repository
-
-Clone the repository from GitHub and navigate to the project directory.
-
-git clone https://github.com/msmannan00/Genesis-Crawler.git
-cd genesis-crawler
-
-
-
-### 2. Install Dependencies
-
-Ensure you have Docker and Docker Compose installed on your machine. Once installed, the dependencies will be handled via Docker Compose.
-
-### 3. Build and Start the Crawler
-
-Use Docker Compose to build and run the crawler:
+### Step 1: Clone Repository
 
 ```
-./run.sh build
+git clone https://github.com/yourusername/dark-web-monitoring-webcrawler.git
+cd dark-web-monitoring-webcrawler
 ```
 
-to simply start the crawler run
+### Step 2: Build and Start the Services
+```
+docker-compose up --build
+```
+This command will build and start the following services:
+
+    API Service (api): The main webcrawler service that runs according to the predefined settings.
+    MongoDB (mongo): Database for storing crawled data.
+    Redis (redis_server): In-memory data store for caching and task queuing.
+    Tor Containers (tor-extend-*): Multiple Tor instances to route crawler traffic through different Tor exit nodes.
+
+### Step 3: Build and Start the Services
+
+You can run the webcrawler in two ways:
+
+#### Direct Execution:
+    
+- Navigate to the Genesis-Crawler/app/ directory.
+- Run the webcrawler directly using:
+    
+```
+python main_direct.py
+```
+#### Using Docker:
+
+- The webcrawler can also be started using Docker, which utilizes the start_app.sh script:
 
 ```
-./run.sh
+docker-compose up --build
 ```
+        
+## Project Structure
 
-to run and update unique urls while removing not only duplicate url but also removing url that are no longer active run
-
-```
-./run.sh invoke_unique_crawler
-```
-
-This will start the crawler, which can now begin collecting data.
-
-### 4. Customizing Parsers (Optional for Specific Crawler)
-
-For specific website crawling, you can provide your own parsers. Load them onto the server and configure the crawler to use these custom parsers for enhanced scraping capabilities.
-
+api/: Contains the webcrawler source code.
+data/db/: Directory where MongoDB stores data.
+dockerFiles/: Dockerfiles for building custom images.
+    
 ## Usage
 
-## Contribution
+Follow the installation steps to set up and run the webcrawler. After starting the services, the crawler will automatically begin monitoring specified dark web URLs through the Tor network, storing data in MongoDB. Redis is used for caching and managing tasks.
 
-We welcome contributions to improve Genesis Crawler. If you'd like to contribute, please fork the repository and submit a pull request.
+## Configuring Tor Instances
 
-### Steps to Contribute
+Each Tor container is configured to run as a separate instance, routing traffic through different Tor exit nodes. This increases anonymity and reduces the chances of IP bans.
 
-1. Fork the repository.  
-2. Create a new feature branch (git checkout -b feature-branch).  
-3. Commit your changes (git commit -m 'Add some feature').  
-4. Push to the branch (git push origin feature-branch).  
-5. Create a new Pull Request.
+## Scaling
 
-## License
-
-Genesis Crawler is licensed under the [MIT License](LICENSE).
-
-## Disclaimer
-
-This project is intended for research purposes only. The authors of Genesis Crawler do not support or endorse illegal activities, and users of this project are responsible for ensuring their actions comply with the law.
-
-## GitHub Repository
-
-GitHub Repository URL: [https://github.com/msmannan00/Genesis-Crawler](https://github.com/msmannan00/Genesis-Crawler)
+You can scale the number of Tor instances by modifying the docker-compose.yml file and adding more tor-extend-* services as needed.

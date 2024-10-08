@@ -269,7 +269,7 @@ class html_parse_manager(HTMLParser, ABC):
             self.m_important_content_raw.append(p_data)
             self.m_parsed_paragraph_count += 1
 
-            p_data = re.sub('[^A-Za-z0-9 ,;"\][/.+-;!\'@#$%^&*_+=]', '', p_data)
+            p_data = re.sub(r'[^A-Za-z0-9 ,;"\]\[/.+-;!\'@#$%^&*_+=]', '', p_data)
             p_data = re.sub(' +', ' ', p_data)
             p_data = re.sub(r'^\W*', '', p_data)
 

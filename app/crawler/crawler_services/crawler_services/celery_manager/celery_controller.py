@@ -49,9 +49,9 @@ class celery_controller:
     warnings.filterwarnings("ignore")
     self.__redis_controller = redis_controller.get_instance()
     self.__clear_redis_database()
-    if not APP_STATUS.DOCKERIZED_RUN:
-      self.__start_worker()
-      self.__start_unique_crawler_worker()
+    # if APP_STATUS.DOCKERIZED_RUN:
+    #   self.__start_worker()
+    #   self.__start_unique_crawler_worker()
 
   def __clear_redis_database(self):
     try:
@@ -59,29 +59,29 @@ class celery_controller:
     except Exception:
       pass
 
-  def __start_worker(self):
-    self.__stop_all_workers()
-    subprocess.Popen([
-      'celery', '-A', 'crawler.crawler_services.crawler_services.celery_manager', 'worker',
-      '--loglevel=DEBUG',
-      '--without-gossip',
-      '--without-mingle',
-      '--without-heartbeat',
-      '--pool=gevent'
-    ])
-
-  def __start_unique_crawler_worker(self):
-    self.__stop_all_workers()
-    subprocess.Popen([
-      'celery', '-A', 'crawler.crawler_services.crawler_services.celery_manager', 'worker',
-      '--loglevel=DEBUG',
-      '--without-gossip',
-      '--without-mingle',
-      '--without-heartbeat',
-      '--pool=gevent',
-      '-Q', 'unique_crawler_queue',
-      '--concurrency=1'
-    ])
+  # def __start_worker(self):
+  #   self.__stop_all_workers()
+  #   subprocess.Popen([
+  #     'celery', '-A', 'crawler.crawler_services.crawler_services.celery_manager', 'worker',
+  #     '--loglevel=DEBUG',
+  #     '--without-gossip',
+  #     '--without-mingle',
+  #     '--without-heartbeat',
+  #     '--pool=gevent'
+  #   ])
+  #
+  # def __start_unique_crawler_worker(self):
+  #   self.__stop_all_workers()
+  #   subprocess.Popen([
+  #     'celery', '-A', 'crawler.crawler_services.crawler_services.celery_manager', 'worker',
+  #     '--loglevel=DEBUG',
+  #     '--without-gossip',
+  #     '--without-mingle',
+  #     '--without-heartbeat',
+  #     '--pool=gevent',
+  #     '-Q', 'unique_crawler_queue',
+  #     '--concurrency=1'
+  #   ])
 
   def __stop_all_workers(self):
     try:

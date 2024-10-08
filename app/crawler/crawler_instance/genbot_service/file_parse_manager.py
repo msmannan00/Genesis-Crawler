@@ -1,4 +1,6 @@
 from typing import List, Set, Optional
+
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_instance.local_shared_model.leak_data_model import leak_data_model
 from crawler.crawler_services.web_request_handler import webRequestManager
 from crawler.crawler_instance.local_shared_model.index_model import index_model
@@ -22,9 +24,10 @@ class file_parse_manager:
     model.m_video = self.__remove_duplicate_urls(model.m_video)
     model.m_images = self.__remove_duplicate_urls(model.m_images)
 
-    model.m_document = self.__validate_and_filter_urls(model.m_document)
-    model.m_video = self.__validate_and_filter_urls(model.m_video)
-    model.m_images = self.__validate_and_filter_urls(model.m_images)
+    if CRAWL_SETTINGS_CONSTANTS.S_GENERIC_FILE_VERIFICATION_ALLOWED:
+      model.m_document = self.__validate_and_filter_urls(model.m_document)
+      model.m_video = self.__validate_and_filter_urls(model.m_video)
+      model.m_images = self.__validate_and_filter_urls(model.m_images)
 
     return model
 
@@ -36,11 +39,10 @@ class file_parse_manager:
         """
     for card in model.cards_data:
       card.m_weblink = self.__remove_duplicate_urls(card.m_weblink)
-      card.m_url = self.__remove_duplicate_urls(card.m_url)
       card.m_dumplink = self.__remove_duplicate_urls(card.m_dumplink)
 
+    if CRAWL_SETTINGS_CONSTANTS.S_LEAK_FILE_VERIFICATION_ALLOWED:
       card.m_weblink = self.__validate_and_filter_urls(card.m_weblink)
-      card.m_url = self.__validate_and_filter_urls(card.m_url)
       card.m_dumplink = self.__validate_and_filter_urls(card.m_dumplink)
 
     return model

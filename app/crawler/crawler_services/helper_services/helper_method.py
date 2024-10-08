@@ -1,7 +1,6 @@
 # Local Imports
 import os
 import re
-import shutil
 import zipfile
 from urllib.parse import urlparse, urlunparse
 from gensim.parsing.preprocessing import STOPWORDS
@@ -81,8 +80,10 @@ class helper_method:
       with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
           try:
               s.connect((host, port))
+              return True
           except socket.error:
               log.g().e(MANAGE_MESSAGES.S_SERVICE_NOT_INITIATED + " : " +  f"{service_name} is not running or not installed.")
+              return False
 
   @staticmethod
   def extract_zip(from_path, to_path):

@@ -1,12 +1,12 @@
 import datetime
 import inspect
+import stat
 import sys
 import logging
 import os
-from logdna import LogDNAHandler
 from termcolor import colored
 
-from crawler.constants.constant import LOG_CONSTANTS, RAW_PATH_CONSTANTS
+from crawler.constants.constant import RAW_PATH_CONSTANTS
 
 if sys.platform == "win32":
   os.system('color')
@@ -16,22 +16,28 @@ class log:
   __server_instance = None
 
   def __configure_logs(self):
-    key = LOG_CONSTANTS.S_LOGS_KEY
     self.__server_instance = logging.getLogger('genesis_logs')
     self.__server_instance.setLevel(logging.DEBUG)
 
-    options = {
-      'hostname': 'genesis_logs',
-      'ip': '10.0.1.1',
-      'mac': 'C0:FF:EE:C0:FF:EE',
-      'index_meta': True
-    }
-    handler = LogDNAHandler(key, options)
+    # File handler for logging to a file
+    log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
+    log_filepath = os.path.join(RAW_PATH_CONSTANTS.LOG_DIRECTORY, log_filename)
+    file_handler = logging.FileHandler(log_filepath)
+    file_handler.setLevel(logging.DEBUG)
+
+    # Console handler for logging to console
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+
+    # Log format
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    self.__server_instance.addHandler(file_handler)
+    self.__server_instance.addHandler(console_handler)
 
     self.__server_instance.propagate = False
-    self.__server_instance.addHandler(handler)
-
-    self.log_directory = RAW_PATH_CONSTANTS.LOG_DIRECTORY
 
   @staticmethod
   def g():
@@ -63,7 +69,12 @@ class log:
   def __write_to_file(self, log_message):
     caller_class, caller_file, caller_line = self.get_caller_info()
     log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
-    log_filepath = os.path.join(self.log_directory, log_filename)
+    log_filepath = os.path.join(RAW_PATH_CONSTANTS.LOG_DIRECTORY, log_filename)
+    with open(log_filepath, 'a') as log_file:
+      full_log_message = f"{log_message} - {caller_class} ({caller_file}:{caller_line})"
+      log_file.write(full_log_message + "\n")
+    os.chmod(log_filepath, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+
     with open(log_filepath, 'a') as log_file:
       full_log_message = f"{log_message} - {caller_class} ({caller_file}:{caller_line})"
       log_file.write(full_log_message + "\n")

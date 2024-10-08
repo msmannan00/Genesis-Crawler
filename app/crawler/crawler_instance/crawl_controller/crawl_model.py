@@ -137,7 +137,8 @@ class crawl_model(request_handler):
     self.__celery_vid = 100000
     self.init_parsers()
 
-    RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_UNIQUE_FEEDER_TIMEOUT, self.reinit_unique_feeders_periodically, False, self.init_parsers)
+    if CRAWL_SETTINGS_CONSTANTS.S_ALLOW_UNIQUE_FEEDER_UPDATES:
+      RepeatedTimer(CRAWL_SETTINGS_CONSTANTS.S_UPDATE_UNIQUE_FEEDER_TIMEOUT, self.reinit_unique_feeders_periodically, False, self.init_parsers)
 
     if APP_STATUS.DOCKERIZED_RUN:
      self.__init_docker_request()

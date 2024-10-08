@@ -34,8 +34,10 @@ class application_controller(request_handler, ABC):
 
     def __initializations(self, p_command):
         if p_command == APPICATION_COMMANDS.S_START_APPLICATION_DIRECT:
-            helper_method.check_service_status("MongoDB", "localhost", 27017)
-            helper_method.check_service_status("Redis", "localhost", 6379)
+            mongo_status = helper_method.check_service_status("MongoDB", "localhost", 27017)
+            redis_status = helper_method.check_service_status("Redis", "localhost", 6379)
+            if not mongo_status or not redis_status:
+                exit(0)
 
     def __wait_for_tor_bootstrap(self):
         non_bootstrapped_tor_instances = self.__tor_controller.get_non_bootstrapped_tor_instances()

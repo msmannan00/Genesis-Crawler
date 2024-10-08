@@ -31,7 +31,7 @@ class parse_controller:
     def on_parse_leaks(self, p_html: str, m_url: str) -> tuple[None, bool, bool] | tuple[leak_data_model, Set[str], bool]:
         data_model, m_sub_url = self.__on_leak_parser_invoke(p_html, m_url)
 
-        if CRAWL_SETTINGS_CONSTANTS.S_GENERIC_FILE_VERIFICATION_ALLOWED and data_model is not None:
+        if data_model is not None:
             parsed_data, m_sub_url = file_parse_manager().parse_leak_files(data_model), m_sub_url
             return parsed_data, m_sub_url, True
         else:

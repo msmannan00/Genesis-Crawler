@@ -1,4 +1,9 @@
 import argparse
+import subprocess
+import sys
+
+import spacy
+
 from crawler.constants.app_status import APP_STATUS
 from crawler.constants.constant import RAW_PATH_CONSTANTS, CRAWL_SETTINGS_CONSTANTS
 from crawler.constants.strings import TOR_STRINGS, MANAGE_MESSAGES
@@ -10,8 +15,7 @@ from crawler.crawler_services.crawler_services.celery_manager.celery_enums impor
 from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CONNECTIONS
 from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
-from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS, REDIS_KEYS, \
-  REDIS_COMMANDS
+from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS, REDIS_KEYS, REDIS_COMMANDS
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from pathlib import Path
 import os
@@ -41,6 +45,13 @@ def initialize_local_setting():
   CRAWL_SETTINGS_CONSTANTS.S_PARSERS_URL = "http://localhost:8080/parser"
   CRAWL_SETTINGS_CONSTANTS.S_PARSERS_URL_UNIQUE = "http://localhost:8080/parser/unique"
   CRAWL_SETTINGS_CONSTANTS.S_FEEDER_URL_UNIQUE = "http://localhost:8080/feeder/unique"
+  try:
+    nlp_core = spacy.load("en_core_web_sm")
+  except OSError:
+    subprocess.run([sys.executable, "-m", "spacy", "download", "en_core_web_sm"], check=True)
+    nlp_core = spacy.load("en_core_web_sm")
+  return nlp_core
+
 
 def main():
   default_command = 'local_run'

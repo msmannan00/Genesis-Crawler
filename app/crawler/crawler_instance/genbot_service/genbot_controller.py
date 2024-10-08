@@ -112,7 +112,6 @@ class genbot_controller(request_handler):
 
 
 def genbot_instance(p_url, p_vid):
-  p_url="http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/"
   log.g().i(MANAGE_MESSAGES.S_PARSING_WORKER_STARTED + " : " + p_url)
   m_crawler = genbot_controller()
   try:
