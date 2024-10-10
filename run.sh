@@ -14,10 +14,8 @@ check_or_set_s_server() {
     source "$ENV_FILE"
 
     if ! curl --silent --head --fail --max-time 5 "$S_SERVER"; then
-        echo "S_SERVER ($S_SERVER) is not accessible. Reverting to local IP."
-        S_SERVER="http://$(get_local_ip):8080"
-        sed -i '/^S_SERVER=/d' "$ENV_FILE"
-        echo "S_SERVER=$S_SERVER" >> "$ENV_FILE"
+        echo "Error: S_SERVER ($S_SERVER) is not accessible. Exiting."
+        exit 1
     fi
 
     echo "Final S_SERVER: $S_SERVER"
