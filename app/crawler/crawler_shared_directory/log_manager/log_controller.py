@@ -23,6 +23,8 @@ class log:
 
       if not self.__server_instance.hasHandlers():
         self.__server_instance.setLevel(logging.DEBUG)
+        if not os.path.exists(RAW_PATH_CONSTANTS.LOG_DIRECTORY):
+          os.makedirs(RAW_PATH_CONSTANTS.LOG_DIRECTORY)
 
         if not log.__file_handler_added:
           log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
@@ -71,14 +73,19 @@ class log:
     return "Unknown", "Unknown", 0
 
   def __write_to_file(self, log_message):
-    caller_class, caller_file, caller_line = self.get_caller_info()
-    log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
-    log_filepath = os.path.join(RAW_PATH_CONSTANTS.LOG_DIRECTORY, log_filename)
+    try:
+      caller_class, caller_file, caller_line = self.get_caller_info()
 
-    with open(log_filepath, 'a') as log_file:
-      full_log_message = f"{log_message} - {caller_class} ({caller_file}:{caller_line})"
-      log_file.write(full_log_message + "\n")
-    os.chmod(log_filepath, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+      log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
+
+      log_filepath = os.path.join(RAW_PATH_CONSTANTS.LOG_DIRECTORY, log_filename)
+
+      with open(log_filepath, 'a') as log_file:
+        full_log_message = f"{log_message} - {caller_class} ({caller_file}:{caller_line})"
+        log_file.write(full_log_message + "\n")
+      os.chmod(log_filepath, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+    except Exception as e:
+      pass
 
   def __format_log_message(self, log_type, p_log, include_caller=False):
     current_time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
