@@ -18,7 +18,7 @@ check_or_set_s_server() {
         exit 1
     fi
 
-    echo "Final S_SERVER: $S_SERVER"
+    echo "S_SERVER is accessible: $S_SERVER"
 }
 
 mkdir -p $DEST_DIR
