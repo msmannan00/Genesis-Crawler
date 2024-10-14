@@ -18,7 +18,6 @@ from crawler.crawler_services.crawler_services.redis_manager.redis_controller im
 from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS, REDIS_KEYS, REDIS_COMMANDS
 from crawler.crawler_shared_directory.log_manager.log_controller import log
 from pathlib import Path
-import os
 
 
 def initialize_local_setting():

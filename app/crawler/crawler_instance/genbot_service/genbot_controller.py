@@ -15,8 +15,6 @@ from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD
 from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS
-from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
-from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.web_request_handler import webRequestManager
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.crawler_shared_directory.log_manager.log_controller import log
@@ -42,10 +40,8 @@ class genbot_controller(request_handler):
     self.m_parsed_url = []
     self.__m_proxy = {}
 
-  def init(self):
-    self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
-    self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
-
+  def init(self, p_proxy, p_tor_id):
+    self.__m_proxy, self.__m_tor_id = p_proxy, p_tor_id
 
   def __trigger_url_request(self, p_request_model: url_model):
     try:
@@ -81,7 +77,6 @@ class genbot_controller(request_handler):
   def start_crawler_instance(self, p_request_url, p_task_id):
     p_request_url = helper_method.on_clean_url(p_request_url)
     self.__task_id = "dirlink_" + str(p_task_id)
-    self.init()
     m_host_crawled = False
     m_failure_count = 0
 
@@ -100,8 +95,8 @@ class genbot_controller(request_handler):
           continue
 
       if m_parsed_model is not None and item.m_depth + 1 <= CRAWL_SETTINGS_CONSTANTS.S_MAX_ALLOWED_DEPTH:
-        for sub_url in m_sub_url:
-          self.m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
+       for sub_url in m_sub_url:
+         self.m_unparsed_url.append(url_model_init(sub_url, item.m_depth + 1))
 
       m_host_crawled = True
       self.m_unparsed_url.pop(0)
@@ -109,11 +104,14 @@ class genbot_controller(request_handler):
   def invoke_trigger(self, p_command, p_data=None):
     if p_command == ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE:
       self.start_crawler_instance(p_data[0], p_data[1])
+    if p_command == ICRAWL_CONTROLLER_COMMANDS.S_INIT_CRAWLER_INSTANCE:
+      self.init(p_data[0], p_data[1])
 
 
-def genbot_instance(p_url, p_vid):
+def genbot_instance(p_url, p_vid, p_proxy, p_tor_id):
   log.g().i(MANAGE_MESSAGES.S_PARSING_WORKER_STARTED + " : " + p_url)
   m_crawler = genbot_controller()
+  m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_INIT_CRAWLER_INSTANCE, [p_proxy, p_tor_id])
   try:
     m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
     p_request_url = helper_method.on_clean_url(p_url)

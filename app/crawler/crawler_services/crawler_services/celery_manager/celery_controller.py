@@ -6,12 +6,11 @@ import os
 import signal
 
 from crawler.crawler_instance.genbot_service.genbot_unique_controller import genbot_unique_instance
+from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
+from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
 from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_CONNECTIONS, CELERY_COMMANDS
 from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
-from crawler.constants.app_status import APP_STATUS
-from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_KEYS
-from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
@@ -49,39 +48,12 @@ class celery_controller:
     warnings.filterwarnings("ignore")
     self.__redis_controller = redis_controller.get_instance()
     self.__clear_redis_database()
-    # if APP_STATUS.DOCKERIZED_RUN:
-    #   self.__start_worker()
-    #   self.__start_unique_crawler_worker()
 
   def __clear_redis_database(self):
     try:
       self.__redis_controller.invoke_trigger('S_FLUSH_ALL')
     except Exception:
       pass
-
-  # def __start_worker(self):
-  #   self.__stop_all_workers()
-  #   subprocess.Popen([
-  #     'celery', '-A', 'crawler.crawler_services.crawler_services.celery_manager', 'worker',
-  #     '--loglevel=DEBUG',
-  #     '--without-gossip',
-  #     '--without-mingle',
-  #     '--without-heartbeat',
-  #     '--pool=gevent'
-  #   ])
-  #
-  # def __start_unique_crawler_worker(self):
-  #   self.__stop_all_workers()
-  #   subprocess.Popen([
-  #     'celery', '-A', 'crawler.crawler_services.crawler_services.celery_manager', 'worker',
-  #     '--loglevel=DEBUG',
-  #     '--without-gossip',
-  #     '--without-mingle',
-  #     '--without-heartbeat',
-  #     '--pool=gevent',
-  #     '-Q', 'unique_crawler_queue',
-  #     '--concurrency=1'
-  #   ])
 
   def __stop_all_workers(self):
     try:
@@ -95,11 +67,12 @@ class celery_controller:
       pass
 
   def __run_crawler(self, url, virtual_id):
-    start_crawler.delay(url, virtual_id)
+    m_proxy, m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
+    start_crawler.delay(url, virtual_id, m_proxy, m_tor_id)
 
   def __run_unique_task(self, url):
-    # Queue the task
-    invoke_unique_crawler.delay(url)
+    m_proxy, m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
+    invoke_unique_crawler.delay(url, m_proxy, m_tor_id)
 
   def invoke_trigger(self, p_commands, p_data=None):
     if p_commands == CELERY_COMMANDS.S_START_CRAWLER:
@@ -110,12 +83,12 @@ class celery_controller:
 
 # Celery tasks
 @celery.task(name='celery_controller.start_crawler')
-def start_crawler(url, virtual_id):
-  genbot_instance(url, virtual_id)
+def start_crawler(url, virtual_id, m_proxy, m_tor_id):
+  genbot_instance(url, virtual_id, m_proxy, m_tor_id)
 
 @celery.task(name='celery_controller.invoke_unique_crawler', bind=True)
-def invoke_unique_crawler(_, url):
-  genbot_unique_instance(url)
+def invoke_unique_crawler(_, url, m_proxy, m_tor_id):
+  genbot_unique_instance(url, m_proxy, m_tor_id)
 
 if __name__ == "__main__":
   manager = celery_controller.get_instance()

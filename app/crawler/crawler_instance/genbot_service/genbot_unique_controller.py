@@ -10,8 +10,6 @@ from crawler.crawler_services.crawler_services.redis_manager.redis_controller im
 from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_KEYS
 from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
-from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
-from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.web_request_handler import webRequestManager
 from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
 from crawler.crawler_shared_directory.log_manager.log_controller import log
@@ -38,8 +36,8 @@ class genbot_unique_controller(request_handler):
     self.__m_tor_id = - 1
     self.__m_proxy = {}
 
-  def init(self):
-    self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
+  def init(self, p_proxy, p_tor_id):
+    self.__m_proxy, self.__m_tor_id = p_proxy, p_tor_id
 
   def __trigger_url_request(self, p_url):
     try:
@@ -114,14 +112,17 @@ class genbot_unique_controller(request_handler):
   def invoke_trigger(self, p_command, p_data=None):
     if p_command == ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE:
       self.start_crawler_instance(p_data[0])
+    if p_command == ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE:
+      self.init(p_data[0], p_data[1])
 
 
-def genbot_unique_instance(p_url_list):
+def genbot_unique_instance(p_url_list, p_proxy, p_tor_id):
   status = redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, None, None])
   if not status:
     log.g().i(MANAGE_MESSAGES.S_UNIQUE_PARSING_STARTED + " : " + str(status))
     redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, True, None])
     m_crawler = genbot_unique_controller()
+    m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_INIT_CRAWLER_INSTANCE, [p_proxy, p_tor_id])
     try:
       m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url_list])
     except Exception as ex:
@@ -132,7 +133,7 @@ def genbot_unique_instance(p_url_list):
   else:
     log.g().i(MANAGE_MESSAGES.S_UNIQUE_PARSING_PENDING)
 
-def prepare_and_fetch_data(url):
+def prepare_and_fetch_data(url, p_proxy, p_tor_id):
   os.makedirs(RAW_PATH_CONSTANTS.UNIQUE_CRAWL_DIRECTORY, exist_ok=True)
   helper_method.clear_hosts_file(os.path.join(RAW_PATH_CONSTANTS.UNIQUE_CRAWL_DIRECTORY, 'hosts.txt'))
   helper_method.clear_hosts_file(os.path.join(RAW_PATH_CONSTANTS.UNIQUE_CRAWL_DIRECTORY, 'hosts_new.txt'))

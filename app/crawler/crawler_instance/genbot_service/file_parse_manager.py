@@ -15,11 +15,6 @@ class file_parse_manager:
     self.web_request_manager = webRequestManager()
 
   def parse_generic_files(self, model: index_model) -> index_model:
-    """
-        Process the index_model by removing duplicates and validating URLs.
-        Updates the model's m_document, m_video, and m_images fields with validated URLs.
-        Only removes duplicate URLs in the current model context.
-        """
     model.m_document = self.__remove_duplicate_urls(model.m_document)
     model.m_video = self.__remove_duplicate_urls(model.m_video)
     model.m_images = self.__remove_duplicate_urls(model.m_images)
@@ -32,11 +27,6 @@ class file_parse_manager:
     return model
 
   def parse_leak_files(self, model: leak_data_model) -> leak_data_model:
-    """
-        Process the leak_data_model by removing duplicates and validating URLs.
-        Updates the model's card data fields with validated URLs.
-        Only removes duplicate URLs in the current model context.
-        """
     for card in model.cards_data:
       card.m_weblink = self.__remove_duplicate_urls(card.m_weblink)
       card.m_dumplink = self.__remove_duplicate_urls(card.m_dumplink)
@@ -48,9 +38,6 @@ class file_parse_manager:
     return model
 
   def __remove_duplicate_urls(self, urls: Optional[List[str]]) -> List[str]:
-    """
-        Remove duplicate URLs from a list in the context of a single request.
-        """
     if urls is None:
       return []
 
@@ -63,10 +50,6 @@ class file_parse_manager:
     return unique_urls
 
   def __validate_and_filter_urls(self, urls: Optional[List[str]]) -> List[str]:
-    """
-        Validate URLs using HEAD requests to check if they are accessible.
-        Returns a list of valid URLs only.
-        """
     if urls is None:
       return []
 

@@ -384,18 +384,23 @@ class html_parse_manager(HTMLParser, ABC):
 
     def parse_html_files(self):
         self.__generate_html()
+        try:
+            m_sub_url, m_images, m_document, m_video, m_archive_url = self.__get_static_file()
+            m_title = self.__get_title()
+            m_meta_description = self.__get_meta_description()
+            m_important_content = self.__clean_text(self.__get_important_content() + " " + m_meta_description)
+            m_meta_keywords = self.__get_meta_keywords()
+            m_content_type = self.__get_content_type()
+            m_content = self.__clean_text(self.__get_content() + " " + m_title + " " + m_meta_description)
+            m_validity_score = self.__get_validity_score(m_important_content)
+            m_section = self.__get_sections()
+            m_names, m_phone_numbers, m_emails = self.__extract_names_places_phones_emails(self.m_soup.get_text(separator=' '))
+            m_clearnet_links = self.m_clearnet_links
+        except Exception as ex:
+            pass
+        finally:
+            self.m_soup.decompose()
 
-        m_sub_url, m_images, m_document, m_video, m_archive_url = self.__get_static_file()
-        m_title = self.__get_title()
-        m_meta_description = self.__get_meta_description()
-        m_important_content = self.__clean_text(self.__get_important_content() + " " + m_meta_description)
-        m_meta_keywords = self.__get_meta_keywords()
-        m_content_type = self.__get_content_type()
-        m_content = self.__clean_text(self.__get_content() + " " + m_title + " " + m_meta_description)
-        m_validity_score = self.__get_validity_score(m_important_content)
-        m_section = self.__get_sections()
-        m_names, m_phone_numbers, m_emails = self.__extract_names_places_phones_emails(self.m_soup.get_text(separator=' '))
-        m_clearnet_links = self.m_clearnet_links
 
         return index_model_init(
             m_base_url=self.m_base_url,

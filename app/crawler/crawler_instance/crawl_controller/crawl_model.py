@@ -67,9 +67,11 @@ class crawl_model(request_handler):
           m_html = m_html.decode('utf-8')
         if m_status == 200:
           break
+        else:
+          log.g().w(MANAGE_MESSAGES.S_INSTALL_LIVE_URL_TIMEOUT + " :: " + m_status + " :: " + CRAWL_SETTINGS_CONSTANTS.S_FEEDER_URL_UNIQUE)
       except Exception as ex:
-        sleep(1)
         log.g().w(MANAGE_MESSAGES.S_INSTALL_LIVE_URL_TIMEOUT + " : " + ex)
+      sleep(1)
 
     m_response_text = m_html
 
@@ -101,7 +103,8 @@ class crawl_model(request_handler):
       m_live_url_list, p_fetched_url_list = self.__install_live_url()
       m_request_list = list(m_live_url_list) + p_fetched_url_list
       for m_url_node in m_request_list:
-        genbot_instance(m_url_node, -1)
+        m_proxy, m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
+        genbot_instance(m_url_node, -1, m_proxy, m_tor_id)
 
   def __reinit_docker_request(self):
     m_live_url_list, m_updated_url_list = self.__install_live_url()

@@ -69,7 +69,7 @@ class tor_controller(request_handler):
       except Exception as ex:
         print(f"Error checking bootstrap status for controller {index}: {ex}")
         continue
-    return non_bootstrapped_instances
+    return []
 
   # Tor Helper Methods
   def __on_create_session(self, p_tor_based):

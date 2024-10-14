@@ -35,6 +35,11 @@ class mongo_controller(request_handler):
       'username': MONGO_CONNECTIONS.S_MONGO_USERNAME,
       'password': MONGO_CONNECTIONS.S_MONGO_PASSWORD
     }
+    print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+    print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+    print(auth_params)
+    print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+    print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 
     connection_params.update({k: v for k, v in auth_params.items() if v})
     self.__m_connection = pymongo.MongoClient(MONGO_CONNECTIONS.S_MONGO_IP, MONGO_CONNECTIONS.S_MONGO_PORT, username=MONGO_CONNECTIONS.S_MONGO_USERNAME, password=MONGO_CONNECTIONS.S_MONGO_PASSWORD)[MONGO_CONNECTIONS.S_MONGO_DB_NAME]
