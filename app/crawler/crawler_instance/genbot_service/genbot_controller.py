@@ -59,16 +59,15 @@ class genbot_controller(request_handler):
         if not parser_status:
           m_sub_url = m_parsed_model.m_sub_url
 
-        # if helper_method.get_host_name(m_redirected_url).__eq__(helper_method.get_host_name(p_request_model.m_url)) and self.m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
-        #
-        #   m_paresed_request_data = {"m_generic_model":json.dumps(m_parsed_model.model_dump()),  "m_leak_data_model":json.dumps(m_leak_data_model.model_dump())}
-        #   elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, json.dumps(m_paresed_request_data), ELASTIC_CONNECTIONS.S_CRAWL_INDEX])
-        #
-        #   log.g().s(MANAGE_MESSAGES.S_LOCAL_URL_PARSED + " : " + str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + m_redirected_url)
-        #   self.m_parsed_url.append(m_redirected_url)
-        #
-        #   return m_parsed_model, m_sub_url
-          return None, None
+        if helper_method.get_host_name(m_redirected_url).__eq__(helper_method.get_host_name(p_request_model.m_url)) and self.m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
+
+          m_paresed_request_data = {"m_generic_model":json.dumps(m_parsed_model.model_dump()),  "m_leak_data_model":json.dumps(m_leak_data_model.model_dump())}
+          elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, json.dumps(m_paresed_request_data), ELASTIC_CONNECTIONS.S_CRAWL_INDEX])
+
+          log.g().s(MANAGE_MESSAGES.S_LOCAL_URL_PARSED + " : " + str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + m_redirected_url)
+          self.m_parsed_url.append(m_redirected_url)
+
+          return m_parsed_model, m_sub_url
         else:
           return None, None
       else:
