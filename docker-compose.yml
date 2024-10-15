@@ -61,7 +61,7 @@ services:
     build:
       context: .
       dockerfile: dockerFiles/api_docker
-    command: celery -A crawler.crawler_services.crawler_services.celery_manager worker --loglevel=INFO --concurrency=${CELERY_WORKER_COUNT} --max-tasks-per-child=3 # -P eventlet
+    command: celery -A crawler.crawler_services.crawler_services.celery_manager worker --loglevel=INFO --concurrency=${CELERY_WORKER_COUNT} --prefetch-multiplier=1 --max-tasks-per-child=3 # -P eventlet
     env_file:
       - .env
     depends_on:
