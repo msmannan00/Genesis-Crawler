@@ -11,6 +11,7 @@ from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
 from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
 from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_CONNECTIONS, CELERY_COMMANDS
 from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
+from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
@@ -18,7 +19,8 @@ celery = Celery('crawler', broker=CELERY_CONNECTIONS.conn)
 
 # Configure Celery task routing
 celery.conf.task_routes = {
-  'celery_controller.invoke_unique_crawler': {'queue': 'unique_crawler_queue'}
+    'celery_controller.start_crawler': {'queue': 'crawler_queue'},
+    'celery_controller.invoke_unique_crawler': {'queue': 'unique_crawler_queue'}
 }
 
 celery.conf.worker_task_log_format = None

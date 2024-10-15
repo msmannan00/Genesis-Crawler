@@ -83,10 +83,10 @@ class crawl_model(request_handler):
 
       mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_SET_CRAWLABLE_URL, [m_server_url], [False]])
       if helper_method.is_uri_validator(m_server_url) and m_url not in m_live_url_list:
-        log.g().s(MANAGE_MESSAGES.S_INSTALLED_URL + " : " + m_url)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [m_url], [True]])
         m_updated_url_list.append(m_url)
 
+      log.g().s(MANAGE_MESSAGES.S_INSTALLED_URL + " : " + m_url)
     mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL, [list(m_live_url_list)], [None]])
     return m_live_url_list, m_updated_url_list
 
