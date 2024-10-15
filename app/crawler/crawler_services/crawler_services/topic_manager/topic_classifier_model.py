@@ -1,3 +1,5 @@
+import gc
+
 from transformers import pipeline
 from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
 from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_MODEL
@@ -27,6 +29,16 @@ class topic_classifier_model(request_handler):
         else:
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
 
+
+    def cleanup(self):
+        if self.classifier:
+            del self.classifier
+            self.classifier = None
+        gc.collect()
+
+
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == TOPIC_CLASSFIER_MODEL.S_PREDICT_CLASSIFIER:
             return self.__predict_classifier(p_data[0], p_data[1], p_data[2])
+        if p_command == TOPIC_CLASSFIER_MODEL.S_CLEAN_CLASSIFIER:
+            return self.cleanup()

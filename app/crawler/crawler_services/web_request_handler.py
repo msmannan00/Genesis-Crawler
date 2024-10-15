@@ -36,22 +36,23 @@ class webRequestManager:
       return str(ex), None, None
 
   def load_url(self, p_url, p_custom_proxy):
+    m_request_handler = None
     try:
       m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
       m_html, m_status, m_url_redirect = self.fetch(p_url, p_custom_proxy, headers)
-
-      m_request_handler.close()
-      del m_request_handler
       if m_html == "" or m_status != 200:
         return str(p_url), False, m_status
       else:
         return helper_method.on_clean_url(str(m_url_redirect)), True, str(m_html)
-
     except Exception as ex:
+      if m_request_handler is not None:
+        m_request_handler.close()
+        del m_request_handler
       log.g().e(MANAGE_MESSAGES.S_LOAD_URL_ERROR_MAIN + " : " + str(ex))
       return p_url, False, None
 
   def request_server_post(self, url, data=None, params=None, timeout=1000):
+    response = None
     try:
       crypto = crypto_handler.get_instance()
       secret_token = crypto.generate_secret_token()
@@ -67,6 +68,10 @@ class webRequestManager:
 
     except Exception as ex:
       return None, str(ex)
+
+    finally:
+      if response is not None:
+        response.close()
 
   def request_server_get(self, url, params=None, timeout=1000):
     try:

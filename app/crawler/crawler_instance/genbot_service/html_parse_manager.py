@@ -16,6 +16,7 @@ from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_co
 from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
 from crawler.crawler_services.helper_services.helper_method import helper_method
 from crawler.crawler_services.helper_services.spell_check_handler import spell_checker_handler
+
 nlp_core = spacy.load("en_core_web_sm")
 
 class html_parse_manager(HTMLParser, ABC):
@@ -41,9 +42,7 @@ class html_parse_manager(HTMLParser, ABC):
         self.m_video_url = []
         self.m_archive_url = []
 
-        # New variables for extracted data
         self.m_clearnet_links = []
-
         self.m_paragraph_count = 0
         self.m_parsed_paragraph_count = 0
         self.m_query_url_count = 0
@@ -51,44 +50,33 @@ class html_parse_manager(HTMLParser, ABC):
         self.m_all_url_count = 0
         self.m_important_content_raw = []
         self.m_rec = PARSE_TAGS.S_NONE
-
-        # New variable for managing sections
         self.m_sections = []
-        self.m_current_section = ""  # This will accumulate consecutive paragraphs
+        self.m_current_section = ""
 
     def __insert_external_url(self, p_url):
         self.m_all_url_count += 1
-
-        # Extended list of archive extensions to check for compressed files (e.g., zip, tar, rar, etc.)
         archive_extensions = ['.zip', '.rar', '.tar', '.gz', '.7z', '.bz2', '.xz', '.tgz', '.tbz2', '.tar.gz', '.tar.bz2']
-
-        # File extension lists for images, videos, and documents
         image_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.tiff']
         video_extensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv', '.webm']
         document_extensions = ['.pdf', '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.txt']
 
-        # Check if the URL is not None and does not end with "#"
         if p_url is not None and not str(p_url).endswith("#"):
             if 5 < len(p_url) <= CRAWL_SETTINGS_CONSTANTS.S_MAX_URL_SIZE:
-                # Join relative URLs if they don't start with a valid scheme (http, https, ftp)
                 if not p_url.startswith(("https://", "http://", "ftp://")):
                     m_temp_base_url = self.m_base_url
                     p_url = urljoin(m_temp_base_url, p_url)
                     p_url = p_url.replace(" ", "%20")
                     p_url = helper_method.on_clean_url(helper_method.normalize_slashes(p_url))
 
-                # Validate if the URL is valid
                 if validators.url(p_url):
                     suffix = ''.join(pathlib.Path(p_url).suffixes)
                     m_host_url = helper_method.get_host_url(p_url)
                     parent_domain = helper_method.on_clean_url(self.m_base_url).split(".")[0]
                     host_domain = helper_method.on_clean_url(p_url).split(".")[0]
 
-                    # Parse the URL to get the path without query parameters or fragments
                     parsed_url = urlparse(p_url)
                     clean_url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path
 
-                    # Check if the URL is an image, video, document, or archive based on suffix or MIME type
                     if any(ext in suffix.lower() for ext in image_extensions):
                         if len(self.m_image_url) < 10:
                             self.m_image_url.append(clean_url)
@@ -102,7 +90,6 @@ class html_parse_manager(HTMLParser, ABC):
                         if len(self.m_archive_url) < 10:
                             self.m_archive_url.append(clean_url)
 
-                    # Handle .onion links separately
                     elif parent_domain == host_domain and m_host_url.endswith(".onion"):
                         if "#" in p_url:
                             if p_url.count("/") > 2 and "?" in m_host_url and self.m_query_url_count < 5:
@@ -116,7 +103,6 @@ class html_parse_manager(HTMLParser, ABC):
                             if p_url not in self.m_sub_url and p_url != self.m_base_url:
                                 self.m_sub_url.append(p_url)
 
-                    # Add to clearnet links if it's not an onion link
                     if ".onion" not in p_url:
                         self.m_clearnet_links.append(clean_url)
 
@@ -129,7 +115,6 @@ class html_parse_manager(HTMLParser, ABC):
         if p_tag == 'img':
             for value in p_attrs:
                 if value[0] == 'src' and not helper_method.is_url_base_64(value[1]) and len(self.m_image_url) < 35:
-                    # Joining Relative URL
                     m_temp_base_url = self.m_base_url
                     if not m_temp_base_url.endswith("/"):
                         m_temp_base_url = m_temp_base_url + "/"
@@ -142,7 +127,7 @@ class html_parse_manager(HTMLParser, ABC):
             self.m_rec = PARSE_TAGS.S_TITLE
 
         elif p_tag in ['h1', 'h2', 'h3', 'h4']:
-            self.__save_section()  # Save accumulated section before starting a new one
+            self.__save_section()
             self.m_rec = PARSE_TAGS.S_HEADER
 
         elif p_tag == 'span' and self.m_paragraph_count == 0:
@@ -150,7 +135,7 @@ class html_parse_manager(HTMLParser, ABC):
             self.m_rec = PARSE_TAGS.S_SPAN
 
         elif p_tag == 'div':
-            self.__save_section()  # Save accumulated section when a new div starts
+            self.__save_section()
             self.m_rec = PARSE_TAGS.S_DIV
 
         elif p_tag == 'li':
@@ -176,7 +161,6 @@ class html_parse_manager(HTMLParser, ABC):
                 elif p_attrs[0][1] == 'keywords':
                     if len(p_attrs) > 1 and len(p_attrs[1]) > 0 and p_attrs[1][0] == 'content' and p_attrs[1][1] is not None:
                         self.m_meta_keyword = ' '.join(dict.fromkeys(p_attrs[1][1].replace(",", " ").split()))
-
             except Exception:
                 pass
         else:
@@ -203,36 +187,25 @@ class html_parse_manager(HTMLParser, ABC):
             if p_data.count(' ') > 5:
                 self.m_current_section += " " + p_data.strip()
 
-    # Function to save accumulated sections when a tag change happens
     def __save_section(self):
         section = self.m_current_section.strip()
         section = self.__clean_text(section)
-        if section and section.count(" ")>20:
-            # Save only non-empty sections
+        if section and section.count(" ") > 20:
             self.m_sections.append(section)
-            self.m_current_section = ""  # Reset the current section
+        self.m_current_section = ""
 
-    # Extract names, emails, and phone numbers from the text
     def __extract_names_places_phones_emails(self, text: str):
-        text = text.lower()
-        text = text.replace('\n', ' ')
-        text = text.replace('\t', ' ')
-        text = text.replace('\r', ' ')
-        text = text.replace(' ', ' ')
-
+        text = text.lower().replace('\n', ' ').replace('\t', ' ').replace('\r', ' ').replace(' ', ' ')
         names = set()
         phone_numbers = set()
         emails = set()
-
         email_matches = re.findall(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', text)
         emails.update(email_matches)
 
         doc = nlp_core(text)
-
         for ent in doc.ents:
             if ent.label_ in {'PERSON', 'GPE', 'ORG'}:
                 entity_text = ent.text.strip()
-
                 if entity_text.replace(" ", "").isalpha():
                     if len(entity_text.split()) > 3:
                         for token in ent:
@@ -255,11 +228,9 @@ class html_parse_manager(HTMLParser, ABC):
 
         return list(names), list(phone_numbers), list(emails)
 
-    # Example function to retrieve sections (for further use)
     def __get_sections(self):
         return self.m_sections
 
-    # Creating keyword request_manager1 for webpage representation
     def __add_important_description(self, p_data, extended_only):
         p_data = " ".join(p_data.split())
         if (p_data.__contains__("java") and p_data.__contains__("script")) or p_data.__contains__("cookies"):
@@ -268,7 +239,6 @@ class html_parse_manager(HTMLParser, ABC):
         if (p_data.count(' ') > 2 or (self.m_paragraph_count > 0 and len(p_data) > 0 and p_data != " ")) and p_data not in self.m_important_content:
             self.m_important_content_raw.append(p_data)
             self.m_parsed_paragraph_count += 1
-
             p_data = re.sub(r'[^A-Za-z0-9 ,;"\]\[/.+-;!\'@#$%^&*_+=]', '', p_data)
             p_data = re.sub(' +', ' ', p_data)
             p_data = re.sub(r'^\W*', '', p_data)
@@ -286,21 +256,14 @@ class html_parse_manager(HTMLParser, ABC):
 
     def __clean_text(self, p_text):
         m_text = p_text.lower()
-
         for m_important_content_item in self.m_important_content_raw:
             m_text = m_text.replace(m_important_content_item, ' ')
-
-        m_text = m_text.replace('\n', ' ')
-        m_text = m_text.replace('\t', ' ')
-        m_text = m_text.replace('\r', ' ')
-        m_text = m_text.replace(' ', ' ')
-
+        m_text = m_text.replace('\n', ' ').replace('\t', ' ').replace('\r', ' ').replace(' ', ' ')
         m_text = re.sub(' +', ' ', m_text)
         p_text = m_text.lower()
         m_word_tokenized = p_text.split()
         m_content = []
         word_count = len(m_word_tokenized)
-
         i = 0
         while i < word_count:
             current_word = m_word_tokenized[i]
@@ -311,26 +274,18 @@ class html_parse_manager(HTMLParser, ABC):
             if current_word not in left_context and current_word not in right_context:
                 if current_pattern not in " ".join(m_content):
                     m_content.append(current_word)
-
             i += 1
-
         final_content = ' '.join(m_content)
         return final_content
 
     def __generate_html(self):
         try:
-            # Start the HTML parsing by feeding the HTML content
             self.feed(self.m_html)
-
-            # After feeding the HTML to HTMLParser, use BeautifulSoup for additional text processing
             self.m_soup = BeautifulSoup(self.m_html, "html.parser")
             self.m_content = self.m_soup.get_text()
             self.m_content = self.__clean_text(self.m_content)
-
         except Exception as ex:
             print(f"Error during HTML parsing: {ex}")
-
-    # ----------------- Data Receivers -----------------
 
     def __get_title(self):
         return self.__clean_text(helper_method.strip_special_character(self.m_title).strip())
@@ -367,7 +322,6 @@ class html_parse_manager(HTMLParser, ABC):
                 self.m_content_type = topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_PREDICT_CLASSIFIER, [self.m_title, self.m_important_content, self.m_content])
                 if self.m_content_type is None:
                     return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
-
                 return self.m_content_type
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
         except Exception as ex:
@@ -396,30 +350,34 @@ class html_parse_manager(HTMLParser, ABC):
             m_section = self.__get_sections()
             m_names, m_phone_numbers, m_emails = self.__extract_names_places_phones_emails(self.m_soup.get_text(separator=' '))
             m_clearnet_links = self.m_clearnet_links
+            return index_model_init(
+                m_base_url=self.m_base_url,
+                m_url=self.request_model.m_url,
+                m_title=m_title,
+                m_meta_description=m_meta_description,
+                m_content=m_content,
+                m_important_content=m_important_content,
+                m_images=m_images,
+                m_document=m_document,
+                m_video=m_video,
+                m_sub_url=m_sub_url,
+                m_validity_score=m_validity_score,
+                m_meta_keywords=m_meta_keywords,
+                m_content_type=m_content_type,
+                m_section=m_section,
+                m_names=m_names,
+                m_emails=m_emails,
+                m_archive_url=m_archive_url,
+                m_phone_numbers=m_phone_numbers,
+                m_clearnet_links=m_clearnet_links)
         except Exception as ex:
-            pass
+            return None
         finally:
-            self.m_soup.decompose()
-
-
-        return index_model_init(
-            m_base_url=self.m_base_url,
-            m_url=self.request_model.m_url,
-            m_title=m_title,
-            m_meta_description=m_meta_description,
-            m_content=m_content,
-            m_important_content=m_important_content,
-            m_images=m_images,
-            m_document=m_document,
-            m_video=m_video,
-            m_sub_url = m_sub_url,
-            m_validity_score=m_validity_score,
-            m_meta_keywords=m_meta_keywords,
-            m_content_type=m_content_type,
-            m_section=m_section,
-            m_names=m_names,
-            m_emails=m_emails,
-            m_archive_url=m_archive_url,
-            m_phone_numbers=m_phone_numbers,
-            m_clearnet_links=m_clearnet_links,
-        )
+            if self.m_soup:
+                self.m_soup.decompose()
+            self.m_html = None
+            self.m_sections.clear()
+            self.m_image_url.clear()
+            self.m_video_url.clear()
+            self.m_doc_url.clear()
+            self.m_archive_url.clear()

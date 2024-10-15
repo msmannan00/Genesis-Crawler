@@ -24,6 +24,11 @@ class topic_classifier_controller(request_handler):
     def __predict_classifier(self, p_title,p_description, p_keyword):
         return self.__m_classifier.invoke_trigger(TOPIC_CLASSFIER_MODEL.S_PREDICT_CLASSIFIER, [p_title,p_description, p_keyword])
 
+    def __clean_classifier(self):
+        return self.__m_classifier.invoke_trigger(TOPIC_CLASSFIER_MODEL.S_CLEAN_CLASSIFIER)
+
     def invoke_trigger(self, p_command, p_data=None):
         if p_command == TOPIC_CLASSFIER_COMMANDS.S_PREDICT_CLASSIFIER:
             return self.__predict_classifier(p_data[0], p_data[1], p_data[2])
+        if p_command == TOPIC_CLASSFIER_MODEL.S_CLEAN_CLASSIFIER:
+            return self.__clean_classifier()
