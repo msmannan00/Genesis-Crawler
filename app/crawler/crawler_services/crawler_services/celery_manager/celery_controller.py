@@ -16,79 +16,77 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 celery = Celery('crawler', broker=CELERY_CONNECTIONS.conn)
 
-# Configure Celery task routing
 celery.conf.task_routes = {
-  'celery_controller.invoke_unique_crawler': {'queue': 'unique_crawler_queue'}
+    'celery_controller.start_crawler': {'queue': 'crawler_queue'},
+    'celery_controller.invoke_unique_crawler': {'queue': 'unique_crawler_queue'}
 }
 
 celery.conf.worker_task_log_format = None
 celery.conf.task_acks_late = True
 celery.conf.worker_prefetch_multiplier = 1
 celery.conf.update(
-  worker_log_color=True,
-  worker_redirect_stdouts=True,
-  worker_redirect_stdouts_level='DEBUG',
-  worker_log_format="[%(asctime)s: %(levelname)s/%(processName)s] %(message)s",
+    worker_log_color=True,
+    worker_redirect_stdouts=True,
+    worker_redirect_stdouts_level='DEBUG',
+    worker_log_format="[%(asctime)s: %(levelname)s/%(processName)s] %(message)s",
 )
 
 class celery_controller:
-  __instance = None
+    __instance = None
 
-  @staticmethod
-  def get_instance():
-    if celery_controller.__instance is None:
-      celery_controller()
-    return celery_controller.__instance
+    @staticmethod
+    def get_instance():
+        if celery_controller.__instance is None:
+            celery_controller()
+        return celery_controller.__instance
 
-  def __init__(self):
-    if celery_controller.__instance is not None:
-      raise Exception("This class is a singleton!")
-    else:
-      celery_controller.__instance = self
-    warnings.filterwarnings("ignore")
-    self.__redis_controller = redis_controller.get_instance()
-    self.__clear_redis_database()
+    def __init__(self):
+        if celery_controller.__instance is not None:
+            raise Exception("This class is a singleton!")
+        else:
+            celery_controller.__instance = self
+        warnings.filterwarnings("ignore")
+        self.__redis_controller = redis_controller.get_instance()
+        self.__clear_redis_database()
 
-  def __clear_redis_database(self):
-    try:
-      self.__redis_controller.invoke_trigger('S_FLUSH_ALL')
-    except Exception:
-      pass
+    def __clear_redis_database(self):
+        try:
+            self.__redis_controller.invoke_trigger('S_FLUSH_ALL')
+        except Exception:
+            pass
 
-  def __stop_all_workers(self):
-    try:
-      output = subprocess.check_output(['pgrep', '-f', 'celery'])
-      pids = output.decode().strip().split("\n")
-      for pid in pids:
-        os.kill(int(pid), signal.SIGTERM)
-    except subprocess.CalledProcessError:
-      pass
-    except Exception:
-      pass
+    def __stop_all_workers(self):
+        try:
+            output = subprocess.check_output(['pgrep', '-f', 'celery'])
+            pids = output.decode().strip().split("\n")
+            for pid in pids:
+                os.kill(int(pid), signal.SIGTERM)
+        except subprocess.CalledProcessError:
+            pass
+        except Exception:
+            pass
 
-  def __run_crawler(self, url, virtual_id):
-    m_proxy, m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
-    start_crawler.delay(url, virtual_id, m_proxy, m_tor_id)
+    def __run_crawler(self, url, virtual_id):
+        m_proxy, m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
+        start_crawler.delay(url, virtual_id, m_proxy, m_tor_id)
 
-  def __run_unique_task(self, url):
-    m_proxy, m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
-    invoke_unique_crawler.delay(url, m_proxy, m_tor_id)
+    def __run_unique_task(self, url):
+        m_proxy, m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
+        invoke_unique_crawler.delay(url, m_proxy, m_tor_id)
 
-  def invoke_trigger(self, p_commands, p_data=None):
-    if p_commands == CELERY_COMMANDS.S_START_CRAWLER:
-      self.__run_crawler(p_data[0], p_data[1])
-    if p_commands == CELERY_COMMANDS.S_INVOKE_UNIQUE_CRAWLER:
-      self.__run_unique_task(p_data)
+    def invoke_trigger(self, p_commands, p_data=None):
+        if p_commands == CELERY_COMMANDS.S_START_CRAWLER:
+            self.__run_crawler(p_data[0], p_data[1])
+        if p_commands == CELERY_COMMANDS.S_INVOKE_UNIQUE_CRAWLER:
+            self.__run_unique_task(p_data)
 
-
-# Celery tasks
 @celery.task(name='celery_controller.start_crawler')
 def start_crawler(url, virtual_id, m_proxy, m_tor_id):
-  genbot_instance(url, virtual_id, m_proxy, m_tor_id)
+    genbot_instance(url, virtual_id, m_proxy, m_tor_id)
 
 @celery.task(name='celery_controller.invoke_unique_crawler', bind=True)
 def invoke_unique_crawler(_, url, m_proxy, m_tor_id):
-  genbot_unique_instance(url, m_proxy, m_tor_id)
+    genbot_unique_instance(url, m_proxy, m_tor_id)
 
 if __name__ == "__main__":
-  manager = celery_controller.get_instance()
+    manager = celery_controller.get_instance()
