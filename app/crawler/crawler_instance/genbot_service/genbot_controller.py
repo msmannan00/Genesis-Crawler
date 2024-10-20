@@ -125,3 +125,4 @@ def genbot_instance(p_url, p_vid, p_proxy, p_tor_id):
     topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_CLEAN_CLASSIFIER)
     gc.collect()
     del m_crawler
+    sleep(5)
