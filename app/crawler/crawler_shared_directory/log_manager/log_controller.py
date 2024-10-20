@@ -74,6 +74,9 @@ class log:
 
   def __write_to_file(self, log_message):
     try:
+      if not os.path.exists(RAW_PATH_CONSTANTS.LOG_DIRECTORY):
+        os.makedirs(RAW_PATH_CONSTANTS.LOG_DIRECTORY, exist_ok=True)
+
       caller_class, caller_file, caller_line = self.get_caller_info()
 
       log_filename = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"

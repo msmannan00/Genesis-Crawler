@@ -324,7 +324,7 @@ class html_parse_manager(HTMLParser, ABC):
                     return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
                 return self.m_content_type
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
-        except Exception as ex:
+        except Exception:
             return CRAWL_SETTINGS_CONSTANTS.S_THREAD_CATEGORY_GENERAL
 
     def __get_static_file(self):
@@ -370,7 +370,7 @@ class html_parse_manager(HTMLParser, ABC):
                 m_archive_url=m_archive_url,
                 m_phone_numbers=m_phone_numbers,
                 m_clearnet_links=m_clearnet_links)
-        except Exception as ex:
+        except Exception:
             return None
         finally:
             if self.m_soup:

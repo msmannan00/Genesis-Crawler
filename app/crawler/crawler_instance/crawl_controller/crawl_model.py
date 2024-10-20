@@ -78,6 +78,7 @@ class crawl_model(request_handler):
     m_response_list = m_response_text.splitlines()
     m_updated_url_list = []
 
+    counter = 0
     for m_server_url in m_response_list:
       m_url = helper_method.on_clean_url(m_server_url)
 
@@ -86,7 +87,10 @@ class crawl_model(request_handler):
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_INSTALL_CRAWLABLE_URL, [m_url], [True]])
         m_updated_url_list.append(m_url)
 
-      log.g().s(MANAGE_MESSAGES.S_INSTALLED_URL + " : " + m_url)
+      counter += 1
+      if counter % 500 == 0:
+        log.g().s(MANAGE_MESSAGES.S_INSTALLED_URL + " : " + m_url)
+
     mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_REMOVE_DEAD_CRAWLABLE_URL, [list(m_live_url_list)], [None]])
     return m_live_url_list, m_updated_url_list
 

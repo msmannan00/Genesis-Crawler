@@ -30,7 +30,7 @@ download_and_extract_model() {
 }
 
 clean_docker() {
-    docker-compose -p $PROJECT_NAME down --volumes --remove-orphans
+    docker compose -p $PROJECT_NAME down --volumes --remove-orphans
     docker container prune -f --filter "label=com.docker.compose.project=$PROJECT_NAME"
     docker volume prune -f --filter "label=com.docker.compose.project=$PROJECT_NAME"
     docker network prune -f --filter "label=com.docker.compose.project=$PROJECT_NAME"
@@ -56,21 +56,21 @@ if [ "$1" == "build" ]; then
     clean_docker
     disconnect_and_remove_networks
     download_and_extract_model
-    docker-compose -p $PROJECT_NAME build
-    docker-compose -p $PROJECT_NAME up -d
+    docker compose -p $PROJECT_NAME build
+    docker compose -p $PROJECT_NAME up -d
     echo "crawler service started"
 elif [ "$1" == "invoke_unique_crawler" ]; then
     echo "operation in development phase"
 elif [ "$1" == "stop" ]; then
     clean_docker
     disconnect_and_remove_networks
-    docker-compose down
+    docker compose down
     echo "Services stopped successfully."
 else
     check_or_set_s_server
     clean_docker
     disconnect_and_remove_networks
     download_and_extract_model
-    docker-compose -p $PROJECT_NAME up -d
+    docker compose -p $PROJECT_NAME up -d
     echo "crawler service started"
 fi
