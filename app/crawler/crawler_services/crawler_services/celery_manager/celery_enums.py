@@ -1,6 +1,6 @@
 import enum
 
-from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS
+from app.crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS
 
 
 class CELERY_CONNECTIONS:

@@ -1,6 +1,6 @@
 import redis
-from crawler.constants.strings import MANAGE_MESSAGES
-from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_CONNECTIONS
+from app.crawler.constants.strings import MANAGE_MESSAGES
+from app.crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_CONNECTIONS
 
 
 class redis_controller:

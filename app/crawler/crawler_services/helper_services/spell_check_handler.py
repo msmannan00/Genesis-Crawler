@@ -4,9 +4,9 @@ import re
 import warnings
 import nltk
 from nltk import PorterStemmer
-from crawler.constants.constant import SPELL_CHECK_CONSTANTS
-from crawler.constants.strings import MANAGE_MESSAGES, STRINGS
-from crawler.crawler_services.helper_services.helper_method import helper_method
+from app.crawler.constants.constant import SPELL_CHECK_CONSTANTS
+from app.crawler.constants.strings import MANAGE_MESSAGES, STRINGS
+from app.crawler.crawler_services.helper_services.helper_method import helper_method
 import os
 import sys
 

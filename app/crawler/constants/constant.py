@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 
-from crawler.crawler_services.helper_services.env_handler import env_handler
+from app.crawler.crawler_services.helper_services.env_handler import env_handler
 S_SERVER = env_handler.get_instance().env('S_SERVER')
 
 class RAW_PATH_CONSTANTS:

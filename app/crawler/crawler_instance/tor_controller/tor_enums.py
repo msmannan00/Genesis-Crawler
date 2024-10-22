@@ -1,4 +1,4 @@
-from crawler.constants.constant import RAW_PATH_CONSTANTS, TOR_CONSTANTS
+from app.crawler.constants.constant import RAW_PATH_CONSTANTS, TOR_CONSTANTS
 
 
 class TOR_COMMANDS:

@@ -5,23 +5,23 @@ from asyncio import sleep
 import os
 import sys
 
-from crawler.constants.strings import MANAGE_MESSAGES
-from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
-from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS, ELASTIC_CONNECTIONS
-from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
-from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
-from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
-from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
-from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
-from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD
-from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS
-from crawler.crawler_services.web_request_handler import webRequestManager
-from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
-from crawler.crawler_shared_directory.log_manager.log_controller import log
-from crawler.crawler_services.helper_services.helper_method import helper_method
+from app.crawler.constants.strings import MANAGE_MESSAGES
+from app.crawler.crawler_instance.genbot_service.parse_controller import parse_controller
+from app.crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
+from app.crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
+from app.crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS, ELASTIC_CONNECTIONS
+from app.crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
+from app.crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
+from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from app.crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
+from app.crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
+from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD
+from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS
+from app.crawler.crawler_services.web_request_handler import webRequestManager
+from app.crawler.crawler_services.helper_services.duplication_handler import duplication_handler
+from app.crawler.crawler_shared_directory.log_manager.log_controller import log
+from app.crawler.crawler_services.helper_services.helper_method import helper_method
 
 
 class genbot_controller(request_handler):

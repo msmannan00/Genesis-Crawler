@@ -6,7 +6,7 @@ import logging
 import os
 from termcolor import colored
 from threading import Lock
-from crawler.constants.constant import RAW_PATH_CONSTANTS
+from app.crawler.constants.constant import RAW_PATH_CONSTANTS
 
 if sys.platform == "win32":
   os.system('color')

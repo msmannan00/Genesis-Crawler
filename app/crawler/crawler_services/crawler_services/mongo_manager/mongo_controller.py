@@ -1,11 +1,11 @@
 # Local Imports
 import pymongo
 
-from crawler.constants.strings import MANAGE_MESSAGES
-from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_KEYS, MONGO_CONNECTIONS, MONGODB_PROPERTIES
-from crawler.crawler_services.crawler_services.mongo_manager.mongo_request_generator import mongo_request_generator
-from crawler.crawler_shared_directory.log_manager.log_controller import log
-from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from app.crawler.constants.strings import MANAGE_MESSAGES
+from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_KEYS, MONGO_CONNECTIONS, MONGODB_PROPERTIES
+from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_request_generator import mongo_request_generator
+from app.crawler.crawler_shared_directory.log_manager.log_controller import log
+from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
 
 class mongo_controller(request_handler):

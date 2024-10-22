@@ -1,4 +1,4 @@
-from crawler.crawler_services.helper_services.env_handler import env_handler
+from app.crawler.crawler_services.helper_services.env_handler import env_handler
 
 
 class REDIS_CONNECTIONS:

@@ -8,8 +8,8 @@ import psutil
 from gensim.parsing.preprocessing import STOPWORDS
 import socket
 
-from crawler.constants.strings import MANAGE_MESSAGES
-from crawler.crawler_shared_directory.log_manager.log_controller import log
+from app.crawler.constants.strings import MANAGE_MESSAGES
+from app.crawler.crawler_shared_directory.log_manager.log_controller import log
 
 
 class helper_method:

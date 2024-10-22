@@ -8,14 +8,14 @@ from abc import ABC
 from html.parser import HTMLParser
 from bs4 import BeautifulSoup
 from thefuzz import fuzz
-from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from crawler.constants.strings import STRINGS
-from crawler.crawler_instance.genbot_service.genbot_enums import PARSE_TAGS
-from crawler.crawler_instance.local_shared_model.index_model import index_model_init
-from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
-from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
-from crawler.crawler_services.helper_services.helper_method import helper_method
-from crawler.crawler_services.helper_services.spell_check_handler import spell_checker_handler
+from app.crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from app.crawler.constants.strings import STRINGS
+from app.crawler.crawler_instance.genbot_service.genbot_enums import PARSE_TAGS
+from app.crawler.crawler_instance.local_shared_model.index_model import index_model_init
+from app.crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
+from app.crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
+from app.crawler.crawler_services.helper_services.helper_method import helper_method
+from app.crawler.crawler_services.helper_services.spell_check_handler import spell_checker_handler
 
 nlp_core = spacy.load("en_core_web_sm")
 

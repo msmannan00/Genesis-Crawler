@@ -3,14 +3,14 @@ import os
 import sys
 from typing import Optional, Any, Set
 
-from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from crawler.crawler_instance.genbot_service.html_parse_manager import html_parse_manager
-from crawler.crawler_instance.genbot_service.file_parse_manager import file_parse_manager
-from crawler.crawler_instance.genbot_service.post_leak_model_tuner import post_leak_model_tuner
-from crawler.crawler_instance.local_shared_model.leak_data_model import leak_data_model
-from crawler.crawler_services.helper_services.helper_method import helper_method
-from crawler.crawler_instance.local_shared_model.index_model import index_model
-from crawler.crawler_instance.local_shared_model.url_model import url_model
+from app.crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from app.crawler.crawler_instance.genbot_service.html_parse_manager import html_parse_manager
+from app.crawler.crawler_instance.genbot_service.file_parse_manager import file_parse_manager
+from app.crawler.crawler_instance.genbot_service.post_leak_model_tuner import post_leak_model_tuner
+from app.crawler.crawler_instance.local_shared_model.leak_data_model import leak_data_model
+from app.crawler.crawler_services.helper_services.helper_method import helper_method
+from app.crawler.crawler_instance.local_shared_model.index_model import index_model
+from app.crawler.crawler_instance.local_shared_model.url_model import url_model
 
 
 class parse_controller:

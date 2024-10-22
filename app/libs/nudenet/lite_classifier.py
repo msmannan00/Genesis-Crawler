@@ -3,7 +3,7 @@ import cv2
 import pydload
 import numpy as np
 
-from crawler.constants.constant import RAW_PATH_CONSTANTS, CLASSIFIER_CONSTANTS
+from app.crawler.constants.constant import RAW_PATH_CONSTANTS, CLASSIFIER_CONSTANTS
 from .image_utils import load_images
 
 

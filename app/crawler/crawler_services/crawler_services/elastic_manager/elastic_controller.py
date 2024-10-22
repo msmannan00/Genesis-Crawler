@@ -1,10 +1,10 @@
 # Local Imports
-from crawler.constants.strings import MANAGE_MESSAGES
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS, \
+from app.crawler.constants.strings import MANAGE_MESSAGES
+from app.crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS, \
   ELASTIC_REQUEST_COMMANDS, ELASTIC_CRUD_COMMANDS
-from crawler.crawler_services.web_request_handler import webRequestManager
-from crawler.crawler_shared_directory.log_manager.log_controller import log
-from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from app.crawler.crawler_services.web_request_handler import webRequestManager
+from app.crawler.crawler_shared_directory.log_manager.log_controller import log
+from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
 
 class elastic_controller(request_handler):

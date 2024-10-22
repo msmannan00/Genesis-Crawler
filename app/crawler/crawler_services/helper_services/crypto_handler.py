@@ -2,8 +2,8 @@ import base64
 import time
 from fernet import Fernet
 
-from crawler.constants.strings import MANAGE_MESSAGES
-from crawler.crawler_services.helper_services.env_handler import env_handler
+from app.crawler.constants.strings import MANAGE_MESSAGES
+from app.crawler.crawler_services.helper_services.env_handler import env_handler
 
 
 class crypto_handler:

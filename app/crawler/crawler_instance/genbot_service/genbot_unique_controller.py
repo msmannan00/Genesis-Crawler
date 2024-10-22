@@ -2,18 +2,18 @@
 import filecmp
 import json
 
-from crawler.constants.constant import RAW_PATH_CONSTANTS
-from crawler.constants.strings import MANAGE_MESSAGES
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
-from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS, ELASTIC_CONNECTIONS
-from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
-from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_KEYS
-from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
-from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
-from crawler.crawler_services.web_request_handler import webRequestManager
-from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
-from crawler.crawler_shared_directory.log_manager.log_controller import log
-from crawler.crawler_services.helper_services.helper_method import helper_method
+from app.crawler.constants.constant import RAW_PATH_CONSTANTS
+from app.crawler.constants.strings import MANAGE_MESSAGES
+from app.crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
+from app.crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS, ELASTIC_CONNECTIONS
+from app.crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
+from app.crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_KEYS
+from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from app.crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
+from app.crawler.crawler_services.web_request_handler import webRequestManager
+from app.crawler.crawler_services.helper_services.duplication_handler import duplication_handler
+from app.crawler.crawler_shared_directory.log_manager.log_controller import log
+from app.crawler.crawler_services.helper_services.helper_method import helper_method
 import hashlib
 from bs4 import BeautifulSoup
 import os
