@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel, Field
-from app.crawler.crawler_instance.local_shared_model.card_extraction_model import card_extraction_model
+from crawler.crawler_instance.local_shared_model.card_extraction_model import card_extraction_model
 
 class leak_data_model(BaseModel):
     cards_data: List[card_extraction_model] = Field(default_factory=list)

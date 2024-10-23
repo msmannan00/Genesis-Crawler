@@ -1,5 +1,5 @@
 import enum
-from app.crawler.crawler_services.helper_services.env_handler import env_handler
+from crawler.crawler_services.helper_services.env_handler import env_handler
 
 class MONGODB_COMMANDS(enum.Enum):
   S_INSTALL_CRAWLABLE_URL = 1

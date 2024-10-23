@@ -1,16 +1,15 @@
 # Local Imports
-from app.crawler.constants.strings import MANAGE_MESSAGES
-from app.crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS, \
+from crawler.constants.strings import MANAGE_MESSAGES
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS, \
   ELASTIC_REQUEST_COMMANDS, ELASTIC_CRUD_COMMANDS
-from app.crawler.crawler_services.web_request_handler import webRequestManager
-from app.crawler.crawler_shared_directory.log_manager.log_controller import log
-from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from crawler.crawler_services.web_request_handler import webRequestManager
+from crawler.crawler_shared_directory.log_manager.log_controller import log
+from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
 
 class elastic_controller(request_handler):
   __instance = None
 
-  # Initializations
   @staticmethod
   def get_instance():
     if elastic_controller.__instance is None:
@@ -18,7 +17,11 @@ class elastic_controller(request_handler):
     return elastic_controller.__instance
 
   def __init__(self):
-    elastic_controller.__instance = self
+    if elastic_controller.__instance is not None:
+      raise Exception("This class is a singleton!")
+    else:
+      elastic_controller.__instance = self
+
 
   def __post_data(self, p_data, unique_index=False):
     web_request_manager = webRequestManager()

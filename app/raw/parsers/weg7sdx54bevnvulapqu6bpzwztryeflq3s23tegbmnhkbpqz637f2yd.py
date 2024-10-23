@@ -1,8 +1,8 @@
 from abc import ABC
 from bs4 import BeautifulSoup
-from app.crawler.crawler_instance.local_interface_model.leak_extractor_interface import leak_extractor_interface
-from app.crawler.crawler_instance.local_shared_model.leak_data_model import leak_data_model
-from app.crawler.crawler_instance.local_shared_model.card_extraction_model import card_extraction_model
+from crawler.crawler_instance.local_interface_model.leak_extractor_interface import leak_extractor_interface
+from crawler.crawler_instance.local_shared_model.leak_data_model import leak_data_model
+from crawler.crawler_instance.local_shared_model.card_extraction_model import card_extraction_model
 from typing import List, Set, Tuple
 from urllib.parse import urljoin
 import re

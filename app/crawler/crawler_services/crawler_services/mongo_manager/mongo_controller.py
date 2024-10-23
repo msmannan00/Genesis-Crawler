@@ -1,19 +1,18 @@
 # Local Imports
 import pymongo
 
-from app.crawler.constants.strings import MANAGE_MESSAGES
-from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_KEYS, MONGO_CONNECTIONS, MONGODB_PROPERTIES
-from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_request_generator import mongo_request_generator
-from app.crawler.crawler_shared_directory.log_manager.log_controller import log
-from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from crawler.constants.strings import MANAGE_MESSAGES
+from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_KEYS, MONGO_CONNECTIONS, MONGODB_PROPERTIES
+from crawler.crawler_services.crawler_services.mongo_manager.mongo_request_generator import mongo_request_generator
+from crawler.crawler_shared_directory.log_manager.log_controller import log
+from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
 
 class mongo_controller(request_handler):
-  __instance = None
   __m_connection = None
   __m_mongo_request_generator = None
+  __instance = None
 
-  # Initializations
   @staticmethod
   def get_instance():
     if mongo_controller.__instance is None:
@@ -21,9 +20,18 @@ class mongo_controller(request_handler):
     return mongo_controller.__instance
 
   def __init__(self):
-    mongo_controller.__instance = self
+    if mongo_controller.__instance is not None:
+      raise Exception("This class is a singleton!")
+    else:
+      mongo_controller.__instance = self
     self.__m_mongo_request_generator = mongo_request_generator()
     self.__link_connection()
+
+  def close_connection(self):
+    self.__m_connection.client.close()
+
+  def __del__(self):
+    self.close_connection()
 
   def __link_connection(self):
     connection_params = {
@@ -35,14 +43,9 @@ class mongo_controller(request_handler):
       'username': MONGO_CONNECTIONS.S_MONGO_USERNAME,
       'password': MONGO_CONNECTIONS.S_MONGO_PASSWORD
     }
-    print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
-    print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
-    print(auth_params)
-    print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
-    print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 
     connection_params.update({k: v for k, v in auth_params.items() if v})
-    self.__m_connection = pymongo.MongoClient(MONGO_CONNECTIONS.S_MONGO_IP, MONGO_CONNECTIONS.S_MONGO_PORT, username=MONGO_CONNECTIONS.S_MONGO_USERNAME, password=MONGO_CONNECTIONS.S_MONGO_PASSWORD)[MONGO_CONNECTIONS.S_MONGO_DB_NAME]
+    self.__m_connection = pymongo.MongoClient(MONGO_CONNECTIONS.S_MONGO_IP, MONGO_CONNECTIONS.S_MONGO_PORT, username=MONGO_CONNECTIONS.S_MONGO_USERNAME, password=MONGO_CONNECTIONS.S_MONGO_PASSWORD, maxPoolSize=10)[MONGO_CONNECTIONS.S_MONGO_DB_NAME]
 
   def __reset(self, p_data):
     try:
@@ -63,7 +66,7 @@ class mongo_controller(request_handler):
 
   def __read(self, p_data):
     try:
-      documents = self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].find(p_data[MONGODB_KEYS.S_FILTER], p_data[MONGODB_KEYS.S_VALUE], allow_disk_use=True)
+      documents = self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].find(p_data[MONGODB_KEYS.S_FILTER], p_data[MONGODB_KEYS.S_VALUE])
       if MONGODB_PROPERTIES.S_SORT in p_data:
         m_sort_query = p_data[MONGODB_PROPERTIES.S_SORT]
         documents.sort(m_sort_query[0], m_sort_query[1])

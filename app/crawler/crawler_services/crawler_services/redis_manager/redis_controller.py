@@ -1,13 +1,11 @@
 import redis
-from app.crawler.constants.strings import MANAGE_MESSAGES
-from app.crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_CONNECTIONS
+from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS, REDIS_CONNECTIONS
 
 
 class redis_controller:
-  __instance = None
   __redis = None
+  __instance = None
 
-  # Initializations
   @staticmethod
   def get_instance():
     if redis_controller.__instance is None:
@@ -16,16 +14,21 @@ class redis_controller:
 
   def __init__(self):
     if redis_controller.__instance is not None:
-      raise Exception(MANAGE_MESSAGES.S_SINGLETON_EXCEPTION)
+      raise Exception("This class is a singleton!")
     else:
       redis_controller.__instance = self
-
     self.__redis = redis.StrictRedis(
       port=REDIS_CONNECTIONS.S_DATABASE_PORT,
       host=REDIS_CONNECTIONS.S_DATABASE_IP,
       password=REDIS_CONNECTIONS.S_DATABASE_PASSWORD,
       decode_responses=True
     )
+
+  def close_connection(self):
+    self.__redis.close()
+
+  def __del__(self):
+    self.close_connection()
 
   def __set_bool(self, p_key, p_val):
     self.__redis.set(p_key, int(p_val))

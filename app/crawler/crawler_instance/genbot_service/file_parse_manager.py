@@ -1,12 +1,10 @@
 from typing import List, Set, Optional
 
-from app.crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from app.crawler.crawler_instance.local_shared_model.leak_data_model import leak_data_model
-from app.crawler.crawler_services.web_request_handler import webRequestManager
-from app.crawler.crawler_instance.local_shared_model.index_model import index_model
-from app.crawler.crawler_services.helper_services.helper_method import helper_method
-from app.crawler.crawler_instance.tor_controller.tor_controller import tor_controller
-from app.crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from crawler.crawler_instance.local_shared_model.leak_data_model import leak_data_model
+from crawler.crawler_services.web_request_handler import webRequestManager
+from crawler.crawler_instance.local_shared_model.index_model import index_model
+from crawler.crawler_services.helper_services.helper_method import helper_method
 
 
 class file_parse_manager:
@@ -20,9 +18,9 @@ class file_parse_manager:
     model.m_images = self.__remove_duplicate_urls(model.m_images)
 
     if CRAWL_SETTINGS_CONSTANTS.S_GENERIC_FILE_VERIFICATION_ALLOWED:
-      model.m_document = self.__validate_and_filter_urls(model.m_document)
-      model.m_video = self.__validate_and_filter_urls(model.m_video)
-      model.m_images = self.__validate_and_filter_urls(model.m_images)
+      model.m_document = self.__filter_urls(model.m_document)
+      model.m_video = self.__filter_urls(model.m_video)
+      model.m_images = self.__filter_urls(model.m_images)
 
     return model
 
@@ -32,8 +30,8 @@ class file_parse_manager:
       card.m_dumplink = self.__remove_duplicate_urls(card.m_dumplink)
 
     if CRAWL_SETTINGS_CONSTANTS.S_LEAK_FILE_VERIFICATION_ALLOWED:
-      card.m_weblink = self.__validate_and_filter_urls(card.m_weblink)
-      card.m_dumplink = self.__validate_and_filter_urls(card.m_dumplink)
+      card.m_weblink = self.__filter_urls(card.m_weblink)
+      card.m_dumplink = self.__filter_urls(card.m_dumplink)
 
     return model
 
@@ -49,7 +47,7 @@ class file_parse_manager:
         unique_urls.append(url)
     return unique_urls
 
-  def __validate_and_filter_urls(self, urls: Optional[List[str]]) -> List[str]:
+  def __filter_urls(self, urls: Optional[List[str]]) -> List[str]:
     if urls is None:
       return []
 
@@ -60,12 +58,5 @@ class file_parse_manager:
       if url in self.processed_urls:
         valid_urls.append(url)
         continue
-
-      self.__m_proxy, self.__m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
-      is_valid, _ = self.web_request_manager.load_header(url, self.__m_proxy)
-
-      if is_valid:
-        valid_urls.append(url)
-        self.processed_urls.add(url)
 
     return valid_urls

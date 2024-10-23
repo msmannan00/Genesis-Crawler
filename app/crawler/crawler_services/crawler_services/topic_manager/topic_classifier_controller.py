@@ -1,12 +1,13 @@
 # Local Imports
-from app.crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_MODEL, TOPIC_CLASSFIER_COMMANDS
-from app.crawler.crawler_services.crawler_services.topic_manager.topic_classifier_model import topic_classifier_model
-from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_MODEL, TOPIC_CLASSFIER_COMMANDS
+from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_model import topic_classifier_model
+from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
 
 class topic_classifier_controller(request_handler):
 
     __instance = None
+    __m_classifier_trainer = None
     __m_classifier = None
 
     # Initializations

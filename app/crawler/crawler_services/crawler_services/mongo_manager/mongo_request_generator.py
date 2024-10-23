@@ -1,9 +1,9 @@
 import time
 
 import pymongo
-from app.crawler.crawler_instance.local_shared_model.url_model import url_model_list
-from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_KEYS, MONGODB_COLLECTIONS, MONGODB_COMMANDS, MONGODB_PROPERTIES
-from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from crawler.crawler_instance.local_shared_model.url_model import url_model_list
+from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_KEYS, MONGODB_COLLECTIONS, MONGODB_COMMANDS, MONGODB_PROPERTIES
+from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
 
 
 class mongo_request_generator(request_handler):

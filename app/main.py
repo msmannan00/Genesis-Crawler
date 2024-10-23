@@ -4,19 +4,21 @@ import sys
 
 import spacy
 
-from app.crawler.constants.app_status import APP_STATUS
-from app.crawler.constants.constant import RAW_PATH_CONSTANTS, CRAWL_SETTINGS_CONSTANTS
-from app.crawler.constants.strings import TOR_STRINGS, MANAGE_MESSAGES
-from app.crawler.crawler_instance.application_controller.application_controller import application_controller
-from app.crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
-from app.crawler.crawler_instance.genbot_service.genbot_unique_controller import genbot_unique_instance, prepare_and_fetch_data
-from app.crawler.crawler_services.crawler_services.celery_manager.celery_controller import celery_controller
-from app.crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_COMMANDS
-from app.crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS
-from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CONNECTIONS
-from app.crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
-from app.crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS, REDIS_KEYS, REDIS_COMMANDS
-from app.crawler.crawler_shared_directory.log_manager.log_controller import log
+from crawler.constants.app_status import APP_STATUS
+from crawler.constants.constant import RAW_PATH_CONSTANTS, CRAWL_SETTINGS_CONSTANTS
+from crawler.constants.strings import TOR_STRINGS, MANAGE_MESSAGES
+from crawler.crawler_instance.application_controller.application_controller import application_controller
+from crawler.crawler_instance.application_controller.application_enums import APPICATION_COMMANDS
+from crawler.crawler_instance.genbot_service.genbot_unique_controller import genbot_unique_instance, prepare_and_fetch_data
+from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
+from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
+from crawler.crawler_services.crawler_services.celery_manager.celery_controller import celery_controller
+from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_COMMANDS
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CONNECTIONS
+from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CONNECTIONS
+from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
+from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_CONNECTIONS, REDIS_KEYS, REDIS_COMMANDS
+from crawler.crawler_shared_directory.log_manager.log_controller import log
 from pathlib import Path
 
 
@@ -69,7 +71,8 @@ def main():
       initialize_local_setting()
       redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, False, None])
       content_list = prepare_and_fetch_data(CRAWL_SETTINGS_CONSTANTS.S_FEEDER_URL)
-      genbot_unique_instance(content_list)
+      m_proxy, m_tor_id = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_PROXY, [])
+      genbot_unique_instance(content_list, m_proxy, m_tor_id)
 
     elif args.command == 'invoke_celery_crawler':
       redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.UNIQIE_CRAWLER_RUNNING, False, None])

@@ -1,9 +1,11 @@
 import gc
 
 from transformers import pipeline
-from app.crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
-from app.crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_MODEL
-from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS, RAW_PATH_CONSTANTS
+from crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_MODEL
+from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from crawler.crawler_services.helper_services.helper_method import helper_method
+
 
 class topic_classifier_model(request_handler):
 

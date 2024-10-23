@@ -2,24 +2,24 @@
 import os
 from time import sleep
 
-from app.crawler.constants.app_status import APP_STATUS
-from app.crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from app.crawler.constants.strings import MANAGE_MESSAGES
-from app.crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
-from app.crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
-from app.crawler.crawler_instance.genbot_service.genbot_unique_controller import prepare_and_fetch_data
-from app.crawler.crawler_services.helper_services.helper_method import helper_method
-from app.crawler.crawler_services.web_request_handler import webRequestManager
-from app.crawler.crawler_instance.tor_controller.tor_controller import tor_controller
-from app.crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
-from app.crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_COMMANDS
-from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
-from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS, MONGO_CRUD
-from app.crawler.crawler_services.helper_services.scheduler import RepeatedTimer
-from app.crawler.crawler_shared_directory.log_manager.log_controller import log
-from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
-from app.crawler.crawler_services.crawler_services.celery_manager.celery_controller import celery_controller
-from app.crawler.shared_data import celery_shared_data
+from crawler.constants.app_status import APP_STATUS
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from crawler.constants.strings import MANAGE_MESSAGES
+from crawler.crawler_instance.crawl_controller.crawl_enums import CRAWL_MODEL_COMMANDS
+from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
+from crawler.crawler_instance.genbot_service.genbot_unique_controller import prepare_and_fetch_data
+from crawler.crawler_services.helper_services.helper_method import helper_method
+from crawler.crawler_services.web_request_handler import webRequestManager
+from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
+from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
+from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_COMMANDS
+from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
+from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS, MONGO_CRUD
+from crawler.crawler_services.helper_services.scheduler import RepeatedTimer
+from crawler.crawler_shared_directory.log_manager.log_controller import log
+from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from crawler.crawler_services.crawler_services.celery_manager.celery_controller import celery_controller
+from crawler.shared_data import celery_shared_data
 
 class crawl_model(request_handler):
 

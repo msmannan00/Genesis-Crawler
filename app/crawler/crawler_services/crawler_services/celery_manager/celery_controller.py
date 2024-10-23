@@ -5,17 +5,16 @@ import sys
 import os
 import signal
 
-from app.crawler.crawler_instance.genbot_service.genbot_unique_controller import genbot_unique_instance
-from app.crawler.crawler_instance.tor_controller.tor_controller import tor_controller
-from app.crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
-from app.crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
-from app.crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_CONNECTIONS, CELERY_COMMANDS
-from app.crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
-from app.crawler.crawler_shared_directory.log_manager.log_controller import log
+from crawler.crawler_instance.genbot_service.genbot_unique_controller import genbot_unique_instance
+from crawler.crawler_instance.tor_controller.tor_controller import tor_controller
+from crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
+from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
+from crawler.crawler_services.crawler_services.celery_manager.celery_enums import CELERY_CONNECTIONS, CELERY_COMMANDS
+from crawler.crawler_instance.genbot_service.genbot_controller import genbot_instance
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../..')))
 
-celery = Celery('crawler', broker=CELERY_CONNECTIONS.conn)
+celery = Celery('crawler', broker=CELERY_CONNECTIONS.conn, backend=None)
 
 # Configure Celery task routing
 celery.conf.task_routes = {

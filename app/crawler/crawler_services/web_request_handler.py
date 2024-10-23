@@ -1,13 +1,9 @@
-import gc
 from raven.transport import requests
-from app.crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from app.crawler.constants.keys import TOR_KEYS
-from app.crawler.constants.strings import MANAGE_MESSAGES
-from app.crawler.crawler_instance.tor_controller.tor_controller import tor_controller
-from app.crawler.crawler_instance.tor_controller.tor_enums import TOR_COMMANDS
-from app.crawler.crawler_services.helper_services.crypto_handler import crypto_handler
-from app.crawler.crawler_services.helper_services.helper_method import helper_method
-from app.crawler.crawler_shared_directory.log_manager.log_controller import log
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from crawler.constants.strings import MANAGE_MESSAGES
+from crawler.crawler_services.helper_services.crypto_handler import crypto_handler
+from crawler.crawler_services.helper_services.helper_method import helper_method
+from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 
 class webRequestManager:
@@ -36,25 +32,25 @@ class webRequestManager:
       return str(ex), None, None
 
   def load_url(self, p_url, p_custom_proxy):
-    m_request_handler = None
     try:
-      m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
+      headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
+        'Cache-Control': 'no-cache'
+      }
+
       m_html, m_status, m_url_redirect = self.fetch(p_url, p_custom_proxy, headers)
       if m_html == "" or m_status != 200:
         return str(p_url), False, m_status
       else:
         return helper_method.on_clean_url(str(m_url_redirect)), True, str(m_html)
     except Exception as ex:
-      if m_request_handler is not None:
-        m_request_handler.close()
-        del m_request_handler
       log.g().e(MANAGE_MESSAGES.S_LOAD_URL_ERROR_MAIN + " : " + str(ex))
       return p_url, False, None
 
   def request_server_post(self, url, data=None, params=None, timeout=1000):
     response = None
     try:
-      crypto = crypto_handler.get_instance()
+      crypto = crypto_handler()
       secret_token = crypto.generate_secret_token()
 
       headers = {
@@ -75,7 +71,7 @@ class webRequestManager:
 
   def request_server_get(self, url, params=None, timeout=1000):
     try:
-      crypto = crypto_handler.get_instance()
+      crypto = crypto_handler()
       secret_token = crypto.generate_secret_token()
 
       headers = {
@@ -88,18 +84,3 @@ class webRequestManager:
 
     except Exception as ex:
       return None, str(ex)
-
-  def load_header(self, p_url, p_custom_proxy):
-    m_request_handler, headers = tor_controller.get_instance().invoke_trigger(TOR_COMMANDS.S_CREATE_SESSION, [True])
-
-    try:
-      headers = {TOR_KEYS.S_USER_AGENT: CRAWL_SETTINGS_CONSTANTS.S_USER_AGENT}
-      with m_request_handler.head(p_url, headers=headers, timeout=(CRAWL_SETTINGS_CONSTANTS.S_HEADER_TIMEOUT, CRAWL_SETTINGS_CONSTANTS.S_HEADER_TIMEOUT), proxies=p_custom_proxy, allow_redirects=True, verify=False) as page:
-        m_request_handler.close()
-        gc.collect()
-        return True, page.headers
-
-    except Exception:
-      m_request_handler.close()
-      gc.collect()
-      return False, None

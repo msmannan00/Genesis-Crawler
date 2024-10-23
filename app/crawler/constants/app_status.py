@@ -1,5 +1,5 @@
 # External DB Queue Exists And Not Empty
-from app.crawler.crawler_instance.tor_controller.tor_enums import TOR_STATUS
+from crawler.crawler_instance.tor_controller.tor_enums import TOR_STATUS
 
 
 class APP_STATUS:

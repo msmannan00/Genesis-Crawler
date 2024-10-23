@@ -1,4 +1,4 @@
-from app.crawler.constants.constant import TOR_CONNECTION_CONSTANTS
+from crawler.constants.constant import TOR_CONNECTION_CONSTANTS
 
 
 class STRINGS:

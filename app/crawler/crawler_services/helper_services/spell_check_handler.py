@@ -4,9 +4,9 @@ import re
 import warnings
 import nltk
 from nltk import PorterStemmer
-from app.crawler.constants.constant import SPELL_CHECK_CONSTANTS
-from app.crawler.constants.strings import MANAGE_MESSAGES, STRINGS
-from app.crawler.crawler_services.helper_services.helper_method import helper_method
+from crawler.constants.constant import SPELL_CHECK_CONSTANTS
+from crawler.constants.strings import STRINGS
+from crawler.crawler_services.helper_services.helper_method import helper_method
 import os
 import sys
 
@@ -33,22 +33,10 @@ ensure_punkt_installed()
 
 
 class spell_checker_handler:
-  __instance = None
   __spell_check = None
   __m_porter_stemmer = None
 
-  # Initializations
-  @staticmethod
-  def get_instance():
-    if spell_checker_handler.__instance is None:
-      spell_checker_handler()
-    return spell_checker_handler.__instance
-
   def __init__(self):
-    if spell_checker_handler.__instance is not None:
-      raise Exception(MANAGE_MESSAGES.S_SINGLETON_EXCEPTION)
-    else:
-      spell_checker_handler.__instance = self
       self.__spell_check = set(open(SPELL_CHECK_CONSTANTS.S_DICTIONARY_PATH).read().split())
       self.__m_porter_stemmer = PorterStemmer()
 

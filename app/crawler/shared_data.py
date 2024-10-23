@@ -1,12 +1,12 @@
-from app.crawler.constants.keys import REDIS_KEYS
-from app.crawler.constants.strings import MANAGE_MESSAGES
-from app.crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
-from app.crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS
+from crawler.constants.keys import REDIS_KEYS
+from crawler.constants.strings import MANAGE_MESSAGES
+from crawler.crawler_services.crawler_services.redis_manager.redis_controller import redis_controller
+from crawler.crawler_services.crawler_services.redis_manager.redis_enums import REDIS_COMMANDS
 
 
 class celery_shared_data:
-  __instance = None
   __m_running = False
+  __instance = None
 
   # Initializations
   @staticmethod
@@ -20,9 +20,10 @@ class celery_shared_data:
       raise Exception(MANAGE_MESSAGES.S_SINGLETON_EXCEPTION)
     else:
       celery_shared_data.__instance = self
+    self.redis_controller_instance = redis_controller.get_instance()
 
   def get_network_status(self):
-    return redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [REDIS_KEYS.S_NETWORK_MONITOR_STATUS, False, None])
+    return self.redis_controller_instance.invoke_trigger(REDIS_COMMANDS.S_GET_BOOL, [REDIS_KEYS.S_NETWORK_MONITOR_STATUS, False, None])
 
   def set_network_status(self, p_status):
-    redis_controller.get_instance().invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.S_NETWORK_MONITOR_STATUS, p_status, None])
+    self.redis_controller_instance.invoke_trigger(REDIS_COMMANDS.S_SET_BOOL, [REDIS_KEYS.S_NETWORK_MONITOR_STATUS, p_status, None])

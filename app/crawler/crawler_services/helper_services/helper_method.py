@@ -8,8 +8,8 @@ import psutil
 from gensim.parsing.preprocessing import STOPWORDS
 import socket
 
-from app.crawler.constants.strings import MANAGE_MESSAGES
-from app.crawler.crawler_shared_directory.log_manager.log_controller import log
+from crawler.constants.strings import MANAGE_MESSAGES
+from crawler.crawler_shared_directory.log_manager.log_controller import log
 
 
 class helper_method:
@@ -100,15 +100,11 @@ class helper_method:
   @staticmethod
   def extract_zip(from_path, to_path):
     os.makedirs(to_path, exist_ok=True)
-    zip_ref = None
     try:
-      zip_ref = zipfile.ZipFile(from_path, 'r')
-      zip_ref.extractall(to_path)
+      with zipfile.ZipFile(from_path, 'r') as zip_ref:
+        zip_ref.extractall(to_path)
     except Exception as e:
       log.g().e(f"Error occurred while extracting {from_path}: {e}")
-    finally:
-      if zip_ref:
-        zip_ref.close()
 
   @staticmethod
   def split_host_url(p_url):
@@ -155,11 +151,11 @@ class helper_method:
 
   @staticmethod
   def clear_folder(p_path):
-    os.chdir(p_path)
-    all_files = os.listdir()
-
-    for f in all_files:
-      os.remove(f)
+    for f in os.listdir(p_path):
+      try:
+        os.remove(os.path.join(p_path, f))
+      except Exception as e:
+        log.g().e(f"Error removing file {f}: {e}")
 
   @staticmethod
   def write_content_to_path(p_path, p_content):

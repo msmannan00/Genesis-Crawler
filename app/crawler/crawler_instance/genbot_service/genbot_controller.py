@@ -5,23 +5,21 @@ from asyncio import sleep
 import os
 import sys
 
-from app.crawler.constants.strings import MANAGE_MESSAGES
-from app.crawler.crawler_instance.genbot_service.parse_controller import parse_controller
-from app.crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
-from app.crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
-from app.crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS, ELASTIC_CONNECTIONS
-from app.crawler.crawler_services.crawler_services.topic_manager.topic_classifier_controller import topic_classifier_controller
-from app.crawler.crawler_services.crawler_services.topic_manager.topic_classifier_enums import TOPIC_CLASSFIER_COMMANDS
-from app.crawler.crawler_shared_directory.request_manager.request_handler import request_handler
-from app.crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
-from app.crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
-from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
-from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD
-from app.crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS
-from app.crawler.crawler_services.web_request_handler import webRequestManager
-from app.crawler.crawler_services.helper_services.duplication_handler import duplication_handler
-from app.crawler.crawler_shared_directory.log_manager.log_controller import log
-from app.crawler.crawler_services.helper_services.helper_method import helper_method
+from crawler.constants.strings import MANAGE_MESSAGES
+from crawler.crawler_instance.genbot_service.parse_controller import parse_controller
+from crawler.crawler_instance.local_shared_model.url_model import url_model, url_model_init
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_controller import elastic_controller
+from crawler.crawler_services.crawler_services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS, ELASTIC_CONNECTIONS
+from crawler.crawler_shared_directory.request_manager.request_handler import request_handler
+from crawler.crawler_instance.genbot_service.genbot_enums import ICRAWL_CONTROLLER_COMMANDS
+from crawler.constants.constant import CRAWL_SETTINGS_CONSTANTS
+from crawler.crawler_services.crawler_services.mongo_manager.mongo_controller import mongo_controller
+from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGO_CRUD
+from crawler.crawler_services.crawler_services.mongo_manager.mongo_enums import MONGODB_COMMANDS
+from crawler.crawler_services.web_request_handler import webRequestManager
+from crawler.crawler_services.helper_services.duplication_handler import duplication_handler
+from crawler.crawler_shared_directory.log_manager.log_controller import log
+from crawler.crawler_services.helper_services.helper_method import helper_method
 
 
 class genbot_controller(request_handler):
@@ -42,6 +40,8 @@ class genbot_controller(request_handler):
     self.m_unparsed_url = []
     self.m_parsed_url = []
     self.__m_proxy = {}
+    self.__elastic_controller_instance = elastic_controller.get_instance()
+
 
   def init(self, p_proxy, p_tor_id):
     self.__m_proxy, self.__m_tor_id = p_proxy, p_tor_id
@@ -62,7 +62,7 @@ class genbot_controller(request_handler):
         if helper_method.get_host_name(m_redirected_url).__eq__(helper_method.get_host_name(p_request_model.m_url)) and self.m_url_duplication_handler.validate_duplicate(m_redirected_url) is False:
 
           m_paresed_request_data = {"m_generic_model":json.dumps(m_parsed_model.model_dump()),  "m_leak_data_model":json.dumps(m_leak_data_model.model_dump())}
-          elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, json.dumps(m_paresed_request_data), ELASTIC_CONNECTIONS.S_CRAWL_INDEX])
+          self.__elastic_controller_instance.invoke_trigger(ELASTIC_CRUD_COMMANDS.S_INDEX, [ELASTIC_REQUEST_COMMANDS.S_INDEX, json.dumps(m_paresed_request_data), ELASTIC_CONNECTIONS.S_CRAWL_INDEX])
 
           log.g().s(MANAGE_MESSAGES.S_LOCAL_URL_PARSED + " : " + str(self.__task_id) + " : " + str(self.__m_tor_id) + " : " + m_redirected_url)
           self.m_parsed_url.append(m_redirected_url)
@@ -91,7 +91,7 @@ class genbot_controller(request_handler):
       if m_parsed_model is None:
         if not m_host_crawled:
           if m_failure_count > 2:
-            self.m_unparsed_url.pop(0)
+            _ = self.m_unparsed_url.pop(0)
           else:
             m_failure_count += 1
             sleep(5)
@@ -104,6 +104,15 @@ class genbot_controller(request_handler):
       m_host_crawled = True
       self.m_unparsed_url.pop(0)
 
+    self.m_url_duplication_handler = None
+    self.__m_web_request_handler = None
+    self.__m_html_parser = None
+    self.__elastic_controller_instance = None
+    del self.m_url_duplication_handler
+    del self.__m_web_request_handler
+    del self.__m_html_parser
+    del self.__elastic_controller_instance
+
   def invoke_trigger(self, p_command, p_data=None):
     if p_command == ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE:
       self.start_crawler_instance(p_data[0], p_data[1])
@@ -115,14 +124,15 @@ def genbot_instance(p_url, p_vid, p_proxy, p_tor_id):
   log.g().i(MANAGE_MESSAGES.S_PARSING_WORKER_STARTED + " : " + p_url)
   m_crawler = genbot_controller()
   m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_INIT_CRAWLER_INSTANCE, [p_proxy, p_tor_id])
+  mongo = mongo_controller.get_instance()
   try:
     m_crawler.invoke_trigger(ICRAWL_CONTROLLER_COMMANDS.S_START_CRAWLER_INSTANCE, [p_url, p_vid])
     p_request_url = helper_method.on_clean_url(p_url)
-    mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
+    mongo.invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_CLOSE_INDEX_ON_COMPLETE, [p_request_url], [True]])
   except Exception as ex:
     log.g().e(MANAGE_MESSAGES.S_GENBOT_ERROR + " : " + str(p_vid) + " : " + str(ex))
   finally:
-    topic_classifier_controller.get_instance().invoke_trigger(TOPIC_CLASSFIER_COMMANDS.S_CLEAN_CLASSIFIER)
-    gc.collect()
+    mongo.close_connection()
     del m_crawler
+    gc.collect()
     sleep(5)

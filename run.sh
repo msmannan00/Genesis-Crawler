@@ -49,7 +49,7 @@ disconnect_and_remove_networks() {
 }
 
 if [ "$1" == "build" ]; then
-    check_or_set_s_server
+    #check_or_set_s_server
     echo "Are you sure you want to remove all services and build the project? (y/n)"
     read -r confirm
     [ "$confirm" != "y" ] && exit 0
@@ -67,7 +67,7 @@ elif [ "$1" == "stop" ]; then
     docker compose down
     echo "Services stopped successfully."
 else
-    check_or_set_s_server
+    #check_or_set_s_server
     clean_docker
     disconnect_and_remove_networks
     download_and_extract_model
